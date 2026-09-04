@@ -11,13 +11,14 @@
             theme: {
                 extend: {
                     colors: {
-                        warm: {
-                            50: '#fbf9f5',
-                            100: '#f5efe6',
-                            200: '#e8dcce',
-                            800: '#5c5244',
-                            900: '#3d352b',
-                            950: '#26201a'
+                        mea: {
+                            50: '#f0f6ff',
+                            100: '#e0effe',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#0f172a',
+                            950: '#020617'
                         }
                     }
                 }
@@ -32,39 +33,26 @@
         body { font-family: 'Prompt', sans-serif; }
     </style>
 </head>
-<body id="appBody" class="bg-slate-950 text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
 
     <!-- Top Navigation Bar -->
-    <header id="appHeader" class="bg-slate-900 border-b border-slate-800 text-white shadow-xl sticky top-0 z-50 transition-colors duration-300">
+    <header class="bg-slate-900 border-b border-slate-800 text-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap justify-between items-center gap-4">
             <div class="flex items-center space-x-3.5">
-                <div class="bg-gradient-to-br from-amber-500 to-amber-600 p-2.5 rounded-2xl text-slate-950 text-lg shadow-lg flex items-center justify-center font-bold">
+                <div class="bg-amber-500 p-2.5 rounded-2xl text-slate-950 text-lg shadow-md flex items-center justify-center font-bold">
                     <i class="fa-solid fa-bolt-lightning"></i>
                 </div>
                 <div>
                     <h1 class="text-sm font-bold tracking-tight text-white flex items-center">
                         ระบบตรวจสอบและบำรุงรักษาอุปกรณ์ไฟฟ้า
-                        <span class="ml-2.5 px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[10px] font-semibold rounded-full">MEA Smart Grid</span>
+                        <span class="ml-2.5 px-2.5 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[10px] font-semibold rounded-full">MEA Smart Grid</span>
                     </h1>
                     <p class="text-[11px] text-slate-400">Power Substation & Distribution Equipment Maintenance Operations</p>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-3 flex-wrap">
-                <!-- Theme Switcher Buttons -->
-                <div class="bg-slate-800 p-1 rounded-2xl border border-slate-700 flex items-center space-x-1 text-xs">
-                    <button onclick="setTheme('light')" id="themeBtnLight" class="px-3 py-1.5 rounded-xl font-semibold transition flex items-center space-x-1 text-slate-300 hover:text-white" title="สีขาว">
-                        <i class="fa-solid fa-sun text-amber-400"></i> <span class="hidden sm:inline">สีขาว</span>
-                    </button>
-                    <button onclick="setTheme('warm')" id="themeBtnWarm" class="px-3 py-1.5 rounded-xl font-semibold transition flex items-center space-x-1 text-slate-300 hover:text-white" title="สีนวลสบายตา">
-                        <i class="fa-solid fa-book-open text-orange-400"></i> <span class="hidden sm:inline">สีนวล</span>
-                    </button>
-                    <button onclick="setTheme('dark')" id="themeBtnDark" class="px-3 py-1.5 rounded-xl font-semibold transition flex items-center space-x-1 text-slate-300 hover:text-white" title="สีมืด">
-                        <i class="fa-solid fa-moon text-blue-400"></i> <span class="hidden sm:inline">สีมืด</span>
-                    </button>
-                </div>
-
-                <div id="userProfile" class="hidden items-center space-x-2.5 bg-slate-800 px-3.5 py-1.5 rounded-full text-xs border border-slate-700 text-slate-200">
+            <div class="flex items-center space-x-3">
+                <div id="userProfile" class="hidden items-center space-x-2.5 bg-slate-800 px-3.5 py-1.5 rounded-full text-xs border border-slate-700 text-slate-200 shadow-sm">
                     <img id="userAvatar" src="https://via.placeholder.com/32" class="w-6 h-6 rounded-full border border-amber-500" alt="Avatar">
                     <span id="userName" class="font-medium"></span>
                     <button onclick="handleLogout()" class="text-xs text-rose-400 hover:text-rose-300 ml-1.5 transition"><i class="fa-solid fa-power-off"></i></button>
@@ -84,24 +72,23 @@
     <!-- Main Workspace -->
     <div class="flex-grow max-w-7xl w-full mx-auto px-6 py-8 flex flex-col md:flex-row gap-8">
         
-        <!-- Left Sidebar -->
-        <aside id="appSidebar" class="w-full md:w-80 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl p-5 shrink-0 h-fit space-y-3 transition-colors duration-300">
-            <div class="pb-3 border-b border-slate-800 flex items-center justify-between">
-                <h2 class="text-xs font-bold uppercase tracking-wider flex items-center text-slate-300">
-                    <i class="fa-solid fa-file-shield mr-2 text-amber-500"></i> เมนูการจัดการ
+        <!-- Left Sidebar: Menu -->
+        <aside class="w-full md:w-80 bg-white border border-slate-200 rounded-3xl shadow-sm p-5 shrink-0 h-fit space-y-4">
+            <div class="pb-3 border-b border-slate-100 flex items-center justify-between">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center">
+                    <i class="fa-solid fa-file-shield mr-2 text-blue-600"></i> เมนูการจัดการ
                 </h2>
-                <span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold">11 Forms</span>
+                <span class="text-[10px] bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-0.5 rounded-full font-bold">11 Forms</span>
             </div>
 
-            <div class="space-y-2">
-                <div class="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-sm">
-                    <button onclick="toggleAllFormsDropdown()" class="w-full text-left px-4 py-3 text-xs font-bold flex items-center justify-between text-amber-400 hover:bg-slate-800/60 transition">
-                        <span class="flex items-center"><i class="fa-solid fa-layer-group mr-2 text-amber-500"></i> ดูใบตรวจสอบทั้งหมด (11 ใบ)</span>
-                        <i id="dropdownArrow" class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
-                    </button>
-                    <div id="allFormsDropdownList" class="hidden border-t border-slate-800/80 bg-slate-950/90 p-1.5 space-y-1 max-h-72 overflow-y-auto">
-                        <!-- Injected via JS -->
-                    </div>
+            <!-- Dropdown Menu Wrapper -->
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                <button onclick="toggleAllFormsDropdown()" class="w-full text-left px-4 py-3 text-xs font-bold flex items-center justify-between text-blue-700 hover:bg-blue-50/50 transition">
+                    <span class="flex items-center"><i class="fa-solid fa-layer-group mr-2 text-blue-600"></i> ดูใบตรวจสอบทั้งหมด (11 ใบ)</span>
+                    <i id="dropdownArrow" class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+                </button>
+                <div id="allFormsDropdownList" class="hidden border-t border-slate-200 bg-white p-1.5 space-y-1 max-h-80 overflow-y-auto">
+                    <!-- Injected via JS -->
                 </div>
             </div>
         </aside>
@@ -111,67 +98,67 @@
 
             <!-- Summary Cards -->
             <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div id="card1" class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow-xl flex items-center justify-between transition-colors duration-300">
+                <div class="bg-white border border-slate-200 p-5 rounded-3xl shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">รายการทั้งหมด</p>
-                        <h3 id="statTotal" class="text-2xl font-bold text-white mt-1">0</h3>
+                        <h3 id="statTotal" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
                     </div>
-                    <div class="p-3.5 bg-slate-800 text-slate-300 rounded-2xl text-base border border-slate-700"><i class="fa-solid fa-boxes-stacked"></i></div>
+                    <div class="p-3.5 bg-blue-50 text-blue-600 rounded-2xl text-base border border-blue-100"><i class="fa-solid fa-boxes-stacked"></i></div>
                 </div>
-                <div id="card2" class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow-xl flex items-center justify-between transition-colors duration-300">
+                <div class="bg-white border border-slate-200 p-5 rounded-3xl shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">สภาพปกติ</p>
-                        <h3 id="statNormal" class="text-2xl font-bold text-emerald-400 mt-1">0</h3>
+                        <h3 id="statNormal" class="text-2xl font-bold text-emerald-600 mt-1">0</h3>
                     </div>
-                    <div class="p-3.5 bg-emerald-500/10 text-emerald-400 rounded-2xl text-base border border-emerald-500/20"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="p-3.5 bg-emerald-50 text-emerald-600 rounded-2xl text-base border border-emerald-100"><i class="fa-solid fa-circle-check"></i></div>
                 </div>
-                <div id="card3" class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow-xl flex items-center justify-between transition-colors duration-300">
+                <div class="bg-white border border-slate-200 p-5 rounded-3xl shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">พบข้อบกพร่อง</p>
-                        <h3 id="statDefect" class="text-2xl font-bold text-rose-400 mt-1">0</h3>
+                        <h3 id="statDefect" class="text-2xl font-bold text-rose-600 mt-1">0</h3>
                     </div>
-                    <div class="p-3.5 bg-rose-500/10 text-rose-400 rounded-2xl text-base border border-rose-500/20"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="p-3.5 bg-rose-50 text-rose-600 rounded-2xl text-base border border-rose-100"><i class="fa-solid fa-triangle-exclamation"></i></div>
                 </div>
-                <div id="card4" class="bg-slate-900 border border-slate-800 p-5 rounded-3xl shadow-xl flex items-center justify-between transition-colors duration-300">
+                <div class="bg-white border border-slate-200 p-5 rounded-3xl shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">ฟอร์มที่เลือก</p>
-                        <h3 id="statCurrentFormCode" class="text-xs font-bold text-amber-400 mt-1.5 truncate max-w-[130px]">ทั้งหมด</h3>
+                        <h3 id="statCurrentFormCode" class="text-xs font-bold text-blue-700 mt-1.5 truncate max-w-[130px]">ทั้งหมด</h3>
                     </div>
-                    <div class="p-3.5 bg-amber-500/10 text-amber-400 rounded-2xl text-base border border-amber-500/20"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="p-3.5 bg-amber-50 text-amber-600 rounded-2xl text-base border border-amber-100"><i class="fa-solid fa-bolt"></i></div>
                 </div>
             </section>
 
             <!-- Search & Toolbar -->
-            <section id="appToolbar" class="bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4 transition-colors duration-300">
+            <section class="bg-white border border-slate-200 p-4 rounded-3xl shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="w-full md:w-96 relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-xs"><i class="fa-solid fa-magnifying-glass"></i></span>
-                    <input type="text" id="searchInput" oninput="filterWorkOrders()" placeholder="ค้นหา Station ID, สถานที่ หรือ Work Order..." class="w-full pl-11 pr-4 py-2.5 bg-slate-950 border border-slate-800 text-slate-100 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500 transition">
+                    <input type="text" id="searchInput" oninput="filterWorkOrders()" placeholder="ค้นหา Station ID, สถานที่ หรือ Work Order..." class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
                 </div>
                 <div class="flex items-center gap-3 w-full md:w-auto justify-end">
-                    <select id="statusFilter" onchange="filterWorkOrders()" class="bg-slate-950 border border-slate-800 text-slate-200 rounded-2xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
+                    <select id="statusFilter" onchange="filterWorkOrders()" class="bg-slate-50 border border-slate-200 text-slate-700 rounded-2xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium">
                         <option value="">สถานะทั้งหมด</option>
                         <option value="ปกติ">ปกติ</option>
                         <option value="ชำรุด">ชำรุด / มีข้อบกพร่อง</option>
                     </select>
-                    <button onclick="exportCSV()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-4 py-2.5 rounded-2xl text-xs font-semibold transition flex items-center space-x-2">
-                        <i class="fa-solid fa-file-excel text-emerald-400"></i><span>Export CSV</span>
+                    <button onclick="exportCSV()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-xs font-semibold transition flex items-center space-x-2">
+                        <i class="fa-solid fa-file-excel text-emerald-600"></i><span>Export CSV</span>
                     </button>
                 </div>
             </section>
 
             <!-- Data Table -->
-            <section id="appTableCard" class="bg-slate-900 border border-slate-800 rounded-3xl shadow-xl overflow-hidden transition-colors duration-300">
-                <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
+            <section class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <div>
-                        <h3 id="activeFormTitle" class="font-bold text-white text-sm">รายการตรวจสอบทั้งหมด</h3>
+                        <h3 id="activeFormTitle" class="font-bold text-slate-800 text-sm">รายการตรวจสอบทั้งหมด</h3>
                         <p id="activeFormCodeSub" class="text-[11px] text-slate-400 mt-0.5">แสดงข้อมูลทุกแบบฟอร์มในระบบ</p>
                     </div>
-                    <span id="recordCount" class="text-xs bg-slate-800 text-amber-400 border border-slate-700 font-bold px-3 py-1 rounded-full">0 รายการ</span>
+                    <span id="recordCount" class="text-xs bg-blue-50 text-blue-700 border border-blue-200 font-bold px-3 py-1 rounded-full">0 รายการ</span>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
-                            <tr class="bg-slate-950/80 text-slate-300 uppercase tracking-wider border-b border-slate-800 text-[10px]">
+                            <tr class="bg-slate-100 text-slate-500 uppercase tracking-wider border-b border-slate-200 text-[10px]">
                                 <th class="p-4 font-bold">Work Order / วันที่</th>
                                 <th class="p-4 font-bold">Station ID / สถานที่</th>
                                 <th class="p-4 font-bold">ประเภทแบบฟอร์ม</th>
@@ -179,7 +166,7 @@
                                 <th class="p-4 font-bold text-center">จัดการ</th>
                             </tr>
                         </thead>
-                        <tbody id="workOrderTableBody" class="divide-y divide-slate-800/60">
+                        <tbody id="workOrderTableBody" class="divide-y divide-slate-100">
                             <!-- Dynamic Rows -->
                         </tbody>
                     </table>
@@ -189,12 +176,12 @@
     </div>
 
     <!-- Modal Form -->
-    <div id="formModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div id="modalBox" class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
+    <div id="formModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white border border-slate-200 rounded-3xl shadow-2xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
             <!-- Modal Header -->
-            <div id="modalHeader" class="bg-slate-950 border-b border-slate-800 text-white px-6 py-4 flex justify-between items-center shadow-sm">
+            <div class="bg-slate-900 border-b border-slate-800 text-white px-6 py-4 flex justify-between items-center shadow-sm">
                 <div class="flex items-center space-x-3">
-                    <div class="bg-amber-500/10 border border-amber-500/30 p-2 rounded-xl text-amber-400 text-xs"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="bg-amber-500 p-2 rounded-xl text-slate-950 text-xs font-bold"><i class="fa-solid fa-bolt"></i></div>
                     <h2 id="modalTitle" class="text-sm font-bold tracking-tight text-white">บันทึกผลการตรวจสอบ</h2>
                 </div>
                 <div class="flex items-center space-x-2">
@@ -206,67 +193,67 @@
             </div>
 
             <!-- Modal Body -->
-            <div class="p-6 overflow-y-auto space-y-6 flex-grow bg-slate-900/50">
+            <div class="p-6 overflow-y-auto space-y-6 flex-grow bg-slate-50/50">
                 <form id="inspectionForm" onsubmit="saveWorkOrder(event)" class="space-y-6">
                     <input type="hidden" id="editIndex" value="-1">
 
                     <!-- Section 1 -->
-                    <div class="modal-section bg-slate-950 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
-                        <h3 class="font-bold text-amber-400 text-xs border-b border-slate-800 pb-3 flex items-center uppercase tracking-wider">
-                            <span class="bg-amber-500 text-slate-950 w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">1</span>
+                    <div class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm space-y-4">
+                        <h3 class="font-bold text-blue-700 text-xs border-b border-slate-100 pb-3 flex items-center uppercase tracking-wider">
+                            <span class="bg-blue-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">1</span>
                             ข้อมูลทั่วไป / ข้อมูลภาพถ่ายอุปกรณ์ไฟฟ้า
                         </h3>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
                             <div>
-                                <label class="block font-semibold text-slate-300 mb-1.5">Station ID *</label>
-                                <input type="text" id="stationId" required class="w-full bg-slate-900 border border-slate-800 text-slate-100 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition modal-input">
+                                <label class="block font-semibold text-slate-600 mb-1.5">Station ID *</label>
+                                <input type="text" id="stationId" required class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl p-3 focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-300 mb-1.5">สถานที่ / Location *</label>
-                                <input type="text" id="location" required class="w-full bg-slate-900 border border-slate-800 text-slate-100 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition modal-input">
+                                <label class="block font-semibold text-slate-600 mb-1.5">สถานที่ / Location *</label>
+                                <input type="text" id="location" required class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl p-3 focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-300 mb-1.5">GIS Lat. / Long.</label>
+                                <label class="block font-semibold text-slate-600 mb-1.5">GIS Lat. / Long.</label>
                                 <div class="flex space-x-2">
-                                    <input type="text" id="gisLat" placeholder="Lat" class="w-1/2 bg-slate-900 border border-slate-800 text-slate-100 rounded-2xl p-3 modal-input">
-                                    <input type="text" id="gisLong" placeholder="Long" class="w-1/2 bg-slate-900 border border-slate-800 text-slate-100 rounded-2xl p-3 modal-input">
-                                    <button type="button" onclick="getCurrentLocation()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 px-3 rounded-2xl text-xs transition border border-slate-700" title="ดึงพิกัด"><i class="fa-solid fa-location-crosshairs"></i></button>
+                                    <input type="text" id="gisLat" placeholder="Lat" class="w-1/2 bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl p-3">
+                                    <input type="text" id="gisLong" placeholder="Long" class="w-1/2 bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl p-3">
+                                    <button type="button" onclick="getCurrentLocation()" class="bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 rounded-2xl text-xs transition border border-blue-200" title="ดึงพิกัด"><i class="fa-solid fa-location-crosshairs"></i></button>
                                 </div>
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-300 mb-1.5">MEA No.</label>
-                                <input type="text" id="meaNo1" class="w-full bg-slate-900 border border-slate-800 text-slate-100 rounded-2xl p-3 modal-input">
+                                <label class="block font-semibold text-slate-600 mb-1.5">MEA No.</label>
+                                <input type="text" id="meaNo1" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl p-3">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-300 mb-1.5">อุปกรณ์ (Equipment)</label>
-                                <input type="text" id="brand" class="w-full bg-slate-900 border border-slate-800 text-slate-100 rounded-2xl p-3 modal-input">
+                                <label class="block font-semibold text-slate-600 mb-1.5">อุปกรณ์ (Equipment)</label>
+                                <input type="text" id="brand" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl p-3">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-300 mb-1.5">สายป้อน (Feeder)</label>
-                                <input type="text" id="capacity" class="w-full bg-slate-900 border border-slate-800 text-slate-100 rounded-2xl p-3 modal-input">
+                                <label class="block font-semibold text-slate-600 mb-1.5">สายป้อน (Feeder)</label>
+                                <input type="text" id="capacity" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl p-3">
                             </div>
                         </div>
                     </div>
 
                     <!-- Section 2 -->
-                    <div class="modal-section bg-slate-950 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4">
-                        <h3 class="font-bold text-amber-400 text-xs border-b border-slate-800 pb-3 flex items-center uppercase tracking-wider">
-                            <span class="bg-amber-500 text-slate-950 w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">2</span>
+                    <div class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm space-y-4">
+                        <h3 class="font-bold text-blue-700 text-xs border-b border-slate-100 pb-3 flex items-center uppercase tracking-wider">
+                            <span class="bg-blue-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">2</span>
                             รายการตรวจสอบตามแบบฟอร์มมาตรฐาน
                         </h3>
-                        <div class="overflow-x-auto rounded-2xl border border-slate-800">
-                            <table class="w-full text-left text-xs border-collapse">
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left text-xs border-collapse bg-white">
                                 <thead>
-                                    <tr class="modal-th bg-slate-900 text-slate-300 text-[11px] border-b border-slate-800">
+                                    <tr class="bg-slate-100 text-slate-600 text-[11px] border-b border-slate-200">
                                         <th class="p-3.5 w-12 text-center font-bold">ลำดับ</th>
                                         <th class="p-3.5 font-bold">รายการอุปกรณ์ / หัวข้อตรวจสอบ</th>
-                                        <th class="p-3.5 text-center w-20 font-bold text-emerald-400">ปกติ</th>
-                                        <th class="p-3.5 text-center w-20 font-bold text-amber-400">ชำรุด</th>
+                                        <th class="p-3.5 text-center w-20 font-bold text-emerald-600">ปกติ</th>
+                                        <th class="p-3.5 text-center w-20 font-bold text-amber-600">ชำรุด</th>
                                         <th class="p-3.5 text-center w-20 font-bold text-slate-400">ไม่มี</th>
                                         <th class="p-3.5 font-bold">ข้อบกพร่อง</th>
                                     </tr>
                                 </thead>
-                                <tbody id="dynamicChecklistBody" class="divide-y divide-slate-800/60">
+                                <tbody id="dynamicChecklistBody" class="divide-y divide-slate-100">
                                     <!-- Dynamic rows -->
                                 </tbody>
                             </table>
@@ -274,55 +261,55 @@
                     </div>
 
                     <!-- Section 3 (Conditional) -->
-                    <div id="electricalSectionContainer" class="modal-section bg-slate-950 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4 hidden">
-                        <h3 class="font-bold text-amber-400 text-xs border-b border-slate-800 pb-3 flex items-center uppercase tracking-wider">
-                            <span class="bg-amber-500 text-slate-950 w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">3</span>
+                    <div id="electricalSectionContainer" class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm space-y-4 hidden">
+                        <h3 class="font-bold text-blue-700 text-xs border-b border-slate-100 pb-3 flex items-center uppercase tracking-wider">
+                            <span class="bg-blue-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">3</span>
                             ตรวจสอบวัดกระแสและแรงดันไฟฟ้า
                         </h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs bg-slate-900 p-4 rounded-2xl border border-slate-800">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs bg-slate-50 p-4 rounded-2xl border border-slate-200">
                             <div>
-                                <label class="font-semibold text-slate-300 block mb-2">ช่วงเวลาตรวจสอบ:</label>
+                                <label class="font-semibold text-slate-600 block mb-2">ช่วงเวลาตรวจสอบ:</label>
                                 <div class="flex space-x-4">
-                                    <label class="flex items-center space-x-2 text-slate-200"><input type="radio" name="checkTiming" value="กลางวัน" checked class="text-amber-500"> <span>กลางวัน</span></label>
-                                    <label class="flex items-center space-x-2 text-slate-200"><input type="radio" name="checkTiming" value="กลางคืน" class="text-amber-500"> <span>กลางคืน</span></label>
+                                    <label class="flex items-center space-x-2 text-slate-700"><input type="radio" name="checkTiming" value="กลางวัน" checked class="text-blue-600"> <span>กลางวัน</span></label>
+                                    <label class="flex items-center space-x-2 text-slate-700"><input type="radio" name="checkTiming" value="กลางคืน" class="text-blue-600"> <span>กลางคืน</span></label>
                                 </div>
                             </div>
                             <div>
-                                <label class="font-semibold text-slate-300 block mb-2">เวลา:</label>
-                                <input type="time" id="checkTime" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2 modal-input">
+                                <label class="font-semibold text-slate-600 block mb-2">เวลา:</label>
+                                <input type="time" id="checkTime" class="w-full bg-white border border-slate-200 rounded-xl p-2">
                             </div>
                             <div>
-                                <label class="font-semibold text-slate-300 block mb-2">วิธีการตรวจสอบ:</label>
+                                <label class="font-semibold text-slate-600 block mb-2">วิธีการตรวจสอบ:</label>
                                 <div class="flex space-x-4">
-                                    <label class="flex items-center space-x-2 text-slate-200"><input type="radio" name="checkMethod" value="วัดหน้างาน" checked class="text-amber-500"> <span>วัดหน้างาน</span></label>
-                                    <label class="flex items-center space-x-2 text-slate-200"><input type="radio" name="checkMethod" value="TLM" class="text-amber-500"> <span>TLM</span></label>
+                                    <label class="flex items-center space-x-2 text-slate-700"><input type="radio" name="checkMethod" value="วัดหน้างาน" checked class="text-blue-600"> <span>วัดหน้างาน</span></label>
+                                    <label class="flex items-center space-x-2 text-slate-700"><input type="radio" name="checkMethod" value="TLM" class="text-blue-600"> <span>TLM</span></label>
                                 </div>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs">
-                            <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-3">
-                                <h4 class="font-bold text-slate-300 uppercase tracking-wider text-[11px]">แรงดันไฟฟ้า (V)</h4>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                                <h4 class="font-bold text-slate-700 uppercase tracking-wider text-[11px]">แรงดันไฟฟ้า (V)</h4>
                                 <div class="grid grid-cols-3 gap-2">
-                                    <div><span class="text-slate-400 font-medium">V1-N</span><input type="number" step="0.1" id="v1n" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2 mt-1 modal-input"></div>
-                                    <div><span class="text-slate-400 font-medium">V2-N</span><input type="number" step="0.1" id="v2n" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2 mt-1 modal-input"></div>
-                                    <div><span class="text-slate-400 font-medium">V3-N</span><input type="number" step="0.1" id="v3n" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2 mt-1 modal-input"></div>
-                                    <div><span class="text-slate-400 font-medium">V1-2</span><input type="number" step="0.1" id="v12" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2 mt-1 modal-input"></div>
-                                    <div><span class="text-slate-400 font-medium">V1-3</span><input type="number" step="0.1" id="v13" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2 mt-1 modal-input"></div>
-                                    <div><span class="text-slate-400 font-medium">V2-3</span><input type="number" step="0.1" id="v23" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2 mt-1 modal-input"></div>
+                                    <div><span class="text-slate-500 font-medium">V1-N</span><input type="number" step="0.1" id="v1n" class="w-full bg-white border border-slate-200 rounded-xl p-2 mt-1"></div>
+                                    <div><span class="text-slate-500 font-medium">V2-N</span><input type="number" step="0.1" id="v2n" class="w-full bg-white border border-slate-200 rounded-xl p-2 mt-1"></div>
+                                    <div><span class="text-slate-500 font-medium">V3-N</span><input type="number" step="0.1" id="v3n" class="w-full bg-white border border-slate-200 rounded-xl p-2 mt-1"></div>
+                                    <div><span class="text-slate-500 font-medium">V1-2</span><input type="number" step="0.1" id="v12" class="w-full bg-white border border-slate-200 rounded-xl p-2 mt-1"></div>
+                                    <div><span class="text-slate-500 font-medium">V1-3</span><input type="number" step="0.1" id="v13" class="w-full bg-white border border-slate-200 rounded-xl p-2 mt-1"></div>
+                                    <div><span class="text-slate-500 font-medium">V2-3</span><input type="number" step="0.1" id="v23" class="w-full bg-white border border-slate-200 rounded-xl p-2 mt-1"></div>
                                 </div>
                             </div>
-                            <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-3">
-                                <h4 class="font-bold text-slate-300 uppercase tracking-wider text-[11px]">กระแสไฟฟ้า (A)</h4>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
+                                <h4 class="font-bold text-slate-700 uppercase tracking-wider text-[11px]">กระแสไฟฟ้า (A)</h4>
                                 <div class="grid grid-cols-4 gap-2">
-                                    <div><span class="text-slate-400 font-medium">I_N</span><input type="number" step="0.1" id="iN" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2 mt-1 modal-input"></div>
-                                    <div><span class="text-slate-400 font-medium">I1</span><input type="number" step="0.1" id="i1" oninput="calculateTotalCurrent()" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2 mt-1 modal-input"></div>
-                                    <div><span class="text-slate-400 font-medium">I2</span><input type="number" step="0.1" id="i2" oninput="calculateTotalCurrent()" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2 mt-1 modal-input"></div>
-                                    <div><span class="text-slate-400 font-medium">I3</span><input type="number" step="0.1" id="i3" oninput="calculateTotalCurrent()" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2 mt-1 modal-input"></div>
+                                    <div><span class="text-slate-500 font-medium">I_N</span><input type="number" step="0.1" id="iN" class="w-full bg-white border border-slate-200 rounded-xl p-2 mt-1"></div>
+                                    <div><span class="text-slate-500 font-medium">I1</span><input type="number" step="0.1" id="i1" oninput="calculateTotalCurrent()" class="w-full bg-white border border-slate-200 rounded-xl p-2 mt-1"></div>
+                                    <div><span class="text-slate-500 font-medium">I2</span><input type="number" step="0.1" id="i2" oninput="calculateTotalCurrent()" class="w-full bg-white border border-slate-200 rounded-xl p-2 mt-1"></div>
+                                    <div><span class="text-slate-500 font-medium">I3</span><input type="number" step="0.1" id="i3" oninput="calculateTotalCurrent()" class="w-full bg-white border border-slate-200 rounded-xl p-2 mt-1"></div>
                                 </div>
                                 <div class="pt-1">
-                                    <span class="font-semibold text-slate-400 block text-[11px]">ผลรวมกระแสทั้งหมด (A):</span>
-                                    <input type="text" id="totalCurrent" readonly class="w-full bg-slate-950 font-bold text-amber-400 border border-slate-800 rounded-xl p-2 text-xs mt-1 shadow-inner" value="0.0">
+                                    <span class="font-semibold text-slate-500 block text-[11px]">ผลรวมกระแสทั้งหมด (A):</span>
+                                    <input type="text" id="totalCurrent" readonly class="w-full bg-white font-bold text-blue-700 border border-blue-200 rounded-xl p-2 text-xs mt-1 shadow-inner" value="0.0">
                                 </div>
                             </div>
                         </div>
@@ -330,41 +317,41 @@
 
                     <!-- Section 4 & 5 -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="modal-section bg-slate-950 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-3">
-                            <h3 class="font-bold text-amber-400 text-xs border-b border-slate-800 pb-3">สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม</h3>
-                            <textarea id="improvements" rows="3" class="w-full bg-slate-900 border border-slate-800 text-slate-100 rounded-2xl p-3 text-xs focus:ring-2 focus:ring-amber-500 transition modal-input" placeholder="ระบุข้อเสนอแนะ..."></textarea>
+                        <div class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm space-y-3">
+                            <h3 class="font-bold text-blue-700 text-xs border-b border-slate-100 pb-3">สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม</h3>
+                            <textarea id="improvements" rows="3" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl p-3 text-xs focus:ring-2 focus:ring-blue-500 transition" placeholder="ระบุข้อเสนอแนะ..."></textarea>
                         </div>
-                        <div class="modal-section bg-slate-950 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-3">
-                            <h3 class="font-bold text-amber-400 text-xs border-b border-slate-800 pb-3">การปรับปรุงข้อบกพร่อง</h3>
-                            <textarea id="repairDetails" rows="3" class="w-full bg-slate-900 border border-slate-800 text-slate-100 rounded-2xl p-3 text-xs focus:ring-2 focus:ring-amber-500 transition modal-input" placeholder="ระบุการแก้ไข..."></textarea>
+                        <div class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm space-y-3">
+                            <h3 class="font-bold text-blue-700 text-xs border-b border-slate-100 pb-3">การปรับปรุงข้อบกพร่อง</h3>
+                            <textarea id="repairDetails" rows="3" class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-2xl p-3 text-xs focus:ring-2 focus:ring-blue-500 transition" placeholder="ระบุการแก้ไข..."></textarea>
                         </div>
                     </div>
 
                     <!-- Signatures -->
-                    <div class="modal-section bg-slate-950 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-3">
-                        <h3 class="font-bold text-amber-400 text-xs border-b border-slate-800 pb-3">ข้อมูลผู้ปฏิบัติงาน / การลงนาม</h3>
+                    <div class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm space-y-3">
+                        <h3 class="font-bold text-blue-700 text-xs border-b border-slate-100 pb-3">ข้อมูลผู้ปฏิบัติงาน / การลงนาม</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                            <div class="space-y-2.5 p-4 bg-slate-900 rounded-2xl border border-slate-800">
-                                <span class="font-bold text-slate-300 block">ผู้ตรวจ (Inspector)</span>
-                                <input type="text" id="inspectorName" placeholder="ชื่อ-นามสกุล" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2.5 modal-input">
-                                <input type="text" id="inspectorPos" placeholder="ตำแหน่ง" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2.5 modal-input">
-                                <input type="date" id="inspectorDate" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2.5 modal-input">
+                            <div class="space-y-2.5 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                                <span class="font-bold text-slate-700 block">ผู้ตรวจ (Inspector)</span>
+                                <input type="text" id="inspectorName" placeholder="ชื่อ-นามสกุล" class="w-full bg-white border border-slate-200 text-slate-800 rounded-xl p-2.5">
+                                <input type="text" id="inspectorPos" placeholder="ตำแหน่ง" class="w-full bg-white border border-slate-200 text-slate-800 rounded-xl p-2.5">
+                                <input type="date" id="inspectorDate" class="w-full bg-white border border-slate-200 text-slate-800 rounded-xl p-2.5">
                             </div>
-                            <div class="space-y-2.5 p-4 bg-slate-900 rounded-2xl border border-slate-800">
-                                <span class="font-bold text-slate-300 block">ผู้ตรวจสอบ (Verified By)</span>
-                                <input type="text" id="verifierName" placeholder="ชื่อ-นามสกุล" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2.5 modal-input">
-                                <input type="text" id="verifierPos" placeholder="ตำแหน่ง" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2.5 modal-input">
-                                <input type="date" id="verifierDate" class="w-full bg-slate-950 border border-slate-800 text-slate-100 rounded-xl p-2.5 modal-input">
+                            <div class="space-y-2.5 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                                <span class="font-bold text-slate-700 block">ผู้ตรวจสอบ (Verified By)</span>
+                                <input type="text" id="verifierName" placeholder="ชื่อ-นามสกุล" class="w-full bg-white border border-slate-200 text-slate-800 rounded-xl p-2.5">
+                                <input type="text" id="verifierPos" placeholder="ตำแหน่ง" class="w-full bg-white border border-slate-200 text-slate-800 rounded-xl p-2.5">
+                                <input type="date" id="verifierDate" class="w-full bg-white border border-slate-200 text-slate-800 rounded-xl p-2.5">
                             </div>
                         </div>
                     </div>
 
                     <!-- Image Upload -->
-                    <div class="modal-section bg-slate-950 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-3">
-                        <h3 class="font-bold text-amber-400 text-xs border-b border-slate-800 pb-3 flex items-center justify-between">
-                            <span><i class="fa-solid fa-camera mr-2 text-amber-500"></i> รูปถ่ายประกอบหน้างาน</span>
-                            <label class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-4 py-2 rounded-2xl text-xs cursor-pointer shadow-sm transition flex items-center space-x-2">
-                                <i class="fa-solid fa-upload text-amber-400"></i><span>เพิ่มรูปภาพ</span>
+                    <div class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm space-y-3">
+                        <h3 class="font-bold text-blue-700 text-xs border-b border-slate-100 pb-3 flex items-center justify-between">
+                            <span><i class="fa-solid fa-camera mr-2 text-blue-600"></i> รูปถ่ายประกอบหน้างาน</span>
+                            <label class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 px-4 py-2 rounded-2xl text-xs cursor-pointer shadow-sm transition flex items-center space-x-2">
+                                <i class="fa-solid fa-upload text-blue-600"></i><span>เพิ่มรูปภาพ</span>
                                 <input type="file" id="imageInput" accept="image/*" multiple onchange="handleImageUpload(event)" class="hidden">
                             </label>
                         </h3>
@@ -375,8 +362,8 @@
 
                     <!-- Footer Actions -->
                     <div class="flex justify-end space-x-3 pt-2">
-                        <button type="button" onclick="closeFormModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-5 py-3 rounded-2xl text-xs font-semibold transition">ยกเลิก</button>
-                        <button type="submit" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-3 rounded-2xl text-xs shadow-lg shadow-amber-500/20 transition flex items-center space-x-2">
+                        <button type="button" onclick="closeFormModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-5 py-3 rounded-2xl text-xs font-semibold transition">ยกเลิก</button>
+                        <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-3 rounded-2xl text-xs shadow-lg transition flex items-center space-x-2">
                             <i class="fa-solid fa-floppy-disk"></i><span>บันทึกข้อมูล Work Order</span>
                         </button>
                     </div>
@@ -386,7 +373,7 @@
     </div>
 
     <!-- Toast -->
-    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 border border-slate-800 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50 text-xs font-medium">
+    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50 text-xs font-medium border border-slate-800">
         <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
         <span id="toastMessage">บันทึกข้อมูลเรียบร้อยแล้ว</span>
     </div>
@@ -413,71 +400,11 @@
         let currentUser = JSON.parse(localStorage.getItem('mea_user') || 'null');
 
         window.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('mea_theme') || 'dark';
-            setTheme(savedTheme);
-
             renderFormMenuDropdown();
             filterWorkOrders();
             updateDashboardStats();
             checkUserAuth();
         });
-
-        // Theme Switcher Logic with proper contrast
-        function setTheme(theme) {
-            localStorage.setItem('mea_theme', theme);
-            const body = document.getElementById('appBody');
-            const header = document.getElementById('appHeader');
-            const sidebar = document.getElementById('appSidebar');
-            const toolbar = document.getElementById('appToolbar');
-            const tableCard = document.getElementById('appTableCard');
-            const modalBox = document.getElementById('modalBox');
-            const modalHeader = document.getElementById('modalHeader');
-
-            const btnLight = document.getElementById('themeBtnLight');
-            const btnWarm = document.getElementById('themeBtnWarm');
-            const btnDark = document.getElementById('themeBtnDark');
-
-            [btnLight, btnWarm, btnDark].forEach(b => b.className = "px-3 py-1.5 rounded-xl font-semibold transition flex items-center space-x-1 text-slate-300 hover:text-white");
-
-            if (theme === 'light') {
-                body.className = "bg-slate-100 text-slate-900 min-h-screen flex flex-col transition-colors duration-300";
-                header.className = "bg-white border-b border-slate-200 text-slate-900 shadow-sm sticky top-0 z-50 transition-colors duration-300";
-                sidebar.className = "w-full md:w-80 bg-white border border-slate-200 rounded-3xl shadow-sm p-5 shrink-0 h-fit space-y-3 transition-colors duration-300 text-slate-900";
-                toolbar.className = "bg-white border border-slate-200 p-4 rounded-3xl shadow-sm flex flex-col md:flex-row justify-between items-center gap-4 transition-colors duration-300";
-                tableCard.className = "bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden transition-colors duration-300";
-                modalBox.className = "bg-white border border-slate-200 rounded-3xl shadow-2xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden text-slate-900";
-                modalHeader.className = "bg-slate-50 border-b border-slate-200 px-6 py-4 flex justify-between items-center shadow-sm text-slate-900";
-                btnLight.className = "px-3 py-1.5 rounded-xl font-bold transition flex items-center space-x-1 bg-amber-500 text-slate-950 shadow-sm";
-
-                document.querySelectorAll('.modal-section').forEach(el => el.className = "modal-section bg-slate-50 border border-slate-200 p-6 rounded-3xl shadow-sm space-y-4");
-                document.querySelectorAll('.modal-input').forEach(el => el.className = "w-full bg-white border border-slate-300 text-slate-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition modal-input");
-                document.querySelectorAll('aside h2, aside span, #allFormsDropdownList button').forEach(el => el.classList.remove('text-slate-300', 'text-slate-400'));
-            } else if (theme === 'warm') {
-                body.className = "bg-warm-50 text-warm-950 min-h-screen flex flex-col transition-colors duration-300";
-                header.className = "bg-warm-100 border-b border-warm-200 text-warm-950 shadow-sm sticky top-0 z-50 transition-colors duration-300";
-                sidebar.className = "w-full md:w-80 bg-warm-100 border border-warm-200 rounded-3xl shadow-sm p-5 shrink-0 h-fit space-y-3 transition-colors duration-300 text-warm-950";
-                toolbar.className = "bg-warm-100 border border-warm-200 p-4 rounded-3xl shadow-sm flex flex-col md:flex-row justify-between items-center gap-4 transition-colors duration-300";
-                tableCard.className = "bg-warm-100 border border-warm-200 rounded-3xl shadow-sm overflow-hidden transition-colors duration-300";
-                modalBox.className = "bg-warm-50 border border-warm-200 rounded-3xl shadow-2xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden text-warm-950";
-                modalHeader.className = "bg-warm-100 border-b border-warm-200 px-6 py-4 flex justify-between items-center shadow-sm text-warm-950";
-                btnWarm.className = "px-3 py-1.5 rounded-xl font-bold transition flex items-center space-x-1 bg-amber-500 text-slate-950 shadow-sm";
-
-                document.querySelectorAll('.modal-section').forEach(el => el.className = "modal-section bg-warm-100/60 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-4");
-                document.querySelectorAll('.modal-input').forEach(el => el.className = "w-full bg-white border border-warm-300 text-warm-950 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition modal-input");
-            } else {
-                body.className = "bg-slate-950 text-slate-100 min-h-screen flex flex-col transition-colors duration-300";
-                header.className = "bg-slate-900 border-b border-slate-800 text-white shadow-xl sticky top-0 z-50 transition-colors duration-300";
-                sidebar.className = "w-full md:w-80 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl p-5 shrink-0 h-fit space-y-3 transition-colors duration-300 text-slate-100";
-                toolbar.className = "bg-slate-900 border border-slate-800 p-4 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4 transition-colors duration-300";
-                tableCard.className = "bg-slate-900 border border-slate-800 rounded-3xl shadow-xl overflow-hidden transition-colors duration-300";
-                modalBox.className = "bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden text-slate-100";
-                modalHeader.className = "bg-slate-950 border-b border-slate-800 px-6 py-4 flex justify-between items-center shadow-sm text-white";
-                btnDark.className = "px-3 py-1.5 rounded-xl font-bold transition flex items-center space-x-1 bg-amber-500 text-slate-950 shadow-sm";
-
-                document.querySelectorAll('.modal-section').forEach(el => el.className = "modal-section bg-slate-950 border border-slate-800 p-6 rounded-3xl shadow-xl space-y-4");
-                document.querySelectorAll('.modal-input').forEach(el => el.className = "w-full bg-slate-900 border border-slate-800 text-slate-100 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition modal-input");
-            }
-        }
 
         function toggleAllFormsDropdown() {
             const list = document.getElementById('allFormsDropdownList');
@@ -494,7 +421,7 @@
             const allBtn = document.createElement('button');
             allBtn.type = "button";
             allBtn.onclick = () => selectForm("ALL");
-            allBtn.className = `w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center justify-between ${isAllActive ? 'bg-amber-500 text-slate-950 font-bold' : 'text-current opacity-80 hover:opacity-100'}`;
+            allBtn.className = `w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-semibold transition flex items-center justify-between ${isAllActive ? 'bg-blue-600 text-white font-bold' : 'text-slate-700 hover:bg-slate-100'}`;
             allBtn.innerHTML = `<span><i class="fa-solid fa-border-all mr-1.5"></i> แสดงทั้งหมดรวมกัน</span>`;
             container.appendChild(allBtn);
 
@@ -503,11 +430,11 @@
                 const btn = document.createElement('button');
                 btn.type = "button";
                 btn.onclick = () => selectForm(form.code);
-                btn.className = `w-full text-left px-3 py-2 rounded-xl text-xs transition flex items-center justify-between ${isActive ? 'bg-amber-500/20 text-amber-500 font-bold border border-amber-500/30' : 'text-current opacity-80 hover:opacity-100'}`;
+                btn.className = `w-full text-left px-3.5 py-2.5 rounded-xl text-xs transition flex items-center justify-between ${isActive ? 'bg-blue-50 text-blue-700 font-bold border border-blue-200' : 'text-slate-700 hover:bg-slate-100'}`;
                 btn.innerHTML = `
                     <div class="truncate pr-1">
                         <span class="block">${form.code}</span>
-                        <span class="truncate block text-[9px] opacity-60">${form.name}</span>
+                        <span class="truncate block text-[9px] text-slate-400">${form.name}</span>
                     </div>
                 `;
                 container.appendChild(btn);
@@ -575,14 +502,14 @@
             formInfo.items.forEach((item, index) => {
                 const itemData = existingData[index] || { status: 'ปกติ', defect: '' };
                 const tr = document.createElement('tr');
-                tr.className = "hover:opacity-100 transition";
+                tr.className = "hover:bg-slate-50 transition";
                 tr.innerHTML = `
-                    <td class="p-3.5 text-center font-semibold opacity-50">${index + 1}</td>
-                    <td class="p-3.5 font-medium">${item}</td>
-                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ปกติ" ${itemData.status === 'ปกติ' ? 'checked' : ''} class="text-emerald-500"></td>
-                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ชำรุด" ${itemData.status === 'ชำรุด' ? 'checked' : ''} class="text-amber-500"></td>
-                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ไม่มี" ${itemData.status === 'ไม่มี' ? 'checked' : ''} class="opacity-50"></td>
-                    <td class="p-3.5"><input type="text" id="defect_${index}" value="${itemData.defect || ''}" placeholder="ระบุข้อบกพร่อง..." class="w-full border rounded-xl p-2 text-xs modal-input"></td>
+                    <td class="p-3.5 text-center font-semibold text-slate-400">${index + 1}</td>
+                    <td class="p-3.5 font-medium text-slate-700">${item}</td>
+                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ปกติ" ${itemData.status === 'ปกติ' ? 'checked' : ''} class="text-blue-600 focus:ring-blue-500"></td>
+                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ชำรุด" ${itemData.status === 'ชำรุด' ? 'checked' : ''} class="text-amber-600 focus:ring-amber-500"></td>
+                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ไม่มี" ${itemData.status === 'ไม่มี' ? 'checked' : ''} class="text-slate-400 focus:ring-slate-400"></td>
+                    <td class="p-3.5"><input type="text" id="defect_${index}" value="${itemData.defect || ''}" placeholder="ระบุข้อบกพร่อง..." class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl p-2 text-xs focus:bg-white focus:ring-2 focus:ring-blue-500"></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -652,7 +579,6 @@
                 uploadedImages = wo.images || [];
                 renderImagePreview();
             }
-            setTheme(localStorage.getItem('mea_theme') || 'dark');
         }
 
         function closeFormModal() {
@@ -810,13 +736,13 @@
         function renderImagePreview() {
             const container = document.getElementById('imagePreviewContainer');
             if (uploadedImages.length === 0) {
-                container.innerHTML = `<p class="text-xs opacity-50 col-span-full text-center py-4 italic">ยังไม่มีรูปภาพประกอบ</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 col-span-full text-center py-4 italic">ยังไม่มีรูปภาพประกอบ</p>`;
                 return;
             }
             container.innerHTML = '';
             uploadedImages.forEach((imgSrc, idx) => {
                 const div = document.createElement('div');
-                div.className = "relative rounded-2xl overflow-hidden border h-24 group shadow-sm";
+                div.className = "relative rounded-2xl overflow-hidden border border-slate-200 h-24 group bg-slate-900 shadow-sm";
                 div.innerHTML = `
                     <img src="${imgSrc}" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition">
                     <button type="button" onclick="removeImage(${idx})" class="absolute top-1.5 right-1.5 bg-rose-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow hover:bg-rose-700 transition"><i class="fa-solid fa-trash"></i></button>
@@ -896,35 +822,35 @@
             tbody.innerHTML = '';
 
             if (dataToRender.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-10 opacity-50 italic">ไม่พบข้อมูลการบันทึกตรวจสอบในระบบ</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-10 text-slate-400 italic">ไม่พบข้อมูลการบันทึกตรวจสอบในระบบ</td></tr>`;
                 return;
             }
 
             dataToRender.forEach((wo, idx) => {
                 const realIndex = workOrders.findIndex(w => w.workOrderId === wo.workOrderId);
                 const statusBadge = wo.hasDefect 
-                    ? `<span class="bg-rose-500/10 text-rose-500 border border-rose-500/20 text-[11px] px-3 py-1 rounded-full font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ชำรุด</span>`
-                    : `<span class="bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 text-[11px] px-3 py-1 rounded-full font-semibold"><i class="fa-solid fa-circle-check mr-1"></i> ปกติ</span>`;
+                    ? `<span class="bg-rose-50 text-rose-600 border border-rose-200 text-[11px] px-3 py-1 rounded-full font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ชำรุด</span>`
+                    : `<span class="bg-emerald-50 text-emerald-600 border border-emerald-200 text-[11px] px-3 py-1 rounded-full font-semibold"><i class="fa-solid fa-circle-check mr-1"></i> ปกติ</span>`;
 
                 const tr = document.createElement('tr');
-                tr.className = "hover:opacity-100 transition";
+                tr.className = "hover:bg-slate-50 transition";
                 tr.innerHTML = `
                     <td class="p-4">
-                        <span class="font-bold block">${wo.workOrderId}</span>
-                        <span class="text-[11px] opacity-60">${wo.inspectionDate}</span>
+                        <span class="font-bold text-slate-900 block">${wo.workOrderId}</span>
+                        <span class="text-[11px] text-slate-400">${wo.inspectionDate}</span>
                     </td>
                     <td class="p-4">
-                        <span class="font-semibold block">${wo.generalInfo.stationId}</span>
-                        <span class="text-[11px] opacity-60">${wo.generalInfo.location}</span>
+                        <span class="font-semibold text-slate-800 block">${wo.generalInfo.stationId}</span>
+                        <span class="text-[11px] text-slate-400">${wo.generalInfo.location}</span>
                     </td>
                     <td class="p-4">
-                        <span class="text-amber-500 font-semibold text-[11px] block">${wo.formCode}</span>
-                        <span class="text-[11px] opacity-60 truncate max-w-xs block">${wo.formName}</span>
+                        <span class="text-blue-600 font-semibold text-[11px] block">${wo.formCode}</span>
+                        <span class="text-[11px] text-slate-400 truncate max-w-xs block">${wo.formName}</span>
                     </td>
                     <td class="p-4 text-center">${statusBadge}</td>
                     <td class="p-4 text-center space-x-1.5">
-                        <button onclick="openFormModal(${realIndex})" class="p-2.5 rounded-xl transition shadow-sm border opacity-80 hover:opacity-100" title="แก้ไข / พิมพ์"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteWorkOrder(${realIndex})" class="p-2.5 rounded-xl transition shadow-sm border opacity-80 hover:opacity-100 text-rose-500" title="ลบ"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="openFormModal(${realIndex})" class="p-2.5 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition shadow-sm border border-blue-200" title="แก้ไข / พิมพ์"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button onclick="deleteWorkOrder(${realIndex})" class="p-2.5 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-100 transition shadow-sm border border-rose-200" title="ลบ"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -995,7 +921,7 @@
             if (type === 'success') {
                 toastIcon.className = "fa-solid fa-circle-check text-emerald-400 text-base";
             } else {
-                toastIcon.className = "fa-solid fa-circle-info text-amber-400 text-base";
+                toastIcon.className = "fa-solid fa-circle-info text-blue-400 text-base";
             }
 
             toast.classList.remove('translate-y-20', 'opacity-0');
