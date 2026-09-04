@@ -195,14 +195,14 @@
                 <form id="inspectionForm" onsubmit="saveWorkOrder(event)" class="space-y-6">
                     <input type="hidden" id="editIndex" value="-1">
 
-                    <!-- Section 1: General Info (Exact SF-07-0-015 Layout) -->
+                    <!-- Section 1: General Info -->
                     <div class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-4">
                         <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3 flex items-center uppercase tracking-wider">
                             <span class="bg-amber-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">1</span>
                             ข้อมูลทั่วไป (General Information)
                         </h3>
                         <div id="generalInfoContainer" class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
-                            <!-- Injected dynamically for SF-07-0-015 layout -->
+                            <!-- Injected dynamically -->
                         </div>
                     </div>
 
@@ -232,7 +232,7 @@
                         </div>
                     </div>
 
-                    <!-- Section 3: Electrical Measurements (Exact SF-07-0-015 Layout) -->
+                    <!-- Section 3: Electrical Measurements -->
                     <div id="electricalSectionContainer" class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-4 hidden">
                         <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3 flex items-center uppercase tracking-wider">
                             <span class="bg-amber-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">3</span>
@@ -1044,8 +1044,8 @@
             const filtered = workOrders.filter(wo => {
                 const matchForm = currentFormCode === "ALL" ? true : (wo.formCode === currentFormCode);
                 const matchKeyword = wo.workOrderId.toLowerCase().includes(keyword) || 
-                                   (wo.generalInfo.stationId && wo.generalInfo.stationId.toLowerCase().includes(keyword)) || 
-                                   (wo.generalInfo.location && wo.generalInfo.location.toLowerCase().includes(keyword));
+                                     (wo.generalInfo.stationId && wo.generalInfo.stationId.toLowerCase().includes(keyword)) || 
+                                     (wo.generalInfo.location && wo.generalInfo.location.toLowerCase().includes(keyword));
                 const matchStatus = statusVal === "" ? true : (statusVal === "ชำรุด" ? wo.hasDefect : !wo.hasDefect);
                 return matchForm && matchKeyword && matchStatus;
             });
