@@ -19,7 +19,7 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-950">
 
-    <!-- Top Navigation Bar (Electric Theme) -->
+    <!-- Top Navigation Bar -->
     <header class="bg-slate-900 border-b border-slate-800 text-white shadow-xl sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap justify-between items-center">
             <div class="flex items-center space-x-3.5">
@@ -55,16 +55,27 @@
     <!-- Main Workspace -->
     <div class="flex-grow max-w-7xl w-full mx-auto px-6 py-8 flex flex-col md:flex-row gap-8">
         
-        <!-- Left Sidebar: Menu -->
+        <!-- Left Sidebar: Menu with Dropdown inside "ดูรายการทั้งหมด" -->
         <aside class="w-full md:w-80 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl p-5 shrink-0 h-fit space-y-3">
             <div class="pb-3 border-b border-slate-800 flex items-center justify-between">
                 <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center">
-                    <i class="fa-solid fa-file-shield mr-2 text-amber-500"></i> หมวดหมู่แบบฟอร์ม (11 ใบ)
+                    <i class="fa-solid fa-file-shield mr-2 text-amber-500"></i> เมนูการจัดการ
                 </h2>
-                <span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold">MEA</span>
+                <span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full font-bold">11 Forms</span>
             </div>
-            <div id="formMenuContainer" class="space-y-1.5 max-h-[calc(100vh-280px)] overflow-y-auto pr-1">
-                <!-- Menu items injected via JS -->
+
+            <div class="space-y-2">
+                <!-- Dropdown Menu Wrapper -->
+                <div class="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+                    <button onclick="toggleAllFormsDropdown()" class="w-full text-left px-4 py-3 text-xs font-semibold flex items-center justify-between text-amber-400 hover:bg-slate-800/60 transition">
+                        <span class="flex items-center"><i class="fa-solid fa-layer-group mr-2 text-amber-500"></i> ดูรายการทั้งหมด (รวม 11 ใบ)</span>
+                        <i id="dropdownArrow" class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+                    </button>
+                    <!-- Sub-menu Dropdown List -->
+                    <div id="allFormsDropdownList" class="hidden border-t border-slate-800/80 bg-slate-950/80 p-1.5 space-y-1 max-h-72 overflow-y-auto">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
             </div>
         </aside>
 
@@ -375,41 +386,44 @@
         let currentUser = JSON.parse(localStorage.getItem('mea_user') || 'null');
 
         window.addEventListener('DOMContentLoaded', () => {
-            renderFormMenu();
+            renderFormMenuDropdown();
             filterWorkOrders();
             updateDashboardStats();
             checkUserAuth();
         });
 
-        function renderFormMenu() {
-            const container = document.getElementById('formMenuContainer');
+        function toggleAllFormsDropdown() {
+            const list = document.getElementById('allFormsDropdownList');
+            const arrow = document.getElementById('dropdownArrow');
+            list.classList.toggle('hidden');
+            arrow.classList.toggle('rotate-180');
+        }
+
+        function renderFormMenuDropdown() {
+            const container = document.getElementById('allFormsDropdownList');
             container.innerHTML = '';
             
+            // ปุ่มเลือกดูทั้งหมด
             const isAllActive = currentFormCode === "ALL";
             const allBtn = document.createElement('button');
             allBtn.type = "button";
             allBtn.onclick = () => selectForm("ALL");
-            allBtn.className = `w-full text-left px-4 py-3 rounded-2xl text-xs font-semibold transition flex items-center justify-between mb-2.5 border ${isAllActive ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold shadow-lg shadow-amber-500/10' : 'bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-800'}`;
-            allBtn.innerHTML = `
-                <div class="truncate pr-2">
-                    <span class="block"><i class="fa-solid fa-layer-group mr-2"></i> ดูรายการทั้งหมด</span>
-                    <span class="truncate block text-[10px] opacity-75">รวมทุกแบบฟอร์ม (11 ใบ)</span>
-                </div>
-            `;
+            allBtn.className = `w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition flex items-center justify-between ${isAllActive ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800'}`;
+            allBtn.innerHTML = `<span><i class="fa-solid fa-border-all mr-1.5"></i> แสดงทั้งหมดรวมกัน</span>`;
             container.appendChild(allBtn);
 
+            // รายการ 11 แบบฟอร์ม
             formsData.forEach(form => {
                 const isActive = form.code === currentFormCode;
                 const btn = document.createElement('button');
                 btn.type = "button";
                 btn.onclick = () => selectForm(form.code);
-                btn.className = `w-full text-left px-3.5 py-3 rounded-2xl text-xs font-medium transition flex items-center justify-between border ${isActive ? 'bg-amber-500/10 text-amber-400 border-amber-500/40 font-semibold shadow-sm' : 'bg-slate-950 text-slate-300 border-slate-800/80 hover:bg-slate-800'}`;
+                btn.className = `w-full text-left px-3 py-2 rounded-xl text-xs transition flex items-center justify-between ${isActive ? 'bg-amber-500/20 text-amber-400 font-bold border border-amber-500/30' : 'text-slate-300 hover:bg-slate-800'}`;
                 btn.innerHTML = `
-                    <div class="truncate pr-2">
-                        <span class="block ${isActive ? 'text-amber-400 font-bold' : 'text-slate-200'}">${form.code}</span>
-                        <span class="truncate block text-[10px] ${isActive ? 'text-amber-300/80' : 'text-slate-500'}">${form.name}</span>
+                    <div class="truncate pr-1">
+                        <span class="block">${form.code}</span>
+                        <span class="truncate block text-[9px] text-slate-500">${form.name}</span>
                     </div>
-                    <i class="fa-solid fa-chevron-right text-[9px] ${isActive ? 'text-amber-400' : 'text-slate-600'}"></i>
                 `;
                 container.appendChild(btn);
             });
@@ -427,7 +441,7 @@
                 document.getElementById('activeFormCodeSub').innerText = `รหัสแบบฟอร์ม: ${formInfo.code}`;
                 document.getElementById('statCurrentFormCode').innerText = formInfo.code;
             }
-            renderFormMenu();
+            renderFormMenuDropdown();
             filterWorkOrders();
         }
 
