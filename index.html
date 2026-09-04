@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบแบบฟอร์มตรวจสอบมาตรฐาน MEA (A4 Form View)</title>
+    <title>ระบบตรวจสอบและบำรุงรักษาอุปกรณ์ไฟฟ้า (11 แบบฟอร์ม MEA)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Prompt Font -->
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Prompt', sans-serif; }
         
-        /* สไตล์พิเศษสำหรับจำลองกระดาษ A4 หน้าจอและหน้าสั่งพิมพ์ */
+        /* สไตล์จำลองหน้ากระดาษ A4 สำหรับหน้าจอและตอนพิมพ์ */
         .a4-page {
             width: 210mm;
             min-height: 297mm;
-            padding: 15mm;
+            padding: 12mm;
             margin: 10mm auto;
             background: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             position: relative;
             box-sizing: border-box;
             color: #000;
@@ -51,451 +51,733 @@
         }
         table.form-table th, table.form-table td {
             border: 1px solid #000;
-            padding: 4px 6px;
-            font-size: 11px;
+            padding: 3px 5px;
+            font-size: 10.5px;
             vertical-align: middle;
         }
     </style>
 </head>
-<body class="bg-slate-200 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
 
-    <!-- Top Toolbar (Non-Printable) -->
-    <header class="no-print bg-slate-900 border-b border-slate-800 text-white shadow-md sticky top-0 z-50 px-6 py-3 flex justify-between items-center">
+    <!-- Top Navigation / Header (Non-Printable) -->
+    <header class="no-print bg-slate-950 border-b border-slate-800 text-white px-6 py-3.5 flex justify-between items-center sticky top-0 z-50 shadow-md">
         <div class="flex items-center space-x-3">
-            <div class="bg-amber-500 p-2 rounded-xl text-slate-950 font-bold"><i class="fa-solid fa-file-invoice"></i></div>
+            <div class="bg-amber-500 p-2.5 rounded-xl text-slate-950 font-bold text-lg"><i class="fa-solid fa-bolt-lightning"></i></div>
             <div>
-                <h1 class="text-sm font-bold">ระบบจัดการแบบฟอร์มเอกสาร A4 (MEA Standard)</h1>
-                <p class="text-[11px] text-slate-400">กรอกข้อมูลและพิมพ์ออกเป็นฟอร์มกระดาษทางการ</p>
+                <h1 class="text-sm font-bold">ระบบตรวจสอบและบำรุงรักษาอุปกรณ์ไฟฟ้า (MEA Standard)</h1>
+                <p class="text-[11px] text-slate-400">ระบบฟอร์มดิจิทัล 11 แบบฟอร์ม พร้อมบันทึกและพิมพ์ PDF ตามต้นฉบับ</p>
             </div>
         </div>
-        <div class="flex items-center space-x-2">
-            <button onclick="openHistoryModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-xs font-semibold transition border border-slate-700">
-                <i class="fa-solid fa-clock-rotate-left mr-1.5"></i> ประวัติเอกสารย้อนหลัง
+        <div id="headerActions" class="hidden flex items-center space-x-2">
+            <button onclick="goHome()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold transition border border-slate-700">
+                <i class="fa-solid fa-house mr-1"></i> กลับหน้าเมนู
             </button>
-            <button onclick="resetForm()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl text-xs font-semibold transition">
-                <i class="fa-solid fa-file-circle-plus mr-1.5"></i> ล้างฟอร์มใหม่
+            <button onclick="resetCurrentForm()" class="bg-slate-700 hover:bg-slate-600 text-white px-3.5 py-2 rounded-xl text-xs font-semibold transition">
+                <i class="fa-solid fa-rotate-right mr-1"></i> ล้างข้อมูล
             </button>
-            <button onclick="saveDocument()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-semibold transition shadow-sm">
-                <i class="fa-solid fa-floppy-disk mr-1.5"></i> บันทึกข้อมูล
+            <button onclick="saveActiveForm()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-semibold transition shadow-sm">
+                <i class="fa-solid fa-floppy-disk mr-1"></i> บันทึก
             </button>
             <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-semibold transition shadow-sm">
-                <i class="fa-solid fa-print mr-1.5"></i> พิมพ์ / Export PDF
+                <i class="fa-solid fa-print mr-1"></i> พิมพ์ / Export PDF
             </button>
         </div>
     </header>
 
-    <!-- Main Form Container (A4 Size View) -->
-    <main class="flex-grow py-6 px-4">
-        <form id="meaForm" class="a4-page border border-slate-400">
-            <input type="hidden" id="docId" value="">
-
-            <!-- Form Title -->
-            <div class="text-center font-bold text-base mb-4 tracking-wide uppercase">
-                แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย
-            </div>
-
-            <!-- 1. ข้อมูลทั่วไป -->
-            <div class="border border-black mb-3">
-                <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs">
-                    1 ข้อมูลทั่วไป
+    <!-- Main Content Container -->
+    <main class="flex-grow p-4 sm:p-6">
+        
+        <!-- ================= VIEW 1: HOME (11 FORM BUTTONS) ================= -->
+        <div id="homeView" class="max-w-6xl mx-auto space-y-6">
+            <div class="bg-slate-800/80 border border-slate-700/80 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h2 class="text-lg font-bold text-white mb-1"><i class="fa-solid fa-folder-tree text-amber-500 mr-2"></i> เลือกแบบฟอร์มตรวจสอบมาตรฐาน กฟน. (MEA)</h2>
+                    <p class="text-xs text-slate-400">กรุณาเลือกแบบฟอร์มที่ต้องการใช้งาน ระบบจะเปลี่ยนโครงสร้างช่องกรอกและตารางให้ตรงกับต้นฉบับ PDF ทั้ง 11 ใบโดยอัตโนมัติ</p>
                 </div>
-                <table class="form-table border-none">
-                    <tr>
-                        <td class="w-1/6 font-semibold bg-slate-50">Station ID</td>
-                        <td class="w-2/6"><input type="text" id="stationId" class="w-full bg-slate-50/50 p-1 rounded border border-slate-300 text-xs" placeholder="ระบุ Station ID"></td>
-                        <td class="w-1/6 font-semibold bg-slate-50">สถานที่</td>
-                        <td class="w-2/6"><input type="text" id="location" class="w-full bg-slate-50/50 p-1 rounded border border-slate-300 text-xs" placeholder="ระบุสถานที่ติดตั้ง"></td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold bg-slate-50">GIS Lat.</td>
-                        <td><input type="text" id="gisLat" class="w-full bg-slate-50/50 p-1 rounded border border-slate-300 text-xs" placeholder="ละติจูด"></td>
-                        <td class="font-semibold bg-slate-50">Long.</td>
-                        <td><input type="text" id="gisLong" class="w-full bg-slate-50/50 p-1 rounded border border-slate-300 text-xs" placeholder="ลองจิจูด"></td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold bg-slate-50">MEA No.1</td>
-                        <td><input type="text" id="meaNo1" class="w-full bg-slate-50/50 p-1 rounded border border-slate-300 text-xs"></td>
-                        <td class="font-semibold bg-slate-50">MEA No.2 / No.3</td>
-                        <td>
-                            <div class="flex space-x-1">
-                                <input type="text" id="meaNo2" class="w-1/2 bg-slate-50/50 p-1 rounded border border-slate-300 text-xs">
-                                <input type="text" id="meaNo3" class="w-1/2 bg-slate-50/50 p-1 rounded border border-slate-300 text-xs">
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold bg-slate-50">ยี่ห้อ / ขนาด</td>
-                        <td>
-                            <div class="flex space-x-1">
-                                <input type="text" id="brand" placeholder="ยี่ห้อ" class="w-1/2 bg-slate-50/50 p-1 rounded border border-slate-300 text-xs">
-                                <input type="text" id="capacity" placeholder="ขนาด" class="w-1/2 bg-slate-50/50 p-1 rounded border border-slate-300 text-xs">
-                            </div>
-                        </td>
-                        <td class="font-semibold bg-slate-50">ชนิด / ติดตั้ง</td>
-                        <td>
-                            <div class="flex space-x-1">
-                                <input type="text" id="transformerType" placeholder="ชนิด" class="w-1/2 bg-slate-50/50 p-1 rounded border border-slate-300 text-xs">
-                                <input type="text" id="installType" placeholder="ลักษณะการติดตั้ง" class="w-1/2 bg-slate-50/50 p-1 rounded border border-slate-300 text-xs">
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <!-- 2. รายการตรวจสอบบำรุงรักษา -->
-            <div class="border border-black mb-3">
-                <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs flex justify-between items-center">
-                    <span>2 รายการตรวจสอบบำรุงรักษา</span>
-                    <span class="text-[10px] font-normal">ผลการตรวจสอบ (เลือกอย่างใดอย่างหนึ่งต่อรายการ)</span>
-                </div>
-                <table class="form-table">
-                    <thead>
-                        <tr class="bg-slate-100 text-center">
-                            <th rowspan="2" class="w-12">ลำดับ</th>
-                            <th rowspan="2">รายการอุปกรณ์ / หัวข้อตรวจสอบ</th>
-                            <th colspan="3" class="w-40">ผลการตรวจสอบ</th>
-                            <th rowspan="2" class="w-1/3">ข้อบกพร่อง</th>
-                        </tr>
-                        <tr class="bg-slate-100 text-center text-[10px]">
-                            <th class="w-12">ปกติ</th>
-                            <th class="w-12">ชำรุด</th>
-                            <th class="w-12">ไม่มี</th>
-                        </tr>
-                    </thead>
-                    <tbody id="checklistTableBody">
-                        <!-- รายการ 14 หัวข้อสร้างด้วย JS -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- 3. ตรวจสอบวัดกระแสและแรงดันไฟฟ้า -->
-            <div class="border border-black mb-3">
-                <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs">
-                    3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า
-                </div>
-                <div class="p-2 space-y-2 text-xs">
-                    <div class="flex flex-wrap items-center gap-4">
-                        <label class="flex items-center space-x-1"><input type="radio" name="checkTiming" value="กลางวัน" checked> <span>กลางวัน</span></label>
-                        <label class="flex items-center space-x-1"><input type="radio" name="checkTiming" value="กลางคืน"> <span>กลางคืน</span></label>
-                        <div class="flex items-center space-x-1">
-                            <span>เวลา:</span>
-                            <input type="time" id="checkTime" class="border border-slate-300 p-1 rounded text-xs">
-                        </div>
-                        <span class="font-semibold ml-4">วิธีการ:</span>
-                        <label class="flex items-center space-x-1"><input type="radio" name="checkMethod" value="วัดหน้างาน" checked> <span>วัดหน้างาน</span></label>
-                        <label class="flex items-center space-x-1"><input type="radio" name="checkMethod" value="TLM"> <span>TLM</span></label>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-2 pt-1">
-                        <div class="border border-slate-400 p-1.5 rounded">
-                            <span class="font-bold block mb-1 text-[11px]">แรงดันไฟฟ้า (V)</span>
-                            <div class="grid grid-cols-3 gap-1">
-                                <div>V1-N=<input type="number" step="0.1" id="v1n" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
-                                <div>V2-N=<input type="number" step="0.1" id="v2n" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
-                                <div>V3-N=<input type="number" step="0.1" id="v3n" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
-                                <div>V1-2=<input type="number" step="0.1" id="v12" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
-                                <div>V1-3=<input type="number" step="0.1" id="v13" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
-                                <div>V2-3=<input type="number" step="0.1" id="v23" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
-                            </div>
-                        </div>
-                        <div class="border border-slate-400 p-1.5 rounded space-y-1">
-                            <span class="font-bold block mb-1 text-[11px]">กระแสไฟฟ้า (A)</span>
-                            <div class="grid grid-cols-4 gap-1">
-                                <div>IN=<input type="number" step="0.1" id="iN" class="w-10 border border-slate-300 p-0.5 rounded text-center"></div>
-                                <div>I1=<input type="number" step="0.1" id="i1" oninput="calcTotalCurrent()" class="w-10 border border-slate-300 p-0.5 rounded text-center"></div>
-                                <div>I2=<input type="number" step="0.1" id="i2" oninput="calcTotalCurrent()" class="w-10 border border-slate-300 p-0.5 rounded text-center"></div>
-                                <div>I3=<input type="number" step="0.1" id="i3" oninput="calcTotalCurrent()" class="w-10 border border-slate-300 p-0.5 rounded text-center"></div>
-                            </div>
-                            <div class="pt-1 flex items-center justify-between">
-                                <span class="font-semibold">ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด:</span>
-                                <input type="text" id="totalCurrent" readonly class="w-20 bg-slate-100 font-bold border border-slate-300 p-0.5 rounded text-center text-blue-700" value="0.0">
-                            </div>
-                        </div>
-                    </div>
+                <div class="relative w-full md:w-72">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-xs"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" id="searchWorkOrderInput" oninput="filterWorkOrdersList()" placeholder="ค้นหา Station ID หรือ Work Order..." class="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
                 </div>
             </div>
 
-            <!-- 4. สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม -->
-            <div class="border border-black mb-3">
-                <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs">
-                    4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :
-                </div>
-                <div class="p-1">
-                    <textarea id="improvements" rows="2" class="w-full p-1 text-xs border border-slate-300 rounded resize-none" placeholder="บันทึกข้อเสนอแนะ..."></textarea>
-                </div>
+            <!-- 11 Form Buttons Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="formButtonsGrid">
+                <!-- Injected via JS -->
             </div>
 
-            <!-- 5. การปรับปรุงข้อบกพร่อง -->
-            <div class="border border-black mb-4">
-                <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs">
-                    5 การปรับปรุงข้อบกพร่อง :
-                </div>
-                <div class="p-1">
-                    <textarea id="repairDetails" rows="2" class="w-full p-1 text-xs border border-slate-300 rounded resize-none" placeholder="บันทึกรายละเอียดการแก้ไข..."></textarea>
+            <!-- Saved Records List -->
+            <div class="bg-slate-800/80 border border-slate-700/80 p-6 rounded-3xl shadow-xl space-y-4">
+                <h3 class="font-bold text-sm text-white flex items-center"><i class="fa-solid fa-clock-rotate-left mr-2 text-amber-500"></i> ประวัติงานตรวจสอบที่บันทึกไว้ในระบบ</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-900 text-slate-400 border-b border-slate-700 text-[11px]">
+                                <th class="p-3">Work Order / รหัส</th>
+                                <th class="p-3">ประเภทแบบฟอร์ม</th>
+                                <th class="p-3">Station ID / สถานที่</th>
+                                <th class="p-3">วันที่บันทึก</th>
+                                <th class="p-3 text-center">จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="savedRecordsTableBody" class="divide-y divide-slate-700/60 text-slate-300">
+                            <!-- Injected via JS -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
 
-            <!-- Signatures Section -->
-            <table class="form-table mb-2">
-                <tr>
-                    <td class="w-1/2 align-top h-20">
-                        <div class="space-y-1">
-                            <div>ผู้ตรวจ: <input type="text" id="inspectorName" class="border-b border-dotted border-black w-3/4 p-0.5 text-xs"></div>
-                            <div>ตำแหน่ง: <input type="text" id="inspectorPos" class="border-b border-dotted border-black w-3/4 p-0.5 text-xs"></div>
-                            <div>วันที่: <input type="date" id="inspectorDate" class="border-b border-dotted border-black p-0.5 text-xs"></div>
-                        </div>
-                    </td>
-                    <td class="w-1/2 align-top h-20">
-                        <div class="space-y-1">
-                            <div>ผู้ตรวจสอบ: <input type="text" id="verifierName" class="border-b border-dotted border-black w-3/4 p-0.5 text-xs"></div>
-                            <div>ตำแหน่ง: <input type="text" id="verifierPos" class="border-b border-dotted border-black w-3/4 p-0.5 text-xs"></div>
-                            <div>วันที่: <input type="date" id="verifierDate" class="border-b border-dotted border-black p-0.5 text-xs"></div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
-            <div class="flex justify-between items-center text-[10px] text-slate-500 pt-2 border-t border-slate-300">
-                <span>ปรับปรุงครั้งที่ 0 วันที่...</span>
-                <span>SF-07-0-015</span>
+        <!-- ================= VIEW 2: DYNAMIC A4 FORM CONTAINER ================= -->
+        <div id="formView" class="hidden">
+            <div class="no-print max-w-4xl mx-auto mb-4 flex justify-between items-center bg-slate-800 px-4 py-2.5 rounded-2xl border border-slate-700">
+                <span id="activeFormIndicator" class="text-xs font-bold text-amber-400">กำลังใช้งาน: -</span>
+                <span class="text-xs text-slate-400">รูปแบบกระดาษ A4 มาตรฐาน กฟน.</span>
             </div>
-        </form>
+
+            <!-- A4 Render Paper -->
+            <form id="dynamicA4Form" class="a4-page border border-slate-400">
+                <input type="hidden" id="activeFormCode" value="">
+                <input type="hidden" id="recordUniqueId" value="">
+                <!-- Form HTML Structure Injected dynamically based on schema -->
+            </form>
+        </div>
+
     </main>
 
-    <!-- History Modal -->
-    <div id="historyModal" class="no-print fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden">
-            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
-                <h3 class="font-bold text-sm"><i class="fa-solid fa-clock-rotate-left mr-2"></i> ประวัติแบบฟอร์มที่บันทึกไว้ในระบบ</h3>
-                <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-6 overflow-y-auto space-y-3 flex-grow" id="historyListContainer"></div>
-        </div>
-    </div>
-
     <!-- Toast Notification -->
-    <div id="toast" class="no-print fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50 text-xs font-medium">
+    <div id="toast" class="no-print fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50 text-xs font-medium border border-slate-700">
         <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
         <span id="toastMessage">บันทึกข้อมูลเรียบร้อยแล้ว</span>
     </div>
 
-    <!-- Script Logic -->
+    <!-- Script Application Logic -->
     <script>
-        const checklistItems = [
-            "2.1 Drop Fuse",
-            "2.2 Station Post Type Insulator",
-            "2.3 สายเข้า-ออก Drop Fuse",
-            "2.4 คอนสาย",
-            "2.5 อุปกรณ์ป้องกันสัตว์",
-            "2.6 Low Voltage Capacitor",
-            "2.7 กับดักฟ้าผ่า (L/A)",
-            "2.8 ตัวถังหม้อแปลง",
-            "2.9 Bushing HV-LV",
-            "2.10 Cover (Bushing, L/A, Term. kit)",
-            "2.11 สายหน้าหม้อแปลง LV",
-            "2.12 LV Ground",
-            "2.13 HV Ground",
-            "2.14 CT-TLM Meter (ถ้ามี)"
+        // Schema definition for all 11 MEA inspection forms
+        const formsSchema = [
+            {
+                code: "SF-07-0-015",
+                name: "แบบตรวจสอบบำรุงหม้อแปลงจำหน่าย",
+                generalInfo: [
+                    { label: "Station ID", id: "stationId", type: "text" },
+                    { label: "สถานที่", id: "location", type: "text" },
+                    { label: "GIS Lat.", id: "gisLat", type: "text" },
+                    { label: "Long.", id: "gisLong", type: "text" },
+                    { label: "MEA No.1", id: "meaNo1", type: "text" },
+                    { label: "MEA No.2", id: "meaNo2", type: "text" },
+                    { label: "MEA No.3", id: "meaNo3", type: "text" },
+                    { label: "จำนวนเฟส", id: "phases", type: "text" },
+                    { label: "ยี่ห้อ", id: "brand", type: "text" },
+                    { label: "ขนาด", id: "capacity", type: "text" },
+                    { label: "ชนิด", id: "type", type: "text" },
+                    { label: "ลักษณะการติดตั้ง", id: "installType", type: "text" }
+                ],
+                checklist: [
+                    "2.1 Drop Fuse", "2.2 Station Post Type Insulator", "2.3 สายเข้า-ออก Drop Fuse", "2.4 คอนสาย",
+                    "2.5 อุปกรณ์ป้องกันสัตว์", "2.6 Low Voltage Capacitor", "2.7 กับดักฟ้าผ่า (L/A)", "2.8 ตัวถังหม้อแปลง",
+                    "2.9 Bushing HV-LV", "2.10 Cover (Bushing, L/A, Term. kit)", "2.11 สายหน้าหม้อแปลง LV", "2.12 LV Ground", "2.13 HV Ground", "2.14 CT-TLM Meter (ถ้ามี)"
+                ],
+                hasElectrical: true
+            },
+            {
+                code: "SF-07-0-016",
+                name: "แบบตรวจสอบบำรุงรักษา Load Break Switch",
+                generalInfo: [
+                    { label: "Station ID", id: "stationId", type: "text" },
+                    { label: "GIS Lat.", id: "gisLat", type: "text" },
+                    { label: "Long.", id: "gisLong", type: "text" },
+                    { label: "สถานที่", id: "location", type: "text" },
+                    { label: "ยี่ห้อ LBS", id: "lbsBrand", type: "text" },
+                    { label: "LBS MEA No.", id: "lbsMeaNo", type: "text" },
+                    { label: "Switch No.", id: "switchNo", type: "text" },
+                    { label: "ยี่ห้อ VT", id: "vtBrand", type: "text" },
+                    { label: "VT MEA No.", id: "vtMeaNo", type: "text" },
+                    { label: "ตู้ OFDF No.", id: "ofdfNo", type: "text" }
+                ],
+                extraHeaderHtml: `
+                    <div class="border border-black p-2 mb-3 text-xs space-y-1 bg-slate-50">
+                        <div><b>- สถานะสวิตช์:</b> <label class="mr-4"><input type="radio" name="lbsSwitch" value="ปลด"> ปลด</label><label><input type="radio" name="lbsSwitch" value="สับ"> สับ</label></div>
+                        <div><b>- สถานะระบบ SCADA/EMS/DMS:</b> <label class="mr-4"><input type="radio" name="scada" value="online"> online</label><label><input type="radio" name="scada" value="offline"> offline</label></div>
+                    </div>
+                `,
+                checklist: [
+                    "2.1 ตัวถัง LBS /สลักล็อคการปลดสับ", "2.2 สถานะก๊าซ SF6", "2.3 Bushing", "2.4 กับดักฟ้าผ่า", "2.5 VT", "2.6 Drop Fuse ลง VT",
+                    "2.7 คอนสาย", "2.8 สายควบคุม LBS", "2.9 อุปกรณ์ป้องกันสัตว์", "2.10 ไฟสถานะหน้าตู้", "2.11 แหล่งจ่ายไฟฟ้า และสายควบคุม",
+                    "2.12 สภาพแบตเตอรี่หรือ Capacitor", "2.13 Ground HV (L/A, LBS)", "2.14 Ground LV (ดู Control)", "2.15 ทดสอบ ทาง Remote", "2.16 ทดสอบ ทาง Local",
+                    "2.17 แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "2.18 การทดสอบ ATS"
+                ],
+                hasElectrical: false
+            },
+            {
+                code: "SF-07-0-017",
+                name: "แบบตรวจสอบบำรุงรักษา Sectionalizer",
+                generalInfo: [
+                    { label: "Station ID", id: "stationId", type: "text" },
+                    { label: "GIS Lat.", id: "gisLat", type: "text" },
+                    { label: "Long.", id: "gisLong", type: "text" },
+                    { label: "สถานที่", id: "location", type: "text" },
+                    { label: "ยี่ห้อ SZ", id: "szBrand", type: "text" },
+                    { label: "SZ MEA No.", id: "szMeaNo", type: "text" },
+                    { label: "Switch No.", id: "switchNo", type: "text" }
+                ],
+                extraHeaderHtml: `
+                    <div class="border border-black p-2 mb-3 text-xs space-y-1 bg-slate-50">
+                        <div><b>- สถานะสวิตช์:</b> <label class="mr-4"><input type="radio" name="szSwitch" value="ปลด"> ปลด</label><label><input type="radio" name="szSwitch" value="สับ"> สับ</label></div>
+                    </div>
+                `,
+                checklist: [
+                    "2.1 ตัวถัง SZ /สลักล็อคการปลดสับ", "2.2 สถานะก๊าซ SF6", "2.3 Bushing", "2.4 กับดักฟ้าผ่า", "2.5 คอนสาย", "2.6 สายควบคุม SZ",
+                    "2.7 อุปกรณ์ป้องกันสัตว์", "2.8 ไฟสถานะหน้าตู้", "2.9 แหล่งจ่ายไฟฟ้า และสายควบคุม", "2.10 สภาพแบตเตอรี่หรือ Capacitor",
+                    "2.11 Ground HV (L/A, SZ)", "2.12 Ground LV (ตู้ Control)", "2.13 ทดลอง ทาง Local"
+                ],
+                hasElectrical: false
+            },
+            {
+                code: "SF-07-0-018",
+                name: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",
+                generalInfo: [
+                    { label: "Station ID", id: "stationId", type: "text" },
+                    { label: "GIS Lat.", id: "gisLat", type: "text" },
+                    { label: "Long.", id: "gisLong", type: "text" },
+                    { label: "สถานที่", id: "location", type: "text" },
+                    { label: "ยี่ห้อ RMU", id: "rmuBrand", type: "text" },
+                    { label: "RMU MEA No.", id: "rmuMeaNo", type: "text" }
+                ],
+                checklist: [
+                    "2.1 สภาพภายนอก", "2.2 ประตู", "2.3 ฐานตู้", "2.4 สภาพ RMU/ ห้อง", "2.5 ก๊าซ SF6", "2.6 ตัวแสดงสถานะสวิทซ์",
+                    "2.7 กุญแจล็อคป้องกันการปลด-สับ", "2.8 คันสับ", "2.9 ตัวตรวจสอบแรงดัน", "2.10 ตัวตรวจสอบการลัดวงจร", "2.11 แรงดันไฟฟ้าเลี้ยงอุปกรณ์",
+                    "2.12 สภาพแบตเตอรี่หรือ UPS (ถ้ามี)", "2.13 FRTU (ถ้ามี)", "2.14 อุปกรณ์ควบคุมอื่นๆ", "2.15 การปลดสับด้วย REMOTE (ถ้ามี)",
+                    "2.16 การปลดสับด้วย LOCAL กดปุ่ม (ถ้ามี)", "2.17 การปลดสับด้วยคันสับ", "2.18 แรงดันไฟฟ้าเลี้ยงอุปกรณ์ (ATF)", "2.19 การทดสอบ ATF"
+                ],
+                hasElectrical: false
+            },
+            {
+                code: "SF-07-0-019",
+                name: "แบบตรวจสอบบำรุงรักษา UNITSUBSTATION",
+                generalInfo: [
+                    { label: "Station ID", id: "stationId", type: "text" },
+                    { label: "GIS Lat.", id: "gisLat", type: "text" },
+                    { label: "Long.", id: "gisLong", type: "text" },
+                    { label: "สถานที่", id: "location", type: "text" },
+                    { label: "ยี่ห้อ TR", id: "trBrand", type: "text" },
+                    { label: "TR MEA No.", id: "trMeaNo", type: "text" },
+                    { label: "ยี่ห้อ RMU", id: "rmuBrand", type: "text" },
+                    { label: "RMU MEA No.", id: "rmuMeaNo", type: "text" }
+                ],
+                checklist: [
+                    "2.1 สภาพภายนอก", "2.2 ประตู", "2.3 ฐานตู้ / นั่งร้าน", "2.4 สภาพ RMU", "2.5 ก๊าซ SF6", "2.6 ตัวแสดงสถานะสวิตช์",
+                    "2.7 กุญแจล็อคป้องกันการปลด - สับ", "2.8 คันสับ", "2.9 ตัวตรวจสอบแรงดัน", "2.10 ตัวตรวจสอบการลัดวงจร", "2.11 แรงดันไฟฟ้าเลี้ยงอุปกรณ์",
+                    "2.12 สภาพแบตเตอรี่ หรือ UPS (ถ้ามี)", "2.13 FRTU (ถ้ามี)", "2.14 อุปกรณ์ควบคุมอื่น ๆ", "2.15 การปลด - สับด้วย REMOTE (ถ้ามี)",
+                    "2.16 การปลด - สับด้วย LOCAL กดปุ่ม (ถ้ามี)", "2.17 การปลด - สับด้วยคันสับ", "2.18 แรงดันไฟฟ้าเลี้ยงอุปกรณ์ (ATF)", "2.19 การทดสอบ ATF",
+                    "2.20 ตัวถังหม้อแปลง", "2.21 Bushing HV-LV", "2.22 สายหน้าหม้อแปลง HV - LV", "2.23 LV Ground", "2.24 HV Ground",
+                    "2.25 สภาพทั่วไป CB หรือ FUSE", "2.26 สายไฟฟ้า", "2.27 บัสบาร์", "2.28 เครื่องวัดไฟฟ้า", "2.29 CT-TLM Meter (ถ้ามี)", "2.30 จุดร้อนแดงส่องด้วยกล้องเทอร์โมวิชั่น"
+                ],
+                hasElectrical: true
+            },
+            {
+                code: "SF-07-0-020",
+                name: "แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน",
+                generalInfo: [
+                    { label: "Station ID", id: "stationId", type: "text" },
+                    { label: "สถานที่", id: "location", type: "text" },
+                    { label: "MEA No.", id: "meaNo", type: "text" },
+                    { label: "GIS Lat.", id: "gisLat", type: "text" },
+                    { label: "Long.", id: "gisLong", type: "text" },
+                    { label: "ชนิด CONTROL", id: "ctrlType", type: "text" },
+                    { label: "ยี่ห้อ", id: "brand", type: "text" },
+                    { label: "สายป้อน", id: "feeder", type: "text" },
+                    { label: "ชนิด Switch", id: "switchType", type: "text" },
+                    { label: "ยี่ห้อ Switch", id: "switchBrand", type: "text" }
+                ],
+                extraHeaderHtml: `
+                    <div class="border border-black p-2 mb-3 text-xs flex justify-between bg-slate-50">
+                        <div><b>เวลา Cap Off :</b> <input type="time" id="capOffTime" class="border border-slate-300 p-0.5 rounded text-xs"></div>
+                        <div><b>เวลา Cap On :</b> <input type="time" id="capOnTime" class="border border-slate-300 p-0.5 rounded text-xs"></div>
+                    </div>
+                `,
+                checklist: [
+                    "2.1 Drop Fuse", "2.2 Station Post Type Insulator", "2.3 สายเข้า-ออก Drop Fuse", "2.4 คอนสาย", "2.5 อุปกรณ์ป้องกันสัตว์",
+                    "2.6 กับดักฟ้าผ่า (L/A)", "2.7 Cover (Bushing,L/A)", "2.8 HV Ground", "2.9 Vacuum CB", "2.10 Supply", "2.11 Fuse Control ภายในตู้",
+                    "2.12 หลอดไฟแสดงสถานะในตู้", "2.13 หน้าจอ Digital Control", "2.14 เสียงนาฬิกาเดิน", "2.15 อุปกรณ์ทั่วไปภายในตู้", "2.16 ตัวถังคาปาซิเตอร์",
+                    "2.17 Bushing", "2.18 Fuse ภายใน", "2.19 ค่าคาปาซิแตนท์ที่วัดได้"
+                ],
+                hasElectrical: false
+            },
+            {
+                code: "SF-07-0-021",
+                name: "แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",
+                generalInfo: [
+                    { label: "สถานที่", id: "location", type: "text" },
+                    { label: "STATION", id: "station", type: "text" },
+                    { label: "FIX ID", id: "fixId", type: "text" },
+                    { label: "WLN", id: "wln", type: "text" },
+                    { label: "MEA NO.", id: "meaNo", type: "text" },
+                    { label: "ACB NO.", id: "acbNo", type: "text" },
+                    { label: "RELAY NO.", id: "relayNo", type: "text" }
+                ],
+                checklist: [
+                    "1.1 สถานะ MV.SW.", "1.2 สถานะ NP", "1.3 เบอร์ตู้/สีตู้", "1.4 ระบบกราวด์", "1.5 อุปกรณ์ป้องกันแรงดันเกินภายนอก",
+                    "1.6 ตัวถัง รอยต่อหม้อแปลง", "1.7 ฝาตู้", "1.8 มีการแขวนป้ายแดงห้ามปลด-สับ", "2.1 ปลด MV.SW. ครั้งที่ 1", "2.2 สับ MV.SW. ครั้งที่ 1",
+                    "2.3 ปลด MV.SW. ครั้งที่ 2", "3.1 อุปกรณ์ภายใน", "3.2 รีเลย์", "4.1 ตู้อุปกรณ์", "4.2 ไฟเลี้ยง /CB & FUSE", "4.3 อินเตอร์เน็ตสวิตช์",
+                    "5. สับ SW.แรงกลาง เมื่อลงจากเสาแล้ว"
+                ],
+                hasElectrical: false
+            },
+            {
+                code: "SF-07-0-022",
+                name: "แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",
+                generalInfo: [
+                    { label: "สถานที่", id: "location", type: "text" },
+                    { label: "STATION", id: "station", type: "text" },
+                    { label: "FIX ID", id: "fixId", type: "text" },
+                    { label: "WLN", id: "wln", type: "text" },
+                    { label: "TR. MEA NO.", id: "trMeaNo", type: "text" },
+                    { label: "SW.MEA NO.", id: "swMeaNo", type: "text" }
+                ],
+                checklist: [
+                    "1.1 สภาพภายนอกสวิทซ์แรงกลาง", "1.2 ก๊าซ SF6", "1.3 หัวต่อสาย/สายไฟฟ้า", "1.4 ระบบกราวด์", "2.1 ตัวถังหม้อแปลง",
+                    "2.2 น้ำมัน", "2.3 ฟิวส์ 12 kV", "2.4 อุณหภูมิสูงสุด", "2.5 อุณหภูมิจริง", "3.1 สายไฟฟ้าด้านแรงต่ำ", "3.2 คาปาซิเตอร์แรงต่ำ"
+                ],
+                hasElectrical: true
+            },
+            {
+                code: "SF-07-0-023",
+                name: "แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย",
+                generalInfo: [
+                    { label: "สถานที่", id: "location", type: "text" },
+                    { label: "STATION ID", id: "stationId", type: "text" },
+                    { label: "SW.ยี่ห้อ", id: "swBrand", type: "text" },
+                    { label: "TR.MEA No.", id: "trMeaNo", type: "text" }
+                ],
+                checklist: [
+                    "1. ทดสอบน้ำมันครั้งที่ 1 (Breakdown Voltage - 5 ครั้ง)",
+                    "2. กรองน้ำมันครั้งที่ 1 แล้วทดสอบใหม่ (5 ครั้ง)",
+                    "3. กรองน้ำมันครั้งที่ 2 แล้วทดสอบใหม่ (5 ครั้ง)"
+                ],
+                hasElectrical: false
+            },
+            {
+                code: "SF-07-0-024",
+                name: "รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",
+                generalInfo: [
+                    { label: "Station ID", id: "stationId", type: "text" },
+                    { label: "สถานที่", id: "location", type: "text" },
+                    { label: "GIS Lat.", id: "gisLat", type: "text" },
+                    { label: "Long.", id: "gisLong", type: "text" },
+                    { label: "วันที่ตรวจ", id: "inspectDate", type: "date" },
+                    { label: "MEA No.", id: "meaNo", type: "text" },
+                    { label: "สายป้อน", id: "feeder", type: "text" },
+                    { label: "อุปกรณ์", id: "equipment", type: "text" },
+                    { label: "Emissivity", id: "emissivity", type: "text" }
+                ],
+                checklist: [
+                    "A. จุดวัดจุดที่ 1", "B. จุดวัดจุดที่ 2", "C. จุดวัดจุดที่ 3", "D. จุดวัดจุดที่ 4", "E. จุดวัดจุดที่ 5", "F. จุดวัดจุดที่ 6"
+                ],
+                hasElectrical: false
+            },
+            {
+                code: "SF-07-0-025",
+                name: "รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)",
+                generalInfo: [
+                    { label: "Station ID", id: "stationId", type: "text" },
+                    { label: "สถานที่", id: "location", type: "text" },
+                    { label: "อุปกรณ์", id: "equipment", type: "text" },
+                    { label: "สายป้อน", id: "feeder", type: "text" },
+                    { label: "MEA No.", id: "meaNo", type: "text" },
+                    { label: "GIS Lat.", id: "gisLat", type: "text" },
+                    { label: "Long.", id: "gisLong", type: "text" },
+                    { label: "วันที่ตรวจ", id: "inspectDate", type: "date" }
+                ],
+                extraHeaderHtml: `
+                    <div class="border border-black p-2 mb-3 text-xs space-y-2 bg-slate-50">
+                        <div><b>จุดที่ผิดปกติ:</b> <input type="text" id="pdFaultSpot" class="w-2/3 border border-slate-300 p-0.5 rounded text-xs"></div>
+                        <div><b>ระดับความเข้มเสียงที่ตรวจวัดได้:</b> <input type="number" id="pdDbLevel" class="w-24 border border-slate-300 p-0.5 rounded text-xs text-center"> dB</div>
+                        <div><b>ระดับความรุนแรง:</b> 
+                            <label class="mr-3"><input type="radio" name="pdSeverity" value="สูงมาก"> สูงมาก</label>
+                            <label class="mr-3"><input type="radio" name="pdSeverity" value="สูง"> สูง</label>
+                            <label class="mr-3"><input type="radio" name="pdSeverity" value="ปานกลาง"> ปานกลาง</label>
+                            <label><input type="radio" name="pdSeverity" value="ต่ำ"> ต่ำ</label>
+                        </div>
+                    </div>
+                `,
+                checklist: [
+                    "ตรวจสอบสัญญาณ Ultrasonic / Acoustic Camera",
+                    "บันทึกภาพถ่ายจากกล้องปกติและ Acoustic Camera"
+                ],
+                hasElectrical: false
+            }
         ];
 
-        let savedDocuments = JSON.parse(localStorage.getItem('mea_a4_forms') || '[]');
+        let allRecords = JSON.parse(localStorage.getItem('mea_all_inspection_records') || '[]');
+        let activeFormSchema = null;
 
         window.addEventListener('DOMContentLoaded', () => {
-            renderChecklist();
-            document.getElementById('inspectorDate').value = new Date().toISOString().slice(0,10);
-            document.getElementById('verifierDate').value = new Date().toISOString().slice(0,10);
+            renderHomeButtons();
+            renderSavedRecordsTable();
         });
 
-        function renderChecklist(data = []) {
-            const tbody = document.getElementById('checklistTableBody');
-            tbody.innerHTML = '';
-            checklistItems.forEach((item, index) => {
-                const itemData = data[index] || { status: 'ปกติ', defect: '' };
+        function renderHomeButtons() {
+            const grid = document.getElementById('formButtonsGrid');
+            grid.innerHTML = '';
+            formsSchema.forEach((form, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-800 border border-slate-700 hover:border-amber-500/60 p-5 rounded-2xl shadow-lg flex flex-col justify-between transition cursor-pointer group";
+                card.onclick = () => openFormView(form.code);
+                card.innerHTML = `
+                    <div>
+                        <span class="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-full">${form.code}</span>
+                        <h4 class="font-bold text-white text-sm mt-3 group-hover:text-amber-400 transition">${form.name}</h4>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-700/60 flex justify-between items-center text-xs text-slate-400">
+                        <span>คลิกเพื่อเปิดแบบฟอร์ม</span>
+                        <i class="fa-solid fa-arrow-right text-amber-400 group-hover:translate-x-1 transition"></i>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openFormView(code, existingData = null) {
+            activeFormSchema = formsSchema.find(f => f.code === code);
+            document.getElementById('homeView').classList.add('hidden');
+            document.getElementById('formView').classList.remove('hidden');
+            document.getElementById('headerActions').classList.remove('hidden');
+            document.getElementById('activeFormIndicator').innerText = `กำลังใช้งาน: ${activeFormSchema.code} — ${activeFormSchema.name}`;
+            
+            buildA4FormDom(activeFormSchema, existingData);
+        }
+
+        function goHome() {
+            document.getElementById('formView').classList.add('hidden');
+            document.getElementById('headerActions').classList.add('hidden');
+            document.getElementById('homeView').classList.remove('hidden');
+            renderSavedRecordsTable();
+        }
+
+        function buildA4FormDom(schema, data = null) {
+            const formContainer = document.getElementById('dynamicA4Form');
+            formContainer.innerHTML = `
+                <input type="hidden" id="formCode" value="${schema.code}">
+                <input type="hidden" id="recordId" value="${data ? data.recordId : 'WO-' + Date.now()}">
+
+                <div class="text-center font-bold text-base mb-3 tracking-wide uppercase">
+                    ${schema.name}
+                </div>
+
+                <!-- Section 1: General Info -->
+                <div class="border border-black mb-3">
+                    <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs">
+                        1 ข้อมูลทั่วไป / ข้อมูลภาพถ่าย
+                    </div>
+                    <table class="form-table border-none">
+                        <tbody id="genInfoTableBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Extra Header if any -->
+                <div id="extraHeaderSlot">${schema.extraHeaderHtml || ''}</div>
+
+                <!-- Section 2: Checklist Table -->
+                <div class="border border-black mb-3">
+                    <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs flex justify-between items-center">
+                        <span>2 รายการตรวจสอบบำรุงรักษา</span>
+                        <span class="text-[10px] font-normal">ผลการตรวจสอบ</span>
+                    </div>
+                    <table class="form-table">
+                        <thead>
+                            <tr class="bg-slate-100 text-center">
+                                <th rowspan="2" class="w-12">ลำดับ</th>
+                                <th rowspan="2">รายการอุปกรณ์ / หัวข้อตรวจสอบ</th>
+                                <th colspan="3" class="w-40">ผลการตรวจสอบ</th>
+                                <th rowspan="2" class="w-1/3">ข้อบกพร่อง</th>
+                            </tr>
+                            <tr class="bg-slate-100 text-center text-[10px]">
+                                <th class="w-12">ปกติ</th>
+                                <th class="w-12">ชำรุด</th>
+                                <th class="w-12">ไม่มี</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dynamicChecklistBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Section 3: Electrical data if applicable -->
+                <div id="electricalSlot" class="${schema.hasElectrical ? '' : 'hidden'} border border-black mb-3">
+                    <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs">
+                        3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า
+                    </div>
+                    <div class="p-2 space-y-2 text-xs">
+                        <div class="flex flex-wrap items-center gap-4">
+                            <label class="flex items-center space-x-1"><input type="radio" name="checkTiming" value="กลางวัน" checked> <span>กลางวัน</span></label>
+                            <label class="flex items-center space-x-1"><input type="radio" name="checkTiming" value="กลางคืน"> <span>กลางคืน</span></label>
+                            <div class="flex items-center space-x-1">
+                                <span>เวลา:</span>
+                                <input type="time" id="checkTime" class="border border-slate-300 p-1 rounded text-xs">
+                            </div>
+                            <span class="font-semibold ml-4">วิธีการ:</span>
+                            <label class="flex items-center space-x-1"><input type="radio" name="checkMethod" value="วัดหน้างาน" checked> <span>วัดหน้างาน</span></label>
+                            <label class="flex items-center space-x-1"><input type="radio" name="checkMethod" value="TLM"> <span>TLM</span></label>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 pt-1">
+                            <div class="border border-slate-400 p-1.5 rounded">
+                                <span class="font-bold block mb-1 text-[11px]">แรงดันไฟฟ้า (V)</span>
+                                <div class="grid grid-cols-3 gap-1">
+                                    <div>V1-N=<input type="number" step="0.1" id="v1n" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
+                                    <div>V2-N=<input type="number" step="0.1" id="v2n" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
+                                    <div>V3-N=<input type="number" step="0.1" id="v3n" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
+                                    <div>V1-2=<input type="number" step="0.1" id="v12" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
+                                    <div>V1-3=<input type="number" step="0.1" id="v13" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
+                                    <div>V2-3=<input type="number" step="0.1" id="v23" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
+                                </div>
+                            </div>
+                            <div class="border border-slate-400 p-1.5 rounded space-y-1">
+                                <span class="font-bold block mb-1 text-[11px]">กระแสไฟฟ้า (A)</span>
+                                <div class="grid grid-cols-4 gap-1">
+                                    <div>IN=<input type="number" step="0.1" id="iN" class="w-10 border border-slate-300 p-0.5 rounded text-center"></div>
+                                    <div>I1=<input type="number" step="0.1" id="i1" oninput="calcTotalCurrent()" class="w-10 border border-slate-300 p-0.5 rounded text-center"></div>
+                                    <div>I2=<input type="number" step="0.1" id="i2" oninput="calcTotalCurrent()" class="w-10 border border-slate-300 p-0.5 rounded text-center"></div>
+                                    <div>I3=<input type="number" step="0.1" id="i3" oninput="calcTotalCurrent()" class="w-10 border border-slate-300 p-0.5 rounded text-center"></div>
+                                </div>
+                                <div class="pt-1 flex items-center justify-between">
+                                    <span class="font-semibold">ผลรวมกระแสทั้งหมด:</span>
+                                    <input type="text" id="totalCurrent" readonly class="w-20 bg-slate-100 font-bold border border-slate-300 p-0.5 rounded text-center text-blue-700" value="0.0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Improvements -->
+                <div class="border border-black mb-3">
+                    <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs">
+                        4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :
+                    </div>
+                    <div class="p-1">
+                        <textarea id="improvements" rows="2" class="w-full p-1 text-xs border border-slate-300 rounded resize-none" placeholder="บันทึกข้อเสนอแนะ..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Section 5: Repairs -->
+                <div class="border border-black mb-4">
+                    <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs">
+                        5 การปรับปรุงข้อบกพร่อง :
+                    </div>
+                    <div class="p-1">
+                        <textarea id="repairDetails" rows="2" class="w-full p-1 text-xs border border-slate-300 rounded resize-none" placeholder="บันทึกรายละเอียดการแก้ไข..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Signatures -->
+                <table class="form-table mb-2">
+                    <tr>
+                        <td class="w-1/2 align-top h-20">
+                            <div class="space-y-1">
+                                <div>ผู้ตรวจ: <input type="text" id="inspectorName" class="border-b border-dotted border-black w-3/4 p-0.5 text-xs"></div>
+                                <div>ตำแหน่ง: <input type="text" id="inspectorPos" class="border-b border-dotted border-black w-3/4 p-0.5 text-xs"></div>
+                                <div>วันที่: <input type="date" id="inspectorDate" class="border-b border-dotted border-black p-0.5 text-xs"></div>
+                            </div>
+                        </td>
+                        <td class="w-1/2 align-top h-20">
+                            <div class="space-y-1">
+                                <div>ผู้ตรวจสอบ: <input type="text" id="verifierName" class="border-b border-dotted border-black w-3/4 p-0.5 text-xs"></div>
+                                <div>ตำแหน่ง: <input type="text" id="verifierPos" class="border-b border-dotted border-black w-3/4 p-0.5 text-xs"></div>
+                                <div>วันที่: <input type="date" id="verifierDate" class="border-b border-dotted border-black p-0.5 text-xs"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="flex justify-between items-center text-[10px] text-slate-500 pt-2 border-t border-slate-300">
+                    <span>ปรับปรุงครั้งที่ 0 วันที่...</span>
+                    <span>${schema.code}</span>
+                </div>
+            `;
+
+            // Populate General Info Table dynamically in 2 columns
+            const genBody = document.getElementById('genInfoTableBody');
+            const gFields = schema.generalInfo;
+            for (let i = 0; i < gFields.length; i += 2) {
+                const f1 = gFields[i];
+                const f2 = gFields[i+1];
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="w-1/6 font-semibold bg-slate-50">${f1.label}</td>
+                    <td class="w-2/6"><input type="${f1.type || 'text'}" id="${f1.id}" class="w-full bg-slate-50/50 p-1 rounded border border-slate-300 text-xs" value="${data && data.generalInfo ? (data.generalInfo[f1.id] || '') : ''}"></td>
+                    <td class="w-1/6 font-semibold bg-slate-50">${f2 ? f2.label : ''}</td>
+                    <td class="w-2/6">${f2 ? `<input type="${f2.type || 'text'}" id="${f2.id}" class="w-full bg-slate-50/50 p-1 rounded border border-slate-300 text-xs" value="${data && data.generalInfo ? (data.generalInfo[f2.id] || '') : ''}">` : ''}</td>
+                `;
+                genBody.appendChild(tr);
+            }
+
+            // Populate Checklist
+            const checkBody = document.getElementById('dynamicChecklistBody');
+            schema.checklist.forEach((item, index) => {
+                const savedItem = data && data.checklist ? data.checklist[index] : { status: 'ปกติ', defect: '' };
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="text-center font-medium">${index + 1}</td>
                     <td>${item}</td>
-                    <td class="text-center"><input type="radio" name="ch_${index}" value="ปกติ" ${itemData.status === 'ปกติ' ? 'checked' : ''} class="text-blue-600"></td>
-                    <td class="text-center"><input type="radio" name="ch_${index}" value="ชำรุด" ${itemData.status === 'ชำรุด' ? 'checked' : ''} class="text-amber-600"></td>
-                    <td class="text-center"><input type="radio" name="ch_${index}" value="ไม่มี" ${itemData.status === 'ไม่มี' ? 'checked' : ''} class="text-slate-400"></td>
-                    <td><input type="text" id="def_${index}" value="${itemData.defect || ''}" class="w-full border border-slate-300 p-0.5 rounded text-xs" placeholder="ระบุข้อบกพร่อง..."></td>
+                    <td class="text-center"><input type="radio" name="ch_${index}" value="ปกติ" ${savedItem.status === 'ปกติ' ? 'checked' : ''} class="text-blue-600"></td>
+                    <td class="text-center"><input type="radio" name="ch_${index}" value="ชำรุด" ${savedItem.status === 'ชำรุด' ? 'checked' : ''} class="text-amber-600"></td>
+                    <td class="text-center"><input type="radio" name="ch_${index}" value="ไม่มี" ${savedItem.status === 'ไม่มี' ? 'checked' : ''} class="text-slate-400"></td>
+                    <td><input type="text" id="def_${index}" value="${savedItem.defect || ''}" class="w-full border border-slate-300 p-0.5 rounded text-xs" placeholder="ระบุข้อบกพร่อง..."></td>
+                `;
+                checkBody.appendChild(tr);
+            });
+
+            // Populate Data if editing
+            if (data) {
+                document.getElementById('recordId').value = data.recordId;
+                document.getElementById('improvements').value = data.improvements || '';
+                document.getElementById('repairDetails').value = data.repairDetails || '';
+                if(data.signatures) {
+                    document.getElementById('inspectorName').value = data.signatures.inspectorName || '';
+                    document.getElementById('inspectorPos').value = data.signatures.inspectorPos || '';
+                    document.getElementById('inspectorDate').value = data.signatures.inspectorDate || '';
+                    document.getElementById('verifierName').value = data.signatures.verifierName || '';
+                    document.getElementById('verifierPos').value = data.signatures.verifierPos || '';
+                    document.getElementById('verifierDate').value = data.signatures.verifierDate || '';
+                }
+            } else {
+                const today = new Date().toISOString().slice(0,10);
+                if(document.getElementById('inspectorDate')) document.getElementById('inspectorDate').value = today;
+                if(document.getElementById('verifierDate')) document.getElementById('verifierDate').value = today;
+            }
+        }
+
+        function calcTotalCurrent() {
+            const i1 = parseFloat(document.getElementById('i1')?.value) || 0;
+            const i2 = parseFloat(document.getElementById('i2')?.value) || 0;
+            const i3 = parseFloat(document.getElementById('i3')?.value) || 0;
+            const totalEl = document.getElementById('totalCurrent');
+            if(totalEl) totalEl.value = (i1 + i2 + i3).toFixed(1);
+        }
+
+        function resetCurrentForm() {
+            document.getElementById('dynamicA4Form').reset();
+            buildA4FormDom(activeFormSchema);
+            showToast("ล้างข้อมูลฟอร์มแล้ว", "info");
+        }
+
+        function saveActiveForm() {
+            const recordId = document.getElementById('recordId').value;
+            const formCode = document.getElementById('formCode').value;
+
+            // Collect general info dynamically
+            let generalInfo = {};
+            activeFormSchema.generalInfo.forEach(f => {
+                const el = document.getElementById(f.id);
+                if(el) generalInfo[f.id] = el.value;
+            });
+
+            // Collect checklist
+            const checklist = activeFormSchema.checklist.map((item, index) => {
+                const checkedRadio = document.querySelector(`input[name="ch_${index}"]:checked`);
+                return {
+                    item: item,
+                    status: checkedRadio ? checkedRadio.value : 'ปกติ',
+                    defect: document.getElementById(`def_${index}`)?.value || ''
+                };
+            });
+
+            const recordObj = {
+                recordId: recordId,
+                formCode: formCode,
+                formName: activeFormSchema.name,
+                date: new Date().toISOString().slice(0,10),
+                stationId: generalInfo.stationId || generalInfo.station || 'ไม่ระบุ',
+                generalInfo: generalInfo,
+                checklist: checklist,
+                improvements: document.getElementById('improvements')?.value || '',
+                repairDetails: document.getElementById('repairDetails')?.value || '',
+                signatures: {
+                    inspectorName: document.getElementById('inspectorName')?.value || '',
+                    inspectorPos: document.getElementById('inspectorPos')?.value || '',
+                    inspectorDate: document.getElementById('inspectorDate')?.value || '',
+                    verifierName: document.getElementById('verifierName')?.value || '',
+                    verifierPos: document.getElementById('verifierPos')?.value || '',
+                    verifierDate: document.getElementById('verifierDate')?.value || ''
+                }
+            };
+
+            const existingIdx = allRecords.findIndex(r => r.recordId === recordId);
+            if(existingIdx >= 0) {
+                allRecords[existingIdx] = recordObj;
+            } else {
+                allRecords.unshift(recordObj);
+            }
+
+            localStorage.setItem('mea_all_inspection_records', JSON.stringify(allRecords));
+            showToast("บันทึกข้อมูลสำเร็จเรียบร้อย", "success");
+        }
+
+        function renderSavedRecordsTable() {
+            const tbody = document.getElementById('savedRecordsTableBody');
+            tbody.innerHTML = '';
+
+            if(allRecords.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400 italic">ยังไม่มีประวัติการตรวจสอบในระบบ</td></tr>`;
+                return;
+            }
+
+            allRecords.forEach((rec, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-700/50 transition";
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-amber-400">${rec.recordId}</td>
+                    <td class="p-3"><span class="bg-slate-900 px-2 py-1 rounded text-[10px] border border-slate-700">${rec.formCode}</span> ${rec.formName}</td>
+                    <td class="p-3">${rec.stationId}</td>
+                    <td class="p-3 text-slate-400">${rec.date}</td>
+                    <td class="p-3 text-center space-x-2">
+                        <button onclick="editRecord(${idx})" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow-sm transition">เปิด/แก้ไข</button>
+                        <button onclick="deleteRecord(${idx})" class="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-semibold shadow-sm transition">ลบ</button>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        function calcTotalCurrent() {
-            const i1 = parseFloat(document.getElementById('i1').value) || 0;
-            const i2 = parseFloat(document.getElementById('i2').value) || 0;
-            const i3 = parseFloat(document.getElementById('i3').value) || 0;
-            document.getElementById('totalCurrent').value = (i1 + i2 + i3).toFixed(1);
+        function editRecord(idx) {
+            const rec = allRecords[idx];
+            const schema = formsSchema.find(f => f.code === rec.formCode);
+            if(schema) {
+                openFormView(schema.code, rec);
+            }
         }
 
-        function resetForm() {
-            document.getElementById('meaForm').reset();
-            document.getElementById('docId').value = '';
-            renderChecklist();
-            showToast("ล้างฟอร์มเรียบร้อยแล้ว", "info");
+        function deleteRecord(idx) {
+            if(confirm("คุณต้องการลบประวัติรายการนี้ใช่หรือไม่?")) {
+                allRecords.splice(idx, 1);
+                localStorage.setItem('mea_all_inspection_records', JSON.stringify(allRecords));
+                renderSavedRecordsTable();
+                showToast("ลบรายการสำเร็จ", "info");
+            }
         }
 
-        function saveDocument() {
-            const docId = document.getElementById('docId').value || `WO-${Date.now()}`;
+        function filterWorkOrdersList() {
+            const keyword = document.getElementById('searchWorkOrderInput').value.toLowerCase();
+            const filtered = allRecords.filter(r => r.recordId.toLowerCase().includes(keyword) || r.stationId.toLowerCase().includes(keyword) || r.formCode.toLowerCase().includes(keyword));
             
-            const checklist = checklistItems.map((item, index) => {
-                const selectedRadio = document.querySelector(`input[name="ch_${index}"]:checked`);
-                return {
-                    id: item,
-                    status: selectedRadio ? selectedRadio.value : 'ปกติ',
-                    defect: document.getElementById(`def_${index}`).value
-                };
+            const tbody = document.getElementById('savedRecordsTableBody');
+            tbody.innerHTML = '';
+            if(filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400 italic">ไม่พบข้อมูลที่ค้นหา</td></tr>`;
+                return;
+            }
+            filtered.forEach((rec, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-700/50 transition";
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-amber-400">${rec.recordId}</td>
+                    <td class="p-3"><span class="bg-slate-900 px-2 py-1 rounded text-[10px] border border-slate-700">${rec.formCode}</span> ${rec.formName}</td>
+                    <td class="p-3">${rec.stationId}</td>
+                    <td class="p-3 text-slate-400">${rec.date}</td>
+                    <td class="p-3 text-center space-x-2">
+                        <button onclick="editRecord(${allRecords.indexOf(rec)})" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow-sm transition">เปิด/แก้ไข</button>
+                        <button onclick="deleteRecord(${allRecords.indexOf(rec)})" class="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-semibold shadow-sm transition">ลบ</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
             });
-
-            const formData = {
-                id: docId,
-                date: new Date().toISOString().slice(0,10),
-                stationId: document.getElementById('stationId').value || 'ไม่ระบุ',
-                location: document.getElementById('location').value || 'ไม่ระบุ',
-                generalInfo: {
-                    stationId: document.getElementById('stationId').value,
-                    location: document.getElementById('location').value,
-                    gisLat: document.getElementById('gisLat').value,
-                    gisLong: document.getElementById('gisLong').value,
-                    meaNo1: document.getElementById('meaNo1').value,
-                    meaNo2: document.getElementById('meaNo2').value,
-                    meaNo3: document.getElementById('meaNo3').value,
-                    brand: document.getElementById('brand').value,
-                    capacity: document.getElementById('capacity').value,
-                    transformerType: document.getElementById('transformerType').value,
-                    installType: document.getElementById('installType').value
-                },
-                checklist: checklist,
-                electrical: {
-                    timing: document.querySelector('input[name="checkTiming"]:checked')?.value,
-                    checkTime: document.getElementById('checkTime').value,
-                    method: document.querySelector('input[name="checkMethod"]:checked')?.value,
-                    v1n: document.getElementById('v1n').value,
-                    v2n: document.getElementById('v2n').value,
-                    v3n: document.getElementById('v3n').value,
-                    v12: document.getElementById('v12').value,
-                    v13: document.getElementById('v13').value,
-                    v23: document.getElementById('v23').value,
-                    iN: document.getElementById('iN').value,
-                    i1: document.getElementById('i1').value,
-                    i2: document.getElementById('i2').value,
-                    i3: document.getElementById('i3').value,
-                    totalCurrent: document.getElementById('totalCurrent').value
-                },
-                improvements: document.getElementById('improvements').value,
-                repairDetails: document.getElementById('repairDetails').value,
-                signatures: {
-                    inspectorName: document.getElementById('inspectorName').value,
-                    inspectorPos: document.getElementById('inspectorPos').value,
-                    inspectorDate: document.getElementById('inspectorDate').value,
-                    verifierName: document.getElementById('verifierName').value,
-                    verifierPos: document.getElementById('verifierPos').value,
-                    verifierDate: document.getElementById('verifierDate').value
-                }
-            };
-
-            const existingIdx = savedDocuments.findIndex(d => d.id === docId);
-            if(existingIdx >= 0) {
-                savedDocuments[existingIdx] = formData;
-            } else {
-                savedDocuments.unshift(formData);
-            }
-
-            localStorage.setItem('mea_a4_forms', JSON.stringify(savedDocuments));
-            document.getElementById('docId').value = docId;
-            showToast("บันทึกข้อมูลแบบฟอร์มสำเร็จ", "success");
-        }
-
-        function openHistoryModal() {
-            const container = document.getElementById('historyListContainer');
-            container.innerHTML = '';
-
-            if(savedDocuments.length === 0) {
-                container.innerHTML = `<p class="text-center py-6 text-slate-400 italic">ยังไม่มีประวัติการบันทึกข้อมูล</p>`;
-            } else {
-                savedDocuments.forEach((doc, idx) => {
-                    const div = document.createElement('div');
-                    div.className = "p-4 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center hover:bg-slate-100 transition";
-                    div.innerHTML = `
-                        <div>
-                            <span class="font-bold text-blue-900 block">${doc.id} - Station: ${doc.generalInfo.stationId}</span>
-                            <span class="text-xs text-slate-500">สถานที่: ${doc.generalInfo.location} | วันที่บันทึก: ${doc.date}</span>
-                        </div>
-                        <div class="space-x-2">
-                            <button onclick="loadDocument(${idx})" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold shadow-sm hover:bg-blue-500">เปิดดู/แก้ไข</button>
-                            <button onclick="deleteDocument(${idx})" class="px-3 py-1.5 bg-rose-600 text-white rounded-lg text-xs font-semibold shadow-sm hover:bg-rose-500">ลบ</button>
-                        </div>
-                    `;
-                    container.appendChild(div);
-                });
-            }
-            document.getElementById('historyModal').classList.remove('hidden');
-        }
-
-        function closeHistoryModal() {
-            document.getElementById('historyModal').classList.add('hidden');
-        }
-
-        function loadDocument(idx) {
-            const doc = savedDocuments[idx];
-            document.getElementById('docId').value = doc.id;
-            document.getElementById('stationId').value = doc.generalInfo.stationId || '';
-            document.getElementById('location').value = doc.generalInfo.location || '';
-            document.getElementById('gisLat').value = doc.generalInfo.gisLat || '';
-            document.getElementById('gisLong').value = doc.generalInfo.gisLong || '';
-            document.getElementById('meaNo1').value = doc.generalInfo.meaNo1 || '';
-            document.getElementById('meaNo2').value = doc.generalInfo.meaNo2 || '';
-            document.getElementById('meaNo3').value = doc.generalInfo.meaNo3 || '';
-            document.getElementById('brand').value = doc.generalInfo.brand || '';
-            document.getElementById('capacity').value = doc.generalInfo.capacity || '';
-            document.getElementById('transformerType').value = doc.generalInfo.transformerType || '';
-            document.getElementById('installType').value = doc.generalInfo.installType || '';
-
-            renderChecklist(doc.checklist);
-
-            if(doc.electrical) {
-                if(doc.electrical.timing) document.querySelector(`input[name="checkTiming"][value="${doc.electrical.timing}"]`).checked = true;
-                document.getElementById('checkTime').value = doc.electrical.checkTime || '';
-                if(doc.electrical.method) document.querySelector(`input[name="checkMethod"][value="${doc.electrical.method}"]`).checked = true;
-                document.getElementById('v1n').value = doc.electrical.v1n || '';
-                document.getElementById('v2n').value = doc.electrical.v2n || '';
-                document.getElementById('v3n').value = doc.electrical.v3n || '';
-                document.getElementById('v12').value = doc.electrical.v12 || '';
-                document.getElementById('v13').value = doc.electrical.v13 || '';
-                document.getElementById('v23').value = doc.electrical.v23 || '';
-                document.getElementById('iN').value = doc.electrical.iN || '';
-                document.getElementById('i1').value = doc.electrical.i1 || '';
-                document.getElementById('i2').value = doc.electrical.i2 || '';
-                document.getElementById('i3').value = doc.electrical.i3 || '';
-                document.getElementById('totalCurrent').value = doc.electrical.totalCurrent || '0.0';
-            }
-
-            document.getElementById('improvements').value = doc.improvements || '';
-            document.getElementById('repairDetails').value = doc.repairDetails || '';
-
-            if(doc.signatures) {
-                document.getElementById('inspectorName').value = doc.signatures.inspectorName || '';
-                document.getElementById('inspectorPos').value = doc.signatures.inspectorPos || '';
-                document.getElementById('inspectorDate').value = doc.signatures.inspectorDate || '';
-                document.getElementById('verifierName').value = doc.signatures.verifierName || '';
-                document.getElementById('verifierPos').value = doc.signatures.verifierPos || '';
-                document.getElementById('verifierDate').value = doc.signatures.verifierDate || '';
-            }
-
-            closeHistoryModal();
-            showToast("โหลดข้อมูลเอกสารเรียบร้อยแล้ว", "success");
-        }
-
-        function deleteDocument(idx) {
-            if(confirm("คุณต้องการลบเอกสารฉบับนี้ใช่หรือไม่?")) {
-                savedDocuments.splice(idx, 1);
-                localStorage.setItem('mea_a4_forms', JSON.stringify(savedDocuments));
-                openHistoryModal();
-                showToast("ลบเอกสารสำเร็จ", "info");
-            }
         }
 
         function showToast(message, type = 'success') {
