@@ -3,940 +3,390 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบตรวจสอบและบำรุงรักษาอุปกรณ์ไฟฟ้า MEA</title>
-    <!-- Tailwind CSS CDN -->
+    <title>ระบบแบบฟอร์มตรวจสอบมาตรฐาน MEA (A4 Form View)</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        warm: {
-                            50: '#fcfbfa',
-                            100: '#f7f4ee',
-                            200: '#eee6dc',
-                            300: '#ded0be',
-                            800: '#5c5244',
-                            900: '#3d352b'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- FontPrompt for Thai -->
+    <!-- Prompt Font -->
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Prompt', sans-serif; }
+        
+        /* สไตล์พิเศษสำหรับจำลองกระดาษ A4 หน้าจอและหน้าสั่งพิมพ์ */
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm;
+            margin: 10mm auto;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            box-sizing: border-box;
+            color: #000;
+        }
+
+        @media print {
+            body { background: white; margin: 0; }
+            .no-print { display: none !important; }
+            .a4-page {
+                box-shadow: none;
+                margin: 0;
+                padding: 10mm;
+                width: 100%;
+                min-height: 100vh;
+            }
+            input, select, textarea {
+                border: none !important;
+                background: transparent !important;
+                resize: none;
+                padding: 0 !important;
+            }
+        }
+
+        table.form-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #000;
+        }
+        table.form-table th, table.form-table td {
+            border: 1px solid #000;
+            padding: 4px 6px;
+            font-size: 11px;
+            vertical-align: middle;
+        }
     </style>
 </head>
-<body class="bg-warm-100 text-warm-900 min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-950">
+<body class="bg-warm-100 text-slate-800 min-h-screen flex flex-col">
 
-    <!-- Top Navigation Bar -->
-    <header class="bg-warm-900 border-b border-warm-800 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap justify-between items-center gap-4">
-            <div class="flex items-center space-x-3.5">
-                <div class="bg-amber-500 p-2.5 rounded-2xl text-slate-950 text-lg shadow-md flex items-center justify-center font-bold">
-                    <i class="fa-solid fa-bolt-lightning"></i>
-                </div>
-                <div>
-                    <h1 class="text-sm font-bold tracking-tight text-white flex items-center">
-                        ระบบตรวจสอบและบำรุงรักษาอุปกรณ์ไฟฟ้า
-                        <span class="ml-2.5 px-2.5 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[10px] font-semibold rounded-full">MEA Smart Grid</span>
-                    </h1>
-                    <p class="text-[11px] text-warm-300">Power Substation & Distribution Equipment Maintenance Operations</p>
-                </div>
+    <!-- Top Toolbar (Non-Printable) -->
+    <header class="no-print bg-warm-900 border-b border-warm-800 text-white shadow-md sticky top-0 z-50 px-6 py-3 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <div class="bg-amber-500 p-2 rounded-xl text-slate-950 font-bold"><i class="fa-solid fa-file-invoice"></i></div>
+            <div>
+                <h1 class="text-sm font-bold">ระบบจัดการแบบฟอร์มเอกสาร A4 (MEA Standard)</h1>
+                <p class="text-[11px] text-warm-300">กรอกข้อมูลและพิมพ์ออกเป็นฟอร์มกระดาษทางการ</p>
             </div>
-
-            <div class="flex items-center space-x-3">
-                <div id="userProfile" class="hidden items-center space-x-2.5 bg-warm-800 px-3.5 py-1.5 rounded-full text-xs border border-warm-700 text-warm-100 shadow-sm">
-                    <img id="userAvatar" src="https://via.placeholder.com/32" class="w-6 h-6 rounded-full border border-amber-500" alt="Avatar">
-                    <span id="userName" class="font-medium"></span>
-                    <button onclick="handleLogout()" class="text-xs text-rose-400 hover:text-rose-300 ml-1.5 transition"><i class="fa-solid fa-power-off"></i></button>
-                </div>
-                <button id="googleLoginBtn" onclick="handleGoogleLogin()" class="bg-warm-800 hover:bg-warm-700 text-warm-100 border border-warm-700 px-4 py-2 rounded-xl text-xs font-semibold shadow-sm transition flex items-center space-x-2">
-                    <i class="fa-brands fa-google text-rose-400"></i>
-                    <span>Login</span>
-                </button>
-                <button onclick="openFormModal()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shadow-lg transition flex items-center space-x-2">
-                    <i class="fa-solid fa-plus text-[10px]"></i>
-                    <span>สร้างใหม่</span>
-                </button>
-            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button onclick="openHistoryModal()" class="bg-warm-800 hover:bg-warm-700 text-warm-100 px-4 py-2 rounded-xl text-xs font-semibold transition border border-warm-700">
+                <i class="fa-solid fa-clock-rotate-left mr-1.5"></i> ประวัติเอกสารย้อนหลัง
+            </button>
+            <button onclick="resetForm()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl text-xs font-semibold transition">
+                <i class="fa-solid fa-file-circle-plus mr-1.5"></i> ล้างฟอร์มใหม่
+            </button>
+            <button onclick="saveDocument()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-semibold transition shadow-sm">
+                <i class="fa-solid fa-floppy-disk mr-1.5"></i> บันทึกข้อมูล
+            </button>
+            <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-semibold transition shadow-sm">
+                <i class="fa-solid fa-print mr-1.5"></i> พิมพ์ / Export PDF
+            </button>
         </div>
     </header>
 
-    <!-- Main Workspace -->
-    <div class="flex-grow max-w-7xl w-full mx-auto px-6 py-8 flex flex-col md:flex-row gap-8">
-        
-        <!-- Left Sidebar: Menu -->
-        <aside class="w-full md:w-80 bg-warm-50 border border-warm-200 rounded-3xl shadow-sm p-5 shrink-0 h-fit space-y-4">
-            <div class="pb-3 border-b border-warm-200 flex items-center justify-between">
-                <h2 class="text-xs font-bold uppercase tracking-wider text-warm-800 flex items-center">
-                    <i class="fa-solid fa-file-shield mr-2 text-amber-600"></i> เมนูการจัดการ
-                </h2>
-                <span class="text-[10px] bg-amber-100 text-amber-800 border border-amber-300 px-2.5 py-0.5 rounded-full font-bold">11 Forms</span>
+    <!-- Main Form Container (A4 Size View) -->
+    <main class="flex-grow py-6 px-4">
+        <form id="meaForm" class="a4-page border border-slate-400">
+            <input type="hidden" id="docId" value="">
+
+            <!-- Form Title -->
+            <div class="text-center font-bold text-base mb-4 tracking-wide uppercase">
+                แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย
             </div>
 
-            <!-- Dropdown Menu Wrapper -->
-            <div class="bg-white border border-warm-200 rounded-2xl overflow-hidden shadow-sm">
-                <button onclick="toggleAllFormsDropdown()" class="w-full text-left px-4 py-3 text-xs font-bold flex items-center justify-between text-warm-900 hover:bg-warm-100 transition">
-                    <span class="flex items-center"><i class="fa-solid fa-layer-group mr-2 text-amber-600"></i> ดูใบตรวจสอบทั้งหมด (11 ใบ)</span>
-                    <i id="dropdownArrow" class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
-                </button>
-                <div id="allFormsDropdownList" class="hidden border-t border-warm-200 bg-warm-50 p-1.5 space-y-1 max-h-80 overflow-y-auto">
-                    <!-- Injected via JS -->
+            <!-- 1. ข้อมูลทั่วไป -->
+            <div class="border border-black mb-3">
+                <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs">
+                    1 ข้อมูลทั่วไป
                 </div>
-            </div>
-        </aside>
-
-        <!-- Right Content Area -->
-        <main class="flex-grow space-y-6">
-
-            <!-- Summary Cards -->
-            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-warm-50 border border-warm-200 p-5 rounded-3xl shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-[11px] font-bold uppercase tracking-wider text-warm-800">รายการทั้งหมด</p>
-                        <h3 id="statTotal" class="text-2xl font-bold text-warm-900 mt-1">0</h3>
-                    </div>
-                    <div class="p-3.5 bg-warm-200 text-warm-800 rounded-2xl text-base border border-warm-300"><i class="fa-solid fa-boxes-stacked"></i></div>
-                </div>
-                <div class="bg-warm-50 border border-warm-200 p-5 rounded-3xl shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-[11px] font-bold uppercase tracking-wider text-warm-800">สภาพปกติ</p>
-                        <h3 id="statNormal" class="text-2xl font-bold text-emerald-700 mt-1">0</h3>
-                    </div>
-                    <div class="p-3.5 bg-emerald-100 text-emerald-800 rounded-2xl text-base border border-emerald-200"><i class="fa-solid fa-circle-check"></i></div>
-                </div>
-                <div class="bg-warm-50 border border-warm-200 p-5 rounded-3xl shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-[11px] font-bold uppercase tracking-wider text-warm-800">พบข้อบกพร่อง</p>
-                        <h3 id="statDefect" class="text-2xl font-bold text-rose-700 mt-1">0</h3>
-                    </div>
-                    <div class="p-3.5 bg-rose-100 text-rose-800 rounded-2xl text-base border border-rose-200"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                </div>
-                <div class="bg-warm-50 border border-warm-200 p-5 rounded-3xl shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-[11px] font-bold uppercase tracking-wider text-warm-800">ฟอร์มที่เลือก</p>
-                        <h3 id="statCurrentFormCode" class="text-xs font-bold text-amber-700 mt-1.5 truncate max-w-[130px]">ทั้งหมด</h3>
-                    </div>
-                    <div class="p-3.5 bg-amber-100 text-amber-800 rounded-2xl text-base border border-amber-200"><i class="fa-solid fa-bolt"></i></div>
-                </div>
-            </section>
-
-            <!-- Search & Toolbar -->
-            <section class="bg-warm-50 border border-warm-200 p-4 rounded-3xl shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="w-full md:w-96 relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-warm-800 text-xs"><i class="fa-solid fa-magnifying-glass"></i></span>
-                    <input type="text" id="searchInput" oninput="filterWorkOrders()" placeholder="ค้นหา Station ID, สถานที่ หรือ Work Order..." class="w-full pl-11 pr-4 py-2.5 bg-white border border-warm-300 text-warm-900 rounded-2xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500 transition">
-                </div>
-                <div class="flex items-center gap-3 w-full md:w-auto justify-end">
-                    <select id="statusFilter" onchange="filterWorkOrders()" class="bg-white border border-warm-300 text-warm-900 rounded-2xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium">
-                        <option value="">สถานะทั้งหมด</option>
-                        <option value="ปกติ">ปกติ</option>
-                        <option value="ชำรุด">ชำรุด / มีข้อบกพร่อง</option>
-                    </select>
-                    <button onclick="exportCSV()" class="bg-white hover:bg-warm-100 text-warm-900 border border-warm-300 px-4 py-2.5 rounded-2xl text-xs font-semibold transition flex items-center space-x-2 shadow-sm">
-                        <i class="fa-solid fa-file-excel text-emerald-700"></i><span>Export CSV</span>
-                    </button>
-                </div>
-            </section>
-
-            <!-- Data Table -->
-            <section class="bg-warm-50 border border-warm-200 rounded-3xl shadow-sm overflow-hidden">
-                <div class="p-5 border-b border-warm-200 flex justify-between items-center bg-warm-100/60">
-                    <div>
-                        <h3 id="activeFormTitle" class="font-bold text-warm-900 text-sm">รายการตรวจสอบทั้งหมด</h3>
-                        <p id="activeFormCodeSub" class="text-[11px] text-warm-800 mt-0.5">แสดงข้อมูลทุกแบบฟอร์มในระบบ</p>
-                    </div>
-                    <span id="recordCount" class="text-xs bg-amber-100 text-amber-900 border border-amber-300 font-bold px-3 py-1 rounded-full">0 รายการ</span>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-xs">
-                        <thead>
-                            <tr class="bg-warm-200/60 text-warm-900 uppercase tracking-wider border-b border-warm-200 text-[10px]">
-                                <th class="p-4 font-bold">Work Order / วันที่</th>
-                                <th class="p-4 font-bold">Station ID / สถานที่</th>
-                                <th class="p-4 font-bold">ประเภทแบบฟอร์ม</th>
-                                <th class="p-4 font-bold text-center">ผลการตรวจสอบ</th>
-                                <th class="p-4 font-bold text-center">จัดการ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="workOrderTableBody" class="divide-y divide-warm-200">
-                            <!-- Dynamic Rows -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- Modal Form -->
-    <div id="formModal" class="fixed inset-0 bg-warm-950/40 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-warm-50 border border-warm-200 rounded-3xl shadow-2xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
-            <!-- Modal Header -->
-            <div class="bg-warm-900 border-b border-warm-800 text-white px-6 py-4 flex justify-between items-center shadow-sm">
-                <div class="flex items-center space-x-3">
-                    <div class="bg-amber-500 p-2 rounded-xl text-slate-950 text-xs font-bold"><i class="fa-solid fa-bolt"></i></div>
-                    <h2 id="modalTitle" class="text-sm font-bold tracking-tight text-white">บันทึกผลการตรวจสอบ</h2>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button type="button" onclick="printCurrentModalForm()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold transition flex items-center space-x-1.5 shadow-sm">
-                        <i class="fa-solid fa-print"></i><span>พิมพ์ / PDF</span>
-                    </button>
-                    <button onclick="closeFormModal()" class="text-warm-300 hover:text-white text-lg p-1.5 rounded-xl hover:bg-warm-800 transition"><i class="fa-solid fa-xmark"></i></button>
-                </div>
+                <table class="form-table border-none">
+                    <tr>
+                        <td class="w-1/6 font-semibold bg-slate-50">Station ID</td>
+                        <td class="w-2/6"><input type="text" id="stationId" class="w-full bg-slate-50/50 p-1 rounded border border-slate-300 text-xs" placeholder="ระบุ Station ID"></td>
+                        <td class="w-1/6 font-semibold bg-slate-50">สถานที่</td>
+                        <td class="w-2/6"><input type="text" id="location" class="w-full bg-slate-50/50 p-1 rounded border border-slate-300 text-xs" placeholder="ระบุสถานที่ติดตั้ง"></td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold bg-slate-50">GIS Lat.</td>
+                        <td><input type="text" id="gisLat" class="w-full bg-slate-50/50 p-1 rounded border border-slate-300 text-xs" placeholder="ละติจูด"></td>
+                        <td class="font-semibold bg-slate-50">Long.</td>
+                        <td><input type="text" id="gisLong" class="w-full bg-slate-50/50 p-1 rounded border border-slate-300 text-xs" placeholder="ลองจิจูด"></td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold bg-slate-50">MEA No.1</td>
+                        <td><input type="text" id="meaNo1" class="w-full bg-slate-50/50 p-1 rounded border border-slate-300 text-xs"></td>
+                        <td class="font-semibold bg-slate-50">MEA No.2 / No.3</td>
+                        <td>
+                            <div class="flex space-x-1">
+                                <input type="text" id="meaNo2" class="w-1/2 bg-slate-50/50 p-1 rounded border border-slate-300 text-xs">
+                                <input type="text" id="meaNo3" class="w-1/2 bg-slate-50/50 p-1 rounded border border-slate-300 text-xs">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold bg-slate-50">ยี่ห้อ / ขนาด</td>
+                        <td>
+                            <div class="flex space-x-1">
+                                <input type="text" id="brand" placeholder="ยี่ห้อ" class="w-1/2 bg-slate-50/50 p-1 rounded border border-slate-300 text-xs">
+                                <input type="text" id="capacity" placeholder="ขนาด" class="w-1/2 bg-slate-50/50 p-1 rounded border border-slate-300 text-xs">
+                            </div>
+                        </td>
+                        <td class="font-semibold bg-slate-50">ชนิด / ติดตั้ง</td>
+                        <td>
+                            <div class="flex space-x-1">
+                                <input type="text" id="transformerType" placeholder="ชนิด" class="w-1/2 bg-slate-50/50 p-1 rounded border border-slate-300 text-xs">
+                                <input type="text" id="installType" placeholder="ลักษณะการติดตั้ง" class="w-1/2 bg-slate-50/50 p-1 rounded border border-slate-300 text-xs">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
 
-            <!-- Modal Body -->
-            <div class="p-6 overflow-y-auto space-y-6 flex-grow bg-warm-100/50">
-                <form id="inspectionForm" onsubmit="saveWorkOrder(event)" class="space-y-6">
-                    <input type="hidden" id="editIndex" value="-1">
+            <!-- 2. รายการตรวจสอบบำรุงรักษา -->
+            <div class="border border-black mb-3">
+                <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs flex justify-between items-center">
+                    <span>2 รายการตรวจสอบบำรุงรักษา</span>
+                    <span class="text-[10px] font-normal">ผลการตรวจสอบ (เลือกอย่างใดอย่างหนึ่งต่อรายการ)</span>
+                </div>
+                <table class="form-table">
+                    <thead>
+                        <tr class="bg-slate-100 text-center">
+                            <th rowspan="2" class="w-12">ลำดับ</th>
+                            <th rowspan="2">รายการอุปกรณ์ / หัวข้อตรวจสอบ</th>
+                            <th colspan="3" class="w-40">ผลการตรวจสอบ</th>
+                            <th rowspan="2" class="w-1/3">ข้อบกพร่อง</th>
+                        </tr>
+                        <tr class="bg-slate-100 text-center text-[10px]">
+                            <th class="w-12">ปกติ</th>
+                            <th class="w-12">ชำรุด</th>
+                            <th class="w-12">ไม่มี</th>
+                        </tr>
+                    </thead>
+                    <tbody id="checklistTableBody">
+                        <!-- รายการ 14 หัวข้อตามแบบฟอร์ม SF-07-0-015 จะถูกสร้างด้วย JavaScript -->
+                    </tbody>
+                </table>
+            </div>
 
-                    <!-- Section 1 (Dynamic General Info) -->
-                    <div class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-4">
-                        <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3 flex items-center uppercase tracking-wider">
-                            <span class="bg-amber-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">1</span>
-                            ข้อมูลทั่วไป (General Information)
-                        </h3>
-                        <div id="generalInfoContainer" class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-                            <!-- Injected dynamically -->
+            <!-- 3. ตรวจสอบวัดกระแสและแรงดันไฟฟ้า -->
+            <div class="border border-black mb-3">
+                <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs">
+                    3 ตรวจสอบวัดกระแสและแรงดันไฟฟ้า
+                </div>
+                <div class="p-2 space-y-2 text-xs">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <label class="flex items-center space-x-1"><input type="radio" name="checkTiming" value="กลางวัน" checked> <span>กลางวัน</span></label>
+                        <label class="flex items-center space-x-1"><input type="radio" name="checkTiming" value="กลางคืน"> <span>กลางคืน</span></label>
+                        <div class="flex items-center space-x-1">
+                            <span>เวลา:</span>
+                            <input type="time" id="checkTime" class="border border-slate-300 p-1 rounded text-xs">
                         </div>
+                        <span class="font-semibold ml-4">วิธีการ:</span>
+                        <label class="flex items-center space-x-1"><input type="radio" name="checkMethod" value="วัดหน้างาน" checked> <span>วัดหน้างาน</span></label>
+                        <label class="flex items-center space-x-1"><input type="radio" name="checkMethod" value="TLM"> <span>TLM</span></label>
                     </div>
 
-                    <!-- Section 2: Checklist -->
-                    <div class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-4">
-                        <div id="extraHeaderContainer"></div>
-                        <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3 flex items-center uppercase tracking-wider">
-                            <span class="bg-amber-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">2</span>
-                            รายการตรวจสอบตามแบบฟอร์มมาตรฐาน
-                        </h3>
-                        <div class="overflow-x-auto rounded-2xl border border-warm-200">
-                            <table class="w-full text-left text-xs border-collapse bg-white">
-                                <thead>
-                                    <tr class="bg-warm-100 text-warm-900 text-[11px] border-b border-warm-200">
-                                        <th class="p-3.5 w-12 text-center font-bold">ลำดับ</th>
-                                        <th class="p-3.5 font-bold">รายการอุปกรณ์ / หัวข้อตรวจสอบ</th>
-                                        <th class="p-3.5 text-center w-20 font-bold text-emerald-700">ปกติ</th>
-                                        <th class="p-3.5 text-center w-20 font-bold text-amber-700">ชำรุด</th>
-                                        <th class="p-3.5 text-center w-20 font-bold text-warm-500">ไม่มี</th>
-                                        <th class="p-3.5 font-bold">ข้อบกพร่อง</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="dynamicChecklistBody" class="divide-y divide-warm-200">
-                                    <!-- Dynamic rows -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Section 3 (Conditional) -->
-                    <div id="electricalSectionContainer" class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-4 hidden">
-                        <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3 flex items-center uppercase tracking-wider">
-                            <span class="bg-amber-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">3</span>
-                            ตรวจสอบวัดกระแสและแรงดันไฟฟ้า
-                        </h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs bg-warm-100/60 p-4 rounded-2xl border border-warm-200">
-                            <div>
-                                <label class="font-semibold text-warm-800 block mb-2">ช่วงเวลาตรวจสอบ:</label>
-                                <div class="flex space-x-4">
-                                    <label class="flex items-center space-x-2 text-warm-900"><input type="radio" name="checkTiming" value="กลางวัน" checked class="text-amber-600"> <span>กลางวัน</span></label>
-                                    <label class="flex items-center space-x-2 text-warm-900"><input type="radio" name="checkTiming" value="กลางคืน" class="text-amber-600"> <span>กลางคืน</span></label>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="font-semibold text-warm-800 block mb-2">เวลา:</label>
-                                <input type="time" id="checkTime" class="w-full bg-white border border-warm-300 rounded-xl p-2">
-                            </div>
-                            <div>
-                                <label class="font-semibold text-warm-800 block mb-2">วิธีการตรวจสอบ:</label>
-                                <div class="flex space-x-4">
-                                    <label class="flex items-center space-x-2 text-warm-900"><input type="radio" name="checkMethod" value="วัดหน้างาน" checked class="text-amber-600"> <span>วัดหน้างาน</span></label>
-                                    <label class="flex items-center space-x-2 text-warm-900"><input type="radio" name="checkMethod" value="TLM" class="text-amber-600"> <span>TLM</span></label>
-                                </div>
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <div class="border border-slate-400 p-1.5 rounded">
+                            <span class="font-bold block mb-1 text-[11px]">แรงดันไฟฟ้า (V)</span>
+                            <div class="grid grid-cols-3 gap-1">
+                                <div>V1-N=<input type="number" step="0.1" id="v1n" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
+                                <div>V2-N=<input type="number" step="0.1" id="v2n" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
+                                <div>V3-N=<input type="number" step="0.1" id="v3n" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
+                                <div>V1-2=<input type="number" step="0.1" id="v12" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
+                                <div>V1-3=<input type="number" step="0.1" id="v13" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
+                                <div>V2-3=<input type="number" step="0.1" id="v23" class="w-12 border border-slate-300 p-0.5 rounded text-center"></div>
                             </div>
                         </div>
-
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs">
-                            <div class="bg-warm-100/50 p-4 rounded-2xl border border-warm-200 space-y-3">
-                                <h4 class="font-bold text-warm-900 uppercase tracking-wider text-[11px]">แรงดันไฟฟ้า (V)</h4>
-                                <div class="grid grid-cols-3 gap-2">
-                                    <div><span class="text-warm-700 font-medium">V1-N</span><input type="number" step="0.1" id="v1n" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 mt-1"></div>
-                                    <div><span class="text-warm-700 font-medium">V2-N</span><input type="number" step="0.1" id="v2n" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 mt-1"></div>
-                                    <div><span class="text-warm-700 font-medium">V3-N</span><input type="number" step="0.1" id="v3n" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 mt-1"></div>
-                                    <div><span class="text-warm-700 font-medium">V1-2</span><input type="number" step="0.1" id="v12" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 mt-1"></div>
-                                    <div><span class="text-warm-700 font-medium">V1-3</span><input type="number" step="0.1" id="v13" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 mt-1"></div>
-                                    <div><span class="text-warm-700 font-medium">V2-3</span><input type="number" step="0.1" id="v23" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 mt-1"></div>
-                                </div>
+                        <div class="border border-slate-400 p-1.5 rounded space-y-1">
+                            <span class="font-bold block mb-1 text-[11px]">กระแสไฟฟ้า (A)</span>
+                            <div class="grid grid-cols-4 gap-1">
+                                <div>IN=<input type="number" step="0.1" id="iN" class="w-10 border border-slate-300 p-0.5 rounded text-center"></div>
+                                <div>I1=<input type="number" step="0.1" id="i1" oninput="calcTotalCurrent()" class="w-10 border border-slate-300 p-0.5 rounded text-center"></div>
+                                <div>I2=<input type="number" step="0.1" id="i2" oninput="calcTotalCurrent()" class="w-10 border border-slate-300 p-0.5 rounded text-center"></div>
+                                <div>I3=<input type="number" step="0.1" id="i3" oninput="calcTotalCurrent()" class="w-10 border border-slate-300 p-0.5 rounded text-center"></div>
                             </div>
-                            <div class="bg-warm-100/50 p-4 rounded-2xl border border-warm-200 space-y-3">
-                                <h4 class="font-bold text-warm-900 uppercase tracking-wider text-[11px]">กระแสไฟฟ้า (A)</h4>
-                                <div class="grid grid-cols-4 gap-2">
-                                    <div><span class="text-warm-700 font-medium">I_N</span><input type="number" step="0.1" id="iN" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 mt-1"></div>
-                                    <div><span class="text-warm-700 font-medium">I1</span><input type="number" step="0.1" id="i1" oninput="calculateTotalCurrent()" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 mt-1"></div>
-                                    <div><span class="text-warm-700 font-medium">I2</span><input type="number" step="0.1" id="i2" oninput="calculateTotalCurrent()" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 mt-1"></div>
-                                    <div><span class="text-warm-700 font-medium">I3</span><input type="number" step="0.1" id="i3" oninput="calculateTotalCurrent()" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 mt-1"></div>
-                                </div>
-                                <div class="pt-1">
-                                    <span class="font-semibold text-warm-800 block text-[11px]">ผลรวมกระแสทั้งหมด (A):</span>
-                                    <input type="text" id="totalCurrent" readonly class="w-full bg-white font-bold text-amber-700 border border-warm-300 rounded-xl p-2 text-xs mt-1 shadow-inner" value="0.0">
-                                </div>
+                            <div class="pt-1 flex items-center justify-between">
+                                <span class="font-semibold">ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด:</span>
+                                <input type="text" id="totalCurrent" readonly class="w-20 bg-slate-100 font-bold border border-slate-300 p-0.5 rounded text-center text-blue-700" value="0.0">
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Section 4 & 5: Improvements -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-3">
-                            <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3">สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม</h3>
-                            <textarea id="improvements" rows="3" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 text-xs focus:ring-2 focus:ring-amber-500 transition" placeholder="ระบุข้อเสนอแนะ..."></textarea>
-                        </div>
-                        <div class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-3">
-                            <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3">การปรับปรุงข้อบกพร่อง</h3>
-                            <textarea id="repairDetails" rows="3" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 text-xs focus:ring-2 focus:ring-amber-500 transition" placeholder="ระบุการแก้ไข..."></textarea>
-                        </div>
-                    </div>
+            <!-- 4. สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม -->
+            <div class="border border-black mb-3">
+                <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs">
+                    4 สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :
+                </div>
+                <div class="p-1">
+                    <textarea id="improvements" rows="2" class="w-full p-1 text-xs border border-slate-300 rounded resize-none" placeholder="บันทึกข้อเสนอแนะ..."></textarea>
+                </div>
+            </div>
 
-                    <!-- Signatures -->
-                    <div class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-3">
-                        <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3">ข้อมูลผู้ปฏิบัติงาน / การลงนาม</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                            <div class="space-y-2.5 p-4 bg-warm-100/70 rounded-2xl border border-warm-200">
-                                <span class="font-bold text-warm-900 block">ผู้ตรวจ (Inspector)</span>
-                                <input type="text" id="inspectorName" placeholder="ชื่อ-นามสกุล" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5">
-                                <input type="text" id="inspectorPos" placeholder="ตำแหน่ง" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5">
-                                <input type="date" id="inspectorDate" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5">
-                            </div>
-                            <div class="space-y-2.5 p-4 bg-warm-100/70 rounded-2xl border border-warm-200">
-                                <span class="font-bold text-warm-900 block">ผู้ตรวจสอบ (Verified By)</span>
-                                <input type="text" id="verifierName" placeholder="ชื่อ-นามสกุล" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5">
-                                <input type="text" id="verifierPos" placeholder="ตำแหน่ง" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5">
-                                <input type="date" id="verifierDate" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5">
-                            </div>
-                        </div>
-                    </div>
+            <!-- 5. การปรับปรุงข้อบกพร่อง -->
+            <div class="border border-black mb-4">
+                <div class="bg-slate-200 border-b border-black px-2 py-1 font-bold text-xs">
+                    5 การปรับปรุงข้อบกพร่อง :
+                </div>
+                <div class="p-1">
+                    <textarea id="repairDetails" rows="2" class="w-full p-1 text-xs border border-slate-300 rounded resize-none" placeholder="บันทึกรายละเอียดการแก้ไข..."></textarea>
+                </div>
+            </div>
 
-                    <!-- Image Upload -->
-                    <div class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-3">
-                        <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3 flex items-center justify-between">
-                            <span><i class="fa-solid fa-camera mr-2 text-amber-600"></i> รูปถ่ายประกอบหน้างาน</span>
-                            <label class="bg-warm-200 hover:bg-warm-300 text-warm-900 border border-warm-300 px-4 py-2 rounded-2xl text-xs cursor-pointer shadow-sm transition flex items-center space-x-2">
-                                <i class="fa-solid fa-upload text-amber-700"></i><span>เพิ่มรูปภาพ</span>
-                                <input type="file" id="imageInput" accept="image/*" multiple onchange="handleImageUpload(event)" class="hidden">
-                            </label>
-                        </h3>
-                        <div id="imagePreviewContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <p class="text-xs text-warm-500 col-span-full text-center py-4 italic">ยังไม่มีรูปภาพประกอบ</p>
+            <!-- Signatures Section -->
+            <table class="form-table mb-2">
+                <tr>
+                    <td class="w-1/2 align-top h-20">
+                        <div class="space-y-1">
+                            <div>ผู้ตรวจ: <input type="text" id="inspectorName" class="border-b border-dotted border-black w-3/4 p-0.5 text-xs"></div>
+                            <div>ตำแหน่ง: <input type="text" id="inspectorPos" class="border-b border-dotted border-black w-3/4 p-0.5 text-xs"></div>
+                            <div>วันที่: <input type="date" id="inspectorDate" class="border-b border-dotted border-black p-0.5 text-xs"></div>
                         </div>
-                    </div>
+                    </td>
+                    <td class="w-1/2 align-top h-20">
+                        <div class="space-y-1">
+                            <div>ผู้ตรวจสอบ: <input type="text" id="verifierName" class="border-b border-dotted border-black w-3/4 p-0.5 text-xs"></div>
+                            <div>ตำแหน่ง: <input type="text" id="verifierPos" class="border-b border-dotted border-black w-3/4 p-0.5 text-xs"></div>
+                            <div>วันที่: <input type="date" id="verifierDate" class="border-b border-dotted border-black p-0.5 text-xs"></div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-                    <!-- Footer Actions -->
-                    <div class="flex justify-end space-x-3 pt-2">
-                        <button type="button" onclick="closeFormModal()" class="bg-warm-200 hover:bg-warm-300 text-warm-900 px-5 py-3 rounded-2xl text-xs font-semibold transition">ยกเลิก</button>
-                        <button type="submit" class="bg-warm-900 hover:bg-warm-800 text-white font-bold px-6 py-3 rounded-2xl text-xs shadow-lg transition flex items-center space-x-2">
-                            <i class="fa-solid fa-floppy-disk"></i><span>บันทึกข้อมูล Work Order</span>
-                        </button>
-                    </div>
-                </form>
+            <div class="flex justify-between items-center text-[10px] text-slate-500 pt-2 border-t border-slate-300">
+                <span>ปรับปรุงครั้งที่ 0 วันที่...</span>
+                <span>SF-07-0-015</span>
+            </div>
+        </form>
+    </main>
+
+    <!-- History Modal (Non-Printable) -->
+    <div id="historyModal" class="no-print fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="font-bold text-sm"><i class="fa-solid fa-clock-rotate-left mr-2"></i> ประวัติแบบฟอร์มที่บันทึกไว้ในระบบ</h3>
+                <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-3 flex-grow" id="historyListContainer">
+                <!-- รายการประวัติจะถูกแสดงที่นี่ -->
             </div>
         </div>
     </div>
 
-    <!-- Toast -->
-    <div id="toast" class="fixed bottom-6 right-6 bg-warm-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50 text-xs font-medium border border-warm-800">
+    <!-- Toast Notification -->
+    <div id="toast" class="no-print fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50 text-xs font-medium">
         <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
         <span id="toastMessage">บันทึกข้อมูลเรียบร้อยแล้ว</span>
     </div>
 
-    <!-- JavaScript Application Logic -->
+    <!-- Script Logic -->
     <script>
-        const formsData = [
-            { code: "SF-07-0-015", name: "แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย", items: ["Drop Fuse", "Station Post Type Insulator", "สายเข้า-ออก Drop Fuse", "คอนสาย", "อุปกรณ์ป้องกันสัตว์", "Low Voltage Capacitor", "กับดักฟ้าผ่า (L/A)", "ตัวถังหม้อแปลง", "Bushing HV-LV", "Cover (Bushing, L/A, Term. kit)", "สายหน้าหม้อแปลง LV", "LV Ground", "HV Ground", "CT-TLM Meter (ถ้ามี)"] },
-            { 
-                code: "SF-07-0-016", 
-                name: "แบบตรวจสอบบำรุงรักษา Load Break Switch", 
-                items: [
-                    "2.1 ตัวถัง LBS /สลักล็อคการปลดสับ", "2.2 สถานะก๊าซ SF6", "2.3 Bushing", "2.4 กับดักฟ้าผ่า", "2.5 VT", "2.6 Drop Fuse ลง VT", 
-                    "2.7 คอนสาย", "2.8 สายควบคุม LBS", "2.9 อุปกรณ์ป้องกันสัตว์", "2.10 ไฟสถานะหน้าตู้", "2.11 แหล่งจ่ายไฟฟ้า และสายควบคุม", 
-                    "2.12 สภาพแบตเตอรี่หรือ Capacitor", "2.13 Ground HV (L/A, LBS)", "2.14 Ground LV (ตู้ Control)", "2.15 ทดสอบทาง Remote", "2.16 ทดสอบทาง Local", 
-                    "2.17 แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "2.18 การทดสอบ ATS"
-                ] 
-            },
-            { 
-                code: "SF-07-0-017", 
-                name: "แบบตรวจสอบบำรุงรักษา Sectionalizer", 
-                items: [
-                    "2.1 ตัวถัง SZ /สลักล็อคการปลดสับ", "2.2 สถานะก๊าซ SF6", "2.3 Bushing", "2.4 กับดักฟ้าผ่า", "2.5 คอนสาย", "2.6 สายควบคุม SZ", 
-                    "2.7 อุปกรณ์ป้องกันสัตว์", "2.8 ไฟสถานะหน้าตู้", "2.9 แหล่งจ่ายไฟฟ้า และสายควบคุม", "2.10 สภาพแบตเตอรี่หรือ Capacitor", 
-                    "2.11 Ground HV (L/A, SZ)", "2.12 Ground LV (ตู้ Control)", "2.13 ทดลองทาง Local"
-                ] 
-            },
-            { code: "SF-07-0-018", name: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)", items: ["สภาพภายนอกตู้ครอบ", "ประตูตู้ครอบ", "ฐานตู้ครอบ", "สภาพ RMU / ห้อง", "ก๊าซ SF6", "ตัวแสดงสถานะสวิทซ์", "กุญแจล็อคป้องกันการปลด-สับ", "คันสับ", "ตัวตรวจสอบแรงดัน", "ตัวตรวจสอบการลัดวงจร", "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "สภาพแบตเตอรี่หรือ UPS", "FRTU", "อุปกรณ์ควบคุมอื่นๆ", "การปลดสับด้วย REMOTE", "การปลดสับด้วย LOCAL", "การปลดสับด้วยคันสับ", "แรงดันไฟฟ้าเลี้ยงระบบ ATF", "การทดสอบ ATF"] },
-            { code: "SF-07-0-019", name: "แบบตรวจสอบบำรุงรักษา Unit Substation", items: ["สภาพภายนอก Enclosure", "ประตู Enclosure", "ฐานตู้ / นั่งร้าน", "สภาพ RMU", "ก๊าซ SF6 (RMU)", "ตัวแสดงสถานะสวิตช์", "กุญแจล็อคป้องกันการปลด-สับ", "คันสับ", "ตัวตรวจสอบแรงดัน", "ตัวตรวจสอบการลัดวงจร", "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "สภาพแบตเตอรี่ หรือ UPS", "FRTU", "อุปกรณ์ควบคุมอื่นๆ", "การปลดสับด้วย REMOTE", "การปลดสับด้วย LOCAL", "การปลดสับด้วยคันสับ", "แรงดันไฟฟ้าเลี้ยงระบบ ATF", "การทดสอบ ATF", "ตัวถังหม้อแปลง", "Bushing HV-LV", "สายหน้าหม้อแปลง HV-LV", "LV Ground", "HV Ground", "สภาพทั่วไป CB หรือ FUSE", "สายไฟฟ้าแรงต่ำ", "บัสบาร์", "เครื่องวัดไฟฟ้า", "CT-TLM Meter", "จุดร้อนแดงส่องด้วยกล้องเทอร์โมวิชั่น"] },
-            { code: "SF-07-0-020", name: "แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV", items: ["Drop Fuse", "Station Post Type Insulator", "สายเข้า-ออก Drop Fuse", "คอนสาย", "อุปกรณ์ป้องกันสัตว์", "กับดักฟ้าผ่า (L/A)", "Cover (Bushing, L/A)", "HV Ground", "Vacuum CB", "Supply", "Fuse Control ภายในตู้", "หลอดไฟแสดงสถานะในตู้", "หน้าจอ Digital Control", "เสียงนาฬิกาเดิน", "อุปกรณ์ทั่วไปภายในตู้", "ตัวถังคาปาซิเตอร์", "Bushing", "Fuse ภายใน", "ค่าคาปาซิแตนท์ที่วัดได้"] },
-            { code: "SF-07-0-021", name: "แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย", items: ["สถานะ MV.SW.", "สถานะ NP", "เบอร์ตู้/สีตู้", "ระบบกราวด์", "อุปกรณ์ป้องกันแรงดันเกินภายนอก", "ตัวถัง รอยต่อหม้อแปลง", "ฝาตู้", "การแขวนป้ายแดงห้ามปลด-สับ", "การทดสอบปลด-สับ MV.SW.", "อุปกรณ์ภายใน", "รีเลย์", "ตู้อุปกรณ์ส่งสัญญาณ", "ไฟเลี้ยง / CB & FUSE", "อินเตอร์เน็ตสวิตช์"] },
-            { code: "SF-07-0-022", name: "แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง", items: ["สวิทซ์แรงกลาง: สภาพภายนอก", "สวิทซ์แรงกลาง: ก๊าซ SF6", "สวิทซ์แรงกลาง: หัวต่อสาย/สายไฟฟ้า", "สวิทซ์แรงกลาง: ระบบกราวด์", "หม้อแปลง: ตัวถัง", "หม้อแปลง: น้ำมัน", "หม้อแปลง: ฟิวส์ 12 kV", "หม้อแปลง: อุณหภูมิสูงสุด", "ด้านแรงต่ำ: สายไฟฟ้า", "ด้านแรงต่ำ: คาปาซิเตอร์แรงต่ำ"] },
-            { code: "SF-07-0-023", name: "แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย", items: ["ทดสอบน้ำมันครั้งที่ 1 (Breakdown Voltage)", "กรองน้ำมันครั้งที่ 1 และทดสอบซ้ำ", "กรองน้ำมันครั้งที่ 2 และทดสอบซ้ำ"] },
-            { code: "SF-07-0-024", name: "รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)", items: ["ตรวจสอบอุณหภูมิเทียบจุดวัด (Delta T)", "ประเมินระดับความสำคัญ (1-4)", "การส่งต่อดำเนินการแก้ไข", "การดำเนินการปรับปรุงแก้ไข"] },
-            { code: "SF-07-0-025", name: "รายงานผลการตรวจสอบการคายประจุไฟฟ้า (Acoustic Camera)", items: ["ตรวจสอบจุดที่ผิดปกติ", "ระดับความเข้มเสียง (dB)", "ประเมินระดับความรุนแรง (สูงมาก/สูง/ปานกลาง/ต่ำ)", "การส่งต่อดำเนินการแก้ไข"] }
+        const checklistItems = [
+            "2.1 Drop Fuse",
+            "2.2 Station Post Type Insulator",
+            "2.3 สายเข้า-ออก Drop Fuse",
+            "2.4 คอนสาย",
+            "2.5 อุปกรณ์ป้องกันสัตว์",
+            "2.6 Low Voltage Capacitor",
+            "2.7 กับดักฟ้าผ่า (L/A)",
+            "2.8 ตัวถังหม้อแปลง",
+            "2.9 Bushing HV-LV",
+            "2.10 Cover (Bushing, L/A, Term. kit)",
+            "2.11 สายหน้าหม้อแปลง LV",
+            "2.12 LV Ground",
+            "2.13 HV Ground",
+            "2.14 CT-TLM Meter (ถ้ามี)"
         ];
 
-        let currentFormCode = "ALL";
-        let workOrders = JSON.parse(localStorage.getItem('mea_all_transformers') || '[]');
-        let uploadedImages = [];
-        let currentUser = JSON.parse(localStorage.getItem('mea_user') || 'null');
+        let savedDocuments = JSON.parse(localStorage.getItem('mea_a4_forms') || '[]');
 
         window.addEventListener('DOMContentLoaded', () => {
-            renderFormMenuDropdown();
-            filterWorkOrders();
-            updateDashboardStats();
-            checkUserAuth();
+            renderChecklist();
+            document.getElementById('inspectorDate').value = new Date().toISOString().slice(0,10);
+            document.getElementById('verifierDate').value = new Date().toISOString().slice(0,10);
         });
 
-        function toggleAllFormsDropdown() {
-            const list = document.getElementById('allFormsDropdownList');
-            const arrow = document.getElementById('dropdownArrow');
-            list.classList.toggle('hidden');
-            arrow.classList.toggle('rotate-180');
-        }
-
-        function renderFormMenuDropdown() {
-            const container = document.getElementById('allFormsDropdownList');
-            container.innerHTML = '';
-            
-            const isAllActive = currentFormCode === "ALL";
-            const allBtn = document.createElement('button');
-            allBtn.type = "button";
-            allBtn.onclick = () => selectForm("ALL");
-            allBtn.className = `w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-semibold transition flex items-center justify-between ${isAllActive ? 'bg-amber-600 text-white font-bold' : 'text-warm-900 hover:bg-warm-100'}`;
-            allBtn.innerHTML = `<span><i class="fa-solid fa-border-all mr-1.5"></i> แสดงทั้งหมดรวมกัน</span>`;
-            container.appendChild(allBtn);
-
-            formsData.forEach(form => {
-                const isActive = form.code === currentFormCode;
-                const btn = document.createElement('button');
-                btn.type = "button";
-                btn.onclick = () => {
-                    selectForm(form.code);
-                    openFormModal(); // คลิกแล้วเปิดฟอร์มกรอกข้อมูลทันที
-                };
-                btn.className = `w-full text-left px-3.5 py-2.5 rounded-xl text-xs transition flex items-center justify-between ${isActive ? 'bg-amber-100 text-amber-900 font-bold border border-amber-300' : 'text-warm-900 hover:bg-warm-100'}`;
-                btn.innerHTML = `
-                    <div class="truncate pr-1">
-                        <span class="block">${form.code}</span>
-                        <span class="truncate block text-[9px] text-warm-500">${form.name}</span>
-                    </div>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40"></i>
-                `;
-                container.appendChild(btn);
-            });
-        }
-
-        function selectForm(code) {
-            currentFormCode = code;
-            if (code === "ALL") {
-                document.getElementById('activeFormTitle').innerText = "รายการตรวจสอบทั้งหมด";
-                document.getElementById('activeFormCodeSub').innerText = "แสดงข้อมูลทุกแบบฟอร์มในระบบ";
-                document.getElementById('statCurrentFormCode').innerText = "ทั้งหมด";
-            } else {
-                const formInfo = formsData.find(f => f.code === code);
-                document.getElementById('activeFormTitle').innerText = formInfo.name;
-                document.getElementById('activeFormCodeSub').innerText = `รหัสแบบฟอร์ม: ${formInfo.code}`;
-                document.getElementById('statCurrentFormCode').innerText = formInfo.code;
-            }
-            renderFormMenuDropdown();
-            filterWorkOrders();
-        }
-
-        function handleGoogleLogin() {
-            currentUser = { name: "ศิรภัสสร กลับสุข", email: "siraphatson.k@mea.or.th", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Siraphatson" };
-            localStorage.setItem('mea_user', JSON.stringify(currentUser));
-            checkUserAuth();
-            showToast("เข้าสู่ระบบสำเร็จ", "success");
-        }
-
-        function handleLogout() {
-            currentUser = null;
-            localStorage.removeItem('mea_user');
-            checkUserAuth();
-            showToast("ออกจากระบบแล้ว", "info");
-        }
-
-        function checkUserAuth() {
-            const loginBtn = document.getElementById('googleLoginBtn');
-            const userProfile = document.getElementById('userProfile');
-            if (currentUser) {
-                loginBtn.classList.add('hidden');
-                userProfile.classList.remove('hidden');
-                userProfile.classList.add('flex');
-                document.getElementById('userName').innerText = currentUser.name;
-                document.getElementById('userAvatar').src = currentUser.avatar;
-            } else {
-                loginBtn.classList.remove('hidden');
-                userProfile.classList.add('hidden');
-                userProfile.classList.remove('flex');
-            }
-        }
-
-        function renderGeneralInfoFields(formCode, data = {}) {
-            const container = document.getElementById('generalInfoContainer');
-            container.innerHTML = '';
-
-            if (formCode === "SF-07-0-016") {
-                container.innerHTML = `
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label>
-                        <input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label>
-                        <div class="flex space-x-2">
-                            <input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                            <input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label>
-                        <input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">ยี่ห้อ LBS</label>
-                        <input type="text" id="lbsBrand" value="${data.lbsBrand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">LBS MEA No.</label>
-                        <input type="text" id="lbsMeaNo" value="${data.lbsMeaNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">Switch No.</label>
-                        <input type="text" id="switchNo" value="${data.switchNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">ยี่ห้อ VT</label>
-                        <input type="text" id="vtBrand" value="${data.vtBrand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">VT MEA No.</label>
-                        <input type="text" id="vtMeaNo" value="${data.vtMeaNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">ตู้ OFDF No.</label>
-                        <input type="text" id="ofdfNo" value="${data.ofdfNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                `;
-                document.getElementById('extraHeaderContainer').innerHTML = `
-                    <div class="bg-warm-100 p-4 rounded-2xl border border-warm-200 mb-4 text-xs space-y-2">
-                        <div class="flex items-center space-x-6">
-                            <span class="font-bold text-warm-900">- สถานะสวิตช์:</span>
-                            <label class="flex items-center space-x-2"><input type="radio" name="lbsSwitchStatus" value="ปลด" ${data.lbsSwitchStatus === 'ปลด' ? 'checked' : ''}> <span>ปลด</span></label>
-                            <label class="flex items-center space-x-2"><input type="radio" name="lbsSwitchStatus" value="สับ" ${data.lbsSwitchStatus === 'สับ' ? 'checked' : ''}> <span>สับ</span></label>
-                        </div>
-                        <div class="flex items-center space-x-6">
-                            <span class="font-bold text-warm-900">- สถานะระบบ SCADA/EMS/DMS:</span>
-                            <label class="flex items-center space-x-2"><input type="radio" name="scadaStatus" value="online" ${data.scadaStatus === 'online' ? 'checked' : ''}> <span>online</span></label>
-                            <label class="flex items-center space-x-2"><input type="radio" name="scadaStatus" value="offline" ${data.scadaStatus === 'offline' ? 'checked' : ''}> <span>offline</span></label>
-                        </div>
-                    </div>
-                `;
-            } else if (formCode === "SF-07-0-017") {
-                container.innerHTML = `
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label>
-                        <input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label>
-                        <div class="flex space-x-2">
-                            <input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                            <input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label>
-                        <input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">ยี่ห้อ SZ</label>
-                        <input type="text" id="szBrand" value="${data.szBrand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">SZ MEA No.</label>
-                        <input type="text" id="szMeaNo" value="${data.szMeaNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">Switch No.</label>
-                        <input type="text" id="switchNo" value="${data.switchNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                `;
-                document.getElementById('extraHeaderContainer').innerHTML = `
-                    <div class="bg-warm-100 p-4 rounded-2xl border border-warm-200 mb-4 text-xs space-y-2">
-                        <div class="flex items-center space-x-6">
-                            <span class="font-bold text-warm-900">- สถานะสวิตช์:</span>
-                            <label class="flex items-center space-x-2"><input type="radio" name="lbsSwitchStatus" value="ปลด" ${data.lbsSwitchStatus === 'ปลด' ? 'checked' : ''}> <span>ปลด</span></label>
-                            <label class="flex items-center space-x-2"><input type="radio" name="lbsSwitchStatus" value="สับ" ${data.lbsSwitchStatus === 'สับ' ? 'checked' : ''}> <span>สับ</span></label>
-                        </div>
-                    </div>
-                `;
-            } else {
-                document.getElementById('extraHeaderContainer').innerHTML = '';
-                container.innerHTML = `
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label>
-                        <input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label>
-                        <input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label>
-                        <div class="flex space-x-2">
-                            <input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                            <input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">MEA No.</label>
-                        <input type="text" id="meaNo1" value="${data.meaNo1 || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">อุปกรณ์ (Equipment)</label>
-                        <input type="text" id="brand" value="${data.brand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">สายป้อน (Feeder)</label>
-                        <input type="text" id="capacity" value="${data.capacity || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                `;
-            }
-        }
-
-        function renderDynamicChecklist(formCode, existingData = []) {
-            const formInfo = formsData.find(f => f.code === formCode);
-            renderGeneralInfoFields(formCode, existingData.generalInfo || {});
-            
-            const tbody = document.getElementById('dynamicChecklistBody');
+        function renderChecklist(data = []) {
+            const tbody = document.getElementById('checklistTableBody');
             tbody.innerHTML = '';
-            
-            const electricalSection = document.getElementById('electricalSectionContainer');
-            if (formCode === "SF-07-0-015") {
-                electricalSection.classList.remove('hidden');
-            } else {
-                electricalSection.classList.add('hidden');
-            }
-
-            formInfo.items.forEach((item, index) => {
-                const itemData = (existingData.checklist && existingData.checklist[index]) || { status: 'ปกติ', defect: '' };
+            checklistItems.forEach((item, index) => {
+                const itemData = data[index] || { status: 'ปกติ', defect: '' };
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-warm-100/50 transition";
                 tr.innerHTML = `
-                    <td class="p-3.5 text-center font-semibold text-warm-400">${index + 1}</td>
-                    <td class="p-3.5 font-medium text-warm-900">${item}</td>
-                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ปกติ" ${itemData.status === 'ปกติ' ? 'checked' : ''} class="text-emerald-600 focus:ring-emerald-500"></td>
-                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ชำรุด" ${itemData.status === 'ชำรุด' ? 'checked' : ''} class="text-amber-600 focus:ring-amber-500"></td>
-                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ไม่มี" ${itemData.status === 'ไม่มี' ? 'checked' : ''} class="text-warm-400 focus:ring-warm-400"></td>
-                    <td class="p-3.5"><input type="text" id="defect_${index}" value="${itemData.defect || ''}" placeholder="ระบุข้อบกพร่อง..." class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 text-xs focus:bg-white focus:ring-2 focus:ring-amber-500"></td>
+                    <td class="text-center font-medium">${index + 1}</td>
+                    <td>${item}</td>
+                    <td class="text-center"><input type="radio" name="ch_${index}" value="ปกติ" ${itemData.status === 'ปกติ' ? 'checked' : ''} class="text-blue-600"></td>
+                    <td class="text-center"><input type="radio" name="ch_${index}" value="ชำรุด" ${itemData.status === 'ชำรุด' ? 'checked' : ''} class="text-amber-600"></td>
+                    <td class="text-center"><input type="radio" name="ch_${index}" value="ไม่มี" ${itemData.status === 'ไม่มี' ? 'checked' : ''} class="text-slate-400"></td>
+                    <td><input type="text" id="def_${index}" value="${itemData.defect || ''}" class="w-full border border-slate-300 p-0.5 rounded text-xs" placeholder="ระบุข้อบกพร่อง..."></td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        function openFormModal(editIdx = -1) {
-            let targetFormCode = currentFormCode;
-            if (targetFormCode === "ALL") targetFormCode = "SF-07-0-015";
+        function calcTotalCurrent() {
+            const i1 = parseFloat(document.getElementById('i1').value) || 0;
+            const i2 = parseFloat(document.getElementById('i2').value) || 0;
+            const i3 = parseFloat(document.getElementById('i3').value) || 0;
+            document.getElementById('totalCurrent').value = (i1 + i2 + i3).toFixed(1);
+        }
 
-            document.getElementById('formModal').classList.remove('hidden');
-            const formInfo = formsData.find(f => f.code === targetFormCode);
+        function resetForm() {
+            document.getElementById('meaForm').reset();
+            document.getElementById('docId').value = '';
+            renderChecklist();
+            showToast("ล้างฟอร์มเรียบร้อยแล้ว", "info");
+        }
+
+        function saveDocument() {
+            const docId = document.getElementById('docId').value || `WO-${Date.now()}`;
             
-            if (editIdx === -1) {
-                document.getElementById('inspectionForm').reset();
-                document.getElementById('editIndex').value = -1;
-                document.getElementById('modalTitle').innerText = `บันทึกผลตรวจสอบ: ${formInfo.code} (${formInfo.name})`;
-                if (currentUser) document.getElementById('inspectorName').value = currentUser.name;
-                document.getElementById('inspectorDate').value = new Date().toISOString().slice(0,10);
-                uploadedImages = [];
-                renderImagePreview();
-                renderGeneralInfoFields(targetFormCode);
-                renderDynamicChecklist(targetFormCode);
-            } else {
-                const wo = workOrders[editIdx];
-                document.getElementById('editIndex').value = editIdx;
-                document.getElementById('modalTitle').innerText = `แก้ไข Work Order: ${wo.workOrderId}`;
-                
-                renderGeneralInfoFields(wo.formCode, wo.generalInfo);
-                renderDynamicChecklist(wo.formCode, wo);
-
-                if(wo.formCode === "SF-07-0-016" || wo.formCode === "SF-07-0-017") {
-                    if(wo.generalInfo.lbsSwitchStatus) {
-                        const radio = document.querySelector(`input[name="lbsSwitchStatus"][value="${wo.generalInfo.lbsSwitchStatus}"]`);
-                        if(radio) radio.checked = true;
-                    }
-                    if(wo.generalInfo.scadaStatus) {
-                        const radio = document.querySelector(`input[name="scadaStatus"][value="${wo.generalInfo.scadaStatus}"]`);
-                        if(radio) radio.checked = true;
-                    }
-                }
-
-                if (wo.electricalData) {
-                    const timingRadio = document.querySelector(`input[name="checkTiming"][value="${wo.electricalData.timing}"]`);
-                    if (timingRadio) timingRadio.checked = true;
-                    const methodRadio = document.querySelector(`input[name="checkMethod"][value="${wo.electricalData.method}"]`);
-                    if (methodRadio) methodRadio.checked = true;
-                    document.getElementById('checkTime').value = wo.electricalData.checkTime || '';
-                    document.getElementById('v1n').value = wo.electricalData.v1n || '';
-                    document.getElementById('v2n').value = wo.electricalData.v2n || '';
-                    document.getElementById('v3n').value = wo.electricalData.v3n || '';
-                    document.getElementById('v12').value = wo.electricalData.v12 || '';
-                    document.getElementById('v13').value = wo.electricalData.v13 || '';
-                    document.getElementById('v23').value = wo.electricalData.v23 || '';
-                    document.getElementById('iN').value = wo.electricalData.iN || '';
-                    document.getElementById('i1').value = wo.electricalData.i1 || '';
-                    document.getElementById('i2').value = wo.electricalData.i2 || '';
-                    document.getElementById('i3').value = wo.electricalData.i3 || '';
-                    document.getElementById('totalCurrent').value = wo.electricalData.totalCurrent || '0.0';
-                }
-
-                document.getElementById('improvements').value = wo.improvements || '';
-                document.getElementById('repairDetails').value = wo.repairDetails || '';
-                
-                if (wo.signatures) {
-                    document.getElementById('inspectorName').value = wo.signatures.inspectorName || '';
-                    document.getElementById('inspectorPos').value = wo.signatures.inspectorPos || '';
-                    document.getElementById('inspectorDate').value = wo.signatures.inspectorDate || '';
-                    document.getElementById('verifierName').value = wo.signatures.verifierName || '';
-                    document.getElementById('verifierPos').value = wo.signatures.verifierPos || '';
-                    document.getElementById('verifierDate').value = wo.signatures.verifierDate || '';
-                }
-
-                uploadedImages = wo.images || [];
-                renderImagePreview();
-            }
-        }
-
-        function closeFormModal() {
-            document.getElementById('formModal').classList.add('hidden');
-        }
-
-        function printCurrentModalForm() {
-            let targetFormCode = currentFormCode === "ALL" ? "SF-07-0-015" : currentFormCode;
-            const formInfo = formsData.find(f => f.code === targetFormCode);
-
-            const stationId = document.getElementById('stationId')?.value || '-';
-            const location = document.getElementById('location')?.value || '-';
-            const gisLat = document.getElementById('gisLat')?.value || '-';
-            const gisLong = document.getElementById('gisLong')?.value || '-';
-
-            const checklistData = [];
-            formInfo.items.forEach((item, index) => {
-                const statusRadio = document.querySelector(`input[name="check_${index}"]:checked`);
-                const status = statusRadio ? statusRadio.value : 'ปกติ';
-                const defect = document.getElementById(`defect_${index}`).value || '';
-                checklistData.push({ id: item, status, defect });
+            const checklist = checklistItems.map((item, index) => {
+                const selectedRadio = document.querySelector(`input[name="ch_${index}"]:checked`);
+                return {
+                    id: item,
+                    status: selectedRadio ? selectedRadio.value : 'ปกติ',
+                    defect: document.getElementById(`def_${index}`).value
+                };
             });
 
-            const improvements = document.getElementById('improvements').value || '-';
-            const repairDetails = document.getElementById('repairDetails').value || '-';
-            const inspectorName = document.getElementById('inspectorName').value || '-';
-            const inspectorPos = document.getElementById('inspectorPos').value || '-';
-            const inspectorDate = document.getElementById('inspectorDate').value || '-';
-            const verifierName = document.getElementById('verifierName').value || '-';
-            const verifierPos = document.getElementById('verifierPos').value || '-';
-            const verifierDate = document.getElementById('verifierDate').value || '-';
-
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>แบบตรวจสอบ - ${formInfo.code}</title>
-                    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-                    <style>
-                        body { font-family: 'Prompt', sans-serif; font-size: 11px; color: #111; padding: 20px; }
-                        h2 { text-align: center; margin-bottom: 2px; font-size: 15px; }
-                        .subtitle { text-align: center; font-size: 10px; margin-bottom: 15px; color: #555; }
-                        table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
-                        th, td { border: 1px solid #333; padding: 5px 7px; text-align: left; }
-                        th { background: #f0f0f0; }
-                        .section-title { font-weight: bold; background: #e2e8f0; padding: 5px; margin-top: 12px; margin-bottom: 4px; font-size: 12px; }
-                        .sig-table td { height: 50px; vertical-align: bottom; }
-                    </style>
-                </head>
-                <body>
-                    <h2>${formInfo.name}</h2>
-                    <div class="subtitle">การไฟฟ้านครหลวง (MEA) | รหัสแบบฟอร์ม: ${formInfo.code}</div>
-                    
-                    <div class="section-title">1. ข้อมูลทั่วไป</div>
-                    <table>
-                        <tr>
-                            <td><b>Station ID:</b> ${stationId}</td>
-                            <td><b>สถานที่:</b> ${location}</td>
-                            <td><b>GIS Lat/Long:</b> ${gisLat}, ${gisLong}</td>
-                        </tr>
-                    </table>
-
-                    <div class="section-title">2. รายการตรวจสอบบำรุงรักษา</div>
-                    <table>
-                        <tr>
-                            <th style="width: 35px; text-align: center;">ลำดับ</th>
-                            <th>รายการอุปกรณ์ / หัวข้อตรวจสอบ</th>
-                            <th style="width: 45px; text-align: center;">ปกติ</th>
-                            <th style="width: 45px; text-align: center;">ชำรุด</th>
-                            <th style="width: 45px; text-align: center;">ไม่มี</th>
-                            <th>ข้อบกพร่อง</th>
-                        </tr>
-                        ${checklistData.map((c, i) => `
-                            <tr>
-                                <td style="text-align: center;">${i+1}</td>
-                                <td>${c.id}</td>
-                                <td style="text-align: center;">${c.status === 'ปกติ' ? '✓' : ''}</td>
-                                <td style="text-align: center;">${c.status === 'ชำรุด' ? '✓' : ''}</td>
-                                <td style="text-align: center;">${c.status === 'ไม่มี' ? '✓' : ''}</td>
-                                <td>${c.defect || '-'}</td>
-                            </tr>
-                        `).join('')}
-                    </table>
-
-                    <div class="section-title">4 & 5. การปรับปรุงและข้อเสนอแนะ</div>
-                    <table>
-                        <tr><td><b>สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม:</b> ${improvements}</td></tr>
-                        <tr><td><b>การปรับปรุงข้อบกพร่อง:</b> ${repairDetails}</td></tr>
-                    </table>
-
-                    <div class="section-title">การลงนามผู้ปฏิบัติงาน</div>
-                    <table class="sig-table">
-                        <tr>
-                            <td style="width: 50%;">
-                                <b>ผู้ตรวจ:</b> ${inspectorName}<br>
-                                <b>ตำแหน่ง:</b> ${inspectorPos}<br>
-                                <b>วันที่:</b> ${inspectorDate}
-                            </td>
-                            <td style="width: 50%;">
-                                <b>ผู้ตรวจสอบ:</b> ${verifierName}<br>
-                                <b>ตำแหน่ง:</b> ${verifierPos}<br>
-                                <b>วันที่:</b> ${verifierDate}
-                            </td>
-                        </tr>
-                    </table>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.focus();
-            setTimeout(() => { printWindow.print(); }, 500);
-        }
-
-        function getCurrentLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    const latEl = document.getElementById('gisLat');
-                    const longEl = document.getElementById('gisLong');
-                    if(latEl) latEl.value = position.coords.latitude.toFixed(6);
-                    if(longEl) longEl.value = position.coords.longitude.toFixed(6);
-                    showToast("ดึงพิกัด GPS สำเร็จ", "success");
-                }, () => {
-                    showToast("ไม่สามารถดึงพิกัดได้", "error");
-                });
-            } else {
-                showToast("Browser ไม่รองรับ Geolocation", "error");
-            }
-        }
-
-        function calculateTotalCurrent() {
-            const i1 = parseFloat(document.getElementById('i1')?.value) || 0;
-            const i2 = parseFloat(document.getElementById('i2')?.value) || 0;
-            const i3 = parseFloat(document.getElementById('i3')?.value) || 0;
-            const totalEl = document.getElementById('totalCurrent');
-            if(totalEl) totalEl.value = (i1 + i2 + i3).toFixed(1);
-        }
-
-        function handleImageUpload(event) {
-            const files = event.target.files;
-            for (let file of files) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    uploadedImages.push(e.target.result);
-                    renderImagePreview();
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function renderImagePreview() {
-            const container = document.getElementById('imagePreviewContainer');
-            if (uploadedImages.length === 0) {
-                container.innerHTML = `<p class="text-xs text-warm-500 col-span-full text-center py-4 italic">ยังไม่มีรูปภาพประกอบ</p>`;
-                return;
-            }
-            container.innerHTML = '';
-            uploadedImages.forEach((imgSrc, idx) => {
-                const div = document.createElement('div');
-                div.className = "relative rounded-2xl overflow-hidden border border-warm-300 h-24 group bg-white shadow-sm";
-                div.innerHTML = `
-                    <img src="${imgSrc}" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition">
-                    <button type="button" onclick="removeImage(${idx})" class="absolute top-1.5 right-1.5 bg-rose-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs shadow hover:bg-rose-700 transition"><i class="fa-solid fa-trash"></i></button>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function removeImage(idx) {
-            uploadedImages.splice(idx, 1);
-            renderImagePreview();
-        }
-
-        function saveWorkOrder(event) {
-            event.preventDefault();
-            const editIndex = parseInt(document.getElementById('editIndex').value);
-            
-            let formCodeToSave = currentFormCode === "ALL" ? "SF-07-0-015" : currentFormCode;
-            const formInfo = formsData.find(f => f.code === formCodeToSave);
-
-            const checklistData = [];
-            let hasDefect = false;
-            formInfo.items.forEach((item, index) => {
-                const statusRadio = document.querySelector(`input[name="check_${index}"]:checked`);
-                const status = statusRadio ? statusRadio.value : 'ปกติ';
-                const defect = document.getElementById(`defect_${index}`).value;
-                if (status === 'ชำรุด') hasDefect = true;
-                checklistData.push({ id: item, status, defect });
-            });
-
-            let generalInfoObj = {};
-            if(formCodeToSave === "SF-07-0-016" || formCodeToSave === "SF-07-0-017") {
-                generalInfoObj = {
+            const formData = {
+                id: docId,
+                date: new Date().toISOString().slice(0,10),
+                stationId: document.getElementById('stationId').value || 'ไม่ระบุ',
+                location: document.getElementById('location').value || 'ไม่ระบุ',
+                generalInfo: {
                     stationId: document.getElementById('stationId').value,
                     location: document.getElementById('location').value,
                     gisLat: document.getElementById('gisLat').value,
                     gisLong: document.getElementById('gisLong').value,
-                    szBrand: document.getElementById('szBrand')?.value || document.getElementById('lbsBrand')?.value || '',
-                    szMeaNo: document.getElementById('szMeaNo')?.value || document.getElementById('lbsMeaNo')?.value || '',
-                    switchNo: document.getElementById('switchNo')?.value || '',
-                    lbsSwitchStatus: document.querySelector('input[name="lbsSwitchStatus"]:checked')?.value || '',
-                    scadaStatus: document.querySelector('input[name="scadaStatus"]:checked')?.value || ''
-                };
-            } else {
-                generalInfoObj = {
-                    stationId: document.getElementById('stationId').value,
-                    location: document.getElementById('location').value,
-                    gisLat: document.getElementById('gisLat').value,
-                    gisLong: document.getElementById('gisLong').value,
-                    meaNo1: document.getElementById('meaNo1')?.value || '',
-                    brand: document.getElementById('brand')?.value || '',
-                    capacity: document.getElementById('capacity')?.value || ''
-                };
-            }
-
-            const workOrderObj = {
-                workOrderId: editIndex !== -1 ? workOrders[editIndex].workOrderId : `WO-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${Math.floor(100+Math.random()*900)}`,
-                formCode: formCodeToSave,
-                formName: formInfo.name,
-                inspectionDate: editIndex !== -1 ? workOrders[editIndex].inspectionDate : new Date().toISOString().slice(0,10),
-                inspector: currentUser ? currentUser.name : "เจ้าหน้าที่ไฟฟ้า",
-                generalInfo: generalInfoObj,
-                checklist: checklistData,
-                hasDefect: hasDefect,
+                    meaNo1: document.getElementById('meaNo1').value,
+                    meaNo2: document.getElementById('meaNo2').value,
+                    meaNo3: document.getElementById('meaNo3').value,
+                    brand: document.getElementById('brand').value,
+                    capacity: document.getElementById('capacity').value,
+                    transformerType: document.getElementById('transformerType').value,
+                    installType: document.getElementById('installType').value
+                },
+                checklist: checklist,
+                electrical: {
+                    timing: document.querySelector('input[name="checkTiming"]:checked')?.value,
+                    checkTime: document.getElementById('checkTime').value,
+                    method: document.querySelector('input[name="checkMethod"]:checked')?.value,
+                    v1n: document.getElementById('v1n').value,
+                    v2n: document.getElementById('v2n').value,
+                    v3n: document.getElementById('v3n').value,
+                    v12: document.getElementById('v12').value,
+                    v13: document.getElementById('v13').value,
+                    v23: document.getElementById('v23').value,
+                    iN: document.getElementById('iN').value,
+                    i1: document.getElementById('i1').value,
+                    i2: document.getElementById('i2').value,
+                    i3: document.getElementById('i3').value,
+                    totalCurrent: document.getElementById('totalCurrent').value
+                },
                 improvements: document.getElementById('improvements').value,
                 repairDetails: document.getElementById('repairDetails').value,
                 signatures: {
@@ -946,135 +396,118 @@
                     verifierName: document.getElementById('verifierName').value,
                     verifierPos: document.getElementById('verifierPos').value,
                     verifierDate: document.getElementById('verifierDate').value
-                },
-                images: uploadedImages
+                }
             };
 
-            if (editIndex === -1) {
-                workOrders.unshift(workOrderObj);
+            const existingIdx = savedDocuments.findIndex(d => d.id === docId);
+            if(existingIdx >= 0) {
+                savedDocuments[existingIdx] = formData;
             } else {
-                workOrders[editIndex] = workOrderObj;
+                savedDocuments.unshift(formData);
             }
 
-            localStorage.setItem('mea_all_transformers', JSON.stringify(workOrders));
-            closeFormModal();
-            filterWorkOrders();
-            updateDashboardStats();
-            showToast("บันทึกข้อมูลเรียบร้อยแล้ว", "success");
+            localStorage.setItem('mea_a4_forms', JSON.stringify(savedDocuments));
+            document.getElementById('docId').value = docId;
+            showToast("บันทึกข้อมูลแบบฟอร์มสำเร็จ", "success");
         }
 
-        function renderWorkOrdersTable(dataToRender) {
-            const tbody = document.getElementById('workOrderTableBody');
-            document.getElementById('recordCount').innerText = `${dataToRender.length} รายการ`;
-            tbody.innerHTML = '';
+        function openHistoryModal() {
+            const container = document.getElementById('historyListContainer');
+            container.innerHTML = '';
 
-            if (dataToRender.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-10 text-warm-400 italic">ไม่พบข้อมูลการบันทึกตรวจสอบในระบบ</td></tr>`;
-                return;
+            if(savedDocuments.length === 0) {
+                container.innerHTML = `<p class="text-center py-6 text-slate-400 italic">ยังไม่มีประวัติการบันทึกข้อมูล</p>`;
+            } else {
+                savedDocuments.forEach((doc, idx) => {
+                    const div = document.createElement('div');
+                    div.className = "p-4 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center hover:bg-slate-100 transition";
+                    div.innerHTML = `
+                        <div>
+                            <span class="font-bold text-blue-900 block">${doc.id} - Station: ${doc.generalInfo.stationId}</span>
+                            <span class="text-xs text-slate-500">สถานที่: ${doc.generalInfo.location} | วันที่บันทึก: ${doc.date}</span>
+                        </div>
+                        <div class="space-x-2">
+                            <button onclick="loadDocument(${idx})" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold shadow-sm hover:bg-blue-500">เปิดดู/แก้ไข</button>
+                            <button onclick="deleteDocument(${idx})" class="px-3 py-1.5 bg-rose-600 text-white rounded-lg text-xs font-semibold shadow-sm hover:bg-rose-500">ลบ</button>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+            document.getElementById('historyModal').classList.remove('hidden');
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('historyModal').classList.add('hidden');
+        }
+
+        function loadDocument(idx) {
+            const doc = savedDocuments[idx];
+            document.getElementById('docId').value = doc.id;
+            document.getElementById('stationId').value = doc.generalInfo.stationId || '';
+            document.getElementById('location').value = doc.generalInfo.location || '';
+            document.getElementById('gisLat').value = doc.generalInfo.gisLat || '';
+            document.getElementById('gisLong').value = doc.generalInfo.gisLong || '';
+            document.getElementById('meaNo1').value = doc.generalInfo.meaNo1 || '';
+            document.getElementById('meaNo2').value = doc.generalInfo.meaNo2 || '';
+            document.getElementById('meaNo3').value = doc.generalInfo.meaNo3 || '';
+            document.getElementById('brand').value = doc.generalInfo.brand || '';
+            document.getElementById('capacity').value = doc.generalInfo.capacity || '';
+            document.getElementById('transformerType').value = doc.generalInfo.transformerType || '';
+            document.getElementById('installType').value = doc.generalInfo.installType || '';
+
+            renderChecklist(doc.checklist);
+
+            if(doc.electrical) {
+                if(doc.electrical.timing) document.querySelector(`input[name="checkTiming"][value="${doc.electrical.timing}"]`).checked = true;
+                document.getElementById('checkTime').value = doc.electrical.checkTime || '';
+                if(doc.electrical.method) document.querySelector(`input[name="checkMethod"][value="${doc.electrical.method}"]`).checked = true;
+                document.getElementById('v1n').value = doc.electrical.v1n || '';
+                document.getElementById('v2n').value = doc.electrical.v2n || '';
+                document.getElementById('v3n').value = doc.electrical.v3n || '';
+                document.getElementById('v12').value = doc.electrical.v12 || '';
+                document.getElementById('v13').value = doc.electrical.v13 || '';
+                document.getElementById('v23').value = doc.electrical.v23 || '';
+                document.getElementById('iN').value = doc.electrical.iN || '';
+                document.getElementById('i1').value = doc.electrical.i1 || '';
+                document.getElementById('i2').value = doc.electrical.i2 || '';
+                document.getElementById('i3').value = doc.electrical.i3 || '';
+                document.getElementById('totalCurrent').value = doc.electrical.totalCurrent || '0.0';
             }
 
-            dataToRender.forEach((wo, idx) => {
-                const realIndex = workOrders.findIndex(w => w.workOrderId === wo.workOrderId);
-                const statusBadge = wo.hasDefect 
-                    ? `<span class="bg-rose-100 text-rose-700 border border-rose-300 text-[11px] px-3 py-1 rounded-full font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ชำรุด</span>`
-                    : `<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px] px-3 py-1 rounded-full font-semibold"><i class="fa-solid fa-circle-check mr-1"></i> ปกติ</span>`;
+            document.getElementById('improvements').value = doc.improvements || '';
+            document.getElementById('repairDetails').value = doc.repairDetails || '';
 
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-warm-100/60 transition";
-                tr.innerHTML = `
-                    <td class="p-4">
-                        <span class="font-bold text-warm-900 block">${wo.workOrderId}</span>
-                        <span class="text-[11px] text-warm-500">${wo.inspectionDate}</span>
-                    </td>
-                    <td class="p-4">
-                        <span class="font-semibold text-warm-900 block">${wo.generalInfo.stationId || '-'}</span>
-                        <span class="text-[11px] text-warm-500">${wo.generalInfo.location || '-'}</span>
-                    </td>
-                    <td class="p-4">
-                        <span class="text-amber-700 font-semibold text-[11px] block">${wo.formCode}</span>
-                        <span class="text-[11px] text-warm-500 truncate max-w-xs block">${wo.formName}</span>
-                    </td>
-                    <td class="p-4 text-center">${statusBadge}</td>
-                    <td class="p-4 text-center space-x-1.5">
-                        <button onclick="openFormModal(${realIndex})" class="p-2.5 bg-white text-warm-800 rounded-xl hover:bg-warm-200 transition shadow-sm border border-warm-300" title="แก้ไข / พิมพ์"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteWorkOrder(${realIndex})" class="p-2.5 bg-white text-rose-600 rounded-xl hover:bg-warm-200 transition shadow-sm border border-warm-300" title="ลบ"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function updateDashboardStats() {
-            const total = workOrders.length;
-            const defectCount = workOrders.filter(w => w.hasDefect).length;
-            const normalCount = total - defectCount;
-
-            document.getElementById('statTotal').innerText = total;
-            document.getElementById('statNormal').innerText = normalCount;
-            document.getElementById('statDefect').innerText = defectCount;
-        }
-
-        function filterWorkOrders() {
-            const keyword = document.getElementById('searchInput').value.toLowerCase();
-            const statusVal = document.getElementById('statusFilter').value;
-
-            const filtered = workOrders.filter(wo => {
-                const matchForm = currentFormCode === "ALL" ? true : (wo.formCode === currentFormCode);
-                const matchKeyword = wo.workOrderId.toLowerCase().includes(keyword) || 
-                                     (wo.generalInfo.stationId && wo.generalInfo.stationId.toLowerCase().includes(keyword)) || 
-                                     (wo.generalInfo.location && wo.generalInfo.location.toLowerCase().includes(keyword));
-                const matchStatus = statusVal === "" ? true : (statusVal === "ชำรุด" ? wo.hasDefect : !wo.hasDefect);
-                return matchForm && matchKeyword && matchStatus;
-            });
-            renderWorkOrdersTable(filtered);
-        }
-
-        function deleteWorkOrder(idx) {
-            if (confirm("คุณต้องการลบรายการ Work Order นี้ใช่หรือไม่?")) {
-                workOrders.splice(idx, 1);
-                localStorage.setItem('mea_all_transformers', JSON.stringify(workOrders));
-                filterWorkOrders();
-                updateDashboardStats();
-                showToast("ลบข้อมูลเรียบร้อยแล้ว", "info");
+            if(doc.signatures) {
+                document.getElementById('inspectorName').value = doc.signatures.inspectorName || '';
+                document.getElementById('inspectorPos').value = doc.signatures.inspectorPos || '';
+                document.getElementById('inspectorDate').value = doc.signatures.inspectorDate || '';
+                document.getElementById('verifierName').value = doc.signatures.verifierName || '';
+                document.getElementById('verifierPos').value = doc.signatures.verifierPos || '';
+                document.getElementById('verifierDate').value = doc.signatures.verifierDate || '';
             }
+
+            closeHistoryModal();
+            showToast("โหลดข้อมูลเอกสารเรียบร้อยแล้ว", "success");
         }
 
-        function exportCSV() {
-            const currentFormOrders = currentFormCode === "ALL" ? workOrders : workOrders.filter(w => w.formCode === currentFormCode);
-            if (currentFormOrders.length === 0) {
-                showToast("ไม่มีข้อมูลสำหรับ Export", "error");
-                return;
+        function deleteDocument(idx) {
+            if(confirm("คุณต้องการลบเอกสารฉบับนี้ใช่หรือไม่?")) {
+                savedDocuments.splice(idx, 1);
+                localStorage.setItem('mea_a4_forms', JSON.stringify(savedDocuments));
+                openHistoryModal();
+                showToast("ลบเอกสารสำเร็จ", "info");
             }
-            let csvContent = "data:text/csv;charset=utf-8,\uFEFFWorkOrderID,FormCode,Date,StationID,Location,Status\n";
-            currentFormOrders.forEach(w => {
-                csvContent += `"${w.workOrderId}","${w.formCode}","${w.inspectionDate}","${w.generalInfo.stationId || ''}","${w.generalInfo.location || ''}","${w.hasDefect ? 'ชำรุด' : 'ปกติ'}"\n`;
-            });
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `MEA_Report_${currentFormCode}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            showToast("Export CSV สำเร็จ", "success");
         }
 
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
             const toastIcon = document.getElementById('toastIcon');
-
             toastMessage.innerText = message;
-            if (type === 'success') {
-                toastIcon.className = "fa-solid fa-circle-check text-emerald-400 text-base";
-            } else {
-                toastIcon.className = "fa-solid fa-circle-info text-amber-400 text-base";
-            }
-
+            toastIcon.className = type === 'success' ? "fa-solid fa-circle-check text-emerald-400 text-base" : "fa-solid fa-circle-info text-blue-400 text-base";
             toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
+            setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0'); }, 3000);
         }
     </script>
 </body>
