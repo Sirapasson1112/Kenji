@@ -374,7 +374,7 @@
                     "2.11 Ground HV (L/A, SZ)", "2.12 Ground LV (ตู้ Control)", "2.13 ทดลองทาง Local"
                 ] 
             },
-            { code: "SF-07-0-018", name: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)", items: ["สภาพภายนอกตู้ครอบ", "ประตูตู้ครอบ", "ฐานตู้ครอบ", "สภาพ RMU / ห้อง", "ก๊าซ SF6", "ตัวแสดงสถานะสวิทซ์", "กุญแจล็อคป้องกันการปลด-สับ", "คันสับ", "ตัวตรวจสอบแรงดัน", "ตัวตรวจสอบการลัดวงจร", "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "สภาพแบตเตอรี่หรือ UPS", "FRTU", "อุปกรณ์ควบคุมอื่นๆ", "การปลดสับด้วย REMOTE", "การปลดสับด้วย LOCAL", "การปลดสับด้วยคันสับ", "แรงดันไฟฟ้าเลี้ยงระบบ ATF", "การทดสอบ ATF"] },
+            { code: "SF-07-0-018", name: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)", items: ["สภาพภายนอกตู้ครอบ", "ประตูตู้ครอบ", "ฐานตู้ครอบ", "สภาพ RMU / ห้อง", "ก๊าซ SF6", "ตัวแสดงสถานะสวิทซ์", "กุญแจล็อคป้องกันการปลด-สับ", "คันสับ", "ตัวตรวจสอบแรงดัน", "ตัวตรวจสอบการลัดวงจร", "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "สภาพแบตเตอรี่ หรือ UPS", "FRTU", "อุปกรณ์ควบคุมอื่นๆ", "การปลดสับด้วย REMOTE", "การปลดสับด้วย LOCAL", "การปลดสับด้วยคันสับ", "แรงดันไฟฟ้าเลี้ยงระบบ ATF", "การทดสอบ ATF"] },
             { code: "SF-07-0-019", name: "แบบตรวจสอบบำรุงรักษา Unit Substation", items: ["สภาพภายนอก Enclosure", "ประตู Enclosure", "ฐานตู้ / นั่งร้าน", "สภาพ RMU", "ก๊าซ SF6 (RMU)", "ตัวแสดงสถานะสวิตช์", "กุญแจล็อคป้องกันการปลด-สับ", "คันสับ", "ตัวตรวจสอบแรงดัน", "ตัวตรวจสอบการลัดวงจร", "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "สภาพแบตเตอรี่ หรือ UPS", "FRTU", "อุปกรณ์ควบคุมอื่นๆ", "การปลดสับด้วย REMOTE", "การปลดสับด้วย LOCAL", "การปลดสับด้วยคันสับ", "แรงดันไฟฟ้าเลี้ยงระบบ ATF", "การทดสอบ ATF", "ตัวถังหม้อแปลง", "Bushing HV-LV", "สายหน้าหม้อแปลง HV-LV", "LV Ground", "HV Ground", "สภาพทั่วไป CB หรือ FUSE", "สายไฟฟ้าแรงต่ำ", "บัสบาร์", "เครื่องวัดไฟฟ้า", "CT-TLM Meter", "จุดร้อนแดงส่องด้วยกล้องเทอร์โมวิชั่น"] },
             { code: "SF-07-0-020", name: "แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV", items: ["Drop Fuse", "Station Post Type Insulator", "สายเข้า-ออก Drop Fuse", "คอนสาย", "อุปกรณ์ป้องกันสัตว์", "กับดักฟ้าผ่า (L/A)", "Cover (Bushing, L/A)", "HV Ground", "Vacuum CB", "Supply", "Fuse Control ภายในตู้", "หลอดไฟแสดงสถานะในตู้", "หน้าจอ Digital Control", "เสียงนาฬิกาเดิน", "อุปกรณ์ทั่วไปภายในตู้", "ตัวถังคาปาซิเตอร์", "Bushing", "Fuse ภายใน", "ค่าคาปาซิแตนท์ที่วัดได้"] },
             { code: "SF-07-0-021", name: "แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย", items: ["สถานะ MV.SW.", "สถานะ NP", "เบอร์ตู้/สีตู้", "ระบบกราวด์", "อุปกรณ์ป้องกันแรงดันเกินภายนอก", "ตัวถัง รอยต่อหม้อแปลง", "ฝาตู้", "การแขวนป้ายแดงห้ามปลด-สับ", "การทดสอบปลด-สับ MV.SW.", "อุปกรณ์ภายใน", "รีเลย์", "ตู้อุปกรณ์ส่งสัญญาณ", "ไฟเลี้ยง / CB & FUSE", "อินเตอร์เน็ตสวิตช์"] },
@@ -421,7 +421,7 @@
                 btn.type = "button";
                 btn.onclick = () => {
                     selectForm(form.code);
-                    openFormModal(); // คลิกแล้วเปิดฟอร์มกรอกข้อมูลทันที
+                    openFormModal();
                 };
                 btn.className = `w-full text-left px-3.5 py-2.5 rounded-xl text-xs transition flex items-center justify-between ${isActive ? 'bg-amber-100 text-amber-900 font-bold border border-amber-300' : 'text-warm-900 hover:bg-warm-100'}`;
                 btn.innerHTML = `
@@ -638,7 +638,7 @@
                     <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ปกติ" ${itemData.status === 'ปกติ' ? 'checked' : ''} class="text-emerald-600 focus:ring-emerald-500"></td>
                     <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ชำรุด" ${itemData.status === 'ชำรุด' ? 'checked' : ''} class="text-amber-600 focus:ring-amber-500"></td>
                     <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ไม่มี" ${itemData.status === 'ไม่มี' ? 'checked' : ''} class="text-warm-400 focus:ring-warm-400"></td>
-                    <td class="p-3.5"><input type="text" id="defect_${index}" value="${itemData.defect || ''}" placeholder="ระบุข้อบกพร่อง..." class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 text-xs focus:bg-white focus:ring-2 focus:ring-amber-500"></td>
+                    <td class="p-3.5"><input type="text" id="defect_${index}" value="${itemData.defect || ''}" placeholder="ระบุข้อบกพร่อง..." class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-2 text-xs focus:bg-white focus:ring-2 focus:ring-amber-500"></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -827,22 +827,6 @@
             setTimeout(() => { printWindow.print(); }, 500);
         }
 
-        function getCurrentLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    const latEl = document.getElementById('gisLat');
-                    const longEl = document.getElementById('gisLong');
-                    if(latEl) latEl.value = position.coords.latitude.toFixed(6);
-                    if(longEl) longEl.value = position.coords.longitude.toFixed(6);
-                    showToast("ดึงพิกัด GPS สำเร็จ", "success");
-                }, () => {
-                    showToast("ไม่สามารถดึงพิกัดได้", "error");
-                });
-            } else {
-                showToast("Browser ไม่รองรับ Geolocation", "error");
-            }
-        }
-
         function calculateTotalCurrent() {
             const i1 = parseFloat(document.getElementById('i1')?.value) || 0;
             const i2 = parseFloat(document.getElementById('i2')?.value) || 0;
@@ -1021,8 +1005,8 @@
             const filtered = workOrders.filter(wo => {
                 const matchForm = currentFormCode === "ALL" ? true : (wo.formCode === currentFormCode);
                 const matchKeyword = wo.workOrderId.toLowerCase().includes(keyword) || 
-                                     (wo.generalInfo.stationId && wo.generalInfo.stationId.toLowerCase().includes(keyword)) || 
-                                     (wo.generalInfo.location && wo.generalInfo.location.toLowerCase().includes(keyword));
+                                   (wo.generalInfo.stationId && wo.generalInfo.stationId.toLowerCase().includes(keyword)) || 
+                                   (wo.generalInfo.location && wo.generalInfo.location.toLowerCase().includes(keyword));
                 const matchStatus = statusVal === "" ? true : (statusVal === "ชำรุด" ? wo.hasDefect : !wo.hasDefect);
                 return matchForm && matchKeyword && matchStatus;
             });
