@@ -1,274 +1,483 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<title>แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบใบตรวจสอบและบำรุงรักษาอุปกรณ์ไฟฟ้า MEA</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        warm: {
+                            50: '#fcfbfa',
+                            100: '#f7f4ee',
+                            200: '#eee6dc',
+                            300: '#ded0be',
+                            800: '#5c5244',
+                            900: '#3d352b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Sarabun & Prompt -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        .sheet-font { font-family: 'Sarabun', sans-serif; }
+        
+        /* สไตล์ตารางและฟอร์มกระดาษ A4 */
+        :root {
+            --ink: #1a1a1a;
+            --line: #000;
+            --paper: #fff;
+            --head-bg: #d9d9d9;
+            --sub-bg: #f2f2f2;
+        }
+        .sheet table { width: 100%; border-collapse: collapse; margin-bottom: -1px; }
+        .sheet td, .sheet th { border: 1px solid var(--line); padding: 5px 7px; vertical-align: middle; }
+        .section-head td { background: var(--head-bg); font-weight: 700; font-size: 13.5px; }
+        .item-table th { background: var(--sub-bg); font-weight: 600; text-align: center; }
+        .item-table td.num { width: 34px; text-align: center; }
+        .item-table td.chk { width: 52px; text-align: center; }
+        .chkbox { width: 15px; height: 15px; accent-color: #000; cursor: pointer; }
+        .fill input[type="text"], .fill input[type="time"] { width: 100%; border: none; background: transparent; font-family: inherit; font-size: 13px; padding: 2px; color: var(--ink); }
+        .fill input[type="text"]:focus, .fill input[type="time"]:focus { outline: 1px dashed #999; }
+        .radio-inline { display: inline-flex; align-items: center; gap: 6px; margin-right: 22px; cursor: pointer; }
+        .radio-inline input { width: 15px; height: 15px; accent-color: #000; }
+        .signblock td { height: 34px; }
 
-  :root{
-    --ink:#1a1a1a;
-    --line:#000;
-    --paper:#fff;
-    --head-bg:#d9d9d9;
-    --sub-bg:#f2f2f2;
-  }
-
-  *{ box-sizing:border-box; }
-
-  body{
-    background:#e8e8e8;
-    font-family:'Sarabun', sans-serif;
-    color:var(--ink);
-    margin:0;
-    padding:24px 0 60px;
-  }
-
-  .sheet{
-    width:210mm;
-    min-height:297mm;
-    margin:0 auto;
-    background:var(--paper);
-    padding:14mm 12mm;
-    box-shadow:0 0 12px rgba(0,0,0,.25);
-    font-size:13px;
-    line-height:1.5;
-  }
-
-  h1{
-    text-align:center;
-    font-size:19px;
-    font-weight:700;
-    margin:0 0 14px;
-  }
-
-  table{
-    width:100%;
-    border-collapse:collapse;
-    margin-bottom:-1px;
-  }
-
-  td, th{
-    border:1px solid var(--line);
-    padding:5px 7px;
-    vertical-align:middle;
-  }
-
-  .section-head td{
-    background:var(--head-bg);
-    font-weight:700;
-    font-size:13.5px;
-  }
-
-  .label{
-    font-weight:500;
-    white-space:nowrap;
-  }
-
-  .fill input[type="text"]{
-    width:100%;
-    border:none;
-    background:transparent;
-    font-family:inherit;
-    font-size:13px;
-    padding:2px;
-    color:var(--ink);
-  }
-  .fill input[type="text"]:focus{
-    outline:1px dashed #999;
-  }
-
-  .item-table th{
-    background:var(--sub-bg);
-    font-weight:600;
-    text-align:center;
-  }
-  .item-table td.num{
-    width:34px;
-    text-align:center;
-  }
-  .item-table td.chk{
-    width:52px;
-    text-align:center;
-  }
-  .chkbox{
-    width:15px;
-    height:15px;
-    accent-color:#000;
-    cursor:pointer;
-  }
-
-  .radio-inline{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    margin-right:22px;
-  }
-  .radio-inline input{
-    width:15px;
-    height:15px;
-    accent-color:#000;
-  }
-
-  .signblock td{
-    height:34px;
-  }
-
-  .footer-note{
-    display:flex;
-    justify-content:space-between;
-    font-size:12px;
-    margin-top:8px;
-  }
-
-  @media print{
-    body{ background:#fff; padding:0; }
-    .sheet{ box-shadow:none; margin:0; width:auto; min-height:auto; }
-    .no-print{ display:none; }
-  }
-
-  .toolbar{
-    max-width:210mm;
-    margin:0 auto 14px;
-    text-align:right;
-  }
-  .toolbar button{
-    font-family:'Sarabun', sans-serif;
-    font-size:13px;
-    padding:8px 16px;
-    border:1px solid #333;
-    background:#fff;
-    cursor:pointer;
-    border-radius:3px;
-  }
-  .toolbar button:hover{ background:#f0f0f0; }
-</style>
+        @media print {
+            body { background: #fff !important; padding: 0 !important; }
+            .no-print { display: none !important; }
+            .sheet { box-shadow: none !important; margin: 0 !important; width: auto !important; min-height: auto !important; padding: 0 !important; }
+        }
+    </style>
 </head>
-<body>
+<body class="bg-warm-100 text-warm-900 min-h-screen flex flex-col">
 
-<div class="toolbar no-print">
-  <button onclick="window.print()">พิมพ์ / บันทึกเป็น PDF</button>
-</div>
+    <!-- Top Navigation Bar -->
+    <header class="bg-warm-900 border-b border-warm-800 text-white shadow-md sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3.5">
+                <div class="bg-amber-500 p-2.5 rounded-2xl text-slate-950 text-lg shadow-md flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-bolt-lightning"></i>
+                </div>
+                <div>
+                    <h1 class="text-sm font-bold tracking-tight text-white">ระบบใบตรวจสอบและบำรุงรักษาอุปกรณ์ไฟฟ้า MEA</h1>
+                    <p class="text-[11px] text-warm-300">Power Substation & Distribution Equipment Maintenance Sheets</p>
+                </div>
+            </div>
 
-<div class="sheet">
-  <h1>แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</h1>
+            <div class="flex items-center space-x-3">
+                <div id="userProfile" class="hidden items-center space-x-2.5 bg-warm-800 px-3.5 py-1.5 rounded-full text-xs border border-warm-700 text-warm-100 shadow-sm">
+                    <span id="userName" class="font-medium"></span>
+                    <button onclick="handleLogout()" class="text-xs text-rose-400 hover:text-rose-300 ml-1.5 transition"><i class="fa-solid fa-power-off"></i></button>
+                </div>
+                <button id="googleLoginBtn" onclick="handleGoogleLogin()" class="bg-warm-800 hover:bg-warm-700 text-warm-100 border border-warm-700 px-4 py-2 rounded-xl text-xs font-semibold shadow-sm transition flex items-center space-x-2">
+                    <i class="fa-brands fa-google text-rose-400"></i>
+                    <span>Login</span>
+                </button>
+            </div>
+        </div>
+    </header>
 
-  <!-- Section 1: ข้อมูลทั่วไป -->
-  <table>
-    <tr class="section-head"><td colspan="8">1&nbsp;&nbsp;ข้อมูลทั่วไป</td></tr>
-    <tr>
-      <td class="label" style="width:90px;">Station ID</td>
-      <td class="fill" colspan="3"><input type="text"></td>
-      <td class="label" style="width:70px;">สถานที่</td>
-      <td class="fill" colspan="3"><input type="text"></td>
-    </tr>
-    <tr>
-      <td class="label">GIS</td>
-      <td class="label" style="width:55px;">Lat.</td>
-      <td class="fill" colspan="2"><input type="text"></td>
-      <td class="label">Long.</td>
-      <td class="fill" colspan="3"><input type="text"></td>
-    </tr>
-    <tr>
-      <td class="label">MEA No1.</td>
-      <td class="fill"><input type="text"></td>
-      <td class="label">MEA No2.</td>
-      <td class="fill"><input type="text"></td>
-      <td class="label">MEA No3.</td>
-      <td class="fill"><input type="text"></td>
-      <td class="label" style="width:80px;">จำนวนเฟส</td>
-      <td class="fill"><input type="text"></td>
-    </tr>
-  </table>
+    <!-- Main Workspace -->
+    <div class="flex-grow max-w-7xl w-full mx-auto px-6 py-8 flex flex-col md:flex-row gap-8">
+        
+        <!-- Left Sidebar: Menu Form Selection -->
+        <aside class="w-full md:w-80 bg-warm-50 border border-warm-200 rounded-3xl shadow-sm p-5 shrink-0 h-fit space-y-4 no-print">
+            <div class="pb-3 border-b border-warm-200 flex items-center justify-between">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-warm-800 flex items-center">
+                    <i class="fa-solid fa-file-shield mr-2 text-amber-600"></i> เลือกใบตรวจสอบกระดาษ
+                </h2>
+                <span class="text-[10px] bg-amber-100 text-amber-800 border border-amber-300 px-2.5 py-0.5 rounded-full font-bold">11 Forms</span>
+            </div>
 
-  <!-- Section 2: รายการตรวจสอบบำรุงรักษา -->
-  <table class="item-table">
-    <tr class="section-head"><td colspan="6">2&nbsp;&nbsp;รายการตรวจสอบบำรุงรักษา</td></tr>
-    <tr>
-      <th rowspan="2" style="width:34px;">&nbsp;</th>
-      <th rowspan="2">รายการ</th>
-      <th colspan="3">ผลการตรวจสอบ</th>
-      <th rowspan="2">ข้อบกพร่อง</th>
-    </tr>
-    <tr>
-      <th style="width:52px;">ปกติ</th>
-      <th style="width:52px;">ชำรุด</th>
-      <th style="width:52px;">ไม่มี</th>
-    </tr>
-    <tr>
-      <td class="num">2.1</td><td class="itemname">Drop Fuse</td>
-      <td class="chk"><input type="checkbox" class="chkbox" name="r1"></td>
-      <td class="chk"><input type="checkbox" class="chkbox" name="r1"></td>
-      <td class="chk"><input type="checkbox" class="chkbox" name="r1"></td>
-      <td class="remark"><input type="text"></td>
-    </tr>
-    <tr>
-      <td class="num">2.2</td><td class="itemname">Station Post Type Insulator</td>
-      <td class="chk"><input type="checkbox" class="chkbox" name="r2"></td>
-      <td class="chk"><input type="checkbox" class="chkbox" name="r2"></td>
-      <td class="chk"><input type="checkbox" class="chkbox" name="r2"></td>
-      <td class="remark"><input type="text"></td>
-    </tr>
-  </table>
+            <!-- Form List Navigation -->
+            <div id="formMenuList" class="space-y-1.5 max-h-[600px] overflow-y-auto pr-1">
+                <!-- Injected via JS -->
+            </div>
+        </aside>
 
-  <!-- Section 3: ตรวจสอบวัดกระแสและแรงดันไฟฟ้า -->
-  <table>
-    <tr class="section-head"><td colspan="6">3&nbsp;&nbsp;ตรวจสอบวัดกระแสและแรงดันไฟฟ้า</td></tr>
-    <tr class="radio-row">
-      <td colspan="2">
-        <label class="radio-inline"><input type="checkbox" name="time">กลางวัน</label>
-        <label class="radio-inline"><input type="checkbox" name="time">กลางคืน</label>
-      </td>
-      <td class="label" style="width:60px;">เวลา :</td>
-      <td class="fill"><input type="text"></td>
-      <td colspan="2">
-        <label class="radio-inline">วิธีการ:</label>
-        <label class="radio-inline"><input type="checkbox" name="method">วัดหน้างาน</label>
-        <label class="radio-inline"><input type="checkbox" name="method">TLM</label>
-      </td>
-    </tr>
-  </table>
+        <!-- Right Content Area: A4 Paper Form Sheet View -->
+        <main class="flex-grow flex flex-col items-center space-y-4">
+            
+            <!-- Toolbar for Actions -->
+            <div class="w-full max-w-[210mm] bg-warm-50 border border-warm-200 p-4 rounded-2xl shadow-sm flex justify-between items-center no-print">
+                <div>
+                    <span id="currentFormCodeBadge" class="text-xs bg-amber-600 text-white font-bold px-3 py-1 rounded-lg">SF-07-0-015</span>
+                    <span id="currentFormTitleBadge" class="text-xs font-bold text-warm-900 ml-2">แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="saveCurrentSheetData()" class="bg-warm-900 hover:bg-warm-800 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-floppy-disk"></i><span>บันทึกข้อมูล</span>
+                    </button>
+                    <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-print"></i><span>พิมพ์ / PDF</span>
+                    </button>
+                </div>
+            </div>
 
-  <!-- Section 4 -->
-  <table>
-    <tr class="section-head"><td>4&nbsp;&nbsp;สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</td></tr>
-    <tr><td style="height:26px;"><input type="text" class="fill"></td></tr>
-  </table>
+            <!-- A4 Sheet Container -->
+            <div class="sheet sheet-font bg-white w-[210mm] min-h-[297mm] p-[14mm_12mm] shadow-2xl border border-warm-200 text-[13px] leading-[1.5] text-[#1a1a1a]">
+                
+                <h1 id="sheetTitle" class="text-center text-[19px] font-bold mb-3.5">แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</h1>
 
-  <!-- Section 5 -->
-  <table>
-    <tr class="section-head"><td>5&nbsp;&nbsp;การปรับปรุงข้อบกพร่อง :</td></tr>
-    <tr><td style="height:26px;"><input type="text" class="fill"></td></tr>
-  </table>
+                <!-- Dynamic Form Sections -->
+                <div id="sheetDynamicContainer" class="space-y-3">
+                    <!-- Form template rendered dynamically based on selection -->
+                </div>
 
-  <!-- Signature block -->
-  <table>
-    <tr class="signblock">
-      <td class="label" style="width:90px;">ผู้ตรวจ</td>
-      <td class="fill"><input type="text"></td>
-      <td class="label" style="width:90px;">ผู้ตรวจสอบ</td>
-      <td class="fill"><input type="text"></td>
-    </tr>
-    <tr class="signblock">
-      <td class="label">ตำแหน่ง</td>
-      <td class="fill"><input type="text"></td>
-      <td class="label">ตำแหน่ง</td>
-      <td class="fill"><input type="text"></td>
-    </tr>
-    <tr class="signblock">
-      <td class="label">วันที่</td>
-      <td class="fill"><input type="text"></td>
-      <td class="label">วันที่</td>
-      <td class="fill"><input type="text"></td>
-    </tr>
-  </table>
+                <!-- Footer Note -->
+                <div class="flex justify-between text-[12px] mt-8 pt-2 border-t border-gray-300">
+                    <span id="sheetFooterRev">ปรับปรุงครั้งที่ 0 วันที่ ...</span>
+                    <span id="sheetFooterCode" class="font-bold">SF-07-0-015</span>
+                </div>
+            </div>
+        </main>
+    </div>
 
-  <div class="footer-note">
-    <span>ปรับปรุงครั้งที่ 0 วันที่ ...</span>
-    <span>SF-07-0-015</span>
-  </div>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-warm-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50 text-xs border border-warm-800 no-print">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMessage">บันทึกข้อมูลเรียบร้อยแล้ว</span>
+    </div>
 
-</div>
+    <!-- JavaScript Application Logic -->
+    <script>
+        const formsData = [
+            { 
+                code: "SF-07-0-015", 
+                name: "แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย",[cite: 1]
+                items: [
+                    "Drop Fuse", "Station Post Type Insulator", "สายเข้า-ออก Drop Fuse", "คอนสาย", 
+                    "อุปกรณ์ป้องกันสัตว์", "Low Voltage Capacitor", "กับดักฟ้าผ่า (L/A)", "ตัวถังหม้อแปลง", 
+                    "Bushing HV-LV", "Cover (Bushing ,L/A, Term. kit)", "สายหน้าหม้อแปลง LV", "LV Ground", "HV Ground", "CT-TLM Meter (ถ้ามี)"
+                ] 
+            },
+            { 
+                code: "SF-07-0-016", 
+                name: "แบบตรวจสอบบำรุงรักษา Load Break Switch",[cite: 2]
+                items: [
+                    "ตัวถัง LBS /สลักล็อคการปลดสับ", "สถานะก๊าซ SF6", "Bushing", "กับดักฟ้าผ่า", "VT", "Drop Fuse ลง VT", 
+                    "คอนสาย", "สายควบคุม LBS", "อุปกรณ์ป้องกันสัตว์", "ไฟสถานะหน้าตู้", "แหล่งจ่ายไฟฟ้า และสายควบคุม", 
+                    "สภาพแบตเตอรี่หรือ Capacitor", "Ground HV (L/A, LBS)", "Ground LV (ตู้ Control)", "ทดสอบทาง Remote", "ทดสอบทาง Local", 
+                    "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "การทดสอบ ATS"
+                ] 
+            },
+            { 
+                code: "SF-07-0-017", 
+                name: "แบบตรวจสอบบำรุงรักษา Sectionalizer",[cite: 3]
+                items: [
+                    "ตัวถัง SZ /สลักล็อคการปลดสับ", "สถานะก๊าซ SF6", "Bushing", "กับดักฟ้าผ่า", "คอนสาย", "สายควบคุม SZ", 
+                    "อุปกรณ์ป้องกันสัตว์", "ไฟสถานะหน้าตู้", "แหล่งจ่ายไฟฟ้า และสายควบคุม", "สภาพแบตเตอรี่หรือ Capacitor", 
+                    "Ground HV (L/A, SZ)", "Ground LV (ตู้ Control)", "ทดลองทาง Local"
+                ] 
+            },
+            { 
+                code: "SF-07-0-018", 
+                name: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",[cite: 4]
+                items: [
+                    "สภาพภายนอก", "ประตู", "ฐานตู้", "สภาพ RMU/ ห้อง", "ก๊าซ SF6", "ตัวแสดงสถานะสวิทซ์", 
+                    "กุญแจล็อคป้องกันการปลด-สับ", "คันสับ", "ตัวตรวจสอบแรงดัน", "ตัวตรวจสอบการลัดวงจร", 
+                    "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "สภาพแบตเตอรี่หรือ UPS (ถ้ามี)", "FRTU (ถ้ามี)", "อุปกรณ์ควบคุมอื่นๆ", 
+                    "การปลดสับด้วย REMOTE (ถ้ามี)", "การปลดสับด้วย LOCAL กดปุ่ม (ถ้ามี)", "การปลดสับด้วยคันสับ", 
+                    "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "การทดสอบ ATF"
+                ] 
+            },
+            { 
+                code: "SF-07-0-019", 
+                name: "แบบตรวจสอบบำรุงรักษา UNITSUBSTATION",[cite: 5]
+                items: [
+                    "สภาพภายนอก", "ประตู", "ฐานตู้ / นั่งร้าน", "สภาพ RMU", "ก๊าซ SF6", "ตัวแสดงสถานะสวิตช์", 
+                    "กุญแจล็อคป้องกันการปลด - สับ", "คันสับ", "ตัวตรวจสอบแรงดัน", "ตัวตรวจสอบการลัดวงจร", 
+                    "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "สภาพแบตเตอรี่ หรือ UPS", "FRTU", "อุปกรณ์ควบคุมอื่น ๆ", 
+                    "การปลด - สับด้วย REMOTE", "การปลด - สับด้วย LOCAL กดปุ่ม", "การปลด - สับด้วยคันสับ", 
+                    "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "การทดสอบ ATF", "ตัวถังหม้อแปลง", "Bushing HV-LV", "สายหน้าหม้อแปลง HV - LV", 
+                    "LV Ground", "HV Ground", "สภาพทั่วไป CB หรือ FUSE", "สายไฟฟ้า", "บัสบาร์", "เครื่องวัดไฟฟ้า", "CT-TLM Meter", "จุดร้อนแดงส่องด้วยกล้องเทอร์โมวิชั่น"
+                ] 
+            },
+            { 
+                code: "SF-07-0-020", 
+                name: "แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV",[cite: 6]
+                items: [
+                    "Drop Fuse", "Station Post Type Insulator", "สายเข้า-ออก Drop Fuse", "คอนสาย", "อุปกรณ์ป้องกันสัตว์", 
+                    "กับดักฟ้าผ่า (L/A)", "Cover (Bushing ,L/A)", "HV Ground", "Vacuum CB", "Supply", "Fuse Control ภายในตู้", 
+                    "หลอดไฟแสดงสถานะในตู้", "หน้าจอ Digital Control", "เสียงนาฬิกาเดิน", "อุปกรณ์ทั่วไปภายในตู้", 
+                    "ตัวถังคาปาซิเตอร์", "Bushing", "Fuse ภายใน", "ค่าคาปาซิแตนท์ที่วัดได้"
+                ] 
+            },
+            { 
+                code: "SF-07-0-021", 
+                name: "แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",[cite: 7]
+                items: [
+                    "1.1 สถานะ MV.SW.", "1.2 สถานะ NP", "1.3 เบอร์ตู้/ สีตู้", "1.4 ระบบกราวด์", "1.5 อุปกรณ์ป้องกันแรงดันเกินภายนอก", 
+                    "1.6 ตัวถัง รอยต่อหม้อแปลง", "1.7 ฝาตู้", "1.8 มีการแขวนป้ายแดงห้ามปลด-สับ", "2.1 ปลด MV.SW. ครั้งที่ 1", 
+                    "2.2 สับ MV.SW. ครั้งที่ 1", "2.3 ปลด MV.SW. ครั้งที่ 2", "3.1 อุปกรณ์ภายใน", "3.2 รีเลย์", 
+                    "4.1 ตู้อุปกรณ์", "4.2 ไฟเลี้ยง /CB & FUSE", "4.3 อินเตอร์เน็ตสวิตช์", "5. สับ SW.แรงกลาง เมื่อลงจากเสาแล้ว"
+                ] 
+            },
+            { 
+                code: "SF-07-0-022", 
+                name: "แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",[cite: 8]
+                items: [
+                    "1.1 สภาพภายนอก", "1.2 ก๊าซ SF6", "1.3 หัวต่อสาย/สายไฟฟ้า", "1.4 ระบบกราวด์", 
+                    "2.1 ตัวถัง", "2.2 น้ำมัน", "2.3 ฟิวส์ 12 kV", "2.4 อุณหภูมิสูงสุด", "2.5 อุณหภูมิจริง", 
+                    "3.1 สายไฟฟ้า", "3.2 คาปาซิเตอร์แรงต่ำ"
+                ] 
+            },
+            { 
+                code: "SF-07-0-023", 
+                name: "แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย",[cite: 9]
+                items: ["ทดสอบน้ำมันครั้งที่ 1 (Breakdown Voltage)", "กรองน้ำมันครั้งที่ 1 และทดสอบซ้ำ", "กรองน้ำมันครั้งที่ 2 และทดสอบซ้ำ"] 
+            },
+            { 
+                code: "SF-07-0-024", 
+                name: "รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",[cite: 10]
+                items: ["ตรวจสอบอุณหภูมิเทียบจุดวัด (Delta T)", "ประเมินระดับความสำคัญ (1-4)", "การส่งต่อดำเนินการแก้ไข", "การดำเนินการปรับปรุงแก้ไข"] 
+            },
+            { 
+                code: "SF-07-0-025", 
+                name: "รายงานผลการตรวจสอบการคายประจุไฟฟ้า (Acoustic Camera)", 
+                items: ["ตรวจสอบจุดที่ผิดปกติ", "ระดับความเข้มเสียง (dB)", "ประเมินระดับความรุนแรง", "การส่งต่อดำเนินการแก้ไข"] 
+            }
+        ];
 
+        let currentFormCode = "SF-07-0-015";
+        let storedSheetData = JSON.parse(localStorage.getItem('mea_sheet_records') || '{}');
+        let currentUser = JSON.parse(localStorage.getItem('mea_user') || 'null');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderFormMenuList();
+            loadSheetForm(currentFormCode);
+            checkUserAuth();
+        });
+
+        function renderFormMenuList() {
+            const listContainer = document.getElementById('formMenuList');
+            listContainer.innerHTML = '';
+            formsData.forEach(form => {
+                const isActive = form.code === currentFormCode;
+                const btn = document.createElement('button');
+                btn.type = "button";
+                btn.onclick = () => {
+                    currentFormCode = form.code;
+                    renderFormMenuList();
+                    loadSheetForm(currentFormCode);
+                };
+                btn.className = `w-full text-left px-3.5 py-2.5 rounded-xl text-xs transition flex flex-col space-y-0.5 ${isActive ? 'bg-amber-100 text-amber-900 font-bold border border-amber-300' : 'text-warm-900 hover:bg-warm-100 bg-white border border-warm-200'}`;
+                btn.innerHTML = `
+                    <span class="text-[10px] text-amber-700 font-bold">${form.code}</span>
+                    <span class="truncate">${form.name}</span>
+                `;
+                listContainer.appendChild(btn);
+            });
+        }
+
+        function loadSheetForm(code) {
+            const formInfo = formsData.find(f => f.code === code);
+            document.getElementById('currentFormCodeBadge').innerText = formInfo.code;
+            document.getElementById('currentFormTitleBadge').innerText = formInfo.name;
+            document.getElementById('sheetTitle').innerText = formInfo.name;
+            document.getElementById('sheetFooterCode').innerText = formInfo.code;
+
+            const container = document.getElementById('sheetDynamicContainer');
+            let saved = storedSheetData[code] || {};
+
+            let html = `
+                <!-- Section 1: ข้อมูลทั่วไป -->
+                <table>
+                    <tr class="section-head"><td colspan="8">1&nbsp;&nbsp;ข้อมูลทั่วไป</td></tr>
+                    <tr>
+                        <td class="label" style="width:90px;">Station ID</td>
+                        <td class="fill" colspan="3"><input type="text" id="s_stationId" value="${saved.stationId || ''}"></td>
+                        <td class="label" style="width:70px;">สถานที่</td>
+                        <td class="fill" colspan="3"><input type="text" id="s_location" value="${saved.location || ''}"></td>
+                    </tr>
+                    <tr>
+                        <td class="label">GIS</td>
+                        <td class="label" style="width:55px;">Lat.</td>
+                        <td class="fill" colspan="2"><input type="text" id="s_lat" value="${saved.lat || ''}"></td>
+                        <td class="label">Long.</td>
+                        <td class="fill" colspan="3"><input type="text" id="s_long" value="${saved.long || ''}"></td>
+                    </tr>
+                    <tr>
+                        <td class="label">MEA No1.</td>
+                        <td class="fill"><input type="text" id="s_mea1" value="${saved.mea1 || ''}"></td>
+                        <td class="label">MEA No2.</td>
+                        <td class="fill"><input type="text" id="s_mea2" value="${saved.mea2 || ''}"></td>
+                        <td class="label">MEA No3.</td>
+                        <td class="fill"><input type="text" id="s_mea3" value="${saved.mea3 || ''}"></td>
+                        <td class="label" style="width:80px;">จำนวนเฟส</td>
+                        <td class="fill"><input type="text" id="s_phases" value="${saved.phases || ''}"></td>
+                    </tr>
+                </table>
+
+                <!-- Section 2: รายการตรวจสอบบำรุงรักษา -->
+                <table class="item-table">
+                    <tr class="section-head"><td colspan="6">2&nbsp;&nbsp;รายการตรวจสอบบำรุงรักษา</td></tr>
+                    <tr>
+                        <th rowspan="2" style="width:34px;">&nbsp;</th>
+                        <th rowspan="2">รายการ</th>
+                        <th colspan="3">ผลการตรวจสอบ</th>
+                        <th rowspan="2">ข้อบกพร่อง</th>
+                    </tr>
+                    <tr>
+                        <th style="width:52px;">ปกติ</th>
+                        <th style="width:52px;">ชำรุด</th>
+                        <th style="width:52px;">ไม่มี</th>
+                    </tr>
+            `;
+
+            formInfo.items.forEach((item, idx) => {
+                let itemSaved = (saved.items && saved.items[idx]) || { status: 'ปกติ', defect: '' };
+                html += `
+                    <tr>
+                        <td class="num">2.${idx+1}</td>
+                        <td class="itemname">${item}</td>
+                        <td class="chk"><input type="checkbox" class="chkbox" name="chk_${idx}" value="ปกติ" ${itemSaved.status === 'ปกติ' ? 'checked' : ''}></td>
+                        <td class="chk"><input type="checkbox" class="chkbox" name="chk_${idx}" value="ชำรุด" ${itemSaved.status === 'ชำรุด' ? 'checked' : ''}></td>
+                        <td class="chk"><input type="checkbox" class="chkbox" name="chk_${idx}" value="ไม่มี" ${itemSaved.status === 'ไม่มี' ? 'checked' : ''}></td>
+                        <td class="remark"><input type="text" id="def_${idx}" value="${itemSaved.defect || ''}"></td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                </table>
+
+                <!-- Section 3: ตรวจสอบวัดกระแสและแรงดันไฟฟ้า -->
+                <table>
+                    <tr class="section-head"><td colspan="6">3&nbsp;&nbsp;ตรวจสอบวัดกระแสและแรงดันไฟฟ้า</td></tr>
+                    <tr>
+                        <td colspan="2">
+                            <label class="radio-inline"><input type="checkbox" id="s_day" ${saved.timing === 'กลางวัน' ? 'checked' : ''}>กลางวัน</label>
+                            <label class="radio-inline"><input type="checkbox" id="s_night" ${saved.timing === 'กลางคืน' ? 'checked' : ''}>กลางคืน</label>
+                        </td>
+                        <td class="label" style="width:60px;">เวลา :</td>
+                        <td class="fill"><input type="time" id="s_time" value="${saved.time || ''}"></td>
+                        <td colspan="2">
+                            <label class="radio-inline">วิธีการ:</label>
+                            <label class="radio-inline"><input type="checkbox" id="m_onsite" ${saved.method === 'วัดหน้างาน' ? 'checked' : ''}>วัดหน้างาน</label>
+                            <label class="radio-inline"><input type="checkbox" id="m_tlm" ${saved.method === 'TLM' ? 'checked' : ''}>TLM</label>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Section 4 & 5 -->
+                <table>
+                    <tr class="section-head"><td>4&nbsp;&nbsp;สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</td></tr>
+                    <tr><td style="height:26px;" class="fill"><input type="text" id="s_improve" value="${saved.improvements || ''}"></td></tr>
+                </table>
+                <table>
+                    <tr class="section-head"><td>5&nbsp;&nbsp;การปรับปรุงข้อบกพร่อง :</td></tr>
+                    <tr><td style="height:26px;" class="fill"><input type="text" id="s_repair" value="${saved.repairs || ''}"></td></tr>
+                </table>
+
+                <!-- Signatures -->
+                <table>
+                    <tr class="signblock">
+                        <td class="label" style="width:90px;">ผู้ตรวจ</td>
+                        <td class="fill"><input type="text" id="sig_inspector" value="${saved.inspector || ''}"></td>
+                        <td class="label" style="width:90px;">ผู้ตรวจสอบ</td>
+                        <td class="fill"><input type="text" id="sig_verifier" value="${saved.verifier || ''}"></td>
+                    </tr>
+                    <tr class="signblock">
+                        <td class="label">ตำแหน่ง</td>
+                        <td class="fill"><input type="text" id="sig_inspectorPos" value="${saved.inspectorPos || ''}"></td>
+                        <td class="label">ตำแหน่ง</td>
+                        <td class="fill"><input type="text" id="sig_verifierPos" value="${saved.verifierPos || ''}"></td>
+                    </tr>
+                    <tr class="signblock">
+                        <td class="label">วันที่</td>
+                        <td class="fill"><input type="text" id="sig_inspectorDate" value="${saved.inspectorDate || ''}"></td>
+                        <td class="label">วันที่</td>
+                        <td class="fill"><input type="text" id="sig_verifierDate" value="${saved.verifierDate || ''}"></td>
+                    </tr>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function saveCurrentSheetData() {
+            const formInfo = formsData.find(f => f.code === currentFormCode);
+            let itemsArr = [];
+            formInfo.items.forEach((item, idx) => {
+                const chkChecked = document.querySelector(`input[name="chk_${idx}"]:checked`);
+                const defect = document.getElementById(`def_${idx}`)?.value || '';
+                itemsArr.push({ status: chkChecked ? chkChecked.value : 'ปกติ', defect });
+            });
+
+            storedSheetData[currentFormCode] = {
+                stationId: document.getElementById('s_stationId')?.value || '',
+                location: document.getElementById('s_location')?.value || '',
+                lat: document.getElementById('s_lat')?.value || '',
+                long: document.getElementById('s_long')?.value || '',
+                mea1: document.getElementById('s_mea1')?.value || '',
+                mea2: document.getElementById('s_mea2')?.value || '',
+                mea3: document.getElementById('s_mea3')?.value || '',
+                phases: document.getElementById('s_phases')?.value || '',
+                timing: document.getElementById('s_day')?.checked ? 'กลางวัน' : (document.getElementById('s_night')?.checked ? 'กลางคืน' : ''),
+                time: document.getElementById('s_time')?.value || '',
+                method: document.getElementById('m_onsite')?.checked ? 'วัดหน้างาน' : (document.getElementById('m_tlm')?.checked ? 'TLM' : ''),
+                improvements: document.getElementById('s_improve')?.value || '',
+                repairs: document.getElementById('s_repair')?.value || '',
+                inspector: document.getElementById('sig_inspector')?.value || '',
+                inspectorPos: document.getElementById('sig_inspectorPos')?.value || '',
+                inspectorDate: document.getElementById('sig_inspectorDate')?.value || '',
+                verifier: document.getElementById('sig_verifier')?.value || '',
+                verifierPos: document.getElementById('sig_verifierPos')?.value || '',
+                verifierDate: document.getElementById('sig_verifierDate')?.value || '',
+                items: itemsArr
+            };
+
+            localStorage.setItem('mea_sheet_records', JSON.stringify(storedSheetData));
+            showToast("บันทึกข้อมูลฟอร์มกระดาษเรียบร้อยแล้ว");
+        }
+
+        function handleGoogleLogin() {
+            currentUser = { name: "ศิรภัสสร กลับสุข" };
+            localStorage.setItem('mea_user', JSON.stringify(currentUser));
+            checkUserAuth();
+            showToast("เข้าสู่ระบบสำเร็จ");
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('mea_user');
+            checkUserAuth();
+            showToast("ออกจากระบบแล้ว");
+        }
+
+        function checkUserAuth() {
+            const loginBtn = document.getElementById('googleLoginBtn');
+            const userProfile = document.getElementById('userProfile');
+            if (currentUser) {
+                loginBtn.classList.add('hidden');
+                userProfile.classList.remove('hidden');
+                userProfile.classList.add('flex');
+                document.getElementById('userName').innerText = currentUser.name;
+            } else {
+                loginBtn.classList.remove('hidden');
+                userProfile.classList.add('hidden');
+                userProfile.classList.remove('flex');
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+        }
+    </script>
 </body>
 </html>
