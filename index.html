@@ -87,7 +87,7 @@
     <!-- Main Content Container -->
     <main class="flex-grow p-4 sm:p-6">
         
-        <!-- ================= VIEW 1: HOME (COMPACT 11 FORM BUTTONS) ================= -->
+        <!-- ================= VIEW 1: HOME ================= -->
         <div id="homeView" class="max-w-6xl mx-auto space-y-5">
             <div class="bg-slate-800/80 border border-slate-700/80 p-4 sm:p-5 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
                 <div>
@@ -100,7 +100,7 @@
                 </div>
             </div>
 
-            <!-- Compact 11 Form Buttons Grid -->
+            <!-- 11 Form Buttons Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3" id="formButtonsGrid">
                 <!-- Injected via JS -->
             </div>
@@ -134,7 +134,6 @@
                 <span class="text-[11px] text-slate-400">รูปแบบกระดาษ A4 มาตรฐาน กฟน.</span>
             </div>
 
-            <!-- A4 Render Paper -->
             <form id="dynamicA4Form" class="a4-page border border-slate-400">
                 <input type="hidden" id="formCode" value="">
                 <input type="hidden" id="recordId" value="">
@@ -154,7 +153,7 @@
         const formsSchema = [
             {
                 code: "SF-07-0-015",
-                name: "แบบตรวจสอบบำรุงหม้อแปลงจำหน่าย",[cite: 1]
+                name: "แบบตรวจสอบบำรุงหม้อแปลงจำหน่าย",
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "สถานที่", id: "location", type: "text" },
@@ -178,7 +177,7 @@
             },
             {
                 code: "SF-07-0-016",
-                name: "แบบตรวจสอบบำรุงรักษา Load Break Switch",[cite: 3]
+                name: "แบบตรวจสอบบำรุงรักษา Load Break Switch",
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "GIS Lat.", id: "gisLat", type: "text" },
@@ -207,7 +206,7 @@
             },
             {
                 code: "SF-07-0-017",
-                name: "แบบตรวจสอบบำรุงรักษา Sectionalizer",[cite: 4]
+                name: "แบบตรวจสอบบำรุงรักษา Sectionalizer",
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "GIS Lat.", id: "gisLat", type: "text" },
@@ -231,7 +230,7 @@
             },
             {
                 code: "SF-07-0-018",
-                name: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",[cite: 5]
+                name: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "GIS Lat.", id: "gisLat", type: "text" },
@@ -250,7 +249,7 @@
             },
             {
                 code: "SF-07-0-019",
-                name: "แบบตรวจสอบบำรุงรักษา UNITSUBSTATION",[cite: 6]
+                name: "แบบตรวจสอบบำรุงรักษา UNITSUBSTATION",
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "GIS Lat.", id: "gisLat", type: "text" },
@@ -273,7 +272,7 @@
             },
             {
                 code: "SF-07-0-020",
-                name: "แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน",[cite: 7]
+                name: "แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน",
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "สถานที่", id: "location", type: "text" },
@@ -302,7 +301,7 @@
             },
             {
                 code: "SF-07-0-021",
-                name: "แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",[cite: 8]
+                name: "แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",
                 generalInfo: [
                     { label: "สถานที่", id: "location", type: "text" },
                     { label: "STATION", id: "station", type: "text" },
@@ -322,7 +321,7 @@
             },
             {
                 code: "SF-07-0-022",
-                name: "แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",[cite: 9]
+                name: "แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",
                 generalInfo: [
                     { label: "สถานที่", id: "location", type: "text" },
                     { label: "STATION", id: "station", type: "text" },
@@ -339,7 +338,7 @@
             },
             {
                 code: "SF-07-0-023",
-                name: "แบบตรวจสอบบำรุงรักษา ทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย",[cite: 10]
+                name: "แบบตรวจสอบบำรุงรักษา ทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย",
                 generalInfo: [
                     { label: "สถานที่", id: "location", type: "text" },
                     { label: "STATION ID", id: "stationId", type: "text" },
@@ -355,7 +354,7 @@
             },
             {
                 code: "SF-07-0-024",
-                name: "รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",[cite: 11]
+                name: "รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "สถานที่", id: "location", type: "text" },
@@ -374,7 +373,7 @@
             },
             {
                 code: "SF-07-0-025",
-                name: "รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)",[cite: 12]
+                name: "รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)",
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "สถานที่", id: "location", type: "text" },
@@ -415,10 +414,10 @@
 
         function renderHomeButtons() {
             const grid = document.getElementById('formButtonsGrid');
+            if(!grid) return;
             grid.innerHTML = '';
             formsSchema.forEach((form) => {
                 const card = document.createElement('div');
-                // ปรับขนาด Padding และ Text ให้กะทัดรัดยิ่งขึ้นตามคำขอ
                 card.className = "bg-slate-800 border border-slate-700 hover:border-amber-500/60 p-3.5 sm:p-4 rounded-2xl shadow-md flex flex-col justify-between transition cursor-pointer group";
                 card.onclick = () => openFormView(form.code);
                 card.innerHTML = `
@@ -707,6 +706,7 @@
 
         function renderSavedRecordsTable() {
             const tbody = document.getElementById('savedRecordsTableBody');
+            if(!tbody) return;
             tbody.innerHTML = '';
 
             if(allRecords.length === 0) {
@@ -753,6 +753,7 @@
             const filtered = allRecords.filter(r => r.recordId.toLowerCase().includes(keyword) || r.stationId.toLowerCase().includes(keyword) || r.formCode.toLowerCase().includes(keyword));
             
             const tbody = document.getElementById('savedRecordsTableBody');
+            if(!tbody) return;
             tbody.innerHTML = '';
             if(filtered.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400 italic">ไม่พบข้อมูลที่ค้นหา</td></tr>`;
