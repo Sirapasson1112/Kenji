@@ -13,13 +13,14 @@
     <style>
         body { font-family: 'Prompt', sans-serif; }
         
+        /* สไตล์จำลองหน้ากระดาษ A4 สำหรับหน้าจอ (พื้นหลังขาวสะอาดตา) และตอนพิมพ์ */
         .a4-page {
             width: 210mm;
             min-height: 297mm;
             padding: 12mm;
             margin: 10mm auto;
             background: white;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             position: relative;
             box-sizing: border-box;
             color: #000;
@@ -56,23 +57,23 @@
         }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
 
-    <!-- Top Navigation / Header -->
-    <header class="no-print bg-slate-950 border-b border-slate-800 text-white px-6 py-3 flex justify-between items-center sticky top-0 z-50 shadow-md">
+    <!-- Top Navigation / Header (Outdoor Optimized Dark Theme) -->
+    <header class="no-print bg-slate-900 border-b border-slate-800 text-white px-6 py-3 flex justify-between items-center sticky top-0 z-50 shadow-lg">
         <div class="flex items-center space-x-3">
-            <div class="bg-amber-500 p-2 rounded-xl text-slate-950 font-bold text-base"><i class="fa-solid fa-bolt-lightning"></i></div>
+            <div class="bg-amber-500 p-2 rounded-xl text-slate-950 font-bold text-base shadow"><i class="fa-solid fa-bolt-lightning"></i></div>
             <div>
                 <h1 class="text-xs sm:text-sm font-bold tracking-tight">ระบบตรวจสอบและบำรุงรักษาอุปกรณ์ไฟฟ้า (MEA)</h1>
-                <p class="text-[10px] text-slate-400">ระบบฟอร์มดิจิทัล 11 แบบฟอร์มมาตรฐาน กฟน.</p>
+                <p class="text-[10px] text-amber-400 font-medium">ระบบฟอร์มดิจิทัล 11 แบบฟอร์มมาตรฐาน กฟน. (รองรับงานกลางแจ้ง)</p>
             </div>
         </div>
         
         <div id="headerActions" class="hidden flex items-center space-x-1.5 sm:space-x-2">
-            <button onclick="goHome()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl text-xs font-semibold transition border border-slate-700 flex items-center space-x-1">
+            <button onclick="goHome()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl text-xs font-semibold transition border border-slate-700 flex items-center space-x-1 shadow-sm">
                 <i class="fa-solid fa-house text-[11px]"></i> <span class="hidden sm:inline">หน้าเมนู</span>
             </button>
-            <button onclick="resetCurrentForm()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl text-xs font-semibold transition border border-slate-700 flex items-center space-x-1">
+            <button onclick="resetCurrentForm()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl text-xs font-semibold transition border border-slate-700 flex items-center space-x-1 shadow-sm">
                 <i class="fa-solid fa-rotate-right text-[11px]"></i> <span class="hidden sm:inline">ล้างฟอร์ม</span>
             </button>
             <button onclick="saveActiveForm()" class="bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold transition shadow-sm flex items-center space-x-1">
@@ -87,16 +88,16 @@
     <!-- Main Content Container -->
     <main class="flex-grow p-4 sm:p-6">
         
-        <!-- ================= VIEW 1: HOME ================= -->
+        <!-- ================= VIEW 1: HOME (11 FORM BUTTONS) ================= -->
         <div id="homeView" class="max-w-6xl mx-auto space-y-5">
-            <div class="bg-slate-800/80 border border-slate-700/80 p-4 sm:p-5 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="bg-slate-900 border border-slate-800 p-4 sm:p-5 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
                 <div>
                     <h2 class="text-sm sm:text-base font-bold text-white mb-0.5"><i class="fa-solid fa-folder-tree text-amber-500 mr-2"></i> เลือกแบบฟอร์มตรวจสอบมาตรฐาน กฟน. (MEA)</h2>
-                    <p class="text-[11px] text-slate-400">คลิกที่แท็บแบบฟอร์มด้านล่างเพื่อเปิดใช้งานฟอร์มดิจิทัลขนาด A4</p>
+                    <p class="text-[11px] text-slate-400">คลิกที่แท็บแบบฟอร์มด้านล่างเพื่อเปิดใช้งานฟอร์มดิจิทัลขนาด A4 สำหรับปฏิบัติงานภาคสนาม</p>
                 </div>
                 <div class="relative w-full md:w-64">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-xs"><i class="fa-solid fa-magnifying-glass"></i></span>
-                    <input type="text" id="searchWorkOrderInput" oninput="filterWorkOrdersList()" placeholder="ค้นหา Station ID..." class="w-full pl-8 pr-3 py-1.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <input type="text" id="searchWorkOrderInput" oninput="filterWorkOrdersList()" placeholder="ค้นหา Station ID..." class="w-full pl-8 pr-3 py-1.5 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
                 </div>
             </div>
 
@@ -106,12 +107,12 @@
             </div>
 
             <!-- Saved Records List -->
-            <div class="bg-slate-800/80 border border-slate-700/80 p-5 rounded-2xl shadow-xl space-y-3">
+            <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl shadow-xl space-y-3">
                 <h3 class="font-bold text-xs text-white flex items-center"><i class="fa-solid fa-clock-rotate-left mr-2 text-amber-500"></i> ประวัติงานตรวจสอบที่บันทึกไว้ในระบบ</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs border-collapse">
                         <thead>
-                            <tr class="bg-slate-900 text-slate-400 border-b border-slate-700 text-[10px]">
+                            <tr class="bg-slate-950 text-slate-400 border-b border-slate-800 text-[10px]">
                                 <th class="p-2.5">Work Order / รหัส</th>
                                 <th class="p-2.5">ประเภทแบบฟอร์ม</th>
                                 <th class="p-2.5">Station ID / สถานที่</th>
@@ -119,7 +120,7 @@
                                 <th class="p-2.5 text-center">จัดการ</th>
                             </tr>
                         </thead>
-                        <tbody id="savedRecordsTableBody" class="divide-y divide-slate-700/60 text-slate-300">
+                        <tbody id="savedRecordsTableBody" class="divide-y divide-slate-800 text-slate-300">
                             <!-- Injected via JS -->
                         </tbody>
                     </table>
@@ -129,7 +130,7 @@
 
         <!-- ================= VIEW 2: DYNAMIC A4 FORM CONTAINER ================= -->
         <div id="formView" class="hidden">
-            <div class="no-print max-w-4xl mx-auto mb-3 flex justify-between items-center bg-slate-800 px-4 py-2 rounded-xl border border-slate-700">
+            <div class="no-print max-w-4xl mx-auto mb-3 flex justify-between items-center bg-slate-900 px-4 py-2 rounded-xl border border-slate-800">
                 <span id="activeFormIndicator" class="text-xs font-bold text-amber-400">กำลังใช้งาน: -</span>
                 <span class="text-[11px] text-slate-400">รูปแบบกระดาษ A4 มาตรฐาน กฟน.</span>
             </div>
@@ -153,7 +154,7 @@
         const formsSchema = [
             {
                 code: "SF-07-0-015",
-                name: "แบบตรวจสอบบำรุงหม้อแปลงจำหน่าย",
+                name: "แบบตรวจสอบบำรุงหม้อแปลงจำหน่าย",[cite: 1]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "สถานที่", id: "location", type: "text" },
@@ -177,7 +178,7 @@
             },
             {
                 code: "SF-07-0-016",
-                name: "แบบตรวจสอบบำรุงรักษา Load Break Switch",
+                name: "แบบตรวจสอบบำรุงรักษา Load Break Switch",[cite: 3]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "GIS Lat.", id: "gisLat", type: "text" },
@@ -206,7 +207,7 @@
             },
             {
                 code: "SF-07-0-017",
-                name: "แบบตรวจสอบบำรุงรักษา Sectionalizer",
+                name: "แบบตรวจสอบบำรุงรักษา Sectionalizer",[cite: 4]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "GIS Lat.", id: "gisLat", type: "text" },
@@ -230,7 +231,7 @@
             },
             {
                 code: "SF-07-0-018",
-                name: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",
+                name: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",[cite: 5]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "GIS Lat.", id: "gisLat", type: "text" },
@@ -249,7 +250,7 @@
             },
             {
                 code: "SF-07-0-019",
-                name: "แบบตรวจสอบบำรุงรักษา UNITSUBSTATION",
+                name: "แบบตรวจสอบบำรุงรักษา UNITSUBSTATION",[cite: 6]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "GIS Lat.", id: "gisLat", type: "text" },
@@ -272,7 +273,7 @@
             },
             {
                 code: "SF-07-0-020",
-                name: "แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน",
+                name: "แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน",[cite: 7]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "สถานที่", id: "location", type: "text" },
@@ -301,7 +302,7 @@
             },
             {
                 code: "SF-07-0-021",
-                name: "แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",
+                name: "แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",[cite: 8]
                 generalInfo: [
                     { label: "สถานที่", id: "location", type: "text" },
                     { label: "STATION", id: "station", type: "text" },
@@ -321,7 +322,7 @@
             },
             {
                 code: "SF-07-0-022",
-                name: "แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",
+                name: "แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",[cite: 9]
                 generalInfo: [
                     { label: "สถานที่", id: "location", type: "text" },
                     { label: "STATION", id: "station", type: "text" },
@@ -338,7 +339,7 @@
             },
             {
                 code: "SF-07-0-023",
-                name: "แบบตรวจสอบบำรุงรักษา ทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย",
+                name: "แบบตรวจสอบบำรุงรักษา ทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย",[cite: 10]
                 generalInfo: [
                     { label: "สถานที่", id: "location", type: "text" },
                     { label: "STATION ID", id: "stationId", type: "text" },
@@ -354,7 +355,7 @@
             },
             {
                 code: "SF-07-0-024",
-                name: "รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",
+                name: "รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",[cite: 11]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "สถานที่", id: "location", type: "text" },
@@ -373,7 +374,7 @@
             },
             {
                 code: "SF-07-0-025",
-                name: "รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)",
+                name: "รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)",[cite: 12]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "สถานที่", id: "location", type: "text" },
@@ -418,14 +419,14 @@
             grid.innerHTML = '';
             formsSchema.forEach((form) => {
                 const card = document.createElement('div');
-                card.className = "bg-slate-800 border border-slate-700 hover:border-amber-500/60 p-3.5 sm:p-4 rounded-2xl shadow-md flex flex-col justify-between transition cursor-pointer group";
+                card.className = "bg-slate-900 border border-slate-800 hover:border-amber-500/60 p-3.5 sm:p-4 rounded-2xl shadow-md flex flex-col justify-between transition cursor-pointer group";
                 card.onclick = () => openFormView(form.code);
                 card.innerHTML = `
                     <div>
                         <span class="text-[11px] font-bold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-full">${form.code}</span>
                         <h4 class="font-bold text-white text-xs sm:text-sm mt-2 group-hover:text-amber-400 transition leading-snug">${form.name}</h4>
                     </div>
-                    <div class="mt-3 pt-2 border-t border-slate-700/60 flex justify-between items-center text-[11px] text-slate-400">
+                    <div class="mt-3 pt-2 border-t border-slate-800 flex justify-between items-center text-[11px] text-slate-400">
                         <span>คลิกเพื่อเปิดแบบฟอร์ม</span>
                         <i class="fa-solid fa-arrow-right text-amber-400 text-xs group-hover:translate-x-1 transition"></i>
                     </div>
@@ -716,10 +717,10 @@
 
             allRecords.forEach((rec, idx) => {
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-700/50 transition";
+                tr.className = "hover:bg-slate-800 transition";
                 tr.innerHTML = `
                     <td class="p-3 font-bold text-amber-400">${rec.recordId}</td>
-                    <td class="p-3"><span class="bg-slate-900 px-2 py-1 rounded text-[10px] border border-slate-700">${rec.formCode}</span> ${rec.formName}</td>
+                    <td class="p-3"><span class="bg-slate-950 px-2 py-1 rounded text-[10px] border border-slate-700">${rec.formCode}</span> ${rec.formName}</td>
                     <td class="p-3">${rec.stationId}</td>
                     <td class="p-3 text-slate-400">${rec.date}</td>
                     <td class="p-3 text-center space-x-2">
@@ -762,10 +763,10 @@
             filtered.forEach((rec) => {
                 const realIdx = allRecords.indexOf(rec);
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-700/50 transition";
+                tr.className = "hover:bg-slate-800 transition";
                 tr.innerHTML = `
                     <td class="p-3 font-bold text-amber-400">${rec.recordId}</td>
-                    <td class="p-3"><span class="bg-slate-900 px-2 py-1 rounded text-[10px] border border-slate-700">${rec.formCode}</span> ${rec.formName}</td>
+                    <td class="p-3"><span class="bg-slate-950 px-2 py-1 rounded text-[10px] border border-slate-700">${rec.formCode}</span> ${rec.formName}</td>
                     <td class="p-3">${rec.stationId}</td>
                     <td class="p-3 text-slate-400">${rec.date}</td>
                     <td class="p-3 text-center space-x-2">
