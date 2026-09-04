@@ -44,7 +44,6 @@
                 <div>
                     <h1 class="text-sm font-bold tracking-tight text-white flex items-center">
                         ระบบตรวจสอบและบำรุงรักษาอุปกรณ์ไฟฟ้า
-                        <span class="ml-2.5 px-2.5 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[10px] font-semibold rounded-full">MEA Smart Grid</span>
                     </h1>
                     <p class="text-[11px] text-warm-300">Power Substation & Distribution Equipment Maintenance Operations</p>
                 </div>
@@ -486,7 +485,6 @@
             container.innerHTML = '';
 
             if (formCode === "SF-07-0-015") {
-                // Layout ตรงตามต้นฉบับ 1. ข้อมูลทั่วไป
                 container.innerHTML = `
                     <div><label class="block font-semibold text-warm-800 mb-1">Station ID</label><input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
                     <div class="sm:col-span-3"><label class="block font-semibold text-warm-800 mb-1">สถานที่</label><input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
@@ -532,8 +530,8 @@
             } else {
                 document.getElementById('extraHeaderContainer').innerHTML = '';
                 container.innerHTML = `
-                    <div><label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label><input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3"></div>
-                    <div><label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label><input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label><input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-3"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label><input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-3"></div>
                     <div><label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label><div class="flex space-x-2"><input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-xl p-3"><input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-xl p-3"></div></div>
                 `;
             }
@@ -563,7 +561,7 @@
                     <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ปกติ" ${itemData.status === 'ปกติ' ? 'checked' : ''} class="text-emerald-600 focus:ring-emerald-500"></td>
                     <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ชำรุด" ${itemData.status === 'ชำรุด' ? 'checked' : ''} class="text-amber-600 focus:ring-amber-500"></td>
                     <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ไม่มี" ${itemData.status === 'ไม่มี' ? 'checked' : ''} class="text-warm-400 focus:ring-warm-400"></td>
-                    <td class="p-3.5"><input type="text" id="defect_${index}" value="${itemData.defect || ''}" placeholder="ระบุข้อบกพร่อง..." class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-2 text-xs focus:bg-white focus:ring-2 focus:ring-amber-500"></td>
+                    <td class="p-3.5"><input type="text" id="defect_${index}" value="${itemData.defect || ''}" placeholder="ระบุข้อบกพร่อง..." class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 text-xs focus:bg-white focus:ring-2 focus:ring-amber-500"></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -638,7 +636,6 @@
             let targetFormCode = currentFormCode === "ALL" ? "SF-07-0-015" : currentFormCode;
             const formInfo = formsData.find(f => f.code === targetFormCode);
 
-            // เก็บค่าจาก General Info (SF-07-0-015 layout)
             const stationId = document.getElementById('stationId')?.value || '-';
             const location = document.getElementById('location')?.value || '-';
             const gisLat = document.getElementById('gisLat')?.value || '-';
@@ -654,7 +651,6 @@
             const transformerType = document.getElementById('transformerType')?.value || '-';
             const installStyle = document.getElementById('installStyle')?.value || '-';
 
-            // Electrical data
             const checkTiming = document.querySelector('input[name="checkTiming"]:checked')?.value || 'กลางวัน';
             const checkTime = document.getElementById('checkTime')?.value || '-';
             const checkMethod = document.querySelector('input[name="checkMethod"]:checked')?.value || 'วัดหน้างาน';
@@ -702,7 +698,6 @@
                         th { background: #e5e7eb; font-weight: bold; text-align: center; }
                         .section-title { font-weight: bold; background: #d1d5db; padding: 3px 6px; font-size: 10px; border: 1px solid #333; border-bottom: none; }
                         .center { text-align: center; }
-                        .checkbox-box { display: inline-block; width: 10px; height: 10px; border: 1px solid #333; text-align: center; line-height: 10px; font-size: 8px; margin-right: 3px; }
                         .footer-code { text-align: right; font-size: 9px; margin-top: 4px; }
                     </style>
                 </head>
