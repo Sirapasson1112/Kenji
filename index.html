@@ -150,7 +150,13 @@
                     <i class="fa-solid fa-file-pen text-yellow-400 text-lg"></i>
                     <h2 id="modalTitle" class="text-lg font-bold">บันทึกผลการตรวจสอบ</h2>
                 </div>
-                <button onclick="closeFormModal()" class="text-slate-300 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+                <div class="flex items-center space-x-2">
+                    <!-- ปุ่มพิมพ์ / PDF เฉพาะใบตรวจสอบ (เพิ่มใหม่) -->
+                    <button type="button" onclick="printCurrentModalForm()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-print"></i><span>พิมพ์ / PDF</span>
+                    </button>
+                    <button onclick="closeFormModal()" class="text-slate-300 hover:text-white text-xl ml-2"><i class="fa-solid fa-xmark"></i></button>
+                </div>
             </div>
 
             <!-- Modal Body -->
@@ -158,7 +164,7 @@
                 <form id="inspectionForm" onsubmit="saveWorkOrder(event)">
                     <input type="hidden" id="editIndex" value="-1">
 
-                    <!-- Section 1: ข้อมูลทั่วไป (อ้างอิง SF-07-0-015) -->
+                    <!-- Section 1: ข้อมูลทั่วไป -->
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
                         <h3 class="font-bold text-blue-900 border-b pb-2 flex items-center">
                             <span class="bg-blue-900 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2">1</span>
@@ -239,7 +245,7 @@
                         </div>
                     </div>
 
-                    <!-- Section 3: ตรวจสอบวัดกระแสและแรงดันไฟฟ้า (เฉพาะฟอร์ม SF-07-0-015 หรือฟอร์มที่เกี่ยวข้อง) -->
+                    <!-- Section 3: ตรวจสอบวัดกระแสและแรงดันไฟฟ้า -->
                     <div id="electricalSectionContainer" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
                         <h3 class="font-bold text-blue-900 border-b pb-2 flex items-center">
                             <span class="bg-blue-900 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2">3</span>
@@ -294,7 +300,7 @@
                         </div>
                     </div>
 
-                    <!-- Section 4 & 5: สิ่งที่ต้องปรับปรุง & การปรับปรุงข้อบกพร่อง -->
+                    <!-- Section 4 & 5 -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                             <h3 class="font-bold text-blue-900 text-sm border-b pb-2">4. สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม</h3>
@@ -306,7 +312,7 @@
                         </div>
                     </div>
 
-                    <!-- Signatures Section (ผู้ตรวจ / ผู้ตรวจสอบ) -->
+                    <!-- Signatures Section -->
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                         <h3 class="font-bold text-blue-900 text-sm border-b pb-2">ข้อมูลผู้ปฏิบัติงาน / การลงนาม</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
@@ -545,7 +551,6 @@
             const tbody = document.getElementById('dynamicChecklistBody');
             tbody.innerHTML = '';
             
-            // แสดง/ซ่อน Section วัดกระแสและแรงดันไฟฟ้าเฉพาะฟอร์ม SF-07-0-015
             const electricalSection = document.getElementById('electricalSectionContainer');
             if (formCode === "SF-07-0-015") {
                 electricalSection.classList.remove('hidden');
@@ -609,8 +614,10 @@
                 renderDynamicChecklist(wo.formCode, wo.checklist);
 
                 if (wo.electricalData) {
-                    document.querySelector(`input[name="checkTiming"][value="${wo.electricalData.timing}"]`).checked = true;
-                    document.querySelector(`input[name="checkMethod"][value="${wo.electricalData.method}"]`).checked = true;
+                    const timingRadio = document.querySelector(`input[name="checkTiming"][value="${wo.electricalData.timing}"]`);
+                    if (timingRadio) timingRadio.checked = true;
+                    const methodRadio = document.querySelector(`input[name="checkMethod"][value="${wo.electricalData.method}"]`);
+                    if (methodRadio) methodRadio.checked = true;
                     document.getElementById('checkTime').value = wo.electricalData.checkTime || '';
                     document.getElementById('v1n').value = wo.electricalData.v1n || '';
                     document.getElementById('v2n').value = wo.electricalData.v2n || '';
@@ -644,6 +651,173 @@
 
         function closeFormModal() {
             document.getElementById('formModal').classList.add('hidden');
+        }
+
+        // ฟังก์ชันสำหรับพิมพ์ / PDF เฉพาะใบตรวจสอบที่กำลังเปิดใน Modal อยู่ปัจจุบัน
+        function printCurrentModalForm() {
+            const editIndex = parseInt(document.getElementById('editIndex').value);
+            
+            // รวบรวมข้อมูลจากฟอร์มปัจจุบันในหน้าจอ Modal ทันที
+            let targetFormCode = currentFormCode === "ALL" ? "SF-07-0-015" : currentFormCode;
+            const formInfo = formsData.find(f => f.code === targetFormCode);
+
+            const stationId = document.getElementById('stationId').value || '-';
+            const location = document.getElementById('location').value || '-';
+            const gisLat = document.getElementById('gisLat').value || '-';
+            const gisLong = document.getElementById('gisLong').value || '-';
+            const meaNo1 = document.getElementById('meaNo1').value || '-';
+            const meaNo2 = document.getElementById('meaNo2').value || '-';
+            const meaNo3 = document.getElementById('meaNo3').value || '-';
+            const phases = document.getElementById('phases').value || '-';
+            const brand = document.getElementById('brand').value || '-';
+            const capacity = document.getElementById('capacity').value || '-';
+            const transformerType = document.getElementById('transformerType').value || '-';
+            const installType = document.getElementById('installType').value || '-';
+
+            const checklistData = [];
+            formInfo.items.forEach((item, index) => {
+                const statusRadio = document.querySelector(`input[name="check_${index}"]:checked`);
+                const status = statusRadio ? statusRadio.value : 'ปกติ';
+                const defect = document.getElementById(`defect_${index}`).value || '';
+                checklistData.push({ id: item, status, defect });
+            });
+
+            const improvements = document.getElementById('improvements').value || '-';
+            const repairDetails = document.getElementById('repairDetails').value || '-';
+            const inspectorName = document.getElementById('inspectorName').value || '-';
+            const inspectorPos = document.getElementById('inspectorPos').value || '-';
+            const inspectorDate = document.getElementById('inspectorDate').value || '-';
+            const verifierName = document.getElementById('verifierName').value || '-';
+            const verifierPos = document.getElementById('verifierPos').value || '-';
+            const verifierDate = document.getElementById('verifierDate').value || '-';
+
+            let electricalHTML = '';
+            if (targetFormCode === "SF-07-0-015") {
+                const timing = document.querySelector('input[name="checkTiming"]:checked')?.value || '-';
+                const checkTime = document.getElementById('checkTime').value || '-';
+                const method = document.querySelector('input[name="checkMethod"]:checked')?.value || '-';
+                const v1n = document.getElementById('v1n').value || '-';
+                const v2n = document.getElementById('v2n').value || '-';
+                const v3n = document.getElementById('v3n').value || '-';
+                const v12 = document.getElementById('v12').value || '-';
+                const v13 = document.getElementById('v13').value || '-';
+                const v23 = document.getElementById('v23').value || '-';
+                const iN = document.getElementById('iN').value || '-';
+                const i1 = document.getElementById('i1').value || '-';
+                const i2 = document.getElementById('i2').value || '-';
+                const i3 = document.getElementById('i3').value || '-';
+                const totalCurrent = document.getElementById('totalCurrent').value || '0.0';
+
+                electricalHTML = `
+                    <div class="section-title">3. ตรวจสอบวัดกระแสและแรงดันไฟฟ้า</div>
+                    <table>
+                        <tr>
+                            <td><b>ช่วงเวลา:</b> ${timing} (เวลา: ${checkTime})</td>
+                            <td><b>วิธีการ:</b> ${method}</td>
+                            <td><b>ผลรวมกระแส (A):</b> ${totalCurrent}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><b>แรงดันไฟฟ้า (V):</b> V1-N=${v1n}, V2-N=${v2n}, V3-N=${v3n} | V1-2=${v12}, V1-3=${v13}, V2-3=${v23}</td>
+                        </tr>
+                        <tr>
+                        <td colspan="3"><b>กระแสไฟฟ้า (A):</b> IN=${iN}, I1=${i1}, I2=${i2}, I3=${i3}</td>
+                        </tr>
+                    </table>
+                `;
+            }
+
+            // เปิดหน้าต่างใหม่เฉพาะสำหรับพิมพ์ใบตรวจสอบ
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>แบบตรวจสอบ - ${formInfo.code}</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+                    <style>
+                        body { font-family: 'Prompt', sans-serif; font-size: 11px; color: #111; padding: 15px; }
+                        h2 { text-align: center; margin-bottom: 2px; font-size: 15px; }
+                        .subtitle { text-align: center; font-size: 10px; margin-bottom: 15px; color: #555; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+                        th, td { border: 1px solid #333; padding: 5px 6px; text-align: left; }
+                        th { background: #f0f0f0; }
+                        .section-title { font-weight: bold; background: #e2e8f0; padding: 5px; margin-top: 10px; margin-bottom: 4px; font-size: 12px; }
+                        .sig-table td { height: 45px; vertical-align: bottom; }
+                    </style>
+                </head>
+                <body>
+                    <h2>${formInfo.name}</h2>
+                    <div class="subtitle">การไฟฟ้านครหลวง (MEA) | รหัสแบบฟอร์ม: ${formInfo.code}</div>
+                    
+                    <div class="section-title">1. ข้อมูลทั่วไป</div>
+                    <table>
+                        <tr>
+                            <td><b>Station ID:</b> ${stationId}</td>
+                            <td><b>สถานที่:</b> ${location}</td>
+                            <td><b>GIS Lat/Long:</b> ${gisLat}, ${gisLong}</td>
+                        </tr>
+                        <tr>
+                            <td><b>MEA No.1:</b> ${meaNo1}</td>
+                            <td><b>MEA No.2:</b> ${meaNo2}</td>
+                            <td><b>MEA No.3:</b> ${meaNo3}</td>
+                        </tr>
+                        <tr>
+                            <td><b>จำนวนเฟส:</b> ${phases}</td>
+                            <td><b>ยี่ห้อ / ขนาด:</b> ${brand} / ${capacity}</td>
+                            <td><b>ชนิด / ติดตั้ง:</b> ${transformerType} / ${installType}</td>
+                        </tr>
+                    </table>
+
+                    <div class="section-title">2. รายการตรวจสอบบำรุงรักษา</div>
+                    <table>
+                        <tr>
+                            <th style="width: 35px; text-align: center;">ลำดับ</th>
+                            <th>รายการอุปกรณ์ / หัวข้อตรวจสอบ</th>
+                            <th style="width: 45px; text-align: center;">ปกติ</th>
+                            <th style="width: 45px; text-align: center;">ชำรุด</th>
+                            <th style="width: 45px; text-align: center;">ไม่มี</th>
+                            <th>ข้อบกพร่อง</th>
+                        </tr>
+                        ${checklistData.map((c, i) => `
+                            <tr>
+                                <td style="text-align: center;">${i+1}</td>
+                                <td>${c.id}</td>
+                                <td style="text-align: center;">${c.status === 'ปกติ' ? '✓' : ''}</td>
+                                <td style="text-align: center;">${c.status === 'ชำรุด' ? '✓' : ''}</td>
+                                <td style="text-align: center;">${c.status === 'ไม่มี' ? '✓' : ''}</td>
+                                <td>${c.defect || '-'}</td>
+                            </tr>
+                        `).join('')}
+                    </table>
+
+                    ${electricalHTML}
+
+                    <div class="section-title">4 & 5. การปรับปรุงและข้อเสนอแนะ</div>
+                    <table>
+                        <tr><td><b>สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม:</b> ${improvements}</td></tr>
+                        <tr><td><b>การปรับปรุงข้อบกพร่อง:</b> ${repairDetails}</td></tr>
+                    </table>
+
+                    <div class="section-title">การลงนามผู้ปฏิบัติงาน</div>
+                    <table class="sig-table">
+                        <tr>
+                            <td style="width: 50%;">
+                                <b>ผู้ตรวจ:</b> ${inspectorName}<br>
+                                <b>ตำแหน่ง:</b> ${inspectorPos}<br>
+                                <b>วันที่:</b> ${inspectorDate}
+                            </td>
+                            <td style="width: 50%;">
+                                <b>ผู้ตรวจสอบ:</b> ${verifierName}<br>
+                                <b>ตำแหน่ง:</b> ${verifierPos}<br>
+                                <b>วันที่:</b> ${verifierDate}
+                            </td>
+                        </tr>
+                    </table>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => { printWindow.print(); }, 500);
         }
 
         function getCurrentLocation() {
@@ -822,7 +996,7 @@
                     </td>
                     <td class="p-3 text-center">${statusBadge}</td>
                     <td class="p-3 text-center space-x-1">
-                        <button onclick="openFormModal(${realIndex})" class="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100 transition" title="แก้ไข"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button onclick="openFormModal(${realIndex})" class="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100 transition" title="แก้ไข / พิมพ์"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button onclick="deleteWorkOrder(${realIndex})" class="p-1.5 bg-red-50 text-red-600 rounded hover:bg-red-100 transition" title="ลบ"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 `;
