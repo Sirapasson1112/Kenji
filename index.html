@@ -57,19 +57,19 @@
         }
     </style>
 </head>
-<body class="bg-warm-100 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-200 text-slate-800 min-h-screen flex flex-col">
 
     <!-- Top Toolbar (Non-Printable) -->
-    <header class="no-print bg-warm-900 border-b border-warm-800 text-white shadow-md sticky top-0 z-50 px-6 py-3 flex justify-between items-center">
+    <header class="no-print bg-slate-900 border-b border-slate-800 text-white shadow-md sticky top-0 z-50 px-6 py-3 flex justify-between items-center">
         <div class="flex items-center space-x-3">
             <div class="bg-amber-500 p-2 rounded-xl text-slate-950 font-bold"><i class="fa-solid fa-file-invoice"></i></div>
             <div>
                 <h1 class="text-sm font-bold">ระบบจัดการแบบฟอร์มเอกสาร A4 (MEA Standard)</h1>
-                <p class="text-[11px] text-warm-300">กรอกข้อมูลและพิมพ์ออกเป็นฟอร์มกระดาษทางการ</p>
+                <p class="text-[11px] text-slate-400">กรอกข้อมูลและพิมพ์ออกเป็นฟอร์มกระดาษทางการ</p>
             </div>
         </div>
         <div class="flex items-center space-x-2">
-            <button onclick="openHistoryModal()" class="bg-warm-800 hover:bg-warm-700 text-warm-100 px-4 py-2 rounded-xl text-xs font-semibold transition border border-warm-700">
+            <button onclick="openHistoryModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-xs font-semibold transition border border-slate-700">
                 <i class="fa-solid fa-clock-rotate-left mr-1.5"></i> ประวัติเอกสารย้อนหลัง
             </button>
             <button onclick="resetForm()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl text-xs font-semibold transition">
@@ -163,7 +163,7 @@
                         </tr>
                     </thead>
                     <tbody id="checklistTableBody">
-                        <!-- รายการ 14 หัวข้อตามแบบฟอร์ม SF-07-0-015 จะถูกสร้างด้วย JavaScript -->
+                        <!-- รายการ 14 หัวข้อสร้างด้วย JS -->
                     </tbody>
                 </table>
             </div>
@@ -262,16 +262,14 @@
         </form>
     </main>
 
-    <!-- History Modal (Non-Printable) -->
+    <!-- History Modal -->
     <div id="historyModal" class="no-print fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden">
             <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
                 <h3 class="font-bold text-sm"><i class="fa-solid fa-clock-rotate-left mr-2"></i> ประวัติแบบฟอร์มที่บันทึกไว้ในระบบ</h3>
                 <button onclick="closeHistoryModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="p-6 overflow-y-auto space-y-3 flex-grow" id="historyListContainer">
-                <!-- รายการประวัติจะถูกแสดงที่นี่ -->
-            </div>
+            <div class="p-6 overflow-y-auto space-y-3 flex-grow" id="historyListContainer"></div>
         </div>
     </div>
 
