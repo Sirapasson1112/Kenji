@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asset Inspection App - ระบบตรวจสอบบำรุงรักษาอุปกรณ์ไฟฟ้า</title>
+    <title>Asset Inspection App - ระบบตรวจสอบบำรุงรักษาอุปกรณ์ไฟฟ้า กฟน.</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
@@ -18,6 +20,7 @@
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
 
+    <!-- LOGIN VIEW -->
     <div id="loginView" class="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 border border-slate-100">
             <div class="text-center mb-8">
@@ -46,13 +49,12 @@
                     เข้าสู่ระบบ
                 </button>
             </form>
-            <div class="mt-6 text-center text-xs text-slate-400">
-                เคล็ดลับ: กรอกอะไรก็ได้เพื่อเข้าสู่ระบบทดลองใช้งาน
-            </div>
         </div>
     </div>
 
+    <!-- MAIN APP LAYOUT -->
     <div id="appContainer" class="flex-1 flex flex-col hidden">
+        <!-- HEADER -->
         <header class="bg-white border-b border-slate-200 sticky top-0 z-30 no-print">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
@@ -67,7 +69,7 @@
                 <div class="flex items-center space-x-4">
                     <div class="text-right hidden sm:block">
                         <div class="text-sm font-semibold text-slate-800" id="userDisplayName">เจ้าหน้าที่ตรวจสอบ</div>
-                        <div class="text-xs text-slate-500">เขตกฟน. สมุทรปราการ</div>
+                        <div class="text-xs text-slate-500">เขตกฟน.</div>
                     </div>
                     <button onclick="handleLogout()" class="p-2 text-slate-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 transition" title="ออกจากระบบ">
                         <i class="fa-solid fa-right-from-bracket text-lg"></i>
@@ -76,6 +78,7 @@
             </div>
         </header>
 
+        <!-- NAVIGATION TABS -->
         <nav class="bg-white border-b border-slate-200 px-4 sm:px-6 lg:px-8 no-print">
             <div class="max-w-7xl mx-auto flex space-x-8 overflow-x-auto">
                 <button onclick="switchTab('dashboard')" id="nav-dashboard" class="py-3 px-1 border-b-2 font-medium text-sm transition flex items-center space-x-2 border-blue-600 text-blue-600">
@@ -90,8 +93,10 @@
             </div>
         </nav>
 
+        <!-- CONTENT AREA -->
         <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+            <!-- TAB 1: DASHBOARD -->
             <div id="tab-dashboard" class="space-y-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
@@ -117,7 +122,7 @@
                     </div>
                     <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-slate-500">ประเภทอุปกรณ์หลัก</p>
+                            <p class="text-sm font-medium text-slate-500">รูปแบบฟอร์ม</p>
                             <h3 class="text-3xl font-bold text-indigo-600 mt-1">9 แบบ</h3>
                         </div>
                         <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-network-wired"></i></div>
@@ -126,8 +131,8 @@
 
                 <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between">
                     <div class="mb-4 sm:mb-0">
-                        <h2 class="text-xl font-bold">สร้างใบบันทึกการตรวจสอบใหม่</h2>
-                        <p class="text-blue-100 text-sm mt-1">รองรับฟอร์มมาตรฐาน กฟน. ทั้งหม้อแปลง, LBS, RMU, Capacitor Bank และอื่น ๆ ครบถ้วน</p>
+                        <h2 class="text-xl font-bold">สร้างใบบันทึกการตรวจสอบใหม่ (ตามแบบ กฟน.)</h2>
+                        <p class="text-blue-100 text-sm mt-1">รองรับฟอร์มหม้อแปลง, LBS, RMU, Unit Substation, Capacitor Bank และอื่น ๆ ครบทั้ง 9 แบบ</p>
                     </div>
                     <button onclick="openFormModal()" class="bg-white text-blue-600 hover:bg-blue-50 font-semibold px-6 py-3 rounded-xl shadow transition text-sm flex items-center space-x-2">
                         <i class="fa-solid fa-plus text-base"></i><span>เพิ่มใบบันทึกใหม่</span>
@@ -135,11 +140,12 @@
                 </div>
             </div>
 
+            <!-- TAB 2: INSPECTION LIST & SEARCH -->
             <div id="tab-inspection" class="space-y-6 hidden">
                 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
                     <div class="w-full sm:w-96 relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-search"></i></span>
-                        <input type="text" id="searchInput" onkeyup="renderTable()" placeholder="ค้นหา Station ID, สถานที่ หรือประเภทอุปกรณ์..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" id="searchInput" onkeyup="renderTable()" placeholder="ค้นหา Station ID, สถานที่ หรือประเภท..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <button onclick="openFormModal()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2.5 rounded-xl transition text-sm flex items-center justify-center space-x-2 shadow-sm">
                         <i class="fa-solid fa-plus"></i><span>สร้างใบบันทึกใหม่</span>
@@ -159,17 +165,17 @@
                                     <th class="py-4 px-6 text-center">จัดการ</th>
                                 </tr>
                             </thead>
-                            <tbody id="inspectionTableBody" class="divide-y divide-slate-100 text-sm">
-                                </tbody>
+                            <tbody id="inspectionTableBody" class="divide-y divide-slate-100 text-sm"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
+            <!-- TAB 3: CRITICALITY ASSESSMENT -->
             <div id="tab-criticality" class="space-y-6 hidden">
                 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
                     <h3 class="text-lg font-bold text-slate-900 mb-2">ตารางประเมินความสำคัญของอุปกรณ์ (Criticality Matrix)</h3>
-                    <p class="text-sm text-slate-500 mb-6">ใช้สำหรับจัดลำดับความสำคัญในการวางแผนบำรุงรักษาเชิงป้องกัน (Preventive Maintenance)</p>
+                    <p class="text-sm text-slate-500 mb-6">ใช้จัดลำดับความสำคัญในการทำ Preventive Maintenance (PM)</p>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-sm">
                             <thead>
@@ -184,13 +190,13 @@
                                 <tr>
                                     <td class="py-3 px-4"><span class="bg-rose-50 text-rose-700 px-2.5 py-1 rounded-full text-xs font-bold border border-rose-100">สูงมาก (High)</span></td>
                                     <td class="py-3 px-4 font-medium">Network Transformer & RMU</td>
-                                    <td class="py-3 px-4 text-slate-600">จ่ายไฟให้ย่านธุรกิจสำคัญ / โรงพยาบาล / โหลดสูงกว่า 1,000 kVA</td>
-                                    <td class="py-3 px-4 text-slate-600">ทุก 3 - 6 เดือน + Thermal Scan</td>
+                                    <td class="py-3 px-4 text-slate-600">จ่ายไฟย่านธุรกิจสำคัญ / โรงพยาบาล / โหลดสูงกว่า 1,000 kVA</td>
+                                    <td class="py-3 px-4 text-slate-600">ทุก 3 - 6 เดือน</td>
                                 </tr>
                                 <tr>
                                     <td class="py-3 px-4"><span class="bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full text-xs font-bold border border-amber-100">ปานกลาง (Medium)</span></td>
                                     <td class="py-3 px-4 font-medium">Load Break Switch & Unit Substation</td>
-                                    <td class="py-3 px-4 text-slate-600">จ่ายไฟฟ้าย่านชุมชนหนาแน่น / อาคารพาณิชย์ทั่วไป</td>
+                                    <td class="py-3 px-4 text-slate-600">จ่ายไฟย่านชุมชนหนาแน่น / อาคารพาณิชย์</td>
                                     <td class="py-3 px-4 text-slate-600">ทุก 6 - 12 เดือน</td>
                                 </tr>
                                 <tr>
@@ -208,12 +214,13 @@
         </main>
     </div>
 
+    <!-- FORM MODAL (ADD / EDIT - COMPLETE 9 FORMS) -->
     <div id="formModal" class="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm overflow-y-auto">
         <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto border border-slate-100">
             <div class="flex justify-between items-center pb-4 border-b border-slate-200 mb-6">
                 <div>
                     <h2 class="text-xl font-bold text-slate-900" id="modalTitle">เพิ่มใบบันทึกการตรวจสอบใหม่</h2>
-                    <p class="text-xs text-slate-500 mt-0.5">กรอกข้อมูลตามฟอร์มมาตรฐานการไฟฟ้านครหลวง (MEA)</p>
+                    <p class="text-xs text-slate-500 mt-0.5">เลือกรูปแบบฟอร์มตามต้นฉบับ กฟน. ทั้ง 9 แบบ</p>
                 </div>
                 <button onclick="closeFormModal()" class="w-9 h-9 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 rounded-xl flex items-center justify-center transition text-slate-500">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -223,73 +230,84 @@
             <form id="inspectionForm" onsubmit="saveInspection(event)" class="space-y-6">
                 <input type="hidden" id="editIndex" value="-1">
                 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">ประเภทอุปกรณ์ตรวจสอบ</label>
-                        <select id="formDeviceType" required class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="หม้อแปลงจำหน่าย (Distribution Transformer)">1. หม้อแปลงจำหน่าย (Distribution Transformer)</option>
-                            <option value="Load Break Switch (LBS)">2. Load Break Switch (LBS)</option>
-                            <option value="Sectionalizer (SZ)">3. Sectionalizer (SZ)</option>
-                            <option value="Ring Main Unit (RMU)">4. Ring Main Unit (RMU)</option>
-                            <option value="Unit Substation">5. Unit Substation</option>
-                            <option value="Capacitor Bank 12-24 kV">6. Capacitor Bank 12-24 kV</option>
-                            <option value="เครื่องป้องกันหม้อแปลงวงจรตาข่าย">7. เครื่องป้องกันหม้อแปลงวงจรตาข่าย</option>
-                            <option value="หม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง">8. หม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง</option>
-                            <option value="ทดสอบและกรองน้ำมันหม้อแปลง">9. ทดสอบและกรองน้ำมันหม้อแปลง</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ตรวจสอบ</label>
-                        <input type="date" id="formDate" required class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
+                <!-- เลือกประเภทฟอร์ม -->
+                <div class="p-4 bg-blue-50/50 rounded-xl border border-blue-100">
+                    <label class="block text-sm font-bold text-blue-900 mb-1">เลือกแบบฟอร์มตรวจสอบ (ตามต้นฉบับ 9 แบบ)</label>
+                    <select id="formDeviceType" onchange="switchFormTemplate()" class="w-full px-3 py-2.5 bg-white border border-blue-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                        <option value="1">1. แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</option>
+                        <option value="2">2. แบบตรวจสอบบำรุงรักษา Load Break Switch (LBS)</option>
+                        <option value="3">3. แบบตรวจสอบบำรุงรักษา Sectionalizer (SZ)</option>
+                        <option value="4">4. แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</option>
+                        <option value="5">5. แบบตรวจสอบบำรุงรักษา Unit Substation</option>
+                        <option value="6">6. แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV</option>
+                        <option value="7">7. แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย</option>
+                        <option value="8">8. แบบตรวจสอบหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง</option>
+                        <option value="9">9. แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลง</option>
+                    </select>
                 </div>
 
+                <!-- ข้อมูลทั่วไป -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Station ID</label>
-                        <input type="text" id="formStationId" required placeholder="เช่น TR-00125" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" id="formStationId" required placeholder="เช่น TR-001" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
                     </div>
-                    <div class="sm:col-span-2">
-                        <label class="block text-sm font-medium text-slate-700 mb-1">สถานที่ตั้ง / GIS</label>
-                        <input type="text" id="formLocation" required placeholder="เช่น ซอยสุขุมวิท 101, สมุทรปราการ" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ตรวจสอบ</label>
+                        <input type="date" id="formDate" required class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อผู้ตรวจสอบ</label>
+                        <input type="text" id="formInspector" required placeholder="ชื่อ-นามสกุล" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">ผลการตรวจสอบรวม</label>
-                        <select id="formStatus" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">สถานที่ตั้ง / GIS / Lat-Long</label>
+                        <input type="text" id="formLocation" required placeholder="ระบุสถานที่ตั้งหรือพิกัด" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">ผลการตรวจสอบสรุป</label>
+                        <select id="formStatus" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
                             <option value="ปกติ">ปกติ (Normal)</option>
                             <option value="ชำรุด">พบข้อบกพร่อง/ชำรุด (Defect)</option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อผู้ตรวจสอบ</label>
-                        <input type="text" id="formInspector" required placeholder="ชื่อ-นามสกุล ผู้ตรวจ" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">แนบรูปภาพหน้างาน</label>
-                        <input type="file" id="formImage" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                </div>
+
+                <!-- ส่วนตารางรายการตรวจสอบแบบไดนามิกตามฟอร์ม -->
+                <div>
+                    <h3 class="text-sm font-bold text-slate-800 mb-2">รายการตรวจสอบตามหัวข้อแบบฟอร์ม:</h3>
+                    <div id="dynamicChecklistContainer" class="border border-slate-200 rounded-xl overflow-hidden max-h-64 overflow-y-auto p-4 bg-slate-50 text-sm">
+                        <!-- รายการเช็คลิสต์จะถูกเรนเดอร์อัตโนมัติที่นี่ -->
                     </div>
                 </div>
 
+                <!-- ค่าทางไฟฟ้า / ข้อมูลเพิ่มเติม -->
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">รายละเอียดข้อบกพร่อง / สิ่งที่ต้องปรับปรุง</label>
-                    <textarea id="formDefects" rows="3" placeholder="ระบุรายละเอียดข้อบกพร่องหรือสิ่งที่ต้องแก้ไข (ถ้ามี)..." class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">สิ่งที่ต้องปรับปรุง หรือ ข้อบกพร่องเพิ่มเติม</label>
+                    <textarea id="formDefects" rows="3" placeholder="ระบุข้อบกพร่องหรือสิ่งที่ต้องแก้ไข..." class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">แนบรูปภาพประกอบการตรวจสอบ</label>
+                    <input type="file" id="formImage" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700">
                 </div>
 
                 <div class="flex justify-end space-x-3 pt-4 border-t border-slate-200">
                     <button type="button" onclick="closeFormModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition text-sm font-medium">ยกเลิก</button>
-                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition text-sm font-medium shadow-md shadow-blue-500/20">บันทึกข้อมูล</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition text-sm font-medium shadow-md">บันทึกข้อมูล</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- DETAIL MODAL & PRINT VIEW -->
     <div id="detailModal" class="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm overflow-y-auto">
         <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-8 max-h-[90vh] overflow-y-auto border border-slate-100 print-container">
             <div class="flex justify-between items-center pb-4 border-b border-slate-200 mb-6 no-print">
-                <h2 class="text-xl font-bold text-slate-900">รายละเอียดใบตรวจสอบ</h2>
+                <h2 class="text-xl font-bold text-slate-900">รายละเอียดใบตรวจสอบ กฟน.</h2>
                 <div class="flex items-center space-x-2">
                     <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium flex items-center space-x-2 shadow-sm transition">
                         <i class="fa-solid fa-print"></i><span>พิมพ์ / PDF</span>
@@ -301,7 +319,7 @@
             </div>
 
             <div class="text-center mb-6">
-                <h2 class="text-lg font-bold text-slate-900" id="printDeviceType">-</h2>
+                <h2 class="text-lg font-bold text-slate-900" id="printFormTitle">-</h2>
                 <p class="text-xs text-slate-500 mt-1">การไฟฟ้านครหลวง (MEA) - แบบตรวจสอบบำรุงรักษาอุปกรณ์ไฟฟ้า</p>
             </div>
 
@@ -310,14 +328,12 @@
                 <div><strong>วันที่ตรวจสอบ:</strong> <span id="printDate">-</span></div>
                 <div class="col-span-2"><strong>สถานที่ตั้ง:</strong> <span id="printLocation">-</span></div>
                 <div><strong>ผู้ตรวจสอบ:</strong> <span id="printInspector">-</span></div>
-                <div><strong>สถานะ:</strong> <span id="printStatus">-</span></div>
+                <div><strong>สถานะรวม:</strong> <span id="printStatus">-</span></div>
             </div>
 
             <div class="mb-6">
                 <h4 class="text-sm font-bold text-slate-800 mb-2">ข้อบกพร่องที่พบ / สิ่งที่ต้องปรับปรุง:</h4>
-                <div class="p-4 bg-slate-50 rounded-xl text-sm text-slate-600 border border-slate-100 min-h-[80px]" id="printDefects">
-                    - ไม่มีข้อบกพร่อง -
-                </div>
+                <div class="p-4 bg-slate-50 rounded-xl text-sm text-slate-600 border border-slate-100 min-h-[80px]" id="printDefects">-</div>
             </div>
 
             <div id="printImageContainer" class="mb-6 hidden">
@@ -332,32 +348,45 @@
         </div>
     </div>
 
+    <!-- SCRIPT LOGIC -->
     <script>
-        // Mock Data Initial
+        const formTemplates = {
+            "1": "1. แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย",
+            "2": "2. แบบตรวจสอบบำรุงรักษา Load Break Switch (LBS)",
+            "3": "3. แบบตรวจสอบบำรุงรักษา Sectionalizer (SZ)",
+            "4": "4. แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",
+            "5": "5. แบบตรวจสอบบำรุงรักษา Unit Substation",
+            "6": "6. แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV",
+            "7": "7. แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",
+            "8": "8. แบบตรวจสอบหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",
+            "9": "9. แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลง"
+        };
+
+        const checklistItems = {
+            "1": ["Drop Fuse", "Station Post Type Insulator", "สายเข้า-ออก Drop Fuse", "คอนสาย", "อุปกรณ์ป้องกันสัตว์", "Low Voltage Capacitor", "กันตักฟ้าผ่า (L/A)", "ตัวถังหม้อแปลง", "Bushing HV-LV", "Cover (Bushing, L/A, Term. kit)", "สายหน้าหม้อแปลง LV", "LV Ground", "HV Ground", "CT-TLM Meter"],
+            "2": ["ตัวถัง LBS / สลักล็อคการปลดสับ", "สถานะก๊าซ SF6", "Bushing", "กันตักฟ้าผ่า", "VT", "Drop Fuse ลง VT", "คอนสาย", "สายควบคุม LBS", "อุปกรณ์ป้องกันสัตว์", "ไฟสถานะหน้าตู้", "แหล่งจ่ายไฟฟ้าและสายควบคุม", "สภาพแบตเตอรี่หรือ Capacitor", "Ground HV (L/A, LBS)", "Ground LV (ตู้ Control)"],
+            "3": ["ตัวถัง SZ / สลักล็อคการปลดสับ", "สถานะก๊าซ SF6", "Bushing", "กันตักฟ้าผ่า", "คอนสาย", "สายควบคุม SZ", "อุปกรณ์ป้องกันสัตว์", "ไฟสถานะหน้าตู้", "แหล่งจ่ายไฟฟ้าและสายควบคุม", "สภาพแบตเตอรี่หรือ Capacitor", "Ground HV (L/A, SZ)", "Ground LV (ตู้ Control)"],
+            "4": ["สภาพภายนอกตู้ครอบ RMU", "ประตูตู้", "ฐานตู้ / นั่งร้าน", "สภาพ RMU / ห้อง", "ก๊าซ SF6", "ตัวแสดงสถานะสวิทช์", "กุญแจล็อคป้องกันการปลด-สับ", "คันสับ", "ตัวตรวจสอบแรงดัน", "ตัวตรวจสอบการลัดวงจร", "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "สภาพแบตเตอรี่หรือ UPS"],
+            "5": ["สภาพภายนอก Enclosure", "ประตูตู้", "ฐานตู้ / นั่งร้าน", "สภาพ RMU", "ก๊าซ SF6", "ตัวแสดงสถานะสวิทช์", "ตัวถังหม้อแปลง", "Bushing HV-LV", "สายหน้าหม้อแปลง HV - LV", "LV Ground", "HV Ground", "สภาพทั่วไป CB หรือ FUSE", "สายไฟฟ้า", "บัสบาร์"],
+            "6": ["Drop Fuse", "Station Post Type Insulator", "สายเข้า-ออก Drop Fuse", "คอนสาย", "อุปกรณ์ป้องกันสัตว์", "กันตักฟ้าผ่า (L/A)", "HV Ground", "Vacuum CB", "Supply", "Fuse Control ภายในตู้", "หลอดไฟแสดงสถานะภายในตู้", "หน้าจอ Digital Control", "ตัวถังคาปาซิเตอร์"],
+            "7": ["สถานะ MV.SW.", "สถานะ NP", "เบอร์ตู้ / สีตู้", "ระบบกราวด์", "อุปกรณ์ป้องกันแรงดันเกินภายนอก", "ตัวถัง รอยต่อหม้อแปลง", "ฝาตู้", "การมีแขวนป้ายแดงห้ามปลด-สับ", "ปลด MV.SW. ครั้งที่ 1", "สับ MV.SW. ครั้งที่ 1"],
+            "8": ["สภาพภายนอกสวิทช์แรงกลาง", "ก๊าซ SF6", "หัวต่อสาย / สายไฟฟ้า", "ระบบกราวด์", "ตัวถังหม้อแปลง", "น้ำมันหม้อแปลง", "ฟิวส์ 12 kV", "อุณหภูมิสูงสุด / อุณหภูมิจริง", "สายไฟฟ้าด้านแรงต่ำ"],
+            "9": ["ทดสอบน้ำมันครั้งที่ 1 (Breakdown Voltage kV)", "กรองน้ำมันครั้งที่ 1 แล้วดำเนินการทดสอบใหม่", "กรองน้ำมันครั้งที่ 2 แล้วดำเนินการทดสอบใหม่"]
+        };
+
         let inspections = [
             {
                 date: '2026-03-01',
-                deviceType: 'หม้อแปลงจำหน่าย (Distribution Transformer)',
+                formType: '1',
                 stationId: 'TR-10245',
-                location: 'ซอยสุขุมวิท 77, บางนา, กรุงเทพฯ',
+                location: 'ซอยสุขุมวิท 77, บางนา',
                 status: 'ปกติ',
                 inspector: 'ศิรภัสสร กลับสุข',
-                defects: 'ทุกจุดอยู่ในสภาพปกติ ไม่มีน้ำมันรั่วซึม',
-                image: ''
-            },
-            {
-                date: '2026-03-02',
-                deviceType: 'Load Break Switch (LBS)',
-                stationId: 'LBS-8831',
-                location: 'ถนนศรีนครินทร์, สมุทรปราการ',
-                status: 'ชำรุด',
-                inspector: 'วิศวกร กฟน.',
-                defects: 'ตู้ Control มีคราบความชื้นและยางกันน้ำเสื่อมสภาพ',
+                defects: 'ทุกจุดปกติ ไม่มีน้ำมันรั่วซึม',
                 image: ''
             }
         ];
 
-        // Login Handler
         function handleLogin(e) {
             e.preventDefault();
             const username = document.getElementById('username').value;
@@ -373,7 +402,6 @@
             document.getElementById('loginView').classList.remove('hidden');
         }
 
-        // Tab Switching
         function switchTab(tabName) {
             ['dashboard', 'inspection', 'criticality'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
@@ -387,7 +415,6 @@
             if(tabName === 'dashboard') renderDashboard();
         }
 
-        // Render Dashboard Stats
         function renderDashboard() {
             document.getElementById('stat-total').innerText = inspections.length;
             const normalCount = inspections.filter(i => i.status === 'ปกติ').length;
@@ -396,7 +423,41 @@
             document.getElementById('stat-defect').innerText = defectCount;
         }
 
-        // Render Inspection Table
+        function switchFormTemplate() {
+            const formType = document.getElementById('formDeviceType').value;
+            const container = document.getElementById('dynamicChecklistContainer');
+            container.innerHTML = '';
+
+            const items = checklistItems[formType] || [];
+            items.forEach((item, idx) => {
+                container.innerHTML += `
+                    <div class="flex items-center justify-between py-2 border-b border-slate-200">
+                        <span class="text-xs font-medium text-slate-700">${idx+1}. ${item}</span>
+                        <div class="flex space-x-3 text-xs">
+                            <label><input type="radio" name="check_${idx}" value="ปกติ" checked> ปกติ</label>
+                            <label><input type="radio" name="check_${idx}" value="ชำรุด"> ชำรุด</label>
+                            <label><input type="radio" name="check_${idx}" value="ไม่มี"> ไม่มี</label>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function openFormModal(isEdit = false) {
+            document.getElementById('formModal').classList.remove('hidden');
+            if(!isEdit) {
+                document.getElementById('modalTitle').innerText = 'เพิ่มใบบันทึกการตรวจสอบใหม่';
+                document.getElementById('inspectionForm').reset();
+                document.getElementById('editIndex').value = '-1';
+                document.getElementById('formDate').valueAsDate = new Date();
+                switchFormTemplate();
+            }
+        }
+
+        function closeFormModal() {
+            document.getElementById('formModal').classList.add('hidden');
+        }
+
         function renderTable() {
             const keyword = document.getElementById('searchInput').value.toLowerCase();
             const tbody = document.getElementById('inspectionTableBody');
@@ -404,8 +465,7 @@
 
             const filtered = inspections.filter(item => 
                 item.stationId.toLowerCase().includes(keyword) || 
-                item.location.toLowerCase().includes(keyword) || 
-                item.deviceType.toLowerCase().includes(keyword)
+                item.location.toLowerCase().includes(keyword)
             );
 
             if (filtered.length === 0) {
@@ -421,13 +481,12 @@
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50/80 transition">
                         <td class="py-4 px-6 text-slate-600">${item.date}</td>
-                        <td class="py-4 px-6 font-medium text-slate-900">${item.deviceType}</td>
+                        <td class="py-4 px-6 font-medium text-slate-900">${formTemplates[item.formType]}</td>
                         <td class="py-4 px-6 text-slate-600"><div class="font-bold text-slate-800">${item.stationId}</div><div class="text-xs text-slate-400">${item.location}</div></td>
                         <td class="py-4 px-6 text-slate-600">${item.inspector}</td>
                         <td class="py-4 px-6">${statusBadge}</td>
                         <td class="py-4 px-6 text-center space-x-2">
                             <button onclick="viewDetail(${index})" class="p-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-xl transition" title="ดูรายละเอียด"><i class="fa-solid fa-eye"></i></button>
-                            <button onclick="editInspection(${index})" class="p-2 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-xl transition" title="แก้ไข"><i class="fa-solid fa-pen"></i></button>
                             <button onclick="deleteInspection(${index})" class="p-2 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-xl transition" title="ลบ"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
@@ -435,24 +494,46 @@
             });
         }
 
-        // Modal Controls
-        function openFormModal(isEdit = false) {
-            document.getElementById('formModal').classList.remove('hidden');
-            if(!isEdit) {
-                document.getElementById('modalTitle').innerText = 'เพิ่มใบบันทึกการตรวจสอบใหม่';
-                document.getElementById('inspectionForm').reset();
-                document.getElementById('editIndex').value = '-1';
-                document.getElementById('formDate').valueAsDate = new Date();
-            }
-        }
+        function saveInspection(e) {
+            e.preventDefault();
+            const editIndex = parseInt(document.getElementById('editIndex').value);
+            const imageFile = document.getElementById('formImage').files[0];
 
-        function closeFormModal() {
-            document.getElementById('formModal').classList.add('hidden');
+            const saveData = (imageUrl = '') => {
+                const newData = {
+                    date: document.getElementById('formDate').value,
+                    formType: document.getElementById('formDeviceType').value,
+                    stationId: document.getElementById('formStationId').value,
+                    location: document.getElementById('formLocation').value,
+                    status: document.getElementById('formStatus').value,
+                    inspector: document.getElementById('formInspector').value,
+                    defects: document.getElementById('formDefects').value,
+                    image: imageUrl || (editIndex >= 0 ? inspections[editIndex].image : '')
+                };
+
+                if(editIndex >= 0) {
+                    inspections[editIndex] = newData;
+                } else {
+                    inspections.unshift(newData);
+                }
+
+                closeFormModal();
+                renderTable();
+                renderDashboard();
+            };
+
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) { saveData(uploadEvent.target.result); };
+                reader.readAsDataURL(imageFile);
+            } else {
+                saveData();
+            }
         }
 
         function viewDetail(index) {
             const item = inspections[index];
-            document.getElementById('printDeviceType').innerText = item.deviceType;
+            document.getElementById('printFormTitle').innerText = formTemplates[item.formType];
             document.getElementById('printStationId').innerText = item.stationId;
             document.getElementById('printDate').innerText = item.date;
             document.getElementById('printLocation').innerText = item.location;
@@ -475,63 +556,8 @@
             document.getElementById('detailModal').classList.add('hidden');
         }
 
-        // CRUD Operations
-        function saveInspection(e) {
-            e.preventDefault();
-            const editIndex = parseInt(document.getElementById('editIndex').value);
-            const imageFile = document.getElementById('formImage').files[0];
-
-            const saveData = (imageUrl = '') => {
-                const newData = {
-                    date: document.getElementById('formDate').value,
-                    deviceType: document.getElementById('formDeviceType').value,
-                    stationId: document.getElementById('formStationId').value,
-                    location: document.getElementById('formLocation').value,
-                    status: document.getElementById('formStatus').value,
-                    inspector: document.getElementById('formInspector').value,
-                    defects: document.getElementById('formDefects').value,
-                    image: imageUrl || (editIndex >= 0 ? inspections[editIndex].image : '')
-                };
-
-                if(editIndex >= 0) {
-                    inspections[editIndex] = newData;
-                } else {
-                    inspections.unshift(newData);
-                }
-
-                closeFormModal();
-                renderTable();
-                renderDashboard();
-            };
-
-            if (imageFile) {
-                const reader = new FileReader();
-                reader.onload = function(uploadEvent) {
-                    saveData(uploadEvent.target.result);
-                };
-                reader.readAsDataURL(imageFile);
-            } else {
-                saveData();
-            }
-        }
-
-        function editInspection(index) {
-            const item = inspections[index];
-            document.getElementById('editIndex').value = index;
-            document.getElementById('modalTitle').innerText = 'แก้ไขใบบันทึกการตรวจสอบ';
-            document.getElementById('formDeviceType').value = item.deviceType;
-            document.getElementById('formDate').value = item.date;
-            document.getElementById('formStationId').value = item.stationId;
-            document.getElementById('formLocation').value = item.location;
-            document.getElementById('formStatus').value = item.status;
-            document.getElementById('formInspector').value = item.inspector;
-            document.getElementById('formDefects').value = item.defects;
-            document.getElementById('formFormModal').classList.remove('hidden');
-            openFormModal(true);
-        }
-
         function deleteInspection(index) {
-            if(confirm('คุณต้องการลบข้อมูลการตรวจสอบนี้ใช่หรือไม่?')) {
+            if(confirm('คุณต้องการลบข้อมูลนี้ใช่หรือไม่?')) {
                 inspections.splice(index, 1);
                 renderTable();
                 renderDashboard();
