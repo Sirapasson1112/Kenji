@@ -27,25 +27,25 @@
                 <h1 class="text-2xl font-bold text-slate-900">Asset Inspection App</h1>
                 <p class="text-sm text-slate-500 mt-1">ระบบบันทึกและจัดการตรวจสอบบำรุงรักษาอุปกรณ์ กฟน.</p>
             </div>
-            <form onsubmit="handleLogin(event)" class="space-y-5">
+            <div class="space-y-5">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อผู้ใช้งาน</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-user"></i></span>
-                        <input type="text" id="username" required class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="กรอกชื่อผู้ใช้งาน (เช่น admin)">
+                        <input type="text" id="username" value="เจ้าหน้าที่ กฟน." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="กรอกชื่อผู้ใช้งาน">
                     </div>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">รหัสผ่าน</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" id="password" required class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="••••••••">
+                        <input type="password" id="password" value="1234" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="••••••••">
                     </div>
                 </div>
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-xl transition shadow-lg shadow-blue-600/30 text-sm">
+                <button type="button" onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-xl transition shadow-lg shadow-blue-600/30 text-sm">
                     เข้าสู่ระบบ
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -64,7 +64,7 @@
                 <div class="flex items-center space-x-4">
                     <div class="text-right hidden sm:block">
                         <div class="text-sm font-semibold text-slate-800" id="userDisplayName">เจ้าหน้าที่ตรวจสอบ</div>
-                        <div class="text-xs text-slate-500">เขตกฟน.</div>
+                        <div class="text-xs text-slate-500">เขตกฟน. สมุทรปราการ</div>
                     </div>
                     <button onclick="handleLogout()" class="p-2 text-slate-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 transition" title="ออกจากระบบ">
                         <i class="fa-solid fa-right-from-bracket text-lg"></i>
@@ -310,4 +310,304 @@
                     </div>
                 </div>
 
-                <div class="grid grid
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">สถานที่ตั้ง / GIS / Lat-Long</label>
+                        <input type="text" id="formLocation" required placeholder="ระบุสถานที่ตั้งหรือพิกัด" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">ผลการตรวจสอบสรุป</label>
+                        <select id="formStatus" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                            <option value="ปกติ">ปกติ (Normal)</option>
+                            <option value="ชำรุด">พบข้อบกพร่อง/ชำรุด (Defect)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-bold text-slate-800 mb-2">รายการตรวจสอบตามหัวข้อ:</h3>
+                    <div id="dynamicChecklistContainer" class="border border-slate-200 rounded-xl overflow-hidden max-h-64 overflow-y-auto p-4 bg-slate-50 text-sm"></div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">สิ่งที่ต้องปรับปรุง หรือ ข้อบกพร่องเพิ่มเติม</label>
+                    <textarea id="formDefects" rows="3" placeholder="ระบุข้อบกพร่องหรือสิ่งที่ต้องแก้ไข..." class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">แนบรูปภาพประกอบการตรวจสอบ</label>
+                    <input type="file" id="formImage" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700">
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4 border-t border-slate-200">
+                    <button type="button" onclick="closeFormModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition text-sm font-medium">ยกเลิก</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition text-sm font-medium shadow-md">บันทึกข้อมูล</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="detailModal" class="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-8 max-h-[90vh] overflow-y-auto border border-slate-100 print-container">
+            <div class="flex justify-between items-center pb-4 border-b border-slate-200 mb-6 no-print">
+                <h2 class="text-xl font-bold text-slate-900">รายละเอียดใบตรวจสอบ กฟน.</h2>
+                <div class="flex items-center space-x-2">
+                    <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium flex items-center space-x-2 shadow-sm transition">
+                        <i class="fa-solid fa-print"></i><span>พิมพ์ / PDF</span>
+                    </button>
+                    <button onclick="closeDetailModal()" class="w-9 h-9 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 rounded-xl flex items-center justify-center transition text-slate-500">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="text-center mb-6">
+                <h2 class="text-lg font-bold text-slate-900" id="printFormTitle">-</h2>
+                <p class="text-xs text-slate-500 mt-1">การไฟฟ้านครหลวง (MEA) - แบบตรวจสอบบำรุงรักษาอุปกรณ์ไฟฟ้า</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl text-sm mb-6 border border-slate-100">
+                <div><strong>Station ID:</strong> <span id="printStationId">-</span></div>
+                <div><strong>วันที่ตรวจสอบ:</strong> <span id="printDate">-</span></div>
+                <div class="col-span-2"><strong>สถานที่ตั้ง:</strong> <span id="printLocation">-</span></div>
+                <div><strong>ผู้ตรวจสอบ:</strong> <span id="printInspector">-</span></div>
+                <div><strong>สถานะรวม:</strong> <span id="printStatus">-</span></div>
+            </div>
+
+            <div class="mb-6">
+                <h4 class="text-sm font-bold text-slate-800 mb-2">ข้อบกพร่องที่พบ / สิ่งที่ต้องปรับปรุง:</h4>
+                <div class="p-4 bg-slate-50 rounded-xl text-sm text-slate-600 border border-slate-100 min-h-[80px]" id="printDefects">-</div>
+            </div>
+
+            <div id="printImageContainer" class="mb-6 hidden">
+                <h4 class="text-sm font-bold text-slate-800 mb-2">รูปภาพประกอบการตรวจสอบ:</h4>
+                <img id="printImage" src="" alt="Inspection Image" class="max-h-64 rounded-xl border border-slate-200 object-cover">
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between text-xs text-slate-500">
+                <div>ลงชื่อผู้ตรวจสอบ: .......................................................</div>
+                <div>ลงชื่อผู้ตรวจสอบทาน: .......................................................</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const formTemplates = {
+            "1": "1. แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย",
+            "2": "2. แบบตรวจสอบบำรุงรักษา Load Break Switch (LBS)",
+            "3": "3. แบบตรวจสอบบำรุงรักษา Sectionalizer (SZ)",
+            "4": "4. แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",
+            "5": "5. แบบตรวจสอบบำรุงรักษา Unit Substation",
+            "6": "6. แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV",
+            "7": "7. แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",
+            "8": "8. แบบตรวจสอบหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",
+            "9": "9. แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลง"
+        };
+
+        const checklistItems = {
+            "1": ["Drop Fuse", "Station Post Type Insulator", "สายเข้า-ออก Drop Fuse", "คอนสาย", "อุปกรณ์ป้องกันสัตว์", "Low Voltage Capacitor", "กันตักฟ้าผ่า (L/A)", "ตัวถังหม้อแปลง", "Bushing HV-LV", "Cover (Bushing, L/A, Term. kit)", "สายหน้าหม้อแปลง LV", "LV Ground", "HV Ground", "CT-TLM Meter"],
+            "2": ["ตัวถัง LBS / สลักล็อคการปลดสับ", "สถานะก๊าซ SF6", "Bushing", "กันตักฟ้าผ่า", "VT", "Drop Fuse ลง VT", "คอนสาย", "สายควบคุม LBS", "อุปกรณ์ป้องกันสัตว์", "ไฟสถานะหน้าตู้", "แหล่งจ่ายไฟฟ้าและสายควบคุม", "สภาพแบตเตอรี่หรือ Capacitor", "Ground HV (L/A, LBS)", "Ground LV (ตู้ Control)"],
+            "3": ["ตัวถัง SZ / สลักล็อคการปลดสับ", "สถานะก๊าซ SF6", "Bushing", "กันตักฟ้าผ่า", "คอนสาย", "สายควบคุม SZ", "อุปกรณ์ป้องกันสัตว์", "ไฟสถานะหน้าตู้", "แหล่งจ่ายไฟฟ้าและสายควบคุม", "สภาพแบตเตอรี่หรือ Capacitor", "Ground HV (L/A, SZ)", "Ground LV (ตู้ Control)"],
+            "4": ["สภาพภายนอกตู้ครอบ RMU", "ประตูตู้", "ฐานตู้ / นั่งร้าน", "สภาพ RMU / ห้อง", "ก๊าซ SF6", "ตัวแสดงสถานะสวิทช์", "กุญแจล็อคป้องกันการปลด-สับ", "คันสับ", "ตัวตรวจสอบแรงดัน", "ตัวตรวจสอบการลัดวงจร", "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "สภาพแบตเตอรี่หรือ UPS"],
+            "5": ["สภาพภายนอก Enclosure", "ประตูตู้", "ฐานตู้ / นั่งร้าน", "สภาพ RMU", "ก๊าซ SF6", "ตัวแสดงสถานะสวิทช์", "ตัวถังหม้อแปลง", "Bushing HV-LV", "สายหน้าหม้อแปลง HV - LV", "LV Ground", "HV Ground", "สภาพทั่วไป CB หรือ FUSE", "สายไฟฟ้า", "บัสบาร์"],
+            "6": ["Drop Fuse", "Station Post Type Insulator", "สายเข้า-ออก Drop Fuse", "คอนสาย", "อุปกรณ์ป้องกันสัตว์", "กันตักฟ้าผ่า (L/A)", "HV Ground", "Vacuum CB", "Supply", "Fuse Control ภายในตู้", "หลอดไฟแสดงสถานะภายในตู้", "หน้าจอ Digital Control", "ตัวถังคาปาซิเตอร์"],
+            "7": ["สถานะ MV.SW.", "สถานะ NP", "เบอร์ตู้ / สีตู้", "ระบบกราวด์", "อุปกรณ์ป้องกันแรงดันเกินภายนอก", "ตัวถัง รอยต่อหม้อแปลง", "ฝาตู้", "การมีแขวนป้ายแดงห้ามปลด-สับ", "ปลด MV.SW. ครั้งที่ 1", "สับ MV.SW. ครั้งที่ 1"],
+            "8": ["สภาพภายนอกสวิทช์แรงกลาง", "ก๊าซ SF6", "หัวต่อสาย / สายไฟฟ้า", "ระบบกราวด์", "ตัวถังหม้อแปลง", "น้ำมันหม้อแปลง", "ฟิวส์ 12 kV", "อุณหภูมิสูงสุด / อุณหภูมิจริง", "สายไฟฟ้าด้านแรงต่ำ"],
+            "9": ["ทดสอบน้ำมันครั้งที่ 1 (Breakdown Voltage kV)", "กรองน้ำมันครั้งที่ 1 แล้วดำเนินการทดสอบใหม่", "กรองน้ำมันครั้งที่ 2 แล้วดำเนินการทดสอบใหม่"]
+        };
+
+        let inspections = [
+            {
+                date: '2026-03-01',
+                formType: '1',
+                stationId: 'TR-10245',
+                location: 'ซอยสุขุมวิท 77, บางนา',
+                status: 'ปกติ',
+                inspector: 'ศิรภัสสร กลับสุข',
+                defects: 'ทุกจุดปกติ ไม่มีน้ำมันรั่วซึม',
+                image: ''
+            }
+        ];
+
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            document.getElementById('userDisplayName').innerText = username || 'เจ้าหน้าที่ตรวจสอบ';
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('appContainer').classList.remove('hidden');
+            renderDashboard();
+            renderTable();
+        }
+
+        function handleLogout() {
+            document.getElementById('appContainer').classList.add('hidden');
+            document.getElementById('loginView').classList.remove('hidden');
+        }
+
+        function switchTab(tabName) {
+            ['dashboard', 'inspection', 'forms', 'criticality'].forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                if(el) el.classList.add('hidden');
+                const nav = document.getElementById(`nav-${t}`);
+                if(nav) {
+                    nav.classList.remove('border-blue-600', 'text-blue-600');
+                    nav.classList.add('border-transparent', 'text-slate-500');
+                }
+            });
+            const targetTab = document.getElementById(`tab-${tabName}`);
+            if(targetTab) targetTab.classList.remove('hidden');
+            const targetNav = document.getElementById(`nav-${tabName}`);
+            if(targetNav) {
+                targetNav.classList.add('border-blue-600', 'text-blue-600');
+                targetNav.classList.remove('border-transparent', 'text-slate-500');
+            }
+
+            if(tabName === 'dashboard') renderDashboard();
+            if(tabName === 'inspection') renderTable();
+        }
+
+        function renderDashboard() {
+            document.getElementById('stat-total').innerText = inspections.length;
+            const normalCount = inspections.filter(i => i.status === 'ปกติ').length;
+            const defectCount = inspections.filter(i => i.status === 'ชำรุด').length;
+            document.getElementById('stat-normal').innerText = normalCount;
+            document.getElementById('stat-defect').innerText = defectCount;
+        }
+
+        function openForm(formTypeKey) {
+            document.getElementById('selectedFormType').value = formTypeKey;
+            document.getElementById('modalTitle').innerText = formTemplates[formTypeKey];
+            document.getElementById('inspectionForm').reset();
+            document.getElementById('editIndex').value = '-1';
+            document.getElementById('formDate').valueAsDate = new Date();
+            
+            const container = document.getElementById('dynamicChecklistContainer');
+            container.innerHTML = '';
+            const items = checklistItems[formTypeKey] || [];
+            items.forEach((item, idx) => {
+                container.innerHTML += `
+                    <div class="flex items-center justify-between py-2 border-b border-slate-200">
+                        <span class="text-xs font-medium text-slate-700">${idx+1}. ${item}</span>
+                        <div class="flex space-x-3 text-xs">
+                            <label><input type="radio" name="check_${idx}" value="ปกติ" checked> ปกติ</label>
+                            <label><input type="radio" name="check_${idx}" value="ชำรุด"> ชำรุด</label>
+                            <label><input type="radio" name="check_${idx}" value="ไม่มี"> ไม่มี</label>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('formModal').classList.remove('hidden');
+        }
+
+        function closeFormModal() {
+            document.getElementById('formModal').classList.add('hidden');
+        }
+
+        function renderTable() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            const tbody = document.getElementById('inspectionTableBody');
+            tbody.innerHTML = '';
+
+            const filtered = inspections.filter(item => 
+                item.stationId.toLowerCase().includes(keyword) || 
+                item.location.toLowerCase().includes(keyword)
+            );
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">ไม่พบข้อมูลการตรวจสอบ</td></tr>`;
+                return;
+            }
+
+            filtered.forEach((item, index) => {
+                const statusBadge = item.status === 'ปกติ' 
+                    ? `<span class="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-semibold border border-emerald-100">ปกติ</span>`
+                    : `<span class="bg-rose-50 text-rose-700 px-2.5 py-1 rounded-full text-xs font-semibold border border-rose-100">ชำรุด</span>`;
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50/80 transition">
+                        <td class="py-4 px-6 text-slate-600">${item.date}</td>
+                        <td class="py-4 px-6 font-medium text-slate-900">${formTemplates[item.formType]}</td>
+                        <td class="py-4 px-6 text-slate-600"><div class="font-bold text-slate-800">${item.stationId}</div><div class="text-xs text-slate-400">${item.location}</div></td>
+                        <td class="py-4 px-6 text-slate-600">${item.inspector}</td>
+                        <td class="py-4 px-6">${statusBadge}</td>
+                        <td class="py-4 px-6 text-center space-x-2">
+                            <button onclick="viewDetail(${index})" class="p-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-xl transition" title="ดูรายละเอียด"><i class="fa-solid fa-eye"></i></button>
+                            <button onclick="deleteInspection(${index})" class="p-2 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-xl transition" title="ลบ"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function saveInspection(e) {
+            e.preventDefault();
+            const editIndex = parseInt(document.getElementById('editIndex').value);
+            const imageFile = document.getElementById('formImage').files[0];
+            const formTypeKey = document.getElementById('selectedFormType').value;
+
+            const saveData = (imageUrl = '') => {
+                const newData = {
+                    date: document.getElementById('formDate').value,
+                    formType: formTypeKey,
+                    stationId: document.getElementById('formStationId').value,
+                    location: document.getElementById('formLocation').value,
+                    status: document.getElementById('formStatus').value,
+                    inspector: document.getElementById('formInspector').value,
+                    defects: document.getElementById('formDefects').value,
+                    image: imageUrl || (editIndex >= 0 ? inspections[editIndex].image : '')
+                };
+
+                if(editIndex >= 0) {
+                    inspections[editIndex] = newData;
+                } else {
+                    inspections.unshift(newData);
+                }
+
+                closeFormModal();
+                switchTab('inspection');
+            };
+
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) { saveData(uploadEvent.target.result); };
+                reader.readAsDataURL(imageFile);
+            } else {
+                saveData();
+            }
+        }
+
+        function viewDetail(index) {
+            const item = inspections[index];
+            document.getElementById('printFormTitle').innerText = formTemplates[item.formType];
+            document.getElementById('printStationId').innerText = item.stationId;
+            document.getElementById('printDate').innerText = item.date;
+            document.getElementById('printLocation').innerText = item.location;
+            document.getElementById('printInspector').innerText = item.inspector;
+            document.getElementById('printStatus').innerText = item.status;
+            document.getElementById('printDefects').innerText = item.defects || '- ไม่มีข้อบกพร่อง -';
+            
+            const imgContainer = document.getElementById('printImageContainer');
+            if(item.image) {
+                document.getElementById('printImage').src = item.image;
+                imgContainer.classList.remove('hidden');
+            } else {
+                imgContainer.classList.add('hidden');
+            }
+
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
+        function deleteInspection(index) {
+            if(confirm('คุณต้องการลบข้อมูลนี้ใช่หรือไม่?')) {
+                inspections.splice(index, 1);
+                renderTable();
+                renderDashboard();
+            }
+        }
+    </script>
+</body>
+</html>
