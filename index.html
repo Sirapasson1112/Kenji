@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Asset Inspection App - ระบบตรวจสอบบำรุงรักษาอุปกรณ์ไฟฟ้า กฟน.</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
@@ -18,6 +20,7 @@
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
 
+    <!-- LOGIN VIEW -->
     <div id="loginView" class="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 border border-slate-100">
             <div class="text-center mb-8">
@@ -32,7 +35,7 @@
                     <label class="block text-sm font-medium text-slate-700 mb-1">ชื่อผู้ใช้งาน</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-user"></i></span>
-                        <input type="text" id="username" value="เจ้าหน้าที่ กฟน." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="กรอกชื่อผู้ใช้งาน">
+                        <input type="text" id="username" value="ศิรภัสสร กลับสุข" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" placeholder="กรอกชื่อผู้ใช้งาน">
                     </div>
                 </div>
                 <div>
@@ -49,7 +52,9 @@
         </div>
     </div>
 
+    <!-- MAIN APP LAYOUT -->
     <div id="appContainer" class="flex-1 flex flex-col hidden">
+        <!-- HEADER -->
         <header class="bg-white border-b border-slate-200 sticky top-0 z-30 no-print">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
@@ -73,6 +78,7 @@
             </div>
         </header>
 
+        <!-- NAVIGATION TABS -->
         <nav class="bg-white border-b border-slate-200 px-4 sm:px-6 lg:px-8 no-print">
             <div class="max-w-7xl mx-auto flex space-x-8 overflow-x-auto">
                 <button onclick="switchTab('dashboard')" id="nav-dashboard" class="py-3 px-1 border-b-2 font-medium text-sm transition flex items-center space-x-2 border-blue-600 text-blue-600">
@@ -82,7 +88,7 @@
                     <i class="fa-solid fa-clipboard-list"></i><span>รายการตรวจสอบ</span>
                 </button>
                 <button onclick="switchTab('forms')" id="nav-forms" class="py-3 px-1 border-b-2 font-medium text-sm transition flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700">
-                    <i class="fa-solid fa-file-circle-plus"></i><span>เลือกแบบฟอร์ม (9 แบบ)</span>
+                    <i class="fa-solid fa-file-circle-plus"></i><span>เลือกแบบฟอร์มตรวจสอบ</span>
                 </button>
                 <button onclick="switchTab('criticality')" id="nav-criticality" class="py-3 px-1 border-b-2 font-medium text-sm transition flex items-center space-x-2 border-transparent text-slate-500 hover:text-slate-700">
                     <i class="fa-solid fa-triangle-exclamation"></i><span>ประเมินความสำคัญ</span>
@@ -90,8 +96,10 @@
             </div>
         </nav>
 
+        <!-- CONTENT AREA -->
         <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+            <!-- TAB 1: DASHBOARD -->
             <div id="tab-dashboard" class="space-y-6">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
@@ -117,8 +125,8 @@
                     </div>
                     <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-slate-500">รูปแบบฟอร์ม</p>
-                            <h3 class="text-3xl font-bold text-indigo-600 mt-1">9 แบบ</h3>
+                            <p class="text-sm font-medium text-slate-500">รูปแบบฟอร์ม กฟน.</p>
+                            <h3 class="text-3xl font-bold text-indigo-600 mt-1">10 แบบ</h3>
                         </div>
                         <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl"><i class="fa-solid fa-network-wired"></i></div>
                     </div>
@@ -127,7 +135,7 @@
                 <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between">
                     <div class="mb-4 sm:mb-0">
                         <h2 class="text-xl font-bold">เลือกประเภทแบบฟอร์มตรวจสอบ กฟน.</h2>
-                        <p class="text-blue-100 text-sm mt-1">คลิกเลือกฟอร์มอุปกรณ์ที่ต้องการบันทึกข้อมูลได้จากแถบเมนูด้านบน</p>
+                        <p class="text-blue-100 text-sm mt-1">คลิกเลือกฟอร์มอุปกรณ์ที่ต้องการบันทึกข้อมูลได้ทันที</p>
                     </div>
                     <button onclick="switchTab('forms')" class="bg-white text-blue-600 hover:bg-blue-50 font-semibold px-6 py-3 rounded-xl shadow transition text-sm flex items-center space-x-2">
                         <i class="fa-solid fa-list-check text-base"></i><span>เลือกฟอร์มตรวจสอบ</span>
@@ -135,11 +143,12 @@
                 </div>
             </div>
 
+            <!-- TAB 2: INSPECTION LIST & SEARCH -->
             <div id="tab-inspection" class="space-y-6 hidden">
                 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
                     <div class="w-full sm:w-96 relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-search"></i></span>
-                        <input type="text" id="searchInput" onkeyup="renderTable()" placeholder="ค้นหา Station ID, สถานที่ หรือประเภท..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" id="searchInput" onkeyup="renderTable()" placeholder="ค้นหา Station ID หรือสถานที่..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <button onclick="switchTab('forms')" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2.5 rounded-xl transition text-sm flex items-center justify-center space-x-2 shadow-sm">
                         <i class="fa-solid fa-plus"></i><span>เลือกฟอร์มเพื่อสร้างใหม่</span>
@@ -165,6 +174,7 @@
                 </div>
             </div>
 
+            <!-- TAB 3: FORMS MENU (10 ปุ่มแยกอิสระ) -->
             <div id="tab-forms" class="space-y-6 hidden">
                 <div>
                     <h2 class="text-xl font-bold text-slate-900 mb-1">เลือกแบบฟอร์มตรวจสอบบำรุงรักษา (MEA Standard)</h2>
@@ -175,68 +185,76 @@
                         <div class="w-12 h-12 bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white rounded-xl flex items-center justify-center text-xl transition shrink-0"><i class="fa-solid fa-charging-station"></i></div>
                         <div>
                             <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition">1. หม้อแปลงจำหน่าย</h3>
-                            <p class="text-xs text-slate-500 mt-1">Distribution Transformer Inspection</p>
+                            <p class="text-xs text-slate-500 mt-1">SF-07-0-015[cite: 1]</p>
                         </div>
                     </button>
                     <button onclick="openForm('2')" class="p-6 bg-white hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 rounded-2xl shadow-sm transition text-left flex items-start space-x-4 group">
                         <div class="w-12 h-12 bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white rounded-xl flex items-center justify-center text-xl transition shrink-0"><i class="fa-solid fa-toggle-on"></i></div>
                         <div>
                             <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition">2. Load Break Switch (LBS)</h3>
-                            <p class="text-xs text-slate-500 mt-1">Load Break Switch Inspection</p>
+                            <p class="text-xs text-slate-500 mt-1">SF-07-0-016[cite: 2]</p>
                         </div>
                     </button>
                     <button onclick="openForm('3')" class="p-6 bg-white hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 rounded-2xl shadow-sm transition text-left flex items-start space-x-4 group">
                         <div class="w-12 h-12 bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white rounded-xl flex items-center justify-center text-xl transition shrink-0"><i class="fa-solid fa-sliders"></i></div>
                         <div>
                             <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition">3. Sectionalizer (SZ)</h3>
-                            <p class="text-xs text-slate-500 mt-1">Sectionalizer Inspection</p>
+                            <p class="text-xs text-slate-500 mt-1">SF-07-0-017[cite: 3]</p>
                         </div>
                     </button>
                     <button onclick="openForm('4')" class="p-6 bg-white hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 rounded-2xl shadow-sm transition text-left flex items-start space-x-4 group">
                         <div class="w-12 h-12 bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white rounded-xl flex items-center justify-center text-xl transition shrink-0"><i class="fa-solid fa-box-archive"></i></div>
                         <div>
                             <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition">4. Ring Main Unit (RMU)</h3>
-                            <p class="text-xs text-slate-500 mt-1">Ring Main Unit Inspection</p>
+                            <p class="text-xs text-slate-500 mt-1">SF-07-0-018[cite: 4]</p>
                         </div>
                     </button>
                     <button onclick="openForm('5')" class="p-6 bg-white hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 rounded-2xl shadow-sm transition text-left flex items-start space-x-4 group">
                         <div class="w-12 h-12 bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white rounded-xl flex items-center justify-center text-xl transition shrink-0"><i class="fa-solid fa-building-shield"></i></div>
                         <div>
                             <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition">5. Unit Substation</h3>
-                            <p class="text-xs text-slate-500 mt-1">Unit Substation Inspection</p>
+                            <p class="text-xs text-slate-500 mt-1">SF-07-0-019[cite: 5]</p>
                         </div>
                     </button>
                     <button onclick="openForm('6')" class="p-6 bg-white hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 rounded-2xl shadow-sm transition text-left flex items-start space-x-4 group">
                         <div class="w-12 h-12 bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white rounded-xl flex items-center justify-center text-xl transition shrink-0"><i class="fa-solid fa-car-battery"></i></div>
                         <div>
                             <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition">6. Capacitor Bank 12-24 kV</h3>
-                            <p class="text-xs text-slate-500 mt-1">Capacitor Bank Inspection</p>
+                            <p class="text-xs text-slate-500 mt-1">SF-07-0-020[cite: 6]</p>
                         </div>
                     </button>
                     <button onclick="openForm('7')" class="p-6 bg-white hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 rounded-2xl shadow-sm transition text-left flex items-start space-x-4 group">
                         <div class="w-12 h-12 bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white rounded-xl flex items-center justify-center text-xl transition shrink-0"><i class="fa-solid fa-shield-halved"></i></div>
                         <div>
                             <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition">7. เครื่องป้องกันหม้อแปลงวงจรตาข่าย</h3>
-                            <p class="text-xs text-slate-500 mt-1">Network Transformer Protection</p>
+                            <p class="text-xs text-slate-500 mt-1">SF-07-0-021[cite: 7]</p>
                         </div>
                     </button>
                     <button onclick="openForm('8')" class="p-6 bg-white hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 rounded-2xl shadow-sm transition text-left flex items-start space-x-4 group">
                         <div class="w-12 h-12 bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white rounded-xl flex items-center justify-center text-xl transition shrink-0"><i class="fa-solid fa-network-wired"></i></div>
                         <div>
                             <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition">8. หม้อแปลงวงจรตาข่ายและสวิตช์</h3>
-                            <p class="text-xs text-slate-500 mt-1">Network Transformer & MV Switch</p>
+                            <p class="text-xs text-slate-500 mt-1">SF-07-0-022[cite: 8]</p>
                         </div>
                     </button>
                     <button onclick="openForm('9')" class="p-6 bg-white hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 rounded-2xl shadow-sm transition text-left flex items-start space-x-4 group">
                         <div class="w-12 h-12 bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white rounded-xl flex items-center justify-center text-xl transition shrink-0"><i class="fa-solid fa-oil-well"></i></div>
                         <div>
                             <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition">9. ทดสอบและกรองน้ำมันหม้อแปลง</h3>
-                            <p class="text-xs text-slate-500 mt-1">Oil Filtration & Breakdown Test</p>
+                            <p class="text-xs text-slate-500 mt-1">SF-07-0-023[cite: 9]</p>
+                        </div>
+                    </button>
+                    <button onclick="openForm('10')" class="p-6 bg-white hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 rounded-2xl shadow-sm transition text-left flex items-start space-x-4 group">
+                        <div class="w-12 h-12 bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white rounded-xl flex items-center justify-center text-xl transition shrink-0"><i class="fa-solid fa-fire"></i></div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition">10. รายงานจุดร้อนแดง (Hot Spot)</h3>
+                            <p class="text-xs text-slate-500 mt-1">SF-07-0-024[cite: 10]</p>
                         </div>
                     </button>
                 </div>
             </div>
 
+            <!-- TAB 4: CRITICALITY ASSESSMENT -->
             <div id="tab-criticality" class="space-y-6 hidden">
                 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
                     <h3 class="text-lg font-bold text-slate-900 mb-2">ตารางประเมินความสำคัญของอุปกรณ์ (Criticality Matrix)</h3>
@@ -279,12 +297,13 @@
         </main>
     </div>
 
+    <!-- FORM MODAL -->
     <div id="formModal" class="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm overflow-y-auto">
         <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto border border-slate-100">
             <div class="flex justify-between items-center pb-4 border-b border-slate-200 mb-6">
                 <div>
                     <h2 class="text-xl font-bold text-slate-900" id="modalTitle">ใบบันทึกการตรวจสอบ</h2>
-                    <p class="text-xs text-slate-500 mt-0.5" id="modalSubTitle">มาตรฐานการไฟฟ้านครหลวง (MEA)</p>
+                    <p class="text-xs text-slate-500 mt-0.5">มาตรฐานการไฟฟ้านครหลวง (MEA)</p>
                 </div>
                 <button onclick="closeFormModal()" class="w-9 h-9 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 rounded-xl flex items-center justify-center transition text-slate-500">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -347,6 +366,7 @@
         </div>
     </div>
 
+    <!-- DETAIL MODAL & PRINT VIEW -->
     <div id="detailModal" class="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm overflow-y-auto">
         <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-8 max-h-[90vh] overflow-y-auto border border-slate-100 print-container">
             <div class="flex justify-between items-center pb-4 border-b border-slate-200 mb-6 no-print">
@@ -391,17 +411,19 @@
         </div>
     </div>
 
+    <!-- SCRIPT LOGIC -->
     <script>
         const formTemplates = {
-            "1": "1. แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย",
-            "2": "2. แบบตรวจสอบบำรุงรักษา Load Break Switch (LBS)",
-            "3": "3. แบบตรวจสอบบำรุงรักษา Sectionalizer (SZ)",
-            "4": "4. แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",
-            "5": "5. แบบตรวจสอบบำรุงรักษา Unit Substation",
-            "6": "6. แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV",
-            "7": "7. แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",
-            "8": "8. แบบตรวจสอบหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",
-            "9": "9. แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลง"
+            "1": "1. แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย (SF-07-0-015)",
+            "2": "2. แบบตรวจสอบบำรุงรักษา Load Break Switch (SF-07-0-016)",
+            "3": "3. แบบตรวจสอบบำรุงรักษา Sectionalizer (SF-07-0-017)",
+            "4": "4. แบบตรวจสอบบำรุงรักษา Ring Main Unit (SF-07-0-018)",
+            "5": "5. แบบตรวจสอบบำรุงรักษา Unit Substation (SF-07-0-019)",
+            "6": "6. แบบตรวจสอบบำรุงรักษา Capacitor Bank (SF-07-0-020)",
+            "7": "7. แบบตรวจสอบเครื่องป้องกันหม้อแปลงวงจรตาข่าย (SF-07-0-021)",
+            "8": "8. แบบตรวจสอบหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง (SF-07-0-022)",
+            "9": "9. แบบตรวจสอบทดสอบและกรองน้ำมันหม้อแปลง (SF-07-0-023)",
+            "10": "10. รายงานผลการตรวจสอบจุดร้อนแดง Hot Spot (SF-07-0-024)"
         };
 
         const checklistItems = {
@@ -411,9 +433,10 @@
             "4": ["สภาพภายนอกตู้ครอบ RMU", "ประตูตู้", "ฐานตู้ / นั่งร้าน", "สภาพ RMU / ห้อง", "ก๊าซ SF6", "ตัวแสดงสถานะสวิทช์", "กุญแจล็อคป้องกันการปลด-สับ", "คันสับ", "ตัวตรวจสอบแรงดัน", "ตัวตรวจสอบการลัดวงจร", "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "สภาพแบตเตอรี่หรือ UPS"],
             "5": ["สภาพภายนอก Enclosure", "ประตูตู้", "ฐานตู้ / นั่งร้าน", "สภาพ RMU", "ก๊าซ SF6", "ตัวแสดงสถานะสวิทช์", "ตัวถังหม้อแปลง", "Bushing HV-LV", "สายหน้าหม้อแปลง HV - LV", "LV Ground", "HV Ground", "สภาพทั่วไป CB หรือ FUSE", "สายไฟฟ้า", "บัสบาร์"],
             "6": ["Drop Fuse", "Station Post Type Insulator", "สายเข้า-ออก Drop Fuse", "คอนสาย", "อุปกรณ์ป้องกันสัตว์", "กันตักฟ้าผ่า (L/A)", "HV Ground", "Vacuum CB", "Supply", "Fuse Control ภายในตู้", "หลอดไฟแสดงสถานะภายในตู้", "หน้าจอ Digital Control", "ตัวถังคาปาซิเตอร์"],
-            "7": ["สถานะ MV.SW.", "สถานะ NP", "เบอร์ตู้ / สีตู้", "ระบบกราวด์", "อุปกรณ์ป้องกันแรงดันเกินภายนอก", "ตัวถัง รอยต่อหม้อแปลง", "ฝาตู้", "การมีแขวนป้ายแดงห้ามปลด-สับ", "ปลด MV.SW. ครั้งที่ 1", "สับ MV.SW. ครั้งที่ 1"],
-            "8": ["สภาพภายนอกสวิทช์แรงกลาง", "ก๊าซ SF6", "หัวต่อสาย / สายไฟฟ้า", "ระบบกราวด์", "ตัวถังหม้อแปลง", "น้ำมันหม้อแปลง", "ฟิวส์ 12 kV", "อุณหภูมิสูงสุด / อุณหภูมิจริง", "สายไฟฟ้าด้านแรงต่ำ"],
-            "9": ["ทดสอบน้ำมันครั้งที่ 1 (Breakdown Voltage kV)", "กรองน้ำมันครั้งที่ 1 แล้วดำเนินการทดสอบใหม่", "กรองน้ำมันครั้งที่ 2 แล้วดำเนินการทดสอบใหม่"]
+            "7": ["สถานะ MV.SW.", "สถานะ NP", "เบอร์ตู้ / สีตู้", "ระบบกราวด์", "อุปกรณ์ป้องกันแรงดันเกินภายนอก", "ตัวถัง รอยต่อหม้อแปลง", "ฝาตู้", "การมีแขวนป้ายแดงห้ามปลด-สับ"],
+            "8": ["สภาพภายนอกสวิทช์แรงกลาง", "ก๊าซ SF6", "หัวต่อสาย / สายไฟฟ้า", "ระบบกราวด์", "ตัวถังหม้อแปลง", "น้ำมันหม้อแปลง", "ฟิวส์ 12 kV", "อุณหภูมิสูงสุด / อุณหภูมิจริง"],
+            "9": ["ทดสอบน้ำมันครั้งที่ 1 (Breakdown Voltage kV)", "กรองน้ำมันครั้งที่ 1 แล้วดำเนินการทดสอบใหม่", "กรองน้ำมันครั้งที่ 2 แล้วดำเนินการทดสอบใหม่"],
+            "10": ["ตรวจสอบอุณหภูมิสูงสุดที่จุดวัด (Delta T)", "ตรวจสอบจุดร้อนแดงด้วยกล้องเทอร์โมวิชั่น", "ประเมินลำดับความสำคัญ (A-F)"]
         };
 
         let inspections = [
