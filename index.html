@@ -421,7 +421,7 @@
                 btn.type = "button";
                 btn.onclick = () => {
                     selectForm(form.code);
-                    openFormModal(); // คลิกแล้วเปิดฟอร์มกรอกข้อมูลทันทีตามที่ขอ
+                    openFormModal(); // คลิกแล้วเปิดฟอร์มกรอกข้อมูลทันที
                 };
                 btn.className = `w-full text-left px-3.5 py-2.5 rounded-xl text-xs transition flex items-center justify-between ${isActive ? 'bg-amber-100 text-amber-900 font-bold border border-amber-300' : 'text-warm-900 hover:bg-warm-100'}`;
                 btn.innerHTML = `
@@ -479,6 +479,169 @@
                 userProfile.classList.add('hidden');
                 userProfile.classList.remove('flex');
             }
+        }
+
+        function renderGeneralInfoFields(formCode, data = {}) {
+            const container = document.getElementById('generalInfoContainer');
+            container.innerHTML = '';
+
+            if (formCode === "SF-07-0-016") {
+                container.innerHTML = `
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label>
+                        <input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label>
+                        <div class="flex space-x-2">
+                            <input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                            <input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label>
+                        <input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">ยี่ห้อ LBS</label>
+                        <input type="text" id="lbsBrand" value="${data.lbsBrand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">LBS MEA No.</label>
+                        <input type="text" id="lbsMeaNo" value="${data.lbsMeaNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">Switch No.</label>
+                        <input type="text" id="switchNo" value="${data.switchNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">ยี่ห้อ VT</label>
+                        <input type="text" id="vtBrand" value="${data.vtBrand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">VT MEA No.</label>
+                        <input type="text" id="vtMeaNo" value="${data.vtMeaNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">ตู้ OFDF No.</label>
+                        <input type="text" id="ofdfNo" value="${data.ofdfNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                    </div>
+                `;
+                document.getElementById('extraHeaderContainer').innerHTML = `
+                    <div class="bg-warm-100 p-4 rounded-2xl border border-warm-200 mb-4 text-xs space-y-2">
+                        <div class="flex items-center space-x-6">
+                            <span class="font-bold text-warm-900">- สถานะสวิตช์:</span>
+                            <label class="flex items-center space-x-2"><input type="radio" name="lbsSwitchStatus" value="ปลด" ${data.lbsSwitchStatus === 'ปลด' ? 'checked' : ''}> <span>ปลด</span></label>
+                            <label class="flex items-center space-x-2"><input type="radio" name="lbsSwitchStatus" value="สับ" ${data.lbsSwitchStatus === 'สับ' ? 'checked' : ''}> <span>สับ</span></label>
+                        </div>
+                        <div class="flex items-center space-x-6">
+                            <span class="font-bold text-warm-900">- สถานะระบบ SCADA/EMS/DMS:</span>
+                            <label class="flex items-center space-x-2"><input type="radio" name="scadaStatus" value="online" ${data.scadaStatus === 'online' ? 'checked' : ''}> <span>online</span></label>
+                            <label class="flex items-center space-x-2"><input type="radio" name="scadaStatus" value="offline" ${data.scadaStatus === 'offline' ? 'checked' : ''}> <span>offline</span></label>
+                        </div>
+                    </div>
+                `;
+            } else if (formCode === "SF-07-0-017") {
+                container.innerHTML = `
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label>
+                        <input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label>
+                        <div class="flex space-x-2">
+                            <input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                            <input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label>
+                        <input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">ยี่ห้อ SZ</label>
+                        <input type="text" id="szBrand" value="${data.szBrand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">SZ MEA No.</label>
+                        <input type="text" id="szMeaNo" value="${data.szMeaNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">Switch No.</label>
+                        <input type="text" id="switchNo" value="${data.switchNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                    </div>
+                `;
+                document.getElementById('extraHeaderContainer').innerHTML = `
+                    <div class="bg-warm-100 p-4 rounded-2xl border border-warm-200 mb-4 text-xs space-y-2">
+                        <div class="flex items-center space-x-6">
+                            <span class="font-bold text-warm-900">- สถานะสวิตช์:</span>
+                            <label class="flex items-center space-x-2"><input type="radio" name="lbsSwitchStatus" value="ปลด" ${data.lbsSwitchStatus === 'ปลด' ? 'checked' : ''}> <span>ปลด</span></label>
+                            <label class="flex items-center space-x-2"><input type="radio" name="lbsSwitchStatus" value="สับ" ${data.lbsSwitchStatus === 'สับ' ? 'checked' : ''}> <span>สับ</span></label>
+                        </div>
+                    </div>
+                `;
+            } else {
+                document.getElementById('extraHeaderContainer').innerHTML = '';
+                container.innerHTML = `
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label>
+                        <input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label>
+                        <input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label>
+                        <div class="flex space-x-2">
+                            <input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                            <input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">MEA No.</label>
+                        <input type="text" id="meaNo1" value="${data.meaNo1 || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">อุปกรณ์ (Equipment)</label>
+                        <input type="text" id="brand" value="${data.brand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-warm-800 mb-1.5">สายป้อน (Feeder)</label>
+                        <input type="text" id="capacity" value="${data.capacity || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
+                    </div>
+                `;
+            }
+        }
+
+        function renderDynamicChecklist(formCode, existingData = []) {
+            const formInfo = formsData.find(f => f.code === formCode);
+            renderGeneralInfoFields(formCode, existingData.generalInfo || {});
+            
+            const tbody = document.getElementById('dynamicChecklistBody');
+            tbody.innerHTML = '';
+            
+            const electricalSection = document.getElementById('electricalSectionContainer');
+            if (formCode === "SF-07-0-015") {
+                electricalSection.classList.remove('hidden');
+            } else {
+                electricalSection.classList.add('hidden');
+            }
+
+            formInfo.items.forEach((item, index) => {
+                const itemData = (existingData.checklist && existingData.checklist[index]) || { status: 'ปกติ', defect: '' };
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-warm-100/50 transition";
+                tr.innerHTML = `
+                    <td class="p-3.5 text-center font-semibold text-warm-400">${index + 1}</td>
+                    <td class="p-3.5 font-medium text-warm-900">${item}</td>
+                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ปกติ" ${itemData.status === 'ปกติ' ? 'checked' : ''} class="text-emerald-600 focus:ring-emerald-500"></td>
+                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ชำรุด" ${itemData.status === 'ชำรุด' ? 'checked' : ''} class="text-amber-600 focus:ring-amber-500"></td>
+                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ไม่มี" ${itemData.status === 'ไม่มี' ? 'checked' : ''} class="text-warm-400 focus:ring-warm-400"></td>
+                    <td class="p-3.5"><input type="text" id="defect_${index}" value="${itemData.defect || ''}" placeholder="ระบุข้อบกพร่อง..." class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 text-xs focus:bg-white focus:ring-2 focus:ring-amber-500"></td>
+                `;
+                tbody.appendChild(tr);
+            });
         }
 
         function openFormModal(editIdx = -1) {
