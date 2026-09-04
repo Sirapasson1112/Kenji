@@ -196,14 +196,14 @@
                 <form id="inspectionForm" onsubmit="saveWorkOrder(event)" class="space-y-6">
                     <input type="hidden" id="editIndex" value="-1">
 
-                    <!-- Section 1 (Dynamic based on Form Type) -->
+                    <!-- Section 1 (Dynamic General Info) -->
                     <div class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-4">
                         <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3 flex items-center uppercase tracking-wider">
                             <span class="bg-amber-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">1</span>
                             ข้อมูลทั่วไป (General Information)
                         </h3>
                         <div id="generalInfoContainer" class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-                            <!-- Injected dynamically based on form code -->
+                            <!-- Injected dynamically -->
                         </div>
                     </div>
 
@@ -233,7 +233,7 @@
                         </div>
                     </div>
 
-                    <!-- Section 3 (Conditional for Transformer / Electrical measurement) -->
+                    <!-- Section 3 (Conditional) -->
                     <div id="electricalSectionContainer" class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-4 hidden">
                         <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3 flex items-center uppercase tracking-wider">
                             <span class="bg-amber-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">3</span>
@@ -365,7 +365,15 @@
                     "2.17 แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "2.18 การทดสอบ ATS"
                 ] 
             },
-            { code: "SF-07-0-017", name: "แบบตรวจสอบบำรุงรักษา Sectionalizer", items: ["ตัวถัง SZ /สลักล็อคการปลดสับ", "สถานะก๊าซ SF6", "Bushing", "กับดักฟ้าผ่า", "คอนสาย", "สายควบคุม SZ", "อุปกรณ์ป้องกันสัตว์", "ไฟสถานะหน้าตู้", "แหล่งจ่ายไฟฟ้า และสายควบคุม", "สภาพแบตเตอรี่หรือ Capacitor", "Ground HV (L/A, SZ)", "Ground LV (ตู้ Control)", "ทดลองทาง Local"] },
+            { 
+                code: "SF-07-0-017", 
+                name: "แบบตรวจสอบบำรุงรักษา Sectionalizer", 
+                items: [
+                    "2.1 ตัวถัง SZ /สลักล็อคการปลดสับ", "2.2 สถานะก๊าซ SF6", "2.3 Bushing", "2.4 กับดักฟ้าผ่า", "2.5 คอนสาย", "2.6 สายควบคุม SZ", 
+                    "2.7 อุปกรณ์ป้องกันสัตว์", "2.8 ไฟสถานะหน้าตู้", "2.9 แหล่งจ่ายไฟฟ้า และสายควบคุม", "2.10 สภาพแบตเตอรี่หรือ Capacitor", 
+                    "2.11 Ground HV (L/A, SZ)", "2.12 Ground LV (ตู้ Control)", "2.13 ทดลองทาง Local"
+                ] 
+            },
             { code: "SF-07-0-018", name: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)", items: ["สภาพภายนอกตู้ครอบ", "ประตูตู้ครอบ", "ฐานตู้ครอบ", "สภาพ RMU / ห้อง", "ก๊าซ SF6", "ตัวแสดงสถานะสวิทซ์", "กุญแจล็อคป้องกันการปลด-สับ", "คันสับ", "ตัวตรวจสอบแรงดัน", "ตัวตรวจสอบการลัดวงจร", "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "สภาพแบตเตอรี่หรือ UPS", "FRTU", "อุปกรณ์ควบคุมอื่นๆ", "การปลดสับด้วย REMOTE", "การปลดสับด้วย LOCAL", "การปลดสับด้วยคันสับ", "แรงดันไฟฟ้าเลี้ยงระบบ ATF", "การทดสอบ ATF"] },
             { code: "SF-07-0-019", name: "แบบตรวจสอบบำรุงรักษา Unit Substation", items: ["สภาพภายนอก Enclosure", "ประตู Enclosure", "ฐานตู้ / นั่งร้าน", "สภาพ RMU", "ก๊าซ SF6 (RMU)", "ตัวแสดงสถานะสวิตช์", "กุญแจล็อคป้องกันการปลด-สับ", "คันสับ", "ตัวตรวจสอบแรงดัน", "ตัวตรวจสอบการลัดวงจร", "แรงดันไฟฟ้าเลี้ยงอุปกรณ์", "สภาพแบตเตอรี่ หรือ UPS", "FRTU", "อุปกรณ์ควบคุมอื่นๆ", "การปลดสับด้วย REMOTE", "การปลดสับด้วย LOCAL", "การปลดสับด้วยคันสับ", "แรงดันไฟฟ้าเลี้ยงระบบ ATF", "การทดสอบ ATF", "ตัวถังหม้อแปลง", "Bushing HV-LV", "สายหน้าหม้อแปลง HV-LV", "LV Ground", "HV Ground", "สภาพทั่วไป CB หรือ FUSE", "สายไฟฟ้าแรงต่ำ", "บัสบาร์", "เครื่องวัดไฟฟ้า", "CT-TLM Meter", "จุดร้อนแดงส่องด้วยกล้องเทอร์โมวิชั่น"] },
             { code: "SF-07-0-020", name: "แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV", items: ["Drop Fuse", "Station Post Type Insulator", "สายเข้า-ออก Drop Fuse", "คอนสาย", "อุปกรณ์ป้องกันสัตว์", "กับดักฟ้าผ่า (L/A)", "Cover (Bushing, L/A)", "HV Ground", "Vacuum CB", "Supply", "Fuse Control ภายในตู้", "หลอดไฟแสดงสถานะในตู้", "หน้าจอ Digital Control", "เสียงนาฬิกาเดิน", "อุปกรณ์ทั่วไปภายในตู้", "ตัวถังคาปาซิเตอร์", "Bushing", "Fuse ภายใน", "ค่าคาปาซิแตนท์ที่วัดได้"] },
@@ -473,133 +481,6 @@
             }
         }
 
-        function renderGeneralInfoFields(formCode, data = {}) {
-            const container = document.getElementById('generalInfoContainer');
-            container.innerHTML = '';
-
-            if (formCode === "SF-07-0-016") {
-                // ฟิลด์เฉพาะสำหรับ LBS (SF-07-0-016) ตามรูป Reference[cite: 3]
-                container.innerHTML = `
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label>
-                        <input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label>
-                        <div class="flex space-x-2">
-                            <input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                            <input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label>
-                        <input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">ยี่ห้อ LBS</label>
-                        <input type="text" id="lbsBrand" value="${data.lbsBrand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">LBS MEA No.</label>
-                        <input type="text" id="lbsMeaNo" value="${data.lbsMeaNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">Switch No.</label>
-                        <input type="text" id="switchNo" value="${data.switchNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">ยี่ห้อ VT</label>
-                        <input type="text" id="vtBrand" value="${data.vtBrand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">VT MEA No.</label>
-                        <input type="text" id="vtMeaNo" value="${data.vtMeaNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">ตู้ OFDF No.</label>
-                        <input type="text" id="ofdfNo" value="${data.ofdfNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                `;
-                
-                // เพิ่ม Header พิเศษสำหรับ LBS (สถานะสวิตช์ และ SCADA)[cite: 3]
-                document.getElementById('extraHeaderContainer').innerHTML = `
-                    <div class="bg-warm-100 p-4 rounded-2xl border border-warm-200 mb-4 text-xs space-y-2">
-                        <div class="flex items-center space-x-6">
-                            <span class="font-bold text-warm-900">- สถานะสวิตช์:</span>
-                            <label class="flex items-center space-x-2"><input type="radio" name="lbsSwitchStatus" value="ปลด" ${data.lbsSwitchStatus === 'ปลด' ? 'checked' : ''}> <span>ปลด</span></label>
-                            <label class="flex items-center space-x-2"><input type="radio" name="lbsSwitchStatus" value="สับ" ${data.lbsSwitchStatus === 'สับ' ? 'checked' : ''}> <span>สับ</span></label>
-                        </div>
-                        <div class="flex items-center space-x-6">
-                            <span class="font-bold text-warm-900">- สถานะระบบ SCADA/EMS/DMS:</span>
-                            <label class="flex items-center space-x-2"><input type="radio" name="scadaStatus" value="online" ${data.scadaStatus === 'online' ? 'checked' : ''}> <span>online</span></label>
-                            <label class="flex items-center space-x-2"><input type="radio" name="scadaStatus" value="offline" ${data.scadaStatus === 'offline' ? 'checked' : ''}> <span>offline</span></label>
-                        </div>
-                    </div>
-                `;
-            } else {
-                document.getElementById('extraHeaderContainer').innerHTML = '';
-                container.innerHTML = `
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label>
-                        <input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label>
-                        <input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label>
-                        <div class="flex space-x-2">
-                            <input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                            <input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">MEA No.</label>
-                        <input type="text" id="meaNo1" value="${data.meaNo1 || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">อุปกรณ์ (Equipment)</label>
-                        <input type="text" id="brand" value="${data.brand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">สายป้อน (Feeder)</label>
-                        <input type="text" id="capacity" value="${data.capacity || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                `;
-            }
-        }
-
-        function renderDynamicChecklist(formCode, existingData = []) {
-            const formInfo = formsData.find(f => f.code === formCode);
-            renderGeneralInfoFields(formCode, existingData.generalInfo || {});
-            
-            const tbody = document.getElementById('dynamicChecklistBody');
-            tbody.innerHTML = '';
-            
-            const electricalSection = document.getElementById('electricalSectionContainer');
-            if (formCode === "SF-07-0-015") {
-                electricalSection.classList.remove('hidden');
-            } else {
-                electricalSection.classList.add('hidden');
-            }
-
-            formInfo.items.forEach((item, index) => {
-                const itemData = (existingData.checklist && existingData.checklist[index]) || { status: 'ปกติ', defect: '' };
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-warm-100/50 transition";
-                tr.innerHTML = `
-                    <td class="p-3.5 text-center font-semibold text-warm-400">${index + 1}</td>
-                    <td class="p-3.5 font-medium text-warm-900">${item}</td>
-                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ปกติ" ${itemData.status === 'ปกติ' ? 'checked' : ''} class="text-emerald-600 focus:ring-emerald-500"></td>
-                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ชำรุด" ${itemData.status === 'ชำรุด' ? 'checked' : ''} class="text-amber-600 focus:ring-amber-500"></td>
-                    <td class="p-3.5 text-center"><input type="radio" name="check_${index}" value="ไม่มี" ${itemData.status === 'ไม่มี' ? 'checked' : ''} class="text-warm-400 focus:ring-warm-400"></td>
-                    <td class="p-3.5"><input type="text" id="defect_${index}" value="${itemData.defect || ''}" placeholder="ระบุข้อบกพร่อง..." class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 text-xs focus:bg-white focus:ring-2 focus:ring-amber-500"></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
         function openFormModal(editIdx = -1) {
             let targetFormCode = currentFormCode;
             if (targetFormCode === "ALL") targetFormCode = "SF-07-0-015";
@@ -615,39 +496,25 @@
                 document.getElementById('inspectorDate').value = new Date().toISOString().slice(0,10);
                 uploadedImages = [];
                 renderImagePreview();
+                renderGeneralInfoFields(targetFormCode);
                 renderDynamicChecklist(targetFormCode);
             } else {
                 const wo = workOrders[editIdx];
                 document.getElementById('editIndex').value = editIdx;
                 document.getElementById('modalTitle').innerText = `แก้ไข Work Order: ${wo.workOrderId}`;
                 
+                renderGeneralInfoFields(wo.formCode, wo.generalInfo);
                 renderDynamicChecklist(wo.formCode, wo);
 
-                if(wo.formCode === "SF-07-0-016") {
-                    document.getElementById('stationId').value = wo.generalInfo.stationId || '';
-                    document.getElementById('location').value = wo.generalInfo.location || '';
-                    document.getElementById('gisLat').value = wo.generalInfo.gisLat || '';
-                    document.getElementById('gisLong').value = wo.generalInfo.gisLong || '';
-                    document.getElementById('lbsBrand').value = wo.generalInfo.lbsBrand || '';
-                    document.getElementById('lbsMeaNo').value = wo.generalInfo.lbsMeaNo || '';
-                    document.getElementById('switchNo').value = wo.generalInfo.switchNo || '';
-                    document.getElementById('vtBrand').value = wo.generalInfo.vtBrand || '';
-                    document.getElementById('vtMeaNo').value = wo.generalInfo.vtMeaNo || '';
-                    document.getElementById('ofdfNo').value = wo.generalInfo.ofdfNo || '';
+                if(wo.formCode === "SF-07-0-016" || wo.formCode === "SF-07-0-017") {
                     if(wo.generalInfo.lbsSwitchStatus) {
-                        document.querySelector(`input[name="lbsSwitchStatus"][value="${wo.generalInfo.lbsSwitchStatus}"]`).checked = true;
+                        const radio = document.querySelector(`input[name="lbsSwitchStatus"][value="${wo.generalInfo.lbsSwitchStatus}"]`);
+                        if(radio) radio.checked = true;
                     }
                     if(wo.generalInfo.scadaStatus) {
-                        document.querySelector(`input[name="scadaStatus"][value="${wo.generalInfo.scadaStatus}"]`).checked = true;
+                        const radio = document.querySelector(`input[name="scadaStatus"][value="${wo.generalInfo.scadaStatus}"]`);
+                        if(radio) radio.checked = true;
                     }
-                } else {
-                    document.getElementById('stationId').value = wo.generalInfo.stationId || '';
-                    document.getElementById('location').value = wo.generalInfo.location || '';
-                    document.getElementById('gisLat').value = wo.generalInfo.gisLat || '';
-                    document.getElementById('gisLong').value = wo.generalInfo.gisLong || '';
-                    document.getElementById('meaNo1').value = wo.generalInfo.meaNo1 || '';
-                    document.getElementById('brand').value = wo.generalInfo.brand || '';
-                    document.getElementById('capacity').value = wo.generalInfo.capacity || '';
                 }
 
                 if (wo.electricalData) {
@@ -836,7 +703,7 @@
         function renderImagePreview() {
             const container = document.getElementById('imagePreviewContainer');
             if (uploadedImages.length === 0) {
-                container.innerHTML = `<p class="text-xs text-warm-400 col-span-full text-center py-4 italic">ยังไม่มีรูปภาพประกอบ</p>`;
+                container.innerHTML = `<p class="text-xs text-warm-500 col-span-full text-center py-4 italic">ยังไม่มีรูปภาพประกอบ</p>`;
                 return;
             }
             container.innerHTML = '';
@@ -874,18 +741,15 @@
             });
 
             let generalInfoObj = {};
-            if(formCodeToSave === "SF-07-0-016") {
+            if(formCodeToSave === "SF-07-0-016" || formCodeToSave === "SF-07-0-017") {
                 generalInfoObj = {
                     stationId: document.getElementById('stationId').value,
                     location: document.getElementById('location').value,
                     gisLat: document.getElementById('gisLat').value,
                     gisLong: document.getElementById('gisLong').value,
-                    lbsBrand: document.getElementById('lbsBrand').value,
-                    lbsMeaNo: document.getElementById('lbsMeaNo').value,
-                    switchNo: document.getElementById('switchNo').value,
-                    vtBrand: document.getElementById('vtBrand').value,
-                    vtMeaNo: document.getElementById('vtMeaNo').value,
-                    ofdfNo: document.getElementById('ofdfNo').value,
+                    szBrand: document.getElementById('szBrand')?.value || document.getElementById('lbsBrand')?.value || '',
+                    szMeaNo: document.getElementById('szMeaNo')?.value || document.getElementById('lbsMeaNo')?.value || '',
+                    switchNo: document.getElementById('switchNo')?.value || '',
                     lbsSwitchStatus: document.querySelector('input[name="lbsSwitchStatus"]:checked')?.value || '',
                     scadaStatus: document.querySelector('input[name="scadaStatus"]:checked')?.value || ''
                 };
