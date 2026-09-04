@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบันทึกและตรวจสอบบำรุงรักษาอุปกรณ์ไฟฟ้า MEA (10 แบบฟอร์ม)</title>
+    <title>ระบบบันทึกและตรวจสอบบำรุงรักษาอุปกรณ์ไฟฟ้า MEA (11 แบบฟอร์ม)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontPrompt for Thai -->
@@ -25,7 +25,7 @@
                 </div>
                 <div>
                     <h1 class="text-lg font-bold leading-tight">ระบบบันทึกและตรวจสอบบำรุงรักษาอุปกรณ์ไฟฟ้า MEA</h1>
-                    <p class="text-xs text-blue-200">Smart Maintenance System (10 Forms Integration)</p>
+                    <p class="text-xs text-blue-200">Smart Maintenance System (11 Forms Integration)</p>
                 </div>
             </div>
             <div class="flex items-center space-x-3 mt-2 sm:mt-0">
@@ -49,10 +49,10 @@
     <!-- Main Workspace with Left Sidebar & Content Area -->
     <div class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 flex flex-col md:flex-row gap-6">
         
-        <!-- Left Sidebar: 10 Inspection Forms Menu -->
+        <!-- Left Sidebar: 11 Inspection Forms Menu -->
         <aside class="w-full md:w-80 bg-white rounded-xl shadow-sm border border-slate-200 p-4 shrink-0 h-fit space-y-2">
             <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-2 mb-3">
-                <i class="fa-solid fa-folder-tree mr-1.5 text-blue-600"></i> เลือกใบตรวจสอบ (10 แบบฟอร์ม)
+                <i class="fa-solid fa-folder-tree mr-1.5 text-blue-600"></i> เลือกใบตรวจสอบ (11 แบบฟอร์ม)
             </h2>
             <div id="formMenuContainer" class="space-y-1">
                 <!-- Menu items injected via JS -->
@@ -151,7 +151,6 @@
                     <h2 id="modalTitle" class="text-lg font-bold">บันทึกผลการตรวจสอบ</h2>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <!-- ปุ่มพิมพ์ / PDF เฉพาะใบตรวจสอบ (เพิ่มใหม่) -->
                     <button type="button" onclick="printCurrentModalForm()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow transition flex items-center space-x-1.5">
                         <i class="fa-solid fa-print"></i><span>พิมพ์ / PDF</span>
                     </button>
@@ -168,7 +167,7 @@
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
                         <h3 class="font-bold text-blue-900 border-b pb-2 flex items-center">
                             <span class="bg-blue-900 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2">1</span>
-                            ข้อมูลทั่วไป (General Information)
+                            ข้อมูลทั่วไป / ข้อมูลภาพถ่าย (General Information)
                         </h3>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
@@ -188,34 +187,16 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">MEA No.1</label>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">MEA No.</label>
                                 <input type="text" id="meaNo1" class="w-full border border-slate-300 rounded-lg p-2 text-sm">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">MEA No.2</label>
-                                <input type="text" id="meaNo2" class="w-full border border-slate-300 rounded-lg p-2 text-sm">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">อุปกรณ์ (Equipment)</label>
+                                <input type="text" id="brand" placeholder="ระบุอุปกรณ์" class="w-full border border-slate-300 rounded-lg p-2 text-sm">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">MEA No.3</label>
-                                <input type="text" id="meaNo3" class="w-full border border-slate-300 rounded-lg p-2 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">จำนวนเฟส</label>
-                                <input type="text" id="phases" placeholder="เช่น 3 เฟส" class="w-full border border-slate-300 rounded-lg p-2 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">ยี่ห้อ / ขนาด</label>
-                                <div class="flex space-x-1">
-                                    <input type="text" id="brand" placeholder="ยี่ห้อ" class="w-1/2 border border-slate-300 rounded-lg p-2 text-xs">
-                                    <input type="text" id="capacity" placeholder="ขนาด (kVA)" class="w-1/2 border border-slate-300 rounded-lg p-2 text-xs">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">ชนิด / ลักษณะการติดตั้ง</label>
-                                <div class="flex space-x-1">
-                                    <input type="text" id="transformerType" placeholder="ชนิด" class="w-1/2 border border-slate-300 rounded-lg p-2 text-xs">
-                                    <input type="text" id="installType" placeholder="ลักษณะการติดตั้ง" class="w-1/2 border border-slate-300 rounded-lg p-2 text-xs">
-                                </div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">สายป้อน (Feeder)</label>
+                                <input type="text" id="capacity" placeholder="ระบุสายป้อน" class="w-full border border-slate-300 rounded-lg p-2 text-sm">
                             </div>
                         </div>
                     </div>
@@ -245,8 +226,8 @@
                         </div>
                     </div>
 
-                    <!-- Section 3: ตรวจสอบวัดกระแสและแรงดันไฟฟ้า -->
-                    <div id="electricalSectionContainer" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
+                    <!-- Section 3: ตรวจสอบวัดกระแสและแรงดันไฟฟ้า (เฉพาะ SF-07-0-015) -->
+                    <div id="electricalSectionContainer" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4 hidden">
                         <h3 class="font-bold text-blue-900 border-b pb-2 flex items-center">
                             <span class="bg-blue-900 text-white w-6 h-6 rounded-full inline-flex items-center justify-center text-xs mr-2">3</span>
                             ตรวจสอบวัดกระแสและแรงดันไฟฟ้า
@@ -303,11 +284,11 @@
                     <!-- Section 4 & 5 -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                            <h3 class="font-bold text-blue-900 text-sm border-b pb-2">4. สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม</h3>
+                            <h3 class="font-bold text-blue-900 text-sm border-b pb-2">สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม</h3>
                             <textarea id="improvements" rows="2" class="w-full border border-slate-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500" placeholder="ระบุข้อเสนอแนะเพิ่มเติม..."></textarea>
                         </div>
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                            <h3 class="font-bold text-blue-900 text-sm border-b pb-2">5. การปรับปรุงข้อบกพร่อง</h3>
+                            <h3 class="font-bold text-blue-900 text-sm border-b pb-2">การปรับปรุงข้อบกพร่อง</h3>
                             <textarea id="repairDetails" rows="2" class="w-full border border-slate-300 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500" placeholder="ระบุรายละเอียดการแก้ไข..."></textarea>
                         </div>
                     </div>
@@ -451,6 +432,13 @@
                 items: [
                     "ตรวจสอบอุณหภูมิเทียบจุดวัด (Delta T)", "ประเมินระดับความสำคัญ (1-4)", "การส่งต่อดำเนินการแก้ไข", "การดำเนินการปรับปรุงแก้ไข"
                 ]
+            },
+            {
+                code: "SF-07-0-025",
+                name: "รายงานผลการตรวจสอบการคายประจุไฟฟ้า (Acoustic Camera)",
+                items: [
+                    "ตรวจสอบจุดที่ผิดปกติ", "ระดับความเข้มเสียง (dB)", "ประเมินระดับความรุนแรง (สูงมาก/สูง/ปานกลาง/ต่ำ)", "การส่งต่อดำเนินการแก้ไข"
+                ]
             }
         ];
 
@@ -478,7 +466,7 @@
             allBtn.innerHTML = `
                 <div class="truncate pr-2">
                     <span class="font-bold block ${isAllActive ? 'text-yellow-400' : 'text-blue-900'}"><i class="fa-solid fa-layer-group mr-1.5"></i> ดูรายการทั้งหมด</span>
-                    <span class="truncate block text-[11px] opacity-90">รวมทุกแบบฟอร์มในระบบ</span>
+                    <span class="truncate block text-[11px] opacity-90">รวมทุกแบบฟอร์มในระบบ (11 ใบ)</span>
                 </div>
             `;
             container.appendChild(allBtn);
@@ -603,13 +591,8 @@
                 document.getElementById('gisLat').value = wo.generalInfo.gisLat || '';
                 document.getElementById('gisLong').value = wo.generalInfo.gisLong || '';
                 document.getElementById('meaNo1').value = wo.generalInfo.meaNo1 || '';
-                document.getElementById('meaNo2').value = wo.generalInfo.meaNo2 || '';
-                document.getElementById('meaNo3').value = wo.generalInfo.meaNo3 || '';
-                document.getElementById('phases').value = wo.generalInfo.phases || '';
                 document.getElementById('brand').value = wo.generalInfo.brand || '';
                 document.getElementById('capacity').value = wo.generalInfo.capacity || '';
-                document.getElementById('transformerType').value = wo.generalInfo.transformerType || '';
-                document.getElementById('installType').value = wo.generalInfo.installType || '';
                 
                 renderDynamicChecklist(wo.formCode, wo.checklist);
 
@@ -653,11 +636,7 @@
             document.getElementById('formModal').classList.add('hidden');
         }
 
-        // ฟังก์ชันสำหรับพิมพ์ / PDF เฉพาะใบตรวจสอบที่กำลังเปิดใน Modal อยู่ปัจจุบัน
         function printCurrentModalForm() {
-            const editIndex = parseInt(document.getElementById('editIndex').value);
-            
-            // รวบรวมข้อมูลจากฟอร์มปัจจุบันในหน้าจอ Modal ทันที
             let targetFormCode = currentFormCode === "ALL" ? "SF-07-0-015" : currentFormCode;
             const formInfo = formsData.find(f => f.code === targetFormCode);
 
@@ -666,13 +645,8 @@
             const gisLat = document.getElementById('gisLat').value || '-';
             const gisLong = document.getElementById('gisLong').value || '-';
             const meaNo1 = document.getElementById('meaNo1').value || '-';
-            const meaNo2 = document.getElementById('meaNo2').value || '-';
-            const meaNo3 = document.getElementById('meaNo3').value || '-';
-            const phases = document.getElementById('phases').value || '-';
             const brand = document.getElementById('brand').value || '-';
             const capacity = document.getElementById('capacity').value || '-';
-            const transformerType = document.getElementById('transformerType').value || '-';
-            const installType = document.getElementById('installType').value || '-';
 
             const checklistData = [];
             formInfo.items.forEach((item, index) => {
@@ -691,42 +665,6 @@
             const verifierPos = document.getElementById('verifierPos').value || '-';
             const verifierDate = document.getElementById('verifierDate').value || '-';
 
-            let electricalHTML = '';
-            if (targetFormCode === "SF-07-0-015") {
-                const timing = document.querySelector('input[name="checkTiming"]:checked')?.value || '-';
-                const checkTime = document.getElementById('checkTime').value || '-';
-                const method = document.querySelector('input[name="checkMethod"]:checked')?.value || '-';
-                const v1n = document.getElementById('v1n').value || '-';
-                const v2n = document.getElementById('v2n').value || '-';
-                const v3n = document.getElementById('v3n').value || '-';
-                const v12 = document.getElementById('v12').value || '-';
-                const v13 = document.getElementById('v13').value || '-';
-                const v23 = document.getElementById('v23').value || '-';
-                const iN = document.getElementById('iN').value || '-';
-                const i1 = document.getElementById('i1').value || '-';
-                const i2 = document.getElementById('i2').value || '-';
-                const i3 = document.getElementById('i3').value || '-';
-                const totalCurrent = document.getElementById('totalCurrent').value || '0.0';
-
-                electricalHTML = `
-                    <div class="section-title">3. ตรวจสอบวัดกระแสและแรงดันไฟฟ้า</div>
-                    <table>
-                        <tr>
-                            <td><b>ช่วงเวลา:</b> ${timing} (เวลา: ${checkTime})</td>
-                            <td><b>วิธีการ:</b> ${method}</td>
-                            <td><b>ผลรวมกระแส (A):</b> ${totalCurrent}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"><b>แรงดันไฟฟ้า (V):</b> V1-N=${v1n}, V2-N=${v2n}, V3-N=${v3n} | V1-2=${v12}, V1-3=${v13}, V2-3=${v23}</td>
-                        </tr>
-                        <tr>
-                        <td colspan="3"><b>กระแสไฟฟ้า (A):</b> IN=${iN}, I1=${i1}, I2=${i2}, I3=${i3}</td>
-                        </tr>
-                    </table>
-                `;
-            }
-
-            // เปิดหน้าต่างใหม่เฉพาะสำหรับพิมพ์ใบตรวจสอบ
             const printWindow = window.open('', '_blank');
             printWindow.document.write(`
                 <html>
@@ -756,14 +694,9 @@
                             <td><b>GIS Lat/Long:</b> ${gisLat}, ${gisLong}</td>
                         </tr>
                         <tr>
-                            <td><b>MEA No.1:</b> ${meaNo1}</td>
-                            <td><b>MEA No.2:</b> ${meaNo2}</td>
-                            <td><b>MEA No.3:</b> ${meaNo3}</td>
-                        </tr>
-                        <tr>
-                            <td><b>จำนวนเฟส:</b> ${phases}</td>
-                            <td><b>ยี่ห้อ / ขนาด:</b> ${brand} / ${capacity}</td>
-                            <td><b>ชนิด / ติดตั้ง:</b> ${transformerType} / ${installType}</td>
+                            <td><b>MEA No.:</b> ${meaNo1}</td>
+                            <td><b>อุปกรณ์:</b> ${brand}</td>
+                            <td><b>สายป้อน:</b> ${capacity}</td>
                         </tr>
                     </table>
 
@@ -788,8 +721,6 @@
                             </tr>
                         `).join('')}
                     </table>
-
-                    ${electricalHTML}
 
                     <div class="section-title">4 & 5. การปรับปรุงและข้อเสนอแนะ</div>
                     <table>
@@ -894,26 +825,6 @@
                 checklistData.push({ id: item, status, defect });
             });
 
-            let electricalData = null;
-            if (formCodeToSave === "SF-07-0-015") {
-                electricalData = {
-                    timing: document.querySelector('input[name="checkTiming"]:checked').value,
-                    checkTime: document.getElementById('checkTime').value,
-                    method: document.querySelector('input[name="checkMethod"]:checked').value,
-                    v1n: document.getElementById('v1n').value,
-                    v2n: document.getElementById('v2n').value,
-                    v3n: document.getElementById('v3n').value,
-                    v12: document.getElementById('v12').value,
-                    v13: document.getElementById('v13').value,
-                    v23: document.getElementById('v23').value,
-                    iN: document.getElementById('iN').value,
-                    i1: document.getElementById('i1').value,
-                    i2: document.getElementById('i2').value,
-                    i3: document.getElementById('i3').value,
-                    totalCurrent: document.getElementById('totalCurrent').value
-                };
-            }
-
             const workOrderObj = {
                 workOrderId: editIndex !== -1 ? workOrders[editIndex].workOrderId : `WO-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${Math.floor(100+Math.random()*900)}`,
                 formCode: formCodeToSave,
@@ -926,17 +837,11 @@
                     gisLat: document.getElementById('gisLat').value,
                     gisLong: document.getElementById('gisLong').value,
                     meaNo1: document.getElementById('meaNo1').value,
-                    meaNo2: document.getElementById('meaNo2').value,
-                    meaNo3: document.getElementById('meaNo3').value,
-                    phases: document.getElementById('phases').value,
                     brand: document.getElementById('brand').value,
-                    capacity: document.getElementById('capacity').value,
-                    transformerType: document.getElementById('transformerType').value,
-                    installType: document.getElementById('installType').value
+                    capacity: document.getElementById('capacity').value
                 },
                 checklist: checklistData,
                 hasDefect: hasDefect,
-                electricalData: electricalData,
                 improvements: document.getElementById('improvements').value,
                 repairDetails: document.getElementById('repairDetails').value,
                 signatures: {
