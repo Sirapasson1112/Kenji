@@ -60,26 +60,28 @@
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
 
     <!-- Top Navigation / Header (Non-Printable) -->
-    <header class="no-print bg-slate-950 border-b border-slate-800 text-white px-6 py-3.5 flex justify-between items-center sticky top-0 z-50 shadow-md">
+    <header class="no-print bg-slate-950 border-b border-slate-800 text-white px-6 py-3 flex justify-between items-center sticky top-0 z-50 shadow-md">
         <div class="flex items-center space-x-3">
-            <div class="bg-amber-500 p-2.5 rounded-xl text-slate-950 font-bold text-lg"><i class="fa-solid fa-bolt-lightning"></i></div>
+            <div class="bg-amber-500 p-2 rounded-xl text-slate-950 font-bold text-base"><i class="fa-solid fa-bolt-lightning"></i></div>
             <div>
-                <h1 class="text-sm font-bold">ระบบตรวจสอบและบำรุงรักษาอุปกรณ์ไฟฟ้า (MEA Standard)</h1>
-                <p class="text-[11px] text-slate-400">ระบบฟอร์มดิจิทัล 11 แบบฟอร์ม พร้อมบันทึกและพิมพ์ PDF ตามต้นฉบับ</p>
+                <h1 class="text-xs sm:text-sm font-bold tracking-tight">ระบบตรวจสอบและบำรุงรักษาอุปกรณ์ไฟฟ้า (MEA)</h1>
+                <p class="text-[10px] text-slate-400">ระบบฟอร์มดิจิทัล 11 แบบฟอร์มมาตรฐาน กฟน.</p>
             </div>
         </div>
-        <div id="headerActions" class="hidden flex items-center space-x-2">
-            <button onclick="goHome()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold transition border border-slate-700">
-                <i class="fa-solid fa-house mr-1"></i> กลับหน้าเมนู
+        
+        <!-- Action Buttons (Compact & Clean) -->
+        <div id="headerActions" class="hidden flex items-center space-x-1.5 sm:space-x-2">
+            <button onclick="goHome()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl text-xs font-semibold transition border border-slate-700 flex items-center space-x-1">
+                <i class="fa-solid fa-house text-[11px]"></i> <span class="hidden sm:inline">หน้าเมนู</span>
             </button>
-            <button onclick="resetCurrentForm()" class="bg-slate-700 hover:bg-slate-600 text-white px-3.5 py-2 rounded-xl text-xs font-semibold transition">
-                <i class="fa-solid fa-rotate-right mr-1"></i> ล้างข้อมูล
+            <button onclick="resetCurrentForm()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl text-xs font-semibold transition border border-slate-700 flex items-center space-x-1">
+                <i class="fa-solid fa-rotate-right text-[11px]"></i> <span class="hidden sm:inline">ล้างฟอร์ม</span>
             </button>
-            <button onclick="saveActiveForm()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-semibold transition shadow-sm">
-                <i class="fa-solid fa-floppy-disk mr-1"></i> บันทึก
+            <button onclick="saveActiveForm()" class="bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold transition shadow-sm flex items-center space-x-1">
+                <i class="fa-solid fa-floppy-disk text-[11px]"></i> <span>บันทึก</span>
             </button>
-            <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-semibold transition shadow-sm">
-                <i class="fa-solid fa-print mr-1"></i> พิมพ์ / Export PDF
+            <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold transition shadow-sm flex items-center space-x-1">
+                <i class="fa-solid fa-print text-[11px]"></i> <span>พิมพ์/PDF</span>
             </button>
         </div>
     </header>
@@ -89,9 +91,9 @@
         
         <!-- ================= VIEW 1: HOME (11 FORM BUTTONS) ================= -->
         <div id="homeView" class="max-w-6xl mx-auto space-y-6">
-            <div class="bg-slate-800/80 border border-slate-700/80 p-6 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="bg-slate-800/80 border border-slate-700/80 p-5 sm:p-6 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
                 <div>
-                    <h2 class="text-lg font-bold text-white mb-1"><i class="fa-solid fa-folder-tree text-amber-500 mr-2"></i> เลือกแบบฟอร์มตรวจสอบมาตรฐาน กฟน. (MEA)</h2>
+                    <h2 class="text-base sm:text-lg font-bold text-white mb-1"><i class="fa-solid fa-folder-tree text-amber-500 mr-2"></i> เลือกแบบฟอร์มตรวจสอบมาตรฐาน กฟน. (MEA)</h2>
                     <p class="text-xs text-slate-400">กรุณาเลือกแบบฟอร์มที่ต้องการใช้งาน ระบบจะเปลี่ยนโครงสร้างช่องกรอกและตารางให้ตรงกับต้นฉบับ PDF ทั้ง 11 ใบโดยอัตโนมัติ</p>
                 </div>
                 <div class="relative w-full md:w-72">
@@ -136,8 +138,8 @@
 
             <!-- A4 Render Paper -->
             <form id="dynamicA4Form" class="a4-page border border-slate-400">
-                <input type="hidden" id="activeFormCode" value="">
-                <input type="hidden" id="recordUniqueId" value="">
+                <input type="hidden" id="formCode" value="">
+                <input type="hidden" id="recordId" value="">
                 <!-- Form HTML Structure Injected dynamically based on schema -->
             </form>
         </div>
@@ -152,11 +154,10 @@
 
     <!-- Script Application Logic -->
     <script>
-        // Schema definition for all 11 MEA inspection forms
         const formsSchema = [
             {
                 code: "SF-07-0-015",
-                name: "แบบตรวจสอบบำรุงหม้อแปลงจำหน่าย",
+                name: "แบบตรวจสอบบำรุงหม้อแปลงจำหน่าย",[cite: 1]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "สถานที่", id: "location", type: "text" },
@@ -180,7 +181,7 @@
             },
             {
                 code: "SF-07-0-016",
-                name: "แบบตรวจสอบบำรุงรักษา Load Break Switch",
+                name: "แบบตรวจสอบบำรุงรักษา Load Break Switch",[cite: 3]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "GIS Lat.", id: "gisLat", type: "text" },
@@ -209,7 +210,7 @@
             },
             {
                 code: "SF-07-0-017",
-                name: "แบบตรวจสอบบำรุงรักษา Sectionalizer",
+                name: "แบบตรวจสอบบำรุงรักษา Sectionalizer",[cite: 4]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "GIS Lat.", id: "gisLat", type: "text" },
@@ -233,7 +234,7 @@
             },
             {
                 code: "SF-07-0-018",
-                name: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",
+                name: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",[cite: 5]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "GIS Lat.", id: "gisLat", type: "text" },
@@ -252,7 +253,7 @@
             },
             {
                 code: "SF-07-0-019",
-                name: "แบบตรวจสอบบำรุงรักษา UNITSUBSTATION",
+                name: "แบบตรวจสอบบำรุงรักษา UNITSUBSTATION",[cite: 6]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "GIS Lat.", id: "gisLat", type: "text" },
@@ -275,7 +276,7 @@
             },
             {
                 code: "SF-07-0-020",
-                name: "แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน",
+                name: "แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน",[cite: 7]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "สถานที่", id: "location", type: "text" },
@@ -304,7 +305,7 @@
             },
             {
                 code: "SF-07-0-021",
-                name: "แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",
+                name: "แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",[cite: 8]
                 generalInfo: [
                     { label: "สถานที่", id: "location", type: "text" },
                     { label: "STATION", id: "station", type: "text" },
@@ -324,7 +325,7 @@
             },
             {
                 code: "SF-07-0-022",
-                name: "แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",
+                name: "แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",[cite: 9]
                 generalInfo: [
                     { label: "สถานที่", id: "location", type: "text" },
                     { label: "STATION", id: "station", type: "text" },
@@ -341,7 +342,7 @@
             },
             {
                 code: "SF-07-0-023",
-                name: "แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย",
+                name: "แบบตรวจสอบบำรุงรักษา ทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย",[cite: 10]
                 generalInfo: [
                     { label: "สถานที่", id: "location", type: "text" },
                     { label: "STATION ID", id: "stationId", type: "text" },
@@ -357,7 +358,7 @@
             },
             {
                 code: "SF-07-0-024",
-                name: "รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",
+                name: "รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",[cite: 11]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "สถานที่", id: "location", type: "text" },
@@ -376,7 +377,7 @@
             },
             {
                 code: "SF-07-0-025",
-                name: "รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)",
+                name: "รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)",[cite: 12]
                 generalInfo: [
                     { label: "Station ID", id: "stationId", type: "text" },
                     { label: "สถานที่", id: "location", type: "text" },
@@ -662,14 +663,12 @@
             const recordId = document.getElementById('recordId').value;
             const formCode = document.getElementById('formCode').value;
 
-            // Collect general info dynamically
             let generalInfo = {};
             activeFormSchema.generalInfo.forEach(f => {
                 const el = document.getElementById(f.id);
                 if(el) generalInfo[f.id] = el.value;
             });
 
-            // Collect checklist
             const checklist = activeFormSchema.checklist.map((item, index) => {
                 const checkedRadio = document.querySelector(`input[name="ch_${index}"]:checked`);
                 return {
@@ -707,6 +706,7 @@
             }
 
             localStorage.setItem('mea_all_inspection_records', JSON.stringify(allRecords));
+            renderSavedRecordsTable();
             showToast("บันทึกข้อมูลสำเร็จเรียบร้อย", "success");
         }
 
@@ -763,7 +763,8 @@
                 tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400 italic">ไม่พบข้อมูลที่ค้นหา</td></tr>`;
                 return;
             }
-            filtered.forEach((rec, idx) => {
+            filtered.forEach((rec) => {
+                const realIdx = allRecords.indexOf(rec);
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-700/50 transition";
                 tr.innerHTML = `
@@ -772,8 +773,8 @@
                     <td class="p-3">${rec.stationId}</td>
                     <td class="p-3 text-slate-400">${rec.date}</td>
                     <td class="p-3 text-center space-x-2">
-                        <button onclick="editRecord(${allRecords.indexOf(rec)})" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow-sm transition">เปิด/แก้ไข</button>
-                        <button onclick="deleteRecord(${allRecords.indexOf(rec)})" class="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-semibold shadow-sm transition">ลบ</button>
+                        <button onclick="editRecord(${realIdx})" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow-sm transition">เปิด/แก้ไข</button>
+                        <button onclick="deleteRecord(${realIdx})" class="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-semibold shadow-sm transition">ลบ</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
