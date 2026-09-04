@@ -262,6 +262,7 @@
 
         function renderFormMenuList() {
             const listContainer = document.getElementById('formMenuList');
+            if (!listContainer) return;
             listContainer.innerHTML = '';
             formsData.forEach(form => {
                 const isActive = form.code === currentFormCode;
@@ -283,6 +284,8 @@
 
         function loadSheetForm(code) {
             const formInfo = formsData.find(f => f.code === code);
+            if (!formInfo) return;
+            
             document.getElementById('currentFormCodeBadge').innerText = formInfo.code;
             document.getElementById('currentFormTitleBadge').innerText = formInfo.name;
             document.getElementById('sheetTitle').innerText = formInfo.name;
