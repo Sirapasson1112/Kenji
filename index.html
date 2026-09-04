@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -151,7 +150,7 @@
                 <div class="p-5 border-b border-warm-200 flex justify-between items-center bg-warm-100/60">
                     <div>
                         <h3 id="activeFormTitle" class="font-bold text-warm-900 text-sm">รายการตรวจสอบทั้งหมด</h3>
-                        <p id="activeFormCodeSub" class="text-[11px] text-warm-800 mt-0.5">คลิกที่แถวข้อมูลเพื่อเปิดดูรายละเอียดใบตรวจสอบทันที</p>
+                        <p id="activeFormCodeSub" class="text-[11px] text-warm-800 mt-0.5">แสดงข้อมูลทุกแบบฟอร์มในระบบ</p>
                     </div>
                     <span id="recordCount" class="text-xs bg-amber-100 text-amber-900 border border-amber-300 font-bold px-3 py-1 rounded-full">0 รายการ</span>
                 </div>
@@ -429,13 +428,18 @@
                 const isActive = form.code === currentFormCode;
                 const btn = document.createElement('button');
                 btn.type = "button";
-                btn.onclick = () => selectForm(form.code);
+                // เมื่อคลิกที่ใบตรวจสอบใดๆ จะเปลี่ยนฟอร์มและเปิด Modal กรอกข้อมูลของใบนั้นๆ ทันที
+                btn.onclick = () => {
+                    selectForm(form.code);
+                    openFormModal(); // เปิดฟอร์มกรอกข้อมูลทันทีตามที่ขอ
+                };
                 btn.className = `w-full text-left px-3.5 py-2.5 rounded-xl text-xs transition flex items-center justify-between ${isActive ? 'bg-amber-100 text-amber-900 font-bold border border-amber-300' : 'text-warm-900 hover:bg-warm-100'}`;
                 btn.innerHTML = `
                     <div class="truncate pr-1">
                         <span class="block">${form.code}</span>
                         <span class="truncate block text-[9px] text-warm-500">${form.name}</span>
                     </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40"></i>
                 `;
                 container.appendChild(btn);
             });
@@ -534,7 +538,7 @@
             } else {
                 const wo = workOrders[editIdx];
                 document.getElementById('editIndex').value = editIdx;
-                document.getElementById('modalTitle').innerText = `รายละเอียด Work Order: ${wo.workOrderId} (${wo.formCode})`;
+                document.getElementById('modalTitle').innerText = `แก้ไข Work Order: ${wo.workOrderId}`;
                 document.getElementById('stationId').value = wo.generalInfo.stationId || '';
                 document.getElementById('location').value = wo.generalInfo.location || '';
                 document.getElementById('gisLat').value = wo.generalInfo.gisLat || '';
@@ -833,9 +837,7 @@
                     : `<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px] px-3 py-1 rounded-full font-semibold"><i class="fa-solid fa-circle-check mr-1"></i> ปกติ</span>`;
 
                 const tr = document.createElement('tr');
-                // เพิ่ม cursor-pointer และ onclick ให้คลิกแถวเพื่อดูรายละเอียดได้ทันที
-                tr.className = "hover:bg-warm-100/80 transition cursor-pointer";
-                tr.setAttribute('onclick', `openFormModal(${realIndex})`);
+                tr.className = "hover:bg-warm-100/60 transition";
                 tr.innerHTML = `
                     <td class="p-4">
                         <span class="font-bold text-warm-900 block">${wo.workOrderId}</span>
@@ -850,7 +852,7 @@
                         <span class="text-[11px] text-warm-500 truncate max-w-xs block">${wo.formName}</span>
                     </td>
                     <td class="p-4 text-center">${statusBadge}</td>
-                    <td class="p-4 text-center space-x-1.5" onclick="event.stopPropagation()">
+                    <td class="p-4 text-center space-x-1.5">
                         <button onclick="openFormModal(${realIndex})" class="p-2.5 bg-white text-warm-800 rounded-xl hover:bg-warm-200 transition shadow-sm border border-warm-300" title="แก้ไข / พิมพ์"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button onclick="deleteWorkOrder(${realIndex})" class="p-2.5 bg-white text-rose-600 rounded-xl hover:bg-warm-200 transition shadow-sm border border-warm-300" title="ลบ"><i class="fa-solid fa-trash"></i></button>
                     </td>
