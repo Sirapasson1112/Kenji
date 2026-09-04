@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบันทึกและตรวจสอบการบำรุงรักษาอุปกรณ์ไฟฟ้า MEA (10 แบบฟอร์ม)</title>
+    <title>ระบบบันทึกและตรวจสอบบำรุงรักษาอุปกรณ์ไฟฟ้า MEA (10 แบบฟอร์ม)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontPrompt for Thai -->
@@ -66,7 +66,7 @@
             <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
                     <div>
-                        <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">รายการทั้งหมด</p>
+                        <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">รายการทั้งหมด (ทุกฟอร์ม)</p>
                         <h3 id="statTotal" class="text-2xl font-bold text-slate-700 mt-1">0</h3>
                     </div>
                     <div class="p-3 bg-blue-50 text-blue-600 rounded-lg text-xl"><i class="fa-solid fa-clipboard-list"></i></div>
@@ -88,7 +88,7 @@
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between">
                     <div>
                         <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">ฟอร์มที่เลือกปัจจุบัน</p>
-                        <h3 id="statCurrentFormCode" class="text-lg font-bold text-blue-900 mt-1 truncate">SF-07-0-015</h3>
+                        <h3 id="statCurrentFormCode" class="text-sm font-bold text-blue-900 mt-1 truncate">ทั้งหมด (All Forms)</h3>
                     </div>
                     <div class="p-3 bg-purple-50 text-purple-600 rounded-lg text-xl"><i class="fa-solid fa-file-shield"></i></div>
                 </div>
@@ -116,8 +116,8 @@
             <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                 <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
                     <div>
-                        <h3 id="activeFormTitle" class="font-bold text-slate-700 text-base"><i class="fa-solid fa-table-cells mr-2 text-blue-600"></i>รายการตรวจสอบ: หม้อแปลงจำหน่าย</h3>
-                        <p id="activeFormCodeSub" class="text-xs text-slate-400">รหัสแบบฟอร์ม: SF-07-0-015</p>
+                        <h3 id="activeFormTitle" class="font-bold text-slate-700 text-base"><i class="fa-solid fa-table-cells mr-2 text-blue-600"></i>รายการตรวจสอบทั้งหมด (ทุกแบบฟอร์ม)</h3>
+                        <p id="activeFormCodeSub" class="text-xs text-slate-400">แสดงข้อมูลทุกใบตรวจสอบในระบบ</p>
                     </div>
                     <span id="recordCount" class="text-xs bg-blue-100 text-blue-800 font-semibold px-2.5 py-1 rounded-full">0 รายการ</span>
                 </div>
@@ -153,7 +153,7 @@
                 <button onclick="closeFormModal()" class="text-slate-300 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- Modal Body (Dynamic Form Container) -->
+            <!-- Modal Body -->
             <div class="p-6 overflow-y-auto space-y-6 flex-grow">
                 <form id="inspectionForm" onsubmit="saveWorkOrder(event)">
                     <input type="hidden" id="editIndex" value="-1">
@@ -203,7 +203,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="dynamicChecklistBody" class="divide-y divide-slate-200 text-xs">
-                                    <!-- Populated dynamically based on selected form -->
+                                    <!-- Populated dynamically -->
                                 </tbody>
                             </table>
                         </div>
@@ -255,7 +255,6 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Definition of all 10 MEA Inspection Forms
         const formsData = [
             {
                 code: "SF-07-0-015",
@@ -345,23 +344,37 @@
             }
         ];
 
-        let currentFormCode = "SF-07-0-015";
+        let currentFormCode = "ALL"; // ค่าเริ่มต้นแสดงทั้งหมด
         let workOrders = JSON.parse(localStorage.getItem('mea_all_transformers') || '[]');
         let uploadedImages = [];
         let currentUser = JSON.parse(localStorage.getItem('mea_user') || 'null');
 
-        // Initialize App on Load
         window.addEventListener('DOMContentLoaded', () => {
             renderFormMenu();
-            renderWorkOrdersTable();
+            filterWorkOrders();
             updateDashboardStats();
             checkUserAuth();
         });
 
-        // Render Left Sidebar Menu
         function renderFormMenu() {
             const container = document.getElementById('formMenuContainer');
             container.innerHTML = '';
+            
+            // ปุ่มแสดงทั้งหมด (All Forms)
+            const isAllActive = currentFormCode === "ALL";
+            const allBtn = document.createElement('button');
+            allBtn.type = "button";
+            allBtn.onclick = () => selectForm("ALL");
+            allBtn.className = `w-full text-left px-3 py-2.5 rounded-lg text-xs font-medium transition flex items-center justify-between mb-2 border ${isAllActive ? 'bg-blue-900 text-white border-blue-900 shadow' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}`;
+            allBtn.innerHTML = `
+                <div class="truncate pr-2">
+                    <span class="font-bold block ${isAllActive ? 'text-yellow-400' : 'text-blue-900'}"><i class="fa-solid fa-layer-group mr-1.5"></i> ดูรายการทั้งหมด</span>
+                    <span class="truncate block text-[11px] opacity-90">รวมทุกแบบฟอร์มในระบบ</span>
+                </div>
+            `;
+            container.appendChild(allBtn);
+
+            // วนลูปสร้างเมนู 10 แบบฟอร์ม
             formsData.forEach(form => {
                 const isActive = form.code === currentFormCode;
                 const btn = document.createElement('button');
@@ -381,15 +394,20 @@
 
         function selectForm(code) {
             currentFormCode = code;
-            const formInfo = formsData.find(f => f.code === code);
-            document.getElementById('activeFormTitle').innerHTML = `<i class="fa-solid fa-table-cells mr-2 text-blue-600"></i>รายการตรวจสอบ: ${formInfo.name}`;
-            document.getElementById('activeFormCodeSub').innerText = `รหัสแบบฟอร์ม: ${formInfo.code}`;
-            document.getElementById('statCurrentFormCode').innerText = formInfo.code;
+            if (code === "ALL") {
+                document.getElementById('activeFormTitle').innerHTML = `<i class="fa-solid fa-table-cells mr-2 text-blue-600"></i>รายการตรวจสอบทั้งหมด (ทุกแบบฟอร์ม)`;
+                document.getElementById('activeFormCodeSub').innerText = `แสดงข้อมูลทุกใบตรวจสอบในระบบ`;
+                document.getElementById('statCurrentFormCode').innerText = `ทั้งหมด (All Forms)`;
+            } else {
+                const formInfo = formsData.find(f => f.code === code);
+                document.getElementById('activeFormTitle').innerHTML = `<i class="fa-solid fa-table-cells mr-2 text-blue-600"></i>รายการตรวจสอบ: ${formInfo.name}`;
+                document.getElementById('activeFormCodeSub').innerText = `รหัสแบบฟอร์ม: ${formInfo.code}`;
+                document.getElementById('statCurrentFormCode').innerText = formInfo.code;
+            }
             renderFormMenu();
             filterWorkOrders();
         }
 
-        // Authentication Mock
         function handleGoogleLogin() {
             currentUser = { name: "ศิรภัสสร กลับสุข", email: "siraphatson.k@mea.or.th", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Siraphatson" };
             localStorage.setItem('mea_user', JSON.stringify(currentUser));
@@ -420,7 +438,6 @@
             }
         }
 
-        // Render Dynamic Checklist Table inside Modal
         function renderDynamicChecklist(formCode, existingData = []) {
             const formInfo = formsData.find(f => f.code === formCode);
             const tbody = document.getElementById('dynamicChecklistBody');
@@ -442,10 +459,15 @@
             });
         }
 
-        // Modal Controls
         function openFormModal(editIdx = -1) {
+            // ถ้าอยู่หน้า "ALL" แล้วกดสร้างใหม่ ให้บังคับใช้ฟอร์มแรก (SF-07-0-015) เป็นค่าเริ่มต้น หรือฟอร์มที่เลือกอยู่
+            let targetFormCode = currentFormCode;
+            if (targetFormCode === "ALL") {
+                targetFormCode = "SF-07-0-015";
+            }
+
             document.getElementById('formModal').classList.remove('hidden');
-            const formInfo = formsData.find(f => f.code === currentFormCode);
+            const formInfo = formsData.find(f => f.code === targetFormCode);
             
             if (editIdx === -1) {
                 document.getElementById('inspectionForm').reset();
@@ -453,7 +475,7 @@
                 document.getElementById('modalTitle').innerText = `บันทึกผลตรวจสอบ: ${formInfo.code} (${formInfo.name})`;
                 uploadedImages = [];
                 renderImagePreview();
-                renderDynamicChecklist(currentFormCode);
+                renderDynamicChecklist(targetFormCode);
             } else {
                 const wo = workOrders[editIdx];
                 document.getElementById('editIndex').value = editIdx;
@@ -477,7 +499,6 @@
             document.getElementById('formModal').classList.add('hidden');
         }
 
-        // GPS Location Fetcher
         function getCurrentLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
@@ -492,7 +513,6 @@
             }
         }
 
-        // Image Handling
         function handleImageUpload(event) {
             const files = event.target.files;
             for (let file of files) {
@@ -528,11 +548,13 @@
             renderImagePreview();
         }
 
-        // Save Work Order
         function saveWorkOrder(event) {
             event.preventDefault();
             const editIndex = parseInt(document.getElementById('editIndex').value);
-            const formInfo = formsData.find(f => f.code === currentFormCode);
+            
+            // ใช้ฟอร์มปัจจุบันที่เลือกอยู่ (ถ้าอยู่หน้า ALL ให้บันทึกเป็น SF-07-0-015)
+            let formCodeToSave = currentFormCode === "ALL" ? "SF-07-0-015" : currentFormCode;
+            const formInfo = formsData.find(f => f.code === formCodeToSave);
 
             const checklistData = [];
             let hasDefect = false;
@@ -546,7 +568,7 @@
 
             const workOrderObj = {
                 workOrderId: editIndex !== -1 ? workOrders[editIndex].workOrderId : `WO-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${Math.floor(100+Math.random()*900)}`,
-                formCode: currentFormCode,
+                formCode: formCodeToSave,
                 formName: formInfo.name,
                 inspectionDate: editIndex !== -1 ? workOrders[editIndex].inspectionDate : new Date().toISOString().slice(0,10),
                 inspector: currentUser ? currentUser.name : "เจ้าหน้าที่ไฟฟ้า",
@@ -576,14 +598,13 @@
             showToast("บันทึกข้อมูลเรียบร้อยแล้ว", "success");
         }
 
-        // Render Table and Stats
         function renderWorkOrdersTable(dataToRender) {
             const tbody = document.getElementById('workOrderTableBody');
             document.getElementById('recordCount').innerText = `${dataToRender.length} รายการ`;
             tbody.innerHTML = '';
 
             if (dataToRender.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400 italic">ไม่พบข้อมูลการบันทึกตรวจสอบสำหรับฟอร์มนี้</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-slate-400 italic">ไม่พบข้อมูลการบันทึกตรวจสอบในระบบ</td></tr>`;
                 return;
             }
 
@@ -628,13 +649,12 @@
             document.getElementById('statDefect').innerText = defectCount;
         }
 
-        // Search & Filter
         function filterWorkOrders() {
             const keyword = document.getElementById('searchInput').value.toLowerCase();
             const statusVal = document.getElementById('statusFilter').value;
 
             const filtered = workOrders.filter(wo => {
-                const matchForm = wo.formCode === currentFormCode;
+                const matchForm = currentFormCode === "ALL" ? true : (wo.formCode === currentFormCode);
                 const matchKeyword = wo.workOrderId.toLowerCase().includes(keyword) || 
                                      wo.generalInfo.stationId.toLowerCase().includes(keyword) || 
                                      wo.generalInfo.location.toLowerCase().includes(keyword);
@@ -644,7 +664,6 @@
             renderWorkOrdersTable(filtered);
         }
 
-        // Delete Work Order
         function deleteWorkOrder(idx) {
             if (confirm("คุณต้องการลบรายการ Work Order นี้ใช่หรือไม่?")) {
                 workOrders.splice(idx, 1);
@@ -655,11 +674,10 @@
             }
         }
 
-        // Export CSV
         function exportCSV() {
-            const currentFormOrders = workOrders.filter(w => w.formCode === currentFormCode);
+            const currentFormOrders = currentFormCode === "ALL" ? workOrders : workOrders.filter(w => w.formCode === currentFormCode);
             if (currentFormOrders.length === 0) {
-                showToast("ไม่มีข้อมูลสำหรับ Export ในฟอร์มนี้", "error");
+                showToast("ไม่มีข้อมูลสำหรับ Export", "error");
                 return;
             }
             let csvContent = "data:text/csv;charset=utf-8,\uFEFFWorkOrderID,FormCode,Date,StationID,Location,Status\n";
@@ -676,7 +694,6 @@
             showToast("Export CSV สำเร็จ", "success");
         }
 
-        // Toast Notification Helper
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
