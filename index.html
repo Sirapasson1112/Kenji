@@ -196,14 +196,14 @@
                 <form id="inspectionForm" onsubmit="saveWorkOrder(event)" class="space-y-6">
                     <input type="hidden" id="editIndex" value="-1">
 
-                    <!-- Section 1 (Dynamic General Info) -->
+                    <!-- Section 1: General Info (Exact SF-07-0-015 Layout) -->
                     <div class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-4">
                         <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3 flex items-center uppercase tracking-wider">
                             <span class="bg-amber-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">1</span>
                             ข้อมูลทั่วไป (General Information)
                         </h3>
-                        <div id="generalInfoContainer" class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-                            <!-- Injected dynamically -->
+                        <div id="generalInfoContainer" class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+                            <!-- Injected dynamically for SF-07-0-015 layout -->
                         </div>
                     </div>
 
@@ -233,11 +233,11 @@
                         </div>
                     </div>
 
-                    <!-- Section 3 (Conditional) -->
+                    <!-- Section 3: Electrical Measurements (Exact SF-07-0-015 Layout) -->
                     <div id="electricalSectionContainer" class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-4 hidden">
                         <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3 flex items-center uppercase tracking-wider">
                             <span class="bg-amber-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-[10px] mr-2 font-bold">3</span>
-                            ตรวจสอบวัดกระแสและแรงดันไฟฟ้า
+                            ตรวจวัดกระแสและแรงดันไฟฟ้า
                         </h3>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs bg-warm-100/60 p-4 rounded-2xl border border-warm-200">
                             <div>
@@ -281,7 +281,7 @@
                                     <div><span class="text-warm-700 font-medium">I3</span><input type="number" step="0.1" id="i3" oninput="calculateTotalCurrent()" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2 mt-1"></div>
                                 </div>
                                 <div class="pt-1">
-                                    <span class="font-semibold text-warm-800 block text-[11px]">ผลรวมกระแสทั้งหมด (A):</span>
+                                    <span class="font-semibold text-warm-800 block text-[11px]">ผลรวมกระแสหน้าหม้อแปลงฯ ทั้งหมด (A):</span>
                                     <input type="text" id="totalCurrent" readonly class="w-full bg-white font-bold text-amber-700 border border-warm-300 rounded-xl p-2 text-xs mt-1 shadow-inner" value="0.0">
                                 </div>
                             </div>
@@ -291,11 +291,11 @@
                     <!-- Section 4 & 5: Improvements -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-3">
-                            <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3">สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม</h3>
+                            <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3">4. สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม</h3>
                             <textarea id="improvements" rows="3" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 text-xs focus:ring-2 focus:ring-amber-500 transition" placeholder="ระบุข้อเสนอแนะ..."></textarea>
                         </div>
                         <div class="bg-warm-50 border border-warm-200 p-6 rounded-3xl shadow-sm space-y-3">
-                            <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3">การปรับปรุงข้อบกพร่อง</h3>
+                            <h3 class="font-bold text-warm-900 text-xs border-b border-warm-200 pb-3">5. การปรับปรุงข้อบกพร่อง</h3>
                             <textarea id="repairDetails" rows="3" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 text-xs focus:ring-2 focus:ring-amber-500 transition" placeholder="ระบุการแก้ไข..."></textarea>
                         </div>
                     </div>
@@ -485,91 +485,40 @@
             const container = document.getElementById('generalInfoContainer');
             container.innerHTML = '';
 
-            if (formCode === "SF-07-0-016") {
+            if (formCode === "SF-07-0-015") {
+                // Layout ตรงตามต้นฉบับ 1. ข้อมูลทั่วไป
                 container.innerHTML = `
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label>
-                        <input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label>
-                        <div class="flex space-x-2">
-                            <input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                            <input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label>
-                        <input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">ยี่ห้อ LBS</label>
-                        <input type="text" id="lbsBrand" value="${data.lbsBrand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">LBS MEA No.</label>
-                        <input type="text" id="lbsMeaNo" value="${data.lbsMeaNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">Switch No.</label>
-                        <input type="text" id="switchNo" value="${data.switchNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">ยี่ห้อ VT</label>
-                        <input type="text" id="vtBrand" value="${data.vtBrand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">VT MEA No.</label>
-                        <input type="text" id="vtMeaNo" value="${data.vtMeaNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">ตู้ OFDF No.</label>
-                        <input type="text" id="ofdfNo" value="${data.ofdfNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
+                    <div><label class="block font-semibold text-warm-800 mb-1">Station ID</label><input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
+                    <div class="sm:col-span-3"><label class="block font-semibold text-warm-800 mb-1">สถานที่</label><input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
+                    
+                    <div><label class="block font-semibold text-warm-800 mb-1">GIS Lat.</label><input type="text" id="gisLat" value="${data.gisLat || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
+                    <div class="sm:col-span-3"><label class="block font-semibold text-warm-800 mb-1">Long.</label><input type="text" id="gisLong" value="${data.gisLong || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
+
+                    <div><label class="block font-semibold text-warm-800 mb-1">MEA No1.</label><input type="text" id="meaNo1" value="${data.meaNo1 || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1">MEA No2.</label><input type="text" id="meaNo2" value="${data.meaNo2 || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1">MEA No3.</label><input type="text" id="meaNo3" value="${data.meaNo3 || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1">จำนวนเฟส</label><input type="text" id="phases" value="${data.phases || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
+
+                    <div><label class="block font-semibold text-warm-800 mb-1">ยี่ห้อ (1)</label><input type="text" id="brand1" value="${data.brand1 || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1">ยี่ห้อ (2)</label><input type="text" id="brand2" value="${data.brand2 || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1">ยี่ห้อ (3)</label><input type="text" id="brand3" value="${data.brand3 || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1">ขนาด (kVA)</label><input type="text" id="capacity" value="${data.capacity || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
+
+                    <div class="sm:col-span-2"><label class="block font-semibold text-warm-800 mb-1">ชนิด</label><input type="text" id="transformerType" value="${data.transformerType || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
+                    <div class="sm:col-span-2"><label class="block font-semibold text-warm-800 mb-1">ลักษณะการติดตั้ง</label><input type="text" id="installStyle" value="${data.installStyle || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-2.5"></div>
                 `;
-                document.getElementById('extraHeaderContainer').innerHTML = `
-                    <div class="bg-warm-100 p-4 rounded-2xl border border-warm-200 mb-4 text-xs space-y-2">
-                        <div class="flex items-center space-x-6">
-                            <span class="font-bold text-warm-900">- สถานะสวิตช์:</span>
-                            <label class="flex items-center space-x-2"><input type="radio" name="lbsSwitchStatus" value="ปลด" ${data.lbsSwitchStatus === 'ปลด' ? 'checked' : ''}> <span>ปลด</span></label>
-                            <label class="flex items-center space-x-2"><input type="radio" name="lbsSwitchStatus" value="สับ" ${data.lbsSwitchStatus === 'สับ' ? 'checked' : ''}> <span>สับ</span></label>
-                        </div>
-                        <div class="flex items-center space-x-6">
-                            <span class="font-bold text-warm-900">- สถานะระบบ SCADA/EMS/DMS:</span>
-                            <label class="flex items-center space-x-2"><input type="radio" name="scadaStatus" value="online" ${data.scadaStatus === 'online' ? 'checked' : ''}> <span>online</span></label>
-                            <label class="flex items-center space-x-2"><input type="radio" name="scadaStatus" value="offline" ${data.scadaStatus === 'offline' ? 'checked' : ''}> <span>offline</span></label>
-                        </div>
-                    </div>
-                `;
-            } else if (formCode === "SF-07-0-017") {
+                document.getElementById('extraHeaderContainer').innerHTML = '';
+            } else if (formCode === "SF-07-0-016") {
                 container.innerHTML = `
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label>
-                        <input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label>
-                        <div class="flex space-x-2">
-                            <input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                            <input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label>
-                        <input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">ยี่ห้อ SZ</label>
-                        <input type="text" id="szBrand" value="${data.szBrand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">SZ MEA No.</label>
-                        <input type="text" id="szMeaNo" value="${data.szMeaNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">Switch No.</label>
-                        <input type="text" id="switchNo" value="${data.switchNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label><input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-3"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label><div class="flex space-x-2"><input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-xl p-3"><input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-xl p-3"></div></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label><input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-3"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">ยี่ห้อ LBS</label><input type="text" id="lbsBrand" value="${data.lbsBrand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-3"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">LBS MEA No.</label><input type="text" id="lbsMeaNo" value="${data.lbsMeaNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-3"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">Switch No.</label><input type="text" id="switchNo" value="${data.switchNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-3"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">ยี่ห้อ VT</label><input type="text" id="vtBrand" value="${data.vtBrand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-3"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">VT MEA No.</label><input type="text" id="vtMeaNo" value="${data.vtMeaNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-3"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">ตู้ OFDF No.</label><input type="text" id="ofdfNo" value="${data.ofdfNo || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-xl p-3"></div>
                 `;
                 document.getElementById('extraHeaderContainer').innerHTML = `
                     <div class="bg-warm-100 p-4 rounded-2xl border border-warm-200 mb-4 text-xs space-y-2">
@@ -583,33 +532,9 @@
             } else {
                 document.getElementById('extraHeaderContainer').innerHTML = '';
                 container.innerHTML = `
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label>
-                        <input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label>
-                        <input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3 focus:ring-2 focus:ring-amber-500 transition">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label>
-                        <div class="flex space-x-2">
-                            <input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                            <input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">MEA No.</label>
-                        <input type="text" id="meaNo1" value="${data.meaNo1 || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">อุปกรณ์ (Equipment)</label>
-                        <input type="text" id="brand" value="${data.brand || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-warm-800 mb-1.5">สายป้อน (Feeder)</label>
-                        <input type="text" id="capacity" value="${data.capacity || ''}" class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3">
-                    </div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">Station ID *</label><input type="text" id="stationId" value="${data.stationId || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">สถานที่ / Location *</label><input type="text" id="location" value="${data.location || ''}" required class="w-full bg-white border border-warm-300 text-warm-900 rounded-2xl p-3"></div>
+                    <div><label class="block font-semibold text-warm-800 mb-1.5">GIS Lat. / Long.</label><div class="flex space-x-2"><input type="text" id="gisLat" value="${data.gisLat || ''}" placeholder="Lat" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-xl p-3"><input type="text" id="gisLong" value="${data.gisLong || ''}" placeholder="Long" class="w-1/2 bg-white border border-warm-300 text-warm-900 rounded-xl p-3"></div></div>
                 `;
             }
         }
@@ -669,17 +594,6 @@
                 renderGeneralInfoFields(wo.formCode, wo.generalInfo);
                 renderDynamicChecklist(wo.formCode, wo);
 
-                if(wo.formCode === "SF-07-0-016" || wo.formCode === "SF-07-0-017") {
-                    if(wo.generalInfo.lbsSwitchStatus) {
-                        const radio = document.querySelector(`input[name="lbsSwitchStatus"][value="${wo.generalInfo.lbsSwitchStatus}"]`);
-                        if(radio) radio.checked = true;
-                    }
-                    if(wo.generalInfo.scadaStatus) {
-                        const radio = document.querySelector(`input[name="scadaStatus"][value="${wo.generalInfo.scadaStatus}"]`);
-                        if(radio) radio.checked = true;
-                    }
-                }
-
                 if (wo.electricalData) {
                     const timingRadio = document.querySelector(`input[name="checkTiming"][value="${wo.electricalData.timing}"]`);
                     if (timingRadio) timingRadio.checked = true;
@@ -724,10 +638,37 @@
             let targetFormCode = currentFormCode === "ALL" ? "SF-07-0-015" : currentFormCode;
             const formInfo = formsData.find(f => f.code === targetFormCode);
 
+            // เก็บค่าจาก General Info (SF-07-0-015 layout)
             const stationId = document.getElementById('stationId')?.value || '-';
             const location = document.getElementById('location')?.value || '-';
             const gisLat = document.getElementById('gisLat')?.value || '-';
             const gisLong = document.getElementById('gisLong')?.value || '-';
+            const meaNo1 = document.getElementById('meaNo1')?.value || '-';
+            const meaNo2 = document.getElementById('meaNo2')?.value || '-';
+            const meaNo3 = document.getElementById('meaNo3')?.value || '-';
+            const phases = document.getElementById('phases')?.value || '-';
+            const brand1 = document.getElementById('brand1')?.value || '-';
+            const brand2 = document.getElementById('brand2')?.value || '-';
+            const brand3 = document.getElementById('brand3')?.value || '-';
+            const capacity = document.getElementById('capacity')?.value || '-';
+            const transformerType = document.getElementById('transformerType')?.value || '-';
+            const installStyle = document.getElementById('installStyle')?.value || '-';
+
+            // Electrical data
+            const checkTiming = document.querySelector('input[name="checkTiming"]:checked')?.value || 'กลางวัน';
+            const checkTime = document.getElementById('checkTime')?.value || '-';
+            const checkMethod = document.querySelector('input[name="checkMethod"]:checked')?.value || 'วัดหน้างาน';
+            const v1n = document.getElementById('v1n')?.value || '-';
+            const v2n = document.getElementById('v2n')?.value || '-';
+            const v3n = document.getElementById('v3n')?.value || '-';
+            const v12 = document.getElementById('v12')?.value || '-';
+            const v13 = document.getElementById('v13')?.value || '-';
+            const v23 = document.getElementById('v23')?.value || '-';
+            const iN = document.getElementById('iN')?.value || '-';
+            const i1 = document.getElementById('i1')?.value || '-';
+            const i2 = document.getElementById('i2')?.value || '-';
+            const i3 = document.getElementById('i3')?.value || '-';
+            const totalCurrent = document.getElementById('totalCurrent')?.value || '0.0';
 
             const checklistData = [];
             formInfo.items.forEach((item, index) => {
@@ -750,75 +691,150 @@
             printWindow.document.write(`
                 <html>
                 <head>
-                    <title>แบบตรวจสอบ - ${formInfo.code}</title>
+                    <title>${formInfo.name} - ${formInfo.code}</title>
                     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
                     <style>
-                        body { font-family: 'Prompt', sans-serif; font-size: 11px; color: #111; padding: 20px; }
-                        h2 { text-align: center; margin-bottom: 2px; font-size: 15px; }
-                        .subtitle { text-align: center; font-size: 10px; margin-bottom: 15px; color: #555; }
-                        table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
-                        th, td { border: 1px solid #333; padding: 5px 7px; text-align: left; }
-                        th { background: #f0f0f0; }
-                        .section-title { font-weight: bold; background: #e2e8f0; padding: 5px; margin-top: 12px; margin-bottom: 4px; font-size: 12px; }
-                        .sig-table td { height: 50px; vertical-align: bottom; }
+                        @page { size: A4; margin: 10mm; }
+                        body { font-family: 'Prompt', sans-serif; font-size: 9.5px; color: #111; line-height: 1.2; margin: 0; padding: 0; }
+                        h2 { text-align: center; margin: 0 0 4px 0; font-size: 13px; font-weight: bold; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 4px; table-layout: fixed; }
+                        th, td { border: 1px solid #333; padding: 3px 4px; text-align: left; overflow: hidden; word-wrap: break-word; }
+                        th { background: #e5e7eb; font-weight: bold; text-align: center; }
+                        .section-title { font-weight: bold; background: #d1d5db; padding: 3px 6px; font-size: 10px; border: 1px solid #333; border-bottom: none; }
+                        .center { text-align: center; }
+                        .checkbox-box { display: inline-block; width: 10px; height: 10px; border: 1px solid #333; text-align: center; line-height: 10px; font-size: 8px; margin-right: 3px; }
+                        .footer-code { text-align: right; font-size: 9px; margin-top: 4px; }
                     </style>
                 </head>
                 <body>
                     <h2>${formInfo.name}</h2>
-                    <div class="subtitle">การไฟฟ้านครหลวง (MEA) | รหัสแบบฟอร์ม: ${formInfo.code}</div>
                     
+                    <!-- 1. ข้อมูลทั่วไป -->
                     <div class="section-title">1. ข้อมูลทั่วไป</div>
                     <table>
                         <tr>
-                            <td><b>Station ID:</b> ${stationId}</td>
-                            <td><b>สถานที่:</b> ${location}</td>
-                            <td><b>GIS Lat/Long:</b> ${gisLat}, ${gisLong}</td>
+                            <td style="width: 15%;"><b>Station ID</b></td>
+                            <td style="width: 35%;">${stationId}</td>
+                            <td style="width: 15%;"><b>สถานที่</b></td>
+                            <td style="width: 35%;">${location}</td>
+                        </tr>
+                        <tr>
+                            <td><b>GIS Lat.</b></td>
+                            <td>${gisLat}</td>
+                            <td><b>Long.</b></td>
+                            <td>${gisLong}</td>
+                        </tr>
+                        <tr>
+                            <td><b>MEA No1.</b></td>
+                            <td>${meaNo1}</td>
+                            <td><b>MEA No2.</b></td>
+                            <td>${meaNo2}</td>
+                        </tr>
+                        <tr>
+                            <td><b>MEA No3.</b></td>
+                            <td>${meaNo3}</td>
+                            <td><b>จำนวนเฟส</b></td>
+                            <td>${phases}</td>
+                        </tr>
+                        <tr>
+                            <td><b>ยี่ห้อ (1)</b></td>
+                            <td>${brand1}</td>
+                            <td><b>ยี่ห้อ (2)</b></td>
+                            <td>${brand2}</td>
+                        </tr>
+                        <tr>
+                            <td><b>ยี่ห้อ (3)</b></td>
+                            <td>${brand3}</td>
+                            <td><b>ขนาด (kVA)</b></td>
+                            <td>${capacity}</td>
+                        </tr>
+                        <tr>
+                            <td><b>ชนิด</b></td>
+                            <td colspan="3">${transformerType}</td>
+                        </tr>
+                        <tr>
+                            <td><b>ลักษณะการติดตั้ง</b></td>
+                            <td colspan="3">${installStyle}</td>
                         </tr>
                     </table>
 
+                    <!-- 2. รายการตรวจสอบบำรุงรักษา -->
                     <div class="section-title">2. รายการตรวจสอบบำรุงรักษา</div>
                     <table>
                         <tr>
-                            <th style="width: 35px; text-align: center;">ลำดับ</th>
-                            <th>รายการอุปกรณ์ / หัวข้อตรวจสอบ</th>
-                            <th style="width: 45px; text-align: center;">ปกติ</th>
-                            <th style="width: 45px; text-align: center;">ชำรุด</th>
-                            <th style="width: 45px; text-align: center;">ไม่มี</th>
-                            <th>ข้อบกพร่อง</th>
+                            <th rowspan="2" style="width: 32px;">ลำดับ</th>
+                            <th rowspan="2">รายการ</th>
+                            <th colspan="3" style="width: 120px;">ผลการตรวจสอบ</th>
+                            <th rowspan="2" style="width: 38%;">ข้อบกพร่อง</th>
+                        </tr>
+                        <tr>
+                            <th style="width: 40px;">ปกติ</th>
+                            <th style="width: 40px;">ชำรุด</th>
+                            <th style="width: 40px;">ไม่มี</th>
                         </tr>
                         ${checklistData.map((c, i) => `
                             <tr>
-                                <td style="text-align: center;">${i+1}</td>
+                                <td class="center">2.${i+1}</td>
                                 <td>${c.id}</td>
-                                <td style="text-align: center;">${c.status === 'ปกติ' ? '✓' : ''}</td>
-                                <td style="text-align: center;">${c.status === 'ชำรุด' ? '✓' : ''}</td>
-                                <td style="text-align: center;">${c.status === 'ไม่มี' ? '✓' : ''}</td>
-                                <td>${c.defect || '-'}</td>
+                                <td class="center">${c.status === 'ปกติ' ? '☑' : '☐'}</td>
+                                <td class="center">${c.status === 'ชำรุด' ? '☑' : '☐'}</td>
+                                <td class="center">${c.status === 'ไม่มี' ? '☑' : '☐'}</td>
+                                <td>${c.defect || ''}</td>
                             </tr>
                         `).join('')}
                     </table>
 
-                    <div class="section-title">4 & 5. การปรับปรุงและข้อเสนอแนะ</div>
+                    <!-- 3. ตรวจวัดกระแสและแรงดันไฟฟ้า -->
+                    <div class="section-title">3. ตรวจวัดกระแสและแรงดันไฟฟ้า</div>
                     <table>
-                        <tr><td><b>สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม:</b> ${improvements}</td></tr>
-                        <tr><td><b>การปรับปรุงข้อบกพร่อง:</b> ${repairDetails}</td></tr>
+                        <tr>
+                            <td colspan="4">
+                                <span style="margin-right: 15px;">${checkTiming === 'กลางวัน' ? '☑' : '☐'} กลางวัน</span>
+                                <span style="margin-right: 15px;">${checkTiming === 'กลางคืน' ? '☑' : '☐'} กลางคืน</span>
+                                <span style="margin-right: 15px;"><b>เวลา:</b> ${checkTime}</span>
+                                <span style="margin-right: 15px;"><b>วิธี:</b> ${checkMethod === 'วัดหน้างาน' ? '☑ วัดหน้างาน' : '☐ วัดหน้างาน'} &nbsp; ${checkMethod === 'TLM' ? '☑ TLM' : '☐ TLM'}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%;"><b>แรงดันไฟฟ้า(V)</b></td>
+                            <td colspan="3">
+                                V1-N=${v1n} &nbsp;|&nbsp; V2-N=${v2n} &nbsp;|&nbsp; V3-N=${v3n} &nbsp;|&nbsp; 
+                                V1-2=${v12} &nbsp;|&nbsp; V1-3=${v13} &nbsp;|&nbsp; V2-3=${v23}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>กระแสไฟฟ้า(A)</b></td>
+                            <td colspan="3">
+                                I_N=${iN} &nbsp;|&nbsp; I1=${i1} &nbsp;|&nbsp; I2=${i2} &nbsp;|&nbsp; I3=${i3} &nbsp;|&nbsp; 
+                                <b>ผลรวมกระแสรวม:</b> ${totalCurrent} A
+                            </td>
+                        </tr>
                     </table>
 
-                    <div class="section-title">การลงนามผู้ปฏิบัติงาน</div>
-                    <table class="sig-table">
+                    <!-- 4. สิ่งที่ต้องปรับปรุง -->
+                    <div class="section-title">4. สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม :</div>
+                    <table><tr><td style="height: 24px; vertical-align: top;">${improvements}</td></tr></table>
+
+                    <!-- 5. การปรับปรุงข้อบกพร่อง -->
+                    <div class="section-title">5. การปรับปรุงข้อบกพร่อง :</div>
+                    <table><tr><td style="height: 24px; vertical-align: top;">${repairDetails}</td></tr></table>
+
+                    <!-- ลงนาม -->
+                    <table>
                         <tr>
-                            <td style="width: 50%;">
+                            <td style="width: 50%; height: 35px; vertical-align: top;">
                                 <b>ผู้ตรวจ:</b> ${inspectorName}<br>
                                 <b>ตำแหน่ง:</b> ${inspectorPos}<br>
                                 <b>วันที่:</b> ${inspectorDate}
                             </td>
-                            <td style="width: 50%;">
+                            <td style="width: 50%; height: 35px; vertical-align: top;">
                                 <b>ผู้ตรวจสอบ:</b> ${verifierName}<br>
                                 <b>ตำแหน่ง:</b> ${verifierPos}<br>
                                 <b>วันที่:</b> ${verifierDate}
                             </td>
                         </tr>
                     </table>
+                    <div class="footer-code">ปรับปรุงครั้งที่ 0 วันที่ ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>${formInfo.code}</b></div>
                 </body>
                 </html>
             `);
@@ -888,29 +904,56 @@
             });
 
             let generalInfoObj = {};
-            if(formCodeToSave === "SF-07-0-016" || formCodeToSave === "SF-07-0-017") {
+            if (formCodeToSave === "SF-07-0-015") {
                 generalInfoObj = {
                     stationId: document.getElementById('stationId').value,
                     location: document.getElementById('location').value,
                     gisLat: document.getElementById('gisLat').value,
                     gisLong: document.getElementById('gisLong').value,
-                    szBrand: document.getElementById('szBrand')?.value || document.getElementById('lbsBrand')?.value || '',
-                    szMeaNo: document.getElementById('szMeaNo')?.value || document.getElementById('lbsMeaNo')?.value || '',
-                    switchNo: document.getElementById('switchNo')?.value || '',
-                    lbsSwitchStatus: document.querySelector('input[name="lbsSwitchStatus"]:checked')?.value || '',
-                    scadaStatus: document.querySelector('input[name="scadaStatus"]:checked')?.value || ''
+                    meaNo1: document.getElementById('meaNo1').value,
+                    meaNo2: document.getElementById('meaNo2').value,
+                    meaNo3: document.getElementById('meaNo3').value,
+                    phases: document.getElementById('phases').value,
+                    brand1: document.getElementById('brand1').value,
+                    brand2: document.getElementById('brand2').value,
+                    brand3: document.getElementById('brand3').value,
+                    capacity: document.getElementById('capacity').value,
+                    transformerType: document.getElementById('transformerType').value,
+                    installStyle: document.getElementById('installStyle').value
+                };
+            } else if(formCodeToSave === "SF-07-0-016" || formCodeToSave === "SF-07-0-017") {
+                generalInfoObj = {
+                    stationId: document.getElementById('stationId').value,
+                    location: document.getElementById('location').value,
+                    gisLat: document.getElementById('gisLat').value,
+                    gisLong: document.getElementById('gisLong').value,
+                    lbsSwitchStatus: document.querySelector('input[name="lbsSwitchStatus"]:checked')?.value || ''
                 };
             } else {
                 generalInfoObj = {
                     stationId: document.getElementById('stationId').value,
                     location: document.getElementById('location').value,
                     gisLat: document.getElementById('gisLat').value,
-                    gisLong: document.getElementById('gisLong').value,
-                    meaNo1: document.getElementById('meaNo1')?.value || '',
-                    brand: document.getElementById('brand')?.value || '',
-                    capacity: document.getElementById('capacity')?.value || ''
+                    gisLong: document.getElementById('gisLong').value
                 };
             }
+
+            const electricalDataObj = (formCodeToSave === "SF-07-0-015") ? {
+                timing: document.querySelector('input[name="checkTiming"]:checked')?.value || 'กลางวัน',
+                checkTime: document.getElementById('checkTime').value,
+                method: document.querySelector('input[name="checkMethod"]:checked')?.value || 'วัดหน้างาน',
+                v1n: document.getElementById('v1n').value,
+                v2n: document.getElementById('v2n').value,
+                v3n: document.getElementById('v3n').value,
+                v12: document.getElementById('v12').value,
+                v13: document.getElementById('v13').value,
+                v23: document.getElementById('v23').value,
+                iN: document.getElementById('iN').value,
+                i1: document.getElementById('i1').value,
+                i2: document.getElementById('i2').value,
+                i3: document.getElementById('i3').value,
+                totalCurrent: document.getElementById('totalCurrent').value
+            } : null;
 
             const workOrderObj = {
                 workOrderId: editIndex !== -1 ? workOrders[editIndex].workOrderId : `WO-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${Math.floor(100+Math.random()*900)}`,
@@ -919,6 +962,7 @@
                 inspectionDate: editIndex !== -1 ? workOrders[editIndex].inspectionDate : new Date().toISOString().slice(0,10),
                 inspector: currentUser ? currentUser.name : "เจ้าหน้าที่ไฟฟ้า",
                 generalInfo: generalInfoObj,
+                electricalData: electricalDataObj,
                 checklist: checklistData,
                 hasDefect: hasDefect,
                 improvements: document.getElementById('improvements').value,
