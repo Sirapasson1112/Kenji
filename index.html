@@ -56,7 +56,7 @@
             </div>
             <div id="userAuthContainer">
                 <button onclick="handleGoogleLogin()" class="flex items-center gap-2 px-3.5 py-2 border border-sky-200 rounded-md text-xs font-medium hover:bg-sky-50 transition bg-white text-sky-700 cursor-pointer shadow-2xs">
-                    G เข้าสู่ระบบด้วย Google
+                    👤 เข้าสู่ระบบด้วย Google
                 </button>
             </div>
         </div>
@@ -97,7 +97,7 @@
         <!-- Form Selection Grid (ครบถ้วน 11 แบบฟอร์ม) -->
         <div class="bg-white p-4 rounded-xl border border-theme-border shadow-xs">
             <div class="text-slate-700 font-bold mb-3 text-xs flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-sky-500"></span> เลือกแบบฟอร์มใบงานตรวจสอบอุปกรณ์ไฟฟ้า
+                <span class="w-2 h-2 rounded-full bg-sky-500"></span> เลือกแบบฟอร์มใบงานตรวจสอบอุปกรณ์ไฟฟ้า (ครบถ้วน 11 แบบฟอร์ม)
             </div>
             <div id="pillsContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2"></div>
         </div>
@@ -216,7 +216,7 @@
         </div>
     </main>
 
-    <!-- A4 Document Workspace -->
+    <!-- A4 Document Workspace (พื้นที่แสดงกระดาษฟอร์ม) -->
     <div class="app-container px-4 mt-8 overflow-x-auto flex justify-center">
         <div id="zoomContainer" class="transition-transform duration-200 origin-top">
             <div id="a4Paper" class="a4-sheet text-slate-800"></div>
@@ -742,7 +742,7 @@
                             <td class="bg-slate-50 w-24 border border-slate-300">วันที่ตรวจ</td><td class="border border-slate-300 w-28"><input type="date"></td>
                         </tr>
                         <tr>
-                            <td class="bg-slate-50 border border-slate-300">ผู้ตรวจ:</td><td colspan="3" class="border border-slate-300">2. <input type="text" class="w-3/4 inline-block"></td>
+                            <td class="bg-slate-50 w-20 border border-slate-300">ผู้ตรวจ:</td><td colspan="3" class="border border-slate-300">2. <input type="text" class="w-3/4 inline-block"></td>
                             <td class="bg-slate-50 w-20 border border-slate-300">ตำแหน่ง</td><td class="border border-slate-300"><input type="text"></td>
                         </tr>
                     </table>
@@ -949,11 +949,10 @@
         }
 
         function handleGoogleLogin() { 
-            const inputName = prompt("กรุณากรอกชื่อ-นามสกุล หรือชื่อผู้ใช้งานของคุณ:", "เจ้าหน้าที่ บำรุงรักษา");
+            const inputName = prompt("กรุณากรอกชื่อ-นามสกุล หรือชื่อผู้ใช้งานของคุณ:", "ศิรภัสสร กลับสุข");
             if (inputName && inputName.trim() !== "") {
                 currentUser = inputName.trim();
                 
-                // เปลี่ยนข้อความปุ่มเข้าสู่ระบบเป็นชื่อผู้ใช้
                 document.getElementById('userAuthContainer').innerHTML = `
                     <div class="flex items-center gap-2 px-3.5 py-1.5 border border-emerald-200 bg-emerald-50 rounded-md text-xs font-medium text-emerald-800 shadow-2xs">
                         <span>👤 ${currentUser}</span>
@@ -961,14 +960,12 @@
                     </div>
                 `;
 
-                // อัปเดต Banner สถานะ
                 document.getElementById('loginStatusBanner').innerHTML = `
                     <span class="text-emerald-700 font-medium">✅ เข้าสู่ระบบสำเร็จแล้วในนาม <b>${currentUser}</b> – พร้อมบันทึกข้อมูลและซิงค์ข้อมูล</span>
                     <span class="text-xs text-slate-500">สถานะ: Active</span>
                 `;
                 document.getElementById('loginStatusBanner').className = "bg-emerald-50 border border-emerald-200 text-emerald-800 px-3 py-2 rounded-lg flex justify-between items-center text-[11px]";
                 
-                // อัปเดตส่วนข้อมูลที่บันทึกไว้
                 document.getElementById('savedRecordsList').innerHTML = "ยังไม่มีบันทึกรายการในระบบสำหรับผู้ใช้งานนี้";
                 document.getElementById('savedCount').innerText = "0";
             }
@@ -978,7 +975,7 @@
             currentUser = null;
             document.getElementById('userAuthContainer').innerHTML = `
                 <button onclick="handleGoogleLogin()" class="flex items-center gap-2 px-3.5 py-2 border border-sky-200 rounded-md text-xs font-medium hover:bg-sky-50 transition bg-white text-sky-700 cursor-pointer shadow-2xs">
-                    G เข้าสู่ระบบด้วย Google
+                    👤 เข้าสู่ระบบด้วย Google
                 </button>
             `;
             document.getElementById('loginStatusBanner').innerHTML = `
