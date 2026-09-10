@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบวางแผน PM, KPIs และวิเคราะห์ต้นทุนเชิงลึก</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Sarabun', sans-serif; background-color: #f0f4f8; color: #1e293b; margin: 0; padding: 0; }
+        .app-container { width: 210mm; max-width: 100%; margin: 0 auto; box-sizing: border-box; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #cbd5e1; padding: 4px 6px; font-size: 10px; color: #334155; }
+        th { background-color: #f8fafc; font-weight: 600; }
+        input[type="text"], input[type="date"], input[type="number"], select { border: 1px solid #cbd5e1; outline: none; background: #fff; width: 100%; font-family: 'Sarabun', sans-serif; font-size: 10px; color: #0f172a; padding: 3px 6px; border-radius: 4px; }
+        .theme-accent { background-color: #e0f2fe; color: #0369a1; }
+        .theme-accent-hover:hover { background-color: #bae6fd; }
+        .theme-border { border-color: #cbd5e1; }
+        .theme-text-accent { color: #64748b; }
+        .accent-radio { accent-color: #0284c7; }
+
+        @media print {
+            body { background: white !important; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="pb-16">
+
+    <!-- Header -->
+    <header class="no-print bg-white border-b border-theme-border sticky top-0 z-50 shadow-xs">
+        <div class="app-container px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600 p-2 shadow-2xs shrink-0">
+                    ⚡
+                </div>
+                <div>
+                    <h1 class="text-xs font-bold text-slate-800">ระบบบำรุงรักษาอุปกรณ์ไฟฟ้า</h1>
+                    <p class="text-[10px] theme-text-accent">PM Planning, KPIs & Cost Optimization Workspace</p>
+                </div>
+            </div>
+            <button onclick="handleGoogleLogin()" class="flex items-center gap-2 px-3.5 py-2 border border-sky-200 rounded-md text-xs font-medium hover:bg-sky-50 transition bg-white text-sky-700 cursor-pointer shadow-2xs">
+                👤 เข้าสู่ระบบ Google
+            </button>
+        </div>
+    </header>
+
+    <main class="no-print app-container px-4 mt-6 text-xs space-y-4">
+        <!-- Tab Navigation -->
+        <div class="grid grid-cols-2 gap-2 bg-slate-200/60 p-1 rounded-xl border border-theme-border">
+            <a href="index.html" class="py-2.5 text-slate-600 hover:text-sky-800 font-medium rounded-lg flex items-center justify-center gap-2 transition">
+                📋 แบบฟอร์มตรวจสอบหน้างาน (Inspection Forms)
+            </a>
+            <button class="py-2.5 bg-white text-sky-800 font-bold rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer">
+                📊 แผนงาน PM & KPIs (PM Planning & Cost)
+            </button>
+        </div>
+
+        <!-- Action Toolbar -->
+        <div class="bg-white p-3 rounded-xl border border-theme-border shadow-xs flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-2 text-xs">
+                <button onclick="addNewPlanTask()" class="px-3 py-2 theme-accent theme-accent-hover rounded-lg font-medium transition cursor-pointer shadow-xs">➕ เพิ่มแผนงาน PM</button>
+                <button onclick="exportExcel()" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">🟩 ส่งออก Excel</button>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+                <button onclick="window.print()" class="px-4 py-2 bg-slate-800 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">🖨️ พิมพ์ / PDF แผนงาน</button>
+            </div>
+        </div>
+
+        <!-- Summary Metrics Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-white p-3 rounded-xl border border-theme-border shadow-xs">
+                <span class="text-slate-500 text-[10px]">งานเร่งด่วน (P1 Urgent)</span>
+                <h3 class="text-base font-bold text-rose-700 mt-0.5">2 งาน</h3>
+                <span class="text-[9px] text-rose-600">ต้องแก้ไขภายใน 24-48 ชม.</span>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-theme-border shadow-xs">
+                <span class="text-slate-500 text-[10px]">งบประมาณวางไว้ทั้งหมด</span>
+                <h3 class="text-base font-bold text-sky-700 mt-0.5">฿ 67,000</h3>
+                <span class="text-[9px] text-slate-600">จากแผนงาน PM ทั้งหมด</span>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-theme-border shadow-xs">
+                <span class="text-slate-500 text-[10px]">ความเสียหายป้องกันได้</span>
+                <h3 class="text-base font-bold text-emerald-700 mt-0.5">฿ 2,330,000</h3>
+                <span class="text-[9px] text-emerald-600">Cost Avoidance</span>
+            </div>
+            <div class="bg-white p-3 rounded-xl border border-theme-border shadow-xs">
+                <span class="text-slate-500 text-[10px]">สถานะแผนงานเสร็จสิ้น</span>
+                <h3 class="text-base font-bold text-sky-600 mt-0.5">27.3%</h3>
+                <span class="text-[9px] text-sky-600">ดำเนินการแล้ว</span>
+            </div>
+        </div>
+
+        <!-- Section: Maintenance KPIs & Productivity Calculator -->
+        <div class="bg-white p-4 rounded-xl border border-theme-border shadow-xs space-y-3">
+            <h2 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-sky-500"></span> 
+                ดัชนีชี้วัดประสิทธิภาพงานบำรุงรักษา (Maintenance KPIs) & สูตรคำนวณต้นทุน/ผลิตภาพ
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-700 mb-1">เวลาทำงานรวม (Op. Hours):</label>
+                    <input type="number" id="kpiOpHours" value="8760" oninput="calculateAdvancedKPIs()">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-700 mb-1">จำนวนครั้งขัดข้อง (Failures):</label>
+                    <input type="number" id="kpiFailures" value="2" oninput="calculateAdvancedKPIs()">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-700 mb-1">เวลาซ่อมรวม (Downtime Hrs):</label>
+                    <input type="number" id="kpiDowntime" value="12" oninput="calculateAdvancedKPIs()">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-700 mb-1">จำนวนครั้งซ่อม (Repairs):</label>
+                    <input type="number" id="kpiRepairs" value="2" oninput="calculateAdvancedKPIs()">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-700 mb-1">งาน PM สำเร็จ (Completed):</label>
+                    <input type="number" id="kpiPmDone" value="38" oninput="calculateAdvancedKPIs()">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-700 mb-1">แผน PM ทั้งหมด (Planned):</label>
+                    <input type="number" id="kpiPmTotal" value="40" oninput="calculateAdvancedKPIs()">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-700 mb-1">ต้นทุนบำรุงรักษารวม (Cost):</label>
+                    <input type="number" id="kpiMaintCost" value="125000" oninput="calculateAdvancedKPIs()">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold text-slate-700 mb-1">มูลค่าทรัพย์สิน (RAV):</label>
+                    <input type="number" id="kpiRav" value="5000000" oninput="calculateAdvancedKPIs()">
+                </div>
+            </div>
+
+            <!-- KPI Results Display Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 text-left">
+                            <th class="p-1.5 text-[10px]">ดัชนีชี้วัด (KPI)</th>
+                            <th class="p-1.5 text-[10px]">สูตรคำนวณเชิงวิศวกรรม</th>
+                            <th class="p-1.5 text-[10px] text-center">ค่าที่คำนวณได้</th>
+                            <th class="p-1.5 text-[10px]">เกณฑ์มาตรฐานสากล (Benchmark)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="p-1.5 font-bold">MTBF (เวลาเฉลี่ยระหว่างเสียหาย)</td>
+                            <td class="p-1.5 font-mono text-[9px]">Operating Hours / Failures</td>
+                            <td class="p-1.5 text-center font-bold text-sky-700" id="resMtbf">4,380 ชม.</td>
+                            <td class="p-1.5 text-slate-600">ยิ่งมากยิ่งดี (&gt; 4,000 ชม.)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-1.5 font-bold">MTTR (เวลาเฉลี่ยในการซ่อม)</td>
+                            <td class="p-1.5 font-mono text-[9px]">Total Downtime / Number of Repairs</td>
+                            <td class="p-1.5 text-center font-bold text-sky-600" id="resMttr">6.0 ชม.</td>
+                            <td class="p-1.5 text-slate-600">ยิ่งน้อยยิ่งดี (&lt; 8 ชม.)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-1.5 font-bold">PM Compliance (อัตราทำตามแผน)</td>
+                            <td class="p-1.5 font-mono text-[9px]">(Completed PM / Planned PM) × 100</td>
+                            <td class="p-1.5 text-center font-bold text-emerald-700" id="resPmComp">95.0%</td>
+                            <td class="p-1.5 text-slate-600">มาตรฐาน WCM ต้อง $\ge 95\%$</td>
+                        </tr>
+                        <tr>
+                            <td class="p-1.5 font-bold">MCR (สัดส่วนต้นทุนบำรุงรักษา)</td>
+                            <td class="p-1.5 font-mono text-[9px]">(Total Maint. Cost / RAV) × 100</td>
+                            <td class="p-1.5 text-center font-bold text-indigo-700" id="resMcr">2.5%</td>
+                            <td class="p-1.5 text-slate-600">อุตสาหกรรมทั่วไป (2% - 4%)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Master Ranked Priority Queue Table -->
+        <div class="bg-white p-4 rounded-xl border border-theme-border shadow-xs space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+                <h2 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-sky-500"></span> 
+                    แผนงาน PM จัดลำดับตามความเสี่ยงและงบประมาณ (Ranked Priority Queue)
+                </h2>
+                <input type="text" id="searchBox" placeholder="🔍 ค้นหาสถานี, รหัสฟอร์ม..." oninput="filterTable()" class="w-48 text-[11px]">
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 text-left">
+                            <th class="border border-slate-300 p-1.5 text-[10px]">Work Order</th>
+                            <th class="border border-slate-300 p-1.5 text-[10px]">วันที่กำหนด</th>
+                            <th class="border border-slate-300 p-1.5 text-[10px]">รหัสฟอร์ม</th>
+                            <th class="border border-slate-300 p-1.5 text-[10px]">Station ID / สถานที่</th>
+                            <th class="border border-slate-300 p-1.5 text-[10px]">อุปกรณ์</th>
+                            <th class="border border-slate-300 p-1.5 text-[10px] text-center">ความเสี่ยง</th>
+                            <th class="border border-slate-300 p-1.5 text-[10px] text-center">ลำดับ</th>
+                            <th class="border border-slate-300 p-1.5 text-[10px] text-right">งบ PM</th>
+                            <th class="border border-slate-300 p-1.5 text-[10px] text-center">สถานะ</th>
+                            <th class="border border-slate-300 p-1.5 text-[10px] text-center">การดำเนินการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rankedTableBody">
+                        <!-- Filled by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal สำหรับเปิดดู/กรอกใบงานตรวจสอบรายตัว -->
+        <div id="formModal" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4">
+            <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-5 shadow-2xl relative border border-slate-300">
+                <button onclick="closeModal()" class="absolute top-3 right-3 bg-slate-100 hover:bg-slate-200 text-slate-700 w-7 h-7 rounded-full font-bold flex items-center justify-center cursor-pointer">✕</button>
+                <h3 id="modalTitle" class="text-xs font-bold text-slate-800 mb-3">รายละเอียดใบงานตรวจสอบ</h3>
+                <div id="modalFormContainer"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const planTasks = [
+            { wo: "WO-2026-2004", date: "2026-09-07", code: "SF-07-0-015", station: "ST-49 - พื้นที่จำหน่ายไฟ MEA", device: "หม้อแปลงจำหน่าย", riskScore: "60/100", priority: "P2", budget: 5000, status: "รอดำเนินการ" },
+            { wo: "WO-2026-1516", date: "2026-09-03", code: "SF-07-0-015", station: "ST-52 - พื้นที่จำหน่ายไฟ MEA", device: "หม้อแปลงจำหน่าย", riskScore: "60/100", priority: "P2", budget: 5000, status: "รอดำเนินการ" },
+            { wo: "WO-2026-6851", date: "2026-09-03", code: "SF-07-0-015", station: "ST-54 - พื้นที่จำหน่ายไฟ MEA", device: "หม้อแปลงจำหน่าย", riskScore: "60/100", priority: "P2", budget: 5000, status: "รอดำเนินการ (คัดลอก)" },
+            { wo: "WO-2026-8516", date: "2026-09-03", code: "SF-07-0-015", station: "ST-54 - พื้นที่จำหน่ายไฟ MEA", device: "หม้อแปลงจำหน่าย", riskScore: "60/100", priority: "P2", budget: 5000, status: "รอดำเนินการ" },
+            { wo: "WO-2026-8711", date: "2026-09-03", code: "SF-07-0-015", station: "ST-74 - พื้นที่จำหน่ายไฟ MEA", device: "หม้อแปลงจำหน่าย", riskScore: "60/100", priority: "P2", budget: 5000, status: "รอดำเนินการ" },
+            { wo: "WO-2026-0801", date: "2026-09-05", code: "SF-07-0-024", station: "ST-04 - สายป้อนเทพารักษ์ 12", device: "ขั้วต่อ Bushing HV ด้านไฟเข้า", riskScore: "88/100", priority: "P1", budget: 6500, status: "รอดำเนินการ" },
+            { wo: "WO-2026-0802", date: "2026-09-06", code: "SF-07-0-023", station: "ST-02 - สถานีย่อยบางพลี", device: "หม้อแปลงวงจรตาข่าย TR-02", riskScore: "78/100", priority: "P1", budget: 16500, status: "กำลังทำ" }
+        ];
+
+        function renderTable(data = planTasks) {
+            const tbody = document.getElementById('rankedTableBody');
+            tbody.innerHTML = data.map(task => `
+                <tr class="hover:bg-sky-50/40 transition">
+                    <td class="border border-slate-300 p-1.5 font-mono font-bold">${task.wo}</td>
+                    <td class="border border-slate-300 p-1.5">${task.date}</td>
+                    <td class="border border-slate-300 p-1.5 font-mono text-slate-600">${task.code}</td>
+                    <td class="border border-slate-300 p-1.5">${task.station}</td>
+                    <td class="border border-slate-300 p-1.5">${task.device}</td>
+                    <td class="border border-slate-300 p-1.5 text-center font-bold">${task.riskScore}</td>
+                    <td class="border border-slate-300 p-1.5 text-center">
+                        <span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${task.priority === 'P1' ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-800'}">
+                            ${task.priority}
+                        </span>
+                    </td>
+                    <td class="border border-slate-300 p-1.5 text-right font-medium">฿ ${task.budget.toLocaleString()}</td>
+                    <td class="border border-slate-300 p-1.5 text-center">
+                        <span class="text-[9px] px-1.5 py-0.5 rounded ${task.status.includes('กำลัง') ? 'bg-sky-50 text-sky-700' : 'bg-slate-100 text-slate-600'}">${task.status}</span>
+                    </td>
+                    <td class="border border-slate-300 p-1.5 text-center space-x-1">
+                        <button onclick="openFormModal('${task.code}', '${task.wo}')" class="px-2 py-0.5 theme-accent theme-accent-hover rounded text-[9px] font-medium cursor-pointer shadow-xs">📋 ฟอร์ม</button>
+                        <button onclick="editTask('${task.wo}')" class="px-2 py-0.5 bg-sky-600 hover:bg-sky-700 text-white rounded text-[9px] font-medium cursor-pointer shadow-xs">✏️ แก้ไข</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterTable() {
+            const keyword = document.getElementById('searchBox').value.toLowerCase();
+            const filtered = planTasks.filter(t => t.wo.toLowerCase().includes(keyword) || t.code.toLowerCase().includes(keyword) || t.station.toLowerCase().includes(keyword));
+            renderTable(filtered);
+        }
+
+        function calculateAdvancedKPIs() {
+            const opHours = parseFloat(document.getElementById('kpiOpHours').value) || 1;
+            const failures = parseFloat(document.getElementById('kpiFailures').value) || 1;
+            const downtime = parseFloat(document.getElementById('kpiDowntime').value) || 0;
+            const repairs = parseFloat(document.getElementById('kpiRepairs').value) || 1;
+            const pmDone = parseFloat(document.getElementById('kpiPmDone').value) || 0;
+            const pmTotal = parseFloat(document.getElementById('kpiPmTotal').value) || 1;
+            const maintCost = parseFloat(document.getElementById('kpiMaintCost').value) || 0;
+            const rav = parseFloat(document.getElementById('kpiRav').value) || 1;
+
+            const mtbf = (opHours / failures).toFixed(1);
+            const mttr = (downtime / repairs).toFixed(1);
+            const pmComp = ((pmDone / pmTotal) * 100).toFixed(1);
+            const mcr = ((maintCost / rav) * 100).toFixed(2);
+
+            document.getElementById('resMtbf').innerText = Number(mtbf).toLocaleString() + " ชม.";
+            document.getElementById('resMttr').innerText = mttr + " ชม.";
+            document.getElementById('resPmComp').innerText = pmComp + "%";
+            document.getElementById('resMcr').innerText = mcr + "%";
+        }
+
+        function openFormModal(code, wo) {
+            document.getElementById('modalTitle').innerText = `ใบงานตรวจสอบ (${code}) - Work Order: ${wo}`;
+            document.getElementById('modalFormContainer').innerHTML = `
+                <div class="space-y-3 text-xs">
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-300 space-y-1">
+                        <div><b>Work Order:</b> ${wo}</div>
+                        <div><b>รหัสแบบฟอร์ม:</b> ${code}</div>
+                        <div><b>สถานะ:</b> พร้อมตรวจสอบภาคสนาม</div>
+                    </div>
+                    <table>
+                        <tr><th class="border border-slate-300 p-1">หัวข้อตรวจสอบ</th><th class="w-10 border border-slate-300 text-center">ปกติ</th><th class="w-10 border border-slate-300 text-center">ชำรุด</th><th class="border border-slate-300 p-1">หมายเหตุ</th></tr>
+                        <tr><td class="border border-slate-300 p-1">1. ตรวจสอบสภาพอุปกรณ์ทางกายภาพ</td><td class="text-center border border-slate-300"><input type="radio" name="m1" class="accent-radio"></td><td class="text-center border border-slate-300"><input type="radio" name="m1" class="accent-radio"></td><td class="border border-slate-300 p-1"><input type="text"></td></tr>
+                        <tr><td class="border border-slate-300 p-1">2. ตรวจสอบค่าทางไฟฟ้า / จุดต่อสาย</td><td class="text-center border border-slate-300"><input type="radio" name="m2" class="accent-radio"></td><td class="text-center border border-slate-300"><input type="radio" name="m2" class="accent-radio"></td><td class="border border-slate-300 p-1"><input type="text"></td></tr>
+                    </table>
+                    <div class="text-right">
+                        <button onclick="alert('💾 บันทึกผลฟอร์มสำเร็จ'); closeModal();" class="px-3.5 py-1.5 theme-accent theme-accent-hover rounded font-bold cursor-pointer shadow-xs">💾 บันทึกผลใบงาน</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('formModal').classList.remove('hidden');
+        }
+
+        function closeModal() { document.getElementById('formModal').classList.add('hidden'); }
+        function addNewPlanTask() { alert("➕ เปิดหน้าต่างเพิ่มแผนงาน PM ใหม่"); }
+        function editTask(wo) { alert(`✏️ แก้ไขข้อมูล Work Order: ${wo}`); }
+        function exportExcel() { alert("🟩 ส่งออกข้อมูลแผนงานเป็นไฟล์ Excel สำเร็จ!"); }
+        function handleGoogleLogin() { alert("🔗 เชื่อมต่อบัญชี Google สำเร็จ"); }
+
+        renderTable();
+        calculateAdvancedKPIs();
+    </script>
+</body>
+</html>
