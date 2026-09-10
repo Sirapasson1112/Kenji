@@ -50,13 +50,15 @@
                     ⚡
                 </div>
                 <div>
-                    <h1 class="text-xs font-bold text-slate-800">Asset Inspection App. By Dr. Phanuphon S.</h1>
+                    <h1 class="text-xs font-bold text-slate-800">ระบบบำรุงรักษาอุปกรณ์ไฟฟ้า</h1>
                     <p class="text-[10px] theme-text-accent">Digital Inspection & Maintenance Workspace</p>
                 </div>
             </div>
-            <button onclick="handleGoogleLogin()" class="flex items-center gap-2 px-3.5 py-2 border border-sky-200 rounded-md text-xs font-medium hover:bg-sky-50 transition bg-white text-sky-700 cursor-pointer shadow-2xs">
-                G เข้าสู่ระบบด้วย Google
-            </button>
+            <div id="userAuthContainer">
+                <button onclick="handleGoogleLogin()" class="flex items-center gap-2 px-3.5 py-2 border border-sky-200 rounded-md text-xs font-medium hover:bg-sky-50 transition bg-white text-sky-700 cursor-pointer shadow-2xs">
+                    G เข้าสู่ระบบด้วย Google
+                </button>
+            </div>
         </div>
     </header>
 
@@ -224,6 +226,7 @@
     <script>
         let currentFormKey = "015";
         let uploadedImages = [];
+        let currentUser = null;
 
         const formsData = {
             "015": {
@@ -946,24 +949,67 @@
         }
 
         function handleGoogleLogin() { 
-            alert("🔗 เชื่อมต่อบัญชี Google สำเร็จเรียบร้อย"); 
-            document.getElementById('loginStatusBanner').innerHTML = `
-                <span class="text-emerald-700 font-medium">✅ เข้าสู่ระบบสำเร็จแล้ว – พร้อมบันทึกข้อมูลและซิงค์ข้อมูล</span>
-                <span class="text-xs text-slate-500">Dr. Phanuphon S.</span>
+            const inputName = prompt("กรุณากรอกชื่อ-นามสกุล หรือชื่อผู้ใช้งานของคุณ:", "เจ้าหน้าที่ บำรุงรักษา");
+            if (inputName && inputName.trim() !== "") {
+                currentUser = inputName.trim();
+                
+                // เปลี่ยนข้อความปุ่มเข้าสู่ระบบเป็นชื่อผู้ใช้
+                document.getElementById('userAuthContainer').innerHTML = `
+                    <div class="flex items-center gap-2 px-3.5 py-1.5 border border-emerald-200 bg-emerald-50 rounded-md text-xs font-medium text-emerald-800 shadow-2xs">
+                        <span>👤 ${currentUser}</span>
+                        <button onclick="handleLogout()" class="text-[10px] text-rose-600 hover:underline ml-2 cursor-pointer font-normal">ออกจากระบบ</button>
+                    </div>
+                `;
+
+                // อัปเดต Banner สถานะ
+                document.getElementById('loginStatusBanner').innerHTML = `
+                    <span class="text-emerald-700 font-medium">✅ เข้าสู่ระบบสำเร็จแล้วในนาม <b>${currentUser}</b> – พร้อมบันทึกข้อมูลและซิงค์ข้อมูล</span>
+                    <span class="text-xs text-slate-500">สถานะ: Active</span>
+                `;
+                document.getElementById('loginStatusBanner').className = "bg-emerald-50 border border-emerald-200 text-emerald-800 px-3 py-2 rounded-lg flex justify-between items-center text-[11px]";
+                
+                // อัปเดตส่วนข้อมูลที่บันทึกไว้
+                document.getElementById('savedRecordsList').innerHTML = "ยังไม่มีบันทึกรายการในระบบสำหรับผู้ใช้งานนี้";
+                document.getElementById('savedCount').innerText = "0";
+            }
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            document.getElementById('userAuthContainer').innerHTML = `
+                <button onclick="handleGoogleLogin()" class="flex items-center gap-2 px-3.5 py-2 border border-sky-200 rounded-md text-xs font-medium hover:bg-sky-50 transition bg-white text-sky-700 cursor-pointer shadow-2xs">
+                    G เข้าสู่ระบบด้วย Google
+                </button>
             `;
-            document.getElementById('loginStatusBanner').className = "bg-emerald-50 border border-emerald-200 text-emerald-800 px-3 py-2 rounded-lg flex justify-between items-center text-[11px]";
-            document.getElementById('savedRecordsList').innerHTML = "ยังไม่มีบันทึกรายการในระบบ";
+            document.getElementById('loginStatusBanner').innerHTML = `
+                <span>⚠️ ยังไม่ได้เข้าสู่ระบบ – ข้อมูลจะไม่ถูกบันทึก</span>
+                <span class="font-medium text-slate-600">พร้อมใช้งาน</span>
+            `;
+            document.getElementById('loginStatusBanner').className = "bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2 rounded-lg flex justify-between items-center text-[11px]";
+            document.getElementById('savedRecordsList').innerHTML = "เข้าสู่ระบบเพื่อดูรายการที่บันทึกไว้";
             document.getElementById('savedCount').innerText = "0";
         }
 
-        function saveNewRecord() { alert("💾 บันทึกเป็นรายการใหม่สำเร็จ!"); }
-        function saveCurrentRecord() { alert("💾 บันทึกทับรายการปัจจุบันสำเร็จ!"); }
+        function saveNewRecord() { 
+            if (!currentUser) { alert("⚠️ กรุณาเข้าสู่ระบบก่อนทำการบันทึกข้อมูล"); return; }
+            alert(`💾 บันทึกเป็นรายการใหม่สำเร็จในนามคุณ ${currentUser}!`); 
+        }
+        function saveCurrentRecord() { 
+            if (!currentUser) { alert("⚠️ กรุณาเข้าสู่ระบบก่อนทำการบันทึกข้อมูล"); return; }
+            alert("💾 บันทึกทับรายการปัจจุบันสำเร็จ!"); 
+        }
         function copyNewDraft() { alert("📄 คัดลอกเป็นฉบับใหม่สำเร็จ!"); }
         function createNewForm() { loadForm(currentFormKey); alert("➕ เริ่มต้นฟอร์มใหม่เรียบร้อย"); }
         function clearFormInputs() { loadForm(currentFormKey); alert("🧹 ล้างข้อมูลในฟอร์มเรียบร้อยแล้ว"); }
         function exportCSV() { alert("📥 ดาวน์โหลดไฟล์ CSV สำเร็จ!"); }
-        function refreshSavedRecords() { alert("🔄 รีเฟรรายการที่บันทึกไว้เรียบร้อย"); }
-        function clearSavedRecords() { alert("🗑️ ล้างประวัติที่บันทึกไว้เรียบร้อย"); }
+        function refreshSavedRecords() { 
+            if (!currentUser) { alert("⚠️ กรุณาเข้าสู่ระบบก่อน"); return; }
+            alert("🔄 รีเฟรรายการที่บันทึกไว้เรียบร้อย"); 
+        }
+        function clearSavedRecords() { 
+            if (!currentUser) { alert("⚠️ กรุณาเข้าสู่ระบบก่อน"); return; }
+            alert("🗑️ ล้างประวัติที่บันทึกไว้เรียบร้อย"); 
+        }
         function filterSavedData() {}
 
         function handleImageUpload(event) {
@@ -1007,9 +1053,8 @@
                 return;
             }
 
-            // คำนวณคะแนนรวมสมมติ (คะแนนดิบรวม * 5 เพื่อเทียบเต็ม 100 หรือสูตรน้ำหนัก)
             const rawSum = saf + rel + opr + con + rec;
-            const totalScore = (rawSum * 5); // 20 * 5 = 100 เต็ม
+            const totalScore = (rawSum * 5);
 
             document.getElementById('totalScoreDisplay').innerText = `คะแนนรวม: ${totalScore} / 100`;
             
