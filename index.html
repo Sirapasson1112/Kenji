@@ -40,7 +40,7 @@
 <body class="bg-slate-100 min-h-screen">
 
     <div class="flex flex-col lg:flex-row min-h-screen">
-        <!-- Left Sidebar -->
+        <!-- Left Sidebar (Navigation, Auth & Tools) -->
         <aside class="no-print w-full lg:w-80 bg-white border-r border-slate-300 p-4 shrink-0 flex flex-col gap-4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto z-40 shadow-xs">
             <div class="flex items-center gap-3 pb-3 border-b border-slate-200">
                 <div class="w-10 h-10 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600 p-2 shadow-2xs shrink-0">⚡</div>
@@ -71,7 +71,7 @@
                 </a>
             </div>
 
-            <!-- Action Toolbar -->
+            <!-- Action Toolbar (Role-based) -->
             <div class="bg-slate-50 p-3 rounded-xl border border-slate-300 space-y-2">
                 <div class="text-slate-700 font-bold text-[11px]">🛠️ เครื่องมือจัดการใบงาน</div>
                 <div class="grid grid-cols-2 gap-1.5">
@@ -89,15 +89,15 @@
                 <button onclick="window.print()" class="w-full px-3 py-2 bg-slate-800 text-white rounded-lg font-medium transition cursor-pointer shadow-xs text-xs mt-1">🖨️ พิมพ์เอกสาร / PDF</button>
             </div>
 
-            <!-- Form Selection -->
+            <!-- Form Selection (11 Forms) -->
             <div class="space-y-1.5">
                 <div class="text-slate-700 font-bold text-[11px] flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-sky-500"></span> เลือกแบบฟอร์มตรวจสอบ (11 ใบงาน)
+                    <span class="w-2 h-2 rounded-full bg-sky-500"></span> เลือกแบบฟอร์ม (ครบ 11 ใบงาน)
                 </div>
                 <div id="pillsContainer" class="flex flex-col gap-1.5 max-h-64 overflow-y-auto pr-1"></div>
             </div>
 
-            <!-- Saved Records -->
+            <!-- Saved Records Section -->
             <div class="bg-slate-50 p-3 rounded-xl border border-slate-300 space-y-2">
                 <div class="flex justify-between items-center">
                     <div class="text-slate-700 font-bold text-[11px]">🗂️ รายการบันทึก (<span id="savedCount">0</span>)</div>
@@ -115,7 +115,7 @@
                 </div>
             </div>
 
-            <!-- Inspection Images -->
+            <!-- Inspection Images Section -->
             <div class="max-w-[210mm] mx-auto no-print bg-white p-4 rounded-xl border border-slate-300 shadow-xs space-y-3">
                 <div class="flex justify-between items-center">
                     <div class="text-slate-700 font-bold text-xs">📷 รูปภาพประกอบการตรวจสอบ</div>
@@ -210,7 +210,7 @@
                         <tr><td colspan="3">ตำแหน่ง <input type="text" class="border-b border-black w-3/4 inline-block"></td><td colspan="3">ตำแหน่ง <input type="text" class="border-b border-black w-3/4 inline-block"></td></tr>
                         <tr><td colspan="3">วันที่ <input type="date" class="border-b border-black w-3/4 inline-block"></td><td colspan="3">วันที่ <input type="date" class="border-b border-black w-3/4 inline-block"></td></tr>
                     </table>
-                    <div class="flex justify-between text-[9px] mt-2 pt-1 border-t border-black text-black"><span>ปรับปรุงครั้งที่ 0 วันที่...[cite: 3]</span><span class="font-mono">SF-07-0-015[cite: 3]</span></div>
+                    <div class="flex justify-between text-[9px] mt-2 pt-1 border-t border-black text-black"><span>ปรับปรุงครั้งที่ 0 วันที่ ...[cite: 3]</span><span class="font-mono">SF-07-0-015[cite: 3]</span></div>
                 `
             },
             "016": {
@@ -390,7 +390,7 @@
                 title: "แบบตรวจสอบทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย",
                 code: "SF-07-0-023",
                 render: () => `
-                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย[cite: 11]</div>
+                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย[cite: 11]</div>
                     <table>
                         <tr><td class="sub-header-bg w-20">สถานที่[cite: 11]</td><td colspan="4"><input type="text"></td></tr>
                         <tr><td class="sub-header-bg">STATION ID[cite: 11]</td><td><input type="text"></td><td class="sub-header-bg w-20">SW.ยี่ห้อ[cite: 11]</td><td><input type="text"></td><td>TR.MEA No. <input type="text" class="w-1/2 inline-block"></td></tr>
