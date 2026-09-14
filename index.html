@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบำรุงรักษาอุปกรณ์ไฟฟ้า - แบบฟอร์มตรวจสอบครบถ้วน 11 ใบงาน</title>
+    <title>ระบบบำรุงรักษาอุปกรณ์ไฟฟ้า - แยกฟังก์ชัน Admin และ User</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -62,7 +62,7 @@
     <main class="no-print app-container px-4 mt-6">
         <!-- Login Status Banner -->
         <div id="loginStatusBanner" class="bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2 rounded-lg flex justify-between items-center text-[11px] mb-4">
-            <span>⚠️ ยังไม่ได้เข้าสู่ระบบ – กรุณาเข้าสู่ระบบเพื่อใช้งานเต็มรูปแบบ</span>
+            <span>⚠️ ยังไม่ได้เข้าสู่ระบบ – กรุณาเลือกเข้าสู่ระบบเพื่อใช้งานตามสิทธิ์ (Admin หรือ User)</span>
             <span class="font-medium text-slate-600">Guest Mode</span>
         </div>
 
@@ -72,7 +72,7 @@
             <!-- LEFT SIDEBAR: Navigation & Form Selection -->
             <div class="lg:col-span-1 space-y-4">
                 
-                <!-- Tab Navigation (ย้ายมาไว้ด้านซ้าย) -->
+                <!-- Menu Navigation -->
                 <div class="bg-white p-3 rounded-xl border border-slate-300 shadow-xs space-y-2">
                     <div class="text-slate-700 font-bold text-xs mb-2 flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-sky-500"></span> เมนูระบบหลัก
@@ -87,7 +87,7 @@
                     </div>
                 </div>
 
-                <!-- Form Selection Grid (รายการใบงาน 11 ฟอร์ม อยู่ด้านซ้ายแนวตั้ง) -->
+                <!-- Form Selection Sidebar Grid (11 Forms) -->
                 <div class="bg-white p-4 rounded-xl border border-slate-300 shadow-xs">
                     <div class="text-slate-700 font-bold mb-3 text-xs flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-sky-500"></span> เลือกแบบฟอร์มใบงาน
@@ -97,21 +97,32 @@
 
             </div>
 
-            <!-- RIGHT CONTENT AREA: Action Toolbar, Saved Records, Images & A4 Sheet -->
+            <!-- RIGHT CONTENT AREA -->
             <div class="lg:col-span-3 space-y-4">
                 
-                <!-- Action Toolbar -->
+                <!-- Action Toolbar (Dynamic based on Role) -->
                 <div class="bg-white p-3 rounded-xl border border-slate-300 shadow-xs flex flex-wrap items-center justify-between gap-3">
-                    <div class="flex flex-wrap items-center gap-2">
-                        <button onclick="saveNewRecord()" class="px-3 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">💾 บันทึกใหม่</button>
-                        <button onclick="saveCurrentRecord()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition cursor-pointer">📝 บันทึกทับ</button>
-                        <button onclick="copyNewDraft()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition cursor-pointer">📄 คัดลอก</button>
+                    <div id="toolbarActions" class="flex flex-wrap items-center gap-2">
+                        <!-- Default Guest / User Toolbar -->
+                        <button onclick="saveNewRecord()" class="px-3 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">💾 ส่งบันทึกผลงาน</button>
                         <button onclick="createNewForm()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition cursor-pointer">➕ ฟอร์มใหม่</button>
-                        <button onclick="clearFormInputs()" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg font-medium transition cursor-pointer">🗑️ ล้าง</button>
-                        <button id="adminOnlyBtn" onclick="openAdminSettings()" class="hidden px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">⚙️ จัดการระบบ (Admin)</button>
+                        <button onclick="clearFormInputs()" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg font-medium transition cursor-pointer">🗑️ ล้างข้อมูล</button>
                     </div>
                     <div class="flex items-center gap-2">
                         <button onclick="window.print()" class="px-3 py-2 bg-slate-800 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">🖨️ พิมพ์/PDF</button>
+                    </div>
+                </div>
+
+                <!-- Role Specific Control Panel (Admin Only Section) -->
+                <div id="adminControlPanel" class="hidden bg-purple-50 p-4 rounded-xl border border-purple-200 shadow-xs space-y-2">
+                    <div class="text-purple-900 font-bold text-xs flex items-center justify-between">
+                        <span>👑 แผงควบคุมผู้ดูแลระบบ (Admin Control Panel)</span>
+                        <span class="text-[10px] bg-purple-200 text-purple-800 px-2 py-0.5 rounded">สิทธิ์สูงสุด</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <button onclick="adminApproveAll()" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded text-xs font-medium cursor-pointer">✔️ อนุมัติรายงานทั้งหมด</button>
+                        <button onclick="adminManageUsers()" class="px-3 py-1.5 bg-white border border-purple-300 text-purple-700 rounded text-xs font-medium hover:bg-purple-100 cursor-pointer">👥 จัดการรายชื่อผู้ใช้งาน</button>
+                        <button onclick="adminExportMasterData()" class="px-3 py-1.5 bg-white border border-purple-300 text-purple-700 rounded text-xs font-medium hover:bg-purple-100 cursor-pointer">📊 ดึงรายงานภาพรวม (Excel)</button>
                     </div>
                 </div>
 
@@ -120,11 +131,11 @@
                     <!-- Saved Records Section -->
                     <div class="bg-white p-4 rounded-xl border border-slate-300 shadow-xs space-y-3">
                         <div class="flex justify-between items-center">
-                            <div class="text-slate-700 font-bold text-xs">🗂️ ข้อมูลที่บันทึกไว้ (<span id="savedCount">0</span>)</div>
+                            <div class="text-slate-700 font-bold text-xs" id="recordSectionTitle">🗂️ รายการที่บันทึกไว้ (<span id="savedCount">0</span>)</div>
                             <button onclick="refreshSavedRecords()" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-xs">🔄 รีเฟรช</button>
                         </div>
                         <div id="savedRecordsList" class="text-center py-3 text-slate-400 text-xs border border-dashed border-slate-200 rounded-lg">
-                            เข้าสู่ระบบเพื่อดูรายการที่บันทึกไว้
+                            กรุณาเข้าสู่ระบบเพื่อดูรายการ
                         </div>
                     </div>
 
@@ -163,7 +174,7 @@
                     👑 เข้าสู่ระบบในฐานะ Admin (ผู้ดูแลระบบ)
                 </button>
                 <button onclick="loginAs('User')" class="w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-semibold text-xs transition cursor-pointer shadow-sm">
-                    👤 เข้าสู่ระบบในฐานะ User (ผู้ใช้งานทั่วไป)
+                    👤 เข้าสู่ระบบในฐานะ User (เจ้าหน้าที่ผู้ปฏิบัติงาน)
                 </button>
             </div>
             <button onclick="closeLoginModal()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs transition cursor-pointer">ยกเลิก</button>
@@ -828,7 +839,7 @@
             const btn = document.createElement('button');
             btn.dataset.key = key;
             btn.className = "form-pill";
-            btn.innerText = formsData[key].code + " - " + formsData[key].title.substring(0, 22) + "...";
+            btn.innerText = formsData[key].code + " - " + formsData[key].title.substring(0, 20) + "...";
             btn.onclick = () => loadForm(key);
             pillsContainer.appendChild(btn);
         });
@@ -869,7 +880,7 @@
 
         function loginAs(role) {
             userRole = role;
-            currentUser = role === 'Admin' ? 'ผู้ดูแลระบบ (Admin)' : 'เจ้าหน้าที่หน้างาน (User)';
+            currentUser = role === 'Admin' ? 'ผู้ดูแลระบบ (Admin)' : 'เจ้าหน้าที่ปฏิบัติงาน (User)';
             closeLoginModal();
 
             document.getElementById('userAuthContainer').innerHTML = `
@@ -880,18 +891,31 @@
             `;
             
             document.getElementById('loginStatusBanner').innerHTML = `
-                <span class="text-emerald-700 font-medium">✅ เข้าสู่ระบบสำเร็จในฐานะ <b>${currentUser}</b> – พร้อมใช้งานระบบเต็มรูปแบบ</span>
-                <span class="text-xs text-slate-500 font-bold">Role: ${role}</span>
+                <span class="text-emerald-700 font-medium">✅ เข้าสู่ระบบสำเร็จในฐานะ <b>${currentUser}</b> – กำลังใช้งานสิทธิ์ ${role}</span>
+                <span class="text-xs text-slate-500 font-bold">Active Role: ${role}</span>
             `;
-            document.getElementById('loginStatusBanner').className = "bg-emerald-50 border border-emerald-200 text-emerald-800 px-3 py-2 rounded-lg flex justify-between items-center text-[11px]";
+            document.getElementById('loginStatusBanner').className = "bg-emerald-50 border border-emerald-200 text-emerald-800 px-3 py-2 rounded-lg flex justify-between items-center text-[11px] mb-4";
             
-            document.getElementById('savedRecordsList').innerHTML = role === 'Admin' ? "📂 (Admin Mode) รายการใบงานทั้งหมดในระบบ" : "📂 (User Mode) รายการบันทึกของคุณเอง";
-            document.getElementById('savedCount').innerText = role === 'Admin' ? "12" : "3";
-
             if (role === 'Admin') {
-                document.getElementById('adminOnlyBtn').classList.remove('hidden');
+                document.getElementById('adminControlPanel').classList.remove('hidden');
+                document.getElementById('toolbarActions').innerHTML = `
+                    <button onclick="saveNewRecord()" class="px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">💾 บันทึกในนาม Admin</button>
+                    <button onclick="createNewForm()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition cursor-pointer">➕ ฟอร์มใหม่</button>
+                    <button onclick="clearFormInputs()" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg font-medium transition cursor-pointer">🗑️ ล้างข้อมูล</button>
+                `;
+                document.getElementById('recordSectionTitle').innerHTML = `🗂️ รายการใบงานทั้งหมดในระบบ (Admin View)`;
+                document.getElementById('savedRecordsList').innerHTML = `<div class="text-left p-2 space-y-1 text-xs"><div class="p-1.5 bg-slate-50 rounded border border-slate-200 flex justify-between"><span>📋 WO-2026-001 (หม้อแปลง)</span><span class="text-emerald-600 font-bold">อนุมัติแล้ว</span></div><div class="p-1.5 bg-slate-50 rounded border border-slate-200 flex justify-between"><span>📋 WO-2026-002 (LBS)</span><span class="text-amber-600 font-bold">รอตรวจสอบ</span></div></div>`;
+                document.getElementById('savedCount').innerText = "12";
             } else {
-                document.getElementById('adminOnlyBtn').classList.add('hidden');
+                document.getElementById('adminControlPanel').classList.add('hidden');
+                document.getElementById('toolbarActions').innerHTML = `
+                    <button onclick="saveNewRecord()" class="px-3 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">💾 ส่งบันทึกผลงาน (User)</button>
+                    <button onclick="createNewForm()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition cursor-pointer">➕ ฟอร์มใหม่</button>
+                    <button onclick="clearFormInputs()" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg font-medium transition cursor-pointer">🗑️ ล้างข้อมูล</button>
+                `;
+                document.getElementById('recordSectionTitle').innerHTML = `🗂️ รายการที่บันทึกของคุณ (User View)`;
+                document.getElementById('savedRecordsList').innerHTML = `<div class="text-left p-2 space-y-1 text-xs"><div class="p-1.5 bg-sky-50 rounded border border-sky-200 flex justify-between"><span>📋 แบบฟอร์ม SF-07-0-015</span><span class="text-sky-700">บันทึกเมื่อวาน</span></div></div>`;
+                document.getElementById('savedCount').innerText = "3";
             }
         }
 
@@ -904,31 +928,34 @@
                 </button>
             `;
             document.getElementById('loginStatusBanner').innerHTML = `
-                <span>⚠️ ยังไม่ได้เข้าสู่ระบบ – กรุณาเข้าสู่ระบบเพื่อใช้งานเต็มรูปแบบ</span>
+                <span>⚠️ ยังไม่ได้เข้าสู่ระบบ – กรุณาเลือกเข้าสู่ระบบเพื่อใช้งานตามสิทธิ์ (Admin หรือ User)</span>
                 <span class="font-medium text-slate-600">Guest Mode</span>
             `;
-            document.getElementById('loginStatusBanner').className = "bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2 rounded-lg flex justify-between items-center text-[11px]";
-            document.getElementById('savedRecordsList').innerHTML = "เข้าสู่ระบบเพื่อดูรายการที่บันทึกไว้";
+            document.getElementById('loginStatusBanner').className = "bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2 rounded-lg flex justify-between items-center text-[11px] mb-4";
+            document.getElementById('adminControlPanel').classList.add('hidden');
+            document.getElementById('toolbarActions').innerHTML = `
+                <button onclick="saveNewRecord()" class="px-3 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">💾 ส่งบันทึกผลงาน</button>
+                <button onclick="createNewForm()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition cursor-pointer">➕ ฟอร์มใหม่</button>
+                <button onclick="clearFormInputs()" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg font-medium transition cursor-pointer">🗑️ ล้างข้อมูล</button>
+            `;
+            document.getElementById('recordSectionTitle').innerHTML = `🗂️ รายการที่บันทึกไว้ (<span id="savedCount">0</span>)`;
+            document.getElementById('savedRecordsList').innerHTML = "กรุณาเข้าสู่ระบบเพื่อดูรายการ";
             document.getElementById('savedCount').innerText = "0";
-            document.getElementById('adminOnlyBtn').classList.add('hidden');
         }
 
         function saveNewRecord() { 
             if (!currentUser) { alert("⚠️ กรุณาเข้าสู่ระบบก่อนทำการบันทึกข้อมูล"); openLoginModal(); return; }
-            alert(`💾 บันทึกเป็นรายการใหม่สำเร็จ (${userRole} Mode)!`); 
+            alert(`💾 บันทึกข้อมูลสำเร็จในโหมด ${userRole}!`); 
         }
-        function saveCurrentRecord() { 
-            if (!currentUser) { alert("⚠️ กรุณาเข้าสู่ระบบก่อนทำการบันทึกข้อมูล"); openLoginModal(); return; }
-            alert("💾 บันทึกทับรายการปัจจุบันสำเร็จ!"); 
-        }
-        function copyNewDraft() { alert("📄 คัดลอกเป็นฉบับใหม่สำเร็จ!"); }
         function createNewForm() { loadForm(currentFormKey); alert("➕ เริ่มต้นฟอร์มใหม่เรียบร้อย"); }
         function clearFormInputs() { loadForm(currentFormKey); alert("🧹 ล้างข้อมูลในฟอร์มเรียบร้อยแล้ว"); }
         function refreshSavedRecords() { 
             if (!currentUser) { alert("⚠️ กรุณาเข้าสู่ระบบก่อน"); openLoginModal(); return; }
-            alert("🔄 รีเฟรชรายการที่บันทึกไว้เรียบร้อย"); 
+            alert("🔄 รีเฟรชรายการเรียบร้อย"); 
         }
-        function openAdminSettings() { alert("⚙️ แผงควบคุมผู้ดูแลระบบ (Admin Settings & User Management)"); }
+        function adminApproveAll() { alert("👑 (Admin) อนุมัติรายงานตรวจสอบทั้งหมดในระบบเรียบร้อยแล้ว"); }
+        function adminManageUsers() { alert("👥 (Admin) เปิดหน้าต่างจัดการสิทธิ์ผู้ใช้งานระบบ"); }
+        function adminExportMasterData() { alert("📊 (Admin) ส่งออกข้อมูลมาสเตอร์ทั้งหมดเป็นไฟล์ Excel สำเร็จ"); }
 
         function handleImageUpload(event) {
             const files = event.target.files;
