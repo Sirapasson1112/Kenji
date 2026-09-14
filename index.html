@@ -66,12 +66,12 @@
             <span class="font-medium text-slate-600">Guest Mode</span>
         </div>
 
-        <!-- Tab Navigation -->
-        <div class="grid grid-cols-2 gap-2 bg-slate-200/60 p-1 rounded-xl border border-slate-300">
-            <button class="py-2.5 bg-white text-sky-800 font-bold rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer">
+        <!-- Tab Navigation (ย้ายมาไว้ด้านซ้ายและจัดเรียงชิดซ้าย) -->
+        <div class="flex flex-col sm:flex-row gap-2 bg-slate-200/60 p-1 rounded-xl border border-slate-300 sm:w-fit">
+            <button class="py-2.5 px-4 bg-white text-sky-800 font-bold rounded-lg shadow-xs flex items-center justify-start gap-2 cursor-pointer">
                 📋 แบบฟอร์มตรวจสอบหน้างาน (Inspection Forms)
             </button>
-            <a href="planning.html" class="py-2.5 text-slate-600 hover:text-sky-800 font-medium rounded-lg flex items-center justify-center gap-2 transition">
+            <a href="planning.html" class="py-2.5 px-4 text-slate-600 hover:text-sky-800 font-medium rounded-lg flex items-center justify-start gap-2 transition">
                 📊 แผนงาน PM & จัดลำดับงบประมาณ
             </a>
         </div>
@@ -152,7 +152,7 @@
         let currentFormKey = "015";
         let uploadedImages = [];
         let currentUser = null;
-        let userRole = null; // 'Admin' หรือ 'User'
+        let userRole = null;
 
         const formsData = {
             "015": {
