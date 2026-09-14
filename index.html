@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Sarabun', sans-serif; background-color: #f0f4f8; color: #1e293b; margin: 0; padding: 0; }
-        .app-container { width: 210mm; max-width: 100%; margin: 0 auto; box-sizing: border-box; }
+        .app-container { max-width: 1600px; margin: 0 auto; box-sizing: border-box; }
         .a4-sheet {
             width: 210mm;
             min-height: 297mm;
@@ -41,7 +41,7 @@
 
     <!-- Header -->
     <header class="no-print bg-white border-b border-slate-300 sticky top-0 z-50 shadow-xs">
-        <div class="app-container px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+        <div class="max-w-[1600px] mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600 p-2 shadow-2xs shrink-0">
                     ⚡
@@ -59,69 +59,98 @@
         </div>
     </header>
 
-    <main class="no-print app-container px-4 mt-6 text-xs space-y-4">
+    <main class="no-print app-container px-4 mt-6">
         <!-- Login Status Banner -->
-        <div id="loginStatusBanner" class="bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2 rounded-lg flex justify-between items-center text-[11px]">
+        <div id="loginStatusBanner" class="bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2 rounded-lg flex justify-between items-center text-[11px] mb-4">
             <span>⚠️ ยังไม่ได้เข้าสู่ระบบ – กรุณาเข้าสู่ระบบเพื่อใช้งานเต็มรูปแบบ</span>
             <span class="font-medium text-slate-600">Guest Mode</span>
         </div>
 
-        <!-- Tab Navigation (ย้ายมาไว้ด้านซ้ายและจัดเรียงชิดซ้าย) -->
-        <div class="flex flex-col sm:flex-row gap-2 bg-slate-200/60 p-1 rounded-xl border border-slate-300 sm:w-fit">
-            <button class="py-2.5 px-4 bg-white text-sky-800 font-bold rounded-lg shadow-xs flex items-center justify-start gap-2 cursor-pointer">
-                📋 แบบฟอร์มตรวจสอบหน้างาน (Inspection Forms)
-            </button>
-            <a href="planning.html" class="py-2.5 px-4 text-slate-600 hover:text-sky-800 font-medium rounded-lg flex items-center justify-start gap-2 transition">
-                📊 แผนงาน PM & จัดลำดับงบประมาณ
-            </a>
-        </div>
+        <!-- Main Layout: Left Sidebar & Right Workspace -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 items-start">
+            
+            <!-- LEFT SIDEBAR: Navigation & Form Selection -->
+            <div class="lg:col-span-1 space-y-4">
+                
+                <!-- Tab Navigation (ย้ายมาไว้ด้านซ้าย) -->
+                <div class="bg-white p-3 rounded-xl border border-slate-300 shadow-xs space-y-2">
+                    <div class="text-slate-700 font-bold text-xs mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-sky-500"></span> เมนูระบบหลัก
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <button class="w-full py-2.5 px-3 bg-sky-50 text-sky-800 font-bold rounded-lg shadow-2xs flex items-center justify-start gap-2 text-left text-xs cursor-pointer">
+                            📋 แบบฟอร์มตรวจสอบหน้างาน
+                        </button>
+                        <a href="planning.html" class="w-full py-2.5 px-3 text-slate-600 hover:bg-slate-50 hover:text-sky-800 font-medium rounded-lg flex items-center justify-start gap-2 transition text-xs">
+                            📊 แผนงาน PM & จัดลำดับงบประมาณ
+                        </a>
+                    </div>
+                </div>
 
-        <!-- Action Toolbar -->
-        <div class="bg-white p-3 rounded-xl border border-slate-300 shadow-xs flex flex-wrap items-center justify-between gap-3">
-            <div class="flex flex-wrap items-center gap-2">
-                <button onclick="saveNewRecord()" class="px-3 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">💾 บันทึกใหม่</button>
-                <button onclick="saveCurrentRecord()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition cursor-pointer">📝 บันทึกทับ</button>
-                <button onclick="copyNewDraft()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition cursor-pointer">📄 คัดลอก</button>
-                <button onclick="createNewForm()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition cursor-pointer">➕ ฟอร์มใหม่</button>
-                <button onclick="clearFormInputs()" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg font-medium transition cursor-pointer">🗑️ ล้าง</button>
-                <!-- Admin Only Controls -->
-                <button id="adminOnlyBtn" onclick="openAdminSettings()" class="hidden px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">⚙️ จัดการระบบ (Admin)</button>
-            </div>
-            <div class="flex items-center gap-2">
-                <button onclick="window.print()" class="px-3 py-2 bg-slate-800 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">🖨️ พิมพ์/PDF</button>
-            </div>
-        </div>
+                <!-- Form Selection Grid (รายการใบงาน 11 ฟอร์ม อยู่ด้านซ้ายแนวตั้ง) -->
+                <div class="bg-white p-4 rounded-xl border border-slate-300 shadow-xs">
+                    <div class="text-slate-700 font-bold mb-3 text-xs flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-sky-500"></span> เลือกแบบฟอร์มใบงาน
+                    </div>
+                    <div id="pillsContainer" class="flex flex-col gap-1.5"></div>
+                </div>
 
-        <!-- Form Selection Grid -->
-        <div class="bg-white p-4 rounded-xl border border-slate-300 shadow-xs">
-            <div class="text-slate-700 font-bold mb-3 text-xs flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-sky-500"></span> เลือกแบบฟอร์มใบงานตรวจสอบอุปกรณ์ไฟฟ้า
             </div>
-            <div id="pillsContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2"></div>
-        </div>
 
-        <!-- Saved Records Section -->
-        <div class="bg-white p-4 rounded-xl border border-slate-300 shadow-xs space-y-3">
-            <div class="flex justify-between items-center">
-                <div class="text-slate-700 font-bold text-xs">🗂️ ข้อมูลที่บันทึกไว้ (<span id="savedCount">0</span>)</div>
-                <button onclick="refreshSavedRecords()" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-xs">🔄 รีเฟรช</button>
-            </div>
-            <div id="savedRecordsList" class="text-center py-3 text-slate-400 text-xs border border-dashed border-slate-200 rounded-lg">
-                เข้าสู่ระบบเพื่อดูรายการที่บันทึกไว้
-            </div>
-        </div>
+            <!-- RIGHT CONTENT AREA: Action Toolbar, Saved Records, Images & A4 Sheet -->
+            <div class="lg:col-span-3 space-y-4">
+                
+                <!-- Action Toolbar -->
+                <div class="bg-white p-3 rounded-xl border border-slate-300 shadow-xs flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="saveNewRecord()" class="px-3 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">💾 บันทึกใหม่</button>
+                        <button onclick="saveCurrentRecord()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition cursor-pointer">📝 บันทึกทับ</button>
+                        <button onclick="copyNewDraft()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition cursor-pointer">📄 คัดลอก</button>
+                        <button onclick="createNewForm()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition cursor-pointer">➕ ฟอร์มใหม่</button>
+                        <button onclick="clearFormInputs()" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg font-medium transition cursor-pointer">🗑️ ล้าง</button>
+                        <button id="adminOnlyBtn" onclick="openAdminSettings()" class="hidden px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">⚙️ จัดการระบบ (Admin)</button>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="window.print()" class="px-3 py-2 bg-slate-800 text-white rounded-lg font-medium transition cursor-pointer shadow-xs">🖨️ พิมพ์/PDF</button>
+                    </div>
+                </div>
 
-        <!-- Inspection Images Section -->
-        <div class="bg-white p-4 rounded-xl border border-slate-300 shadow-xs space-y-3">
-            <div class="flex justify-between items-center">
-                <div class="text-slate-700 font-bold text-xs">📷 รูปภาพประกอบการตรวจสอบ <span id="imageSizeInfo" class="text-[10px] text-slate-400 font-normal"></span></div>
-                <label class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium cursor-pointer text-xs">
-                    + เพิ่มรูป <input type="file" id="imageInput" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
-                </label>
+                <!-- Saved Records & Images Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Saved Records Section -->
+                    <div class="bg-white p-4 rounded-xl border border-slate-300 shadow-xs space-y-3">
+                        <div class="flex justify-between items-center">
+                            <div class="text-slate-700 font-bold text-xs">🗂️ ข้อมูลที่บันทึกไว้ (<span id="savedCount">0</span>)</div>
+                            <button onclick="refreshSavedRecords()" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-xs">🔄 รีเฟรช</button>
+                        </div>
+                        <div id="savedRecordsList" class="text-center py-3 text-slate-400 text-xs border border-dashed border-slate-200 rounded-lg">
+                            เข้าสู่ระบบเพื่อดูรายการที่บันทึกไว้
+                        </div>
+                    </div>
+
+                    <!-- Inspection Images Section -->
+                    <div class="bg-white p-4 rounded-xl border border-slate-300 shadow-xs space-y-3">
+                        <div class="flex justify-between items-center">
+                            <div class="text-slate-700 font-bold text-xs">📷 รูปภาพประกอบ <span id="imageSizeInfo" class="text-[10px] text-slate-400 font-normal"></span></div>
+                            <label class="px-3 py-1 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium cursor-pointer text-xs">
+                                + เพิ่มรูป <input type="file" id="imageInput" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
+                            </label>
+                        </div>
+                        <div id="imageGallery" class="grid grid-cols-3 gap-2 min-h-[40px] border border-dashed border-slate-200 rounded-lg p-2 items-center justify-center text-center">
+                            <span id="noImageText" class="col-span-full text-slate-400 text-xs">ยังไม่มีรูปภาพ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- A4 Document Workspace -->
+                <div class="overflow-x-auto flex justify-center bg-slate-100/50 p-2 rounded-xl border border-slate-300">
+                    <div id="zoomContainer" class="transition-transform duration-200 origin-top">
+                        <div id="a4Paper" class="a4-sheet text-slate-900 bg-white"></div>
+                    </div>
+                </div>
+
             </div>
-            <div id="imageGallery" class="grid grid-cols-2 sm:grid-cols-4 gap-2 min-h-[50px] border border-dashed border-slate-200 rounded-lg p-2 items-center justify-center text-center">
-                <span id="noImageText" class="col-span-full text-slate-400 text-xs">ยังไม่มีรูปภาพ</span>
-            </div>
+
         </div>
     </main>
 
@@ -138,13 +167,6 @@
                 </button>
             </div>
             <button onclick="closeLoginModal()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs transition cursor-pointer">ยกเลิก</button>
-        </div>
-    </div>
-
-    <!-- A4 Document Workspace -->
-    <div class="app-container px-4 mt-8 overflow-x-auto flex justify-center">
-        <div id="zoomContainer" class="transition-transform duration-200 origin-top">
-            <div id="a4Paper" class="a4-sheet text-slate-900 bg-white"></div>
         </div>
     </div>
 
@@ -795,9 +817,9 @@
 
             document.querySelectorAll('.form-pill').forEach(btn => {
                 if(btn.dataset.key === key) {
-                    btn.className = "form-pill px-3 py-2 bg-sky-600 text-white rounded-md font-semibold text-xs whitespace-nowrap shadow-xs cursor-pointer transition-all";
+                    btn.className = "form-pill w-full text-left px-3 py-2 bg-sky-600 text-white rounded-md font-semibold text-xs shadow-xs cursor-pointer transition-all";
                 } else {
-                    btn.className = "form-pill px-3 py-2 bg-white border border-slate-300 text-slate-700 rounded-md font-medium text-xs whitespace-nowrap hover:bg-sky-50 cursor-pointer transition-all";
+                    btn.className = "form-pill w-full text-left px-3 py-2 bg-white border border-slate-300 text-slate-700 rounded-md font-medium text-xs hover:bg-sky-50 cursor-pointer transition-all";
                 }
             });
         }
@@ -806,7 +828,7 @@
             const btn = document.createElement('button');
             btn.dataset.key = key;
             btn.className = "form-pill";
-            btn.innerText = formsData[key].code;
+            btn.innerText = formsData[key].code + " - " + formsData[key].title.substring(0, 22) + "...";
             btn.onclick = () => loadForm(key);
             pillsContainer.appendChild(btn);
         });
@@ -863,7 +885,7 @@
             `;
             document.getElementById('loginStatusBanner').className = "bg-emerald-50 border border-emerald-200 text-emerald-800 px-3 py-2 rounded-lg flex justify-between items-center text-[11px]";
             
-            document.getElementById('savedRecordsList').innerHTML = role === 'Admin' ? "📂 (Admin Mode) รายการใบงานทั้งหมดในระบบ (พร้อมจัดการและอนุมัติ)" : "📂 (User Mode) รายการบันทึกของคุณเอง";
+            document.getElementById('savedRecordsList').innerHTML = role === 'Admin' ? "📂 (Admin Mode) รายการใบงานทั้งหมดในระบบ" : "📂 (User Mode) รายการบันทึกของคุณเอง";
             document.getElementById('savedCount').innerText = role === 'Admin' ? "12" : "3";
 
             if (role === 'Admin') {
