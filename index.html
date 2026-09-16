@@ -9,7 +9,7 @@
     <style>
         body { font-family: 'Sarabun', sans-serif; background-color: #f1f5f9; color: #1e293b; margin: 0; padding: 0; }
         .sidebar-bg { background-color: #1e293b; }
-        .app-container { max-width: 1600px; margin: 0 auto; box-sizing: border-box; }
+        .app-container { max-width: 1400px; margin: 0 auto; box-sizing: border-box; }
         .a4-sheet {
             width: 210mm;
             min-height: 297mm;
@@ -32,8 +32,8 @@
         
         .btn-blue-action { background-color: #3b82f6; color: white; }
         .btn-blue-action:hover { background-color: #2563eb; }
-        .btn-gray-action { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
-        .btn-gray-action:hover { background-color: #e2e8f0; }
+        .btn-gray-action { background-color: #f8fafc; color: #334155; border: 1px solid #cbd5e1; }
+        .btn-gray-action:hover { background-color: #f1f5f9; }
 
         @media print {
             body { background: white !important; }
@@ -42,45 +42,45 @@
         }
     </style>
 </head>
-<body class="pb-16 flex min-h-screen">
+<body class="flex min-h-screen">
 
     <!-- LEFT SIDEBAR -->
-    <aside class="no-print sidebar-bg w-72 text-slate-300 flex flex-col justify-between shrink-0 min-h-screen sticky top-0 z-50 p-4 shadow-xl">
-        <div class="space-y-6">
-            <!-- Brand / Logo (เอาชื่อออกแล้ว) -->
-            <div class="flex items-center gap-3 px-2 pt-2">
-                <div class="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400 font-bold text-lg">
+    <aside class="no-print sidebar-bg w-64 text-slate-300 flex flex-col justify-between shrink-0 min-h-screen sticky top-0 z-50 p-3.5 shadow-xl">
+        <div class="space-y-5">
+            <!-- Brand / Logo -->
+            <div class="flex items-center gap-2.5 px-2 pt-1">
+                <div class="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400 font-bold text-base">
                     ⚡
                 </div>
                 <div>
-                    <h1 class="text-sm font-bold text-white tracking-wide">Asset Inspection</h1>
+                    <h1 class="text-xs font-bold text-white tracking-wide">Asset Inspection</h1>
                 </div>
             </div>
 
             <!-- User Profile Box -->
-            <div class="bg-slate-800/80 border border-slate-700/60 p-3 rounded-xl space-y-1">
+            <div class="bg-slate-800/80 border border-slate-700/60 p-2.5 rounded-xl space-y-1">
                 <div class="flex justify-between items-center">
-                    <span class="text-xs font-semibold text-white" id="sidebarUserName">Guest User</span>
-                    <span id="sidebarRoleBadge" class="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded font-bold">GUEST</span>
+                    <span class="text-xs font-semibold text-white truncate max-w-[120px]" id="sidebarUserName">Guest User</span>
+                    <span id="sidebarRoleBadge" class="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-1.5 py-0.5 rounded font-bold">GUEST</span>
                 </div>
-                <p class="text-[10px] text-slate-400">สถานะระบบ: พร้อมใช้งาน</p>
-                <button onclick="openLoginModal()" class="mt-2 w-full py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-[11px] font-medium transition cursor-pointer shadow-xs">
-                    🔑 เข้าสู่ระบบ (Admin / User)
+                <p class="text-[10px] text-slate-400">สถานะ: พร้อมใช้งาน</p>
+                <button onclick="openLoginModal()" class="mt-1 w-full py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-[10px] font-medium transition cursor-pointer shadow-xs">
+                    🔑 เข้าสู่ระบบ
                 </button>
             </div>
 
             <!-- Navigation Menu Links -->
             <nav class="space-y-1 text-xs">
-                <button onclick="switchView('dashboard')" id="menuDashboard" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white cursor-pointer">
+                <button onclick="switchView('dashboard')" id="menuDashboard" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white cursor-pointer">
                     📊 Dashboard ภาพรวม
                 </button>
-                <button onclick="switchView('inspection')" id="menuInspection" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition bg-blue-600 text-white shadow-md cursor-pointer">
+                <button onclick="switchView('inspection')" id="menuInspection" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition bg-blue-600 text-white shadow-md cursor-pointer">
                     📋 แบบฟอร์มตรวจหน้างาน
                 </button>
-                <button onclick="switchView('planning')" id="menuPlanning" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white cursor-pointer">
+                <button onclick="switchView('planning')" id="menuPlanning" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white cursor-pointer">
                     🗓️ แผนงาน PM & KPIs
                 </button>
-                <button onclick="switchView('manual')" id="menuManual" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white cursor-pointer">
+                <button onclick="switchView('manual')" id="menuManual" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white cursor-pointer">
                     📖 คู่มือการใช้งาน
                 </button>
             </nav>
@@ -88,156 +88,159 @@
             <!-- Form Selection List (11 Forms) -->
             <div id="sidebarFormListContainer" class="pt-2 border-t border-slate-800 space-y-1">
                 <p class="text-[10px] uppercase font-bold tracking-wider text-slate-400 px-2 mb-1">เลือกแบบฟอร์มใบงาน (11 ฟอร์ม)</p>
-                <div id="pillsContainer" class="flex flex-col gap-1 max-h-56 overflow-y-auto pr-1"></div>
+                <div id="pillsContainer" class="flex flex-col gap-1 max-h-48 overflow-y-auto pr-1"></div>
             </div>
         </div>
 
         <!-- Sidebar Footer Action -->
-        <div class="pt-4 border-t border-slate-800">
-            <button onclick="clearFormInputs()" class="w-full py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/20 rounded-xl text-xs font-medium transition cursor-pointer flex items-center justify-center gap-2">
-                🗑️ ล้างข้อมูลทั้งหมดในระบบ
+        <div class="pt-3 border-t border-slate-800">
+            <button onclick="clearFormInputs()" class="w-full py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/20 rounded-lg text-[11px] font-medium transition cursor-pointer flex items-center justify-center gap-1.5">
+                🗑️ ล้างข้อมูลทั้งหมด
             </button>
         </div>
     </aside>
 
     <!-- RIGHT MAIN CONTENT AREA -->
     <div class="flex-1 flex flex-col min-w-0">
-        <!-- Top Navbar (เอาชื่อออกแล้ว) -->
-        <header class="no-print bg-white border-b border-slate-200 sticky top-0 z-40 px-6 py-3.5 flex justify-between items-center shadow-xs">
-            <div class="flex items-center gap-3">
-                <span class="text-xs font-bold text-slate-700">Asset Inspection App.</span>
-            </div>
-            <div class="flex items-center gap-3">
+        <!-- Top Navbar -->
+        <header class="no-print bg-white border-b border-slate-200 sticky top-0 z-40 px-6 py-3 flex justify-between items-center shadow-xs">
+            <span class="text-xs font-bold text-slate-700">Asset Inspection App.</span>
+            <div class="flex items-center gap-2.5">
                 <div id="networkStatusBadge" class="px-2.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-md text-[11px] font-medium flex items-center gap-1.5">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Firebase Connected
                 </div>
-                <button onclick="window.print()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-medium transition cursor-pointer shadow-xs flex items-center gap-1.5">
-                    🖨️ พิมพ์ / ส่งออก PDF
+                <button onclick="window.print()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-medium transition cursor-pointer shadow-xs flex items-center gap-1">
+                    🖨️ พิมพ์ / PDF
                 </button>
             </div>
         </header>
 
-        <main class="no-print p-6 space-y-4">
-            <div id="loginStatusBanner" class="bg-white border border-slate-200 text-slate-600 px-4 py-3 rounded-xl flex justify-between items-center text-xs shadow-2xs">
+        <main class="no-print p-5 app-container w-full space-y-4">
+            <!-- Login Status Banner -->
+            <div id="loginStatusBanner" class="bg-white border border-slate-200 text-slate-600 px-4 py-2.5 rounded-xl flex justify-between items-center text-xs shadow-2xs">
                 <span>ยังไม่ได้เข้าสู่ระบบ — ข้อมูลจะไม่ถูกบันทึก</span>
-                <span class="px-3 py-1.5 bg-blue-50 text-blue-600 border border-blue-200 rounded-lg font-medium">พร้อมใช้งาน</span>
+                <span class="px-2.5 py-1 bg-blue-50 text-blue-600 border border-blue-200 rounded-lg font-medium text-[11px]">พร้อมใช้งาน</span>
             </div>
 
             <!-- ================= VIEW: DASHBOARD ================= -->
             <div id="viewDashboard" class="hidden space-y-4">
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex justify-between items-center">
-                    <div>
-                        <h2 class="text-sm font-bold text-slate-800">Dashboard ภาพรวม (Big Data CMMS)</h2>
-                        <p class="text-[11px] text-slate-500 mt-0.5">กำลังแสดงผลข้อมูลจริงในระบบ (เชื่อมต่อ Firebase เรียบร้อยแล้ว)</p>
-                    </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+                    <h2 class="text-xs font-bold text-slate-800">Dashboard ภาพรวม (Big Data CMMS)</h2>
+                    <p class="text-[11px] text-slate-500 mt-0.5">กำลังแสดงผลข้อมูลจริงในระบบ (เชื่อมต่อ Firebase เรียบร้อยแล้ว)</p>
                 </div>
             </div>
 
             <!-- ================= VIEW: INSPECTION FORMS ================= -->
             <div id="viewInspection" class="space-y-4">
-                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-3">
-                    <div class="flex flex-wrap items-center gap-2">
-                        <button onclick="saveNewRecord()" class="px-4 py-2 btn-blue-action rounded-lg font-medium text-xs transition cursor-pointer shadow-2xs flex items-center gap-1.5">
+                <!-- Action Toolbar -->
+                <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-2.5">
+                    <div class="flex flex-wrap items-center gap-1.5">
+                        <button onclick="saveNewRecord()" class="px-3 py-1.5 btn-blue-action rounded-lg font-medium text-xs transition cursor-pointer shadow-xs">
                             💾 บันทึกเป็นรายการใหม่
                         </button>
-                        <button onclick="saveCurrentRecord()" class="px-4 py-2 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer">
-                            📝 บันทึกทับรายการปัจจุบัน
+                        <button onclick="saveCurrentRecord()" class="px-3 py-1.5 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer">
+                            📝 บันทึกทับ
                         </button>
-                        <button onclick="copyNewDraft()" class="px-4 py-2 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer">
-                            📄 คัดลอกเป็นฉบับใหม่
+                        <button onclick="copyNewDraft()" class="px-3 py-1.5 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer">
+                            📄 คัดลอก
                         </button>
-                        <button onclick="createNewForm()" class="px-4 py-2 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer">
+                        <button onclick="createNewForm()" class="px-3 py-1.5 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer">
                             ➕ ฟอร์มใหม่
                         </button>
-                        <button onclick="clearFormInputs()" class="px-4 py-2 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer text-rose-600">
+                        <button onclick="clearFormInputs()" class="px-3 py-1.5 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer text-rose-600">
                             🗑️ ล้างฟอร์ม
                         </button>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="window.print()" class="px-4 py-2 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer flex items-center gap-1.5">
-                            🖨️ พิมพ์ / PDF
-                        </button>
+                </div>
+
+                <div id="adminControlPanel" class="hidden bg-sky-50 p-3.5 rounded-xl border border-sky-200 shadow-xs space-y-2">
+                    <div class="text-sky-900 font-bold text-xs flex justify-between">
+                        <span>👑 แผงควบคุมผู้ดูแลระบบ (Admin Field Dashboard)</span>
+                        <span class="text-[10px] bg-sky-200 text-sky-800 px-2 py-0.5 rounded">สิทธิ์สูงสุด</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="adminApproveAll()" class="px-3 py-1 bg-sky-600 text-white rounded-lg text-xs font-medium cursor-pointer">✔️ อนุมัติงานทั้งหมด</button>
+                        <button onclick="adminManageUsers()" class="px-3 py-1 bg-white border border-sky-300 text-sky-700 rounded-lg text-xs font-medium cursor-pointer">👥 จัดการทีมช่าง</button>
                     </div>
                 </div>
 
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-                    <div id="pillsContainer" class="flex flex-wrap gap-2"></div>
-                </div>
-
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+                <!-- Saved Records Section -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2.5">
                     <div class="flex justify-between items-center">
-                        <div class="text-slate-700 font-bold text-xs flex items-center gap-2" id="recordSectionTitle">
+                        <div class="text-slate-700 font-bold text-xs flex items-center gap-1.5" id="recordSectionTitle">
                             <span>🗂️</span> ข้อมูลที่บันทึกไว้ (<span id="savedCount">0</span>)
                         </div>
-                        <button onclick="refreshSavedRecords()" class="px-3 py-1 btn-gray-action rounded-lg text-xs font-medium flex items-center gap-1">
+                        <button onclick="refreshSavedRecords()" class="px-2.5 py-1 btn-gray-action rounded-lg text-xs font-medium flex items-center gap-1">
                             🔄 รีเฟรช
                         </button>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <input type="text" placeholder="Plant" class="planning-input text-xs border border-slate-200 p-2 rounded">
-                        <input type="text" placeholder="Work Order" class="planning-input text-xs border border-slate-200 p-2 rounded">
+                        <input type="text" placeholder="Plant" class="planning-input text-xs">
+                        <input type="text" placeholder="Work Order" class="planning-input text-xs">
                     </div>
-                    <div id="savedRecordsList" class="text-center py-4 text-slate-400 text-xs border border-dashed border-slate-200 rounded-lg bg-slate-50/50">
+                    <div id="savedRecordsList" class="text-center py-3 text-slate-400 text-xs border border-dashed border-slate-200 rounded-lg bg-slate-50/50">
                         เข้าสู่ระบบเพื่อดูรายการที่บันทึกไว้
                     </div>
                 </div>
 
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+                <!-- Inspection Images Section -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2.5">
                     <div class="flex justify-between items-center">
-                        <div class="text-slate-700 font-bold text-xs flex items-center gap-2">
+                        <div class="text-slate-700 font-bold text-xs flex items-center gap-1.5">
                             <span>📷</span> รูปภาพประกอบการตรวจสอบ
                         </div>
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2.5">
                             <span class="text-xs text-slate-400" id="imageSizeInfo">0 KB</span>
-                            <label class="px-4 py-2 btn-blue-action rounded-lg font-medium cursor-pointer text-xs shadow-2xs">
+                            <label class="px-3 py-1.5 btn-blue-action rounded-lg font-medium cursor-pointer text-xs shadow-xs">
                                 + เพิ่มรูป <input type="file" id="imageInput" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
                             </label>
                         </div>
                     </div>
-                    <div id="imageGallery" class="text-center py-4 text-slate-400 text-xs border border-dashed border-slate-200 rounded-lg bg-slate-50/50">
+                    <div id="imageGallery" class="text-center py-3 text-slate-400 text-xs border border-dashed border-slate-200 rounded-lg bg-slate-50/50">
                         ยังไม่มีรูปภาพ – กด "เพิ่มรูป" เพื่อถ่ายหรือเลือกจากคลังภาพ
                     </div>
                 </div>
 
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+                <!-- Criticality Assessment Section -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2.5">
                     <div class="flex justify-between items-center">
-                        <div class="text-slate-700 font-bold text-xs flex items-center gap-2">
+                        <div class="text-slate-700 font-bold text-xs flex items-center gap-1.5">
                             <span>🎯</span> การประเมินความสำคัญของอุปกรณ์ (Criticality)
                         </div>
-                        <div id="criticalityStatusBadge" class="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[11px] font-medium">
+                        <div id="criticalityStatusBadge" class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-[11px] font-medium">
                             ยังไม่ประเมิน
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-[11px]">
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-[11px]">
                         <div>
                             <label class="block text-slate-600 font-medium mb-1">SAF – ความปลอดภัย</label>
-                            <select id="critSAF" onchange="calculateCriticality()" class="planning-input border border-slate-200 p-1.5 rounded w-full"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+                            <select id="critSAF" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
                         </div>
                         <div>
                             <label class="block text-slate-600 font-medium mb-1">REL – ความต่อเนื่องจ่ายไฟ</label>
-                            <select id="critREL" onchange="calculateCriticality()" class="planning-input border border-slate-200 p-1.5 rounded w-full"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+                            <select id="critREL" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
                         </div>
                         <div>
-                            <label class="block text-slate-600 font-medium mb-1">OPR – การปฏิบัติงาน/ภารกิจ</label>
-                            <select id="critOPR" onchange="calculateCriticality()" class="planning-input border border-slate-200 p-1.5 rounded w-full"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+                            <label class="block text-slate-600 font-medium mb-1">OPR – ภารกิจ</label>
+                            <select id="critOPR" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
                         </div>
                         <div>
-                            <label class="block text-slate-600 font-medium mb-1">CON – แนวโน้มขัดข้อง/สภาพ</label>
-                            <select id="critCON" onchange="calculateCriticality()" class="planning-input border border-slate-200 p-1.5 rounded w-full"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+                            <label class="block text-slate-600 font-medium mb-1">CON – สภาพอุปกรณ์</label>
+                            <select id="critCON" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
                         </div>
                         <div>
-                            <label class="block text-slate-600 font-medium mb-1">REC – ความยากในการกู้คืน/หาอะไหล่</label>
-                            <select id="critREC" onchange="calculateCriticality()" class="planning-input border border-slate-200 p-1.5 rounded w-full"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+                            <label class="block text-slate-600 font-medium mb-1">REC – หาอะไหล่ยาก</label>
+                            <select id="critREC" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
                         </div>
                     </div>
-                    <div class="pt-2 border-t border-slate-100 font-bold text-xs">
+                    <div class="pt-2 border-t border-slate-100 font-bold text-xs flex items-center justify-between">
                         <span id="totalScoreDisplay">คะแนนรวม: - / 100</span>
-                        <span id="criticalityLevelText" class="text-blue-600 ml-3"></span>
+                        <span id="criticalityLevelText" class="text-blue-600"></span>
                     </div>
                 </div>
 
                 <!-- A4 Document Workspace -->
-                <div class="overflow-x-auto flex justify-center bg-white p-6 rounded-2xl border border-slate-200 shadow-xs mt-6">
+                <div class="overflow-x-auto flex justify-center bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
                     <div id="zoomContainer" class="transition-transform duration-200 origin-top">
                         <div id="a4Paper" class="a4-sheet text-slate-900 bg-white"></div>
                     </div>
@@ -246,25 +249,22 @@
 
             <!-- ================= VIEW: PLANNING & KPIS ================= -->
             <div id="viewPlanning" class="hidden space-y-4">
-                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex justify-between items-center">
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex justify-between items-center">
                     <h2 class="text-xs font-bold text-slate-800">📊 ระบบวางแผน PM, KPIs และวิเคราะห์ต้นทุนเชิงลึก</h2>
-                    <button onclick="exportExcel()" class="px-4 py-2 btn-blue-action rounded-xl text-xs font-medium transition cursor-pointer shadow-sm">🟩 ส่งออก Excel</button>
+                    <button onclick="exportExcel()" class="px-3.5 py-1.5 btn-blue-action rounded-lg text-xs font-medium transition cursor-pointer shadow-xs">🟩 ส่งออก Excel</button>
                 </div>
             </div>
 
             <!-- ================= VIEW: USER MANUAL ================= -->
             <div id="viewManual" class="hidden space-y-4">
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-6">
-                    <div class="border-b border-slate-200 pb-4">
-                        <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
-                            <span>📖</span> คู่มือการใช้งานระบบ Asset Inspection App
-                        </h2>
-                        <p class="text-xs text-slate-500 mt-1">คำแนะนำสำหรับเจ้าหน้าที่ผู้ตรวจสอบและผู้ดูแลระบบ</p>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-4">
+                    <div class="border-b border-slate-200 pb-3">
+                        <h2 class="text-sm font-bold text-slate-800">📖 คู่มือการใช้งานระบบ Asset Inspection App</h2>
                     </div>
-                    <div class="space-y-4 text-xs text-slate-700 leading-relaxed">
-                        <div class="p-4 bg-blue-50 border border-blue-200 rounded-xl space-y-2">
-                            <h3 class="font-bold text-blue-900 text-sm">1. การเข้าสู่ระบบ</h3>
-                            <p>คลิกที่ปุ่ม <b>"🔑 เข้าสู่ระบบ (Admin / User)"</b> ที่เมนูด้านซ้ายเพื่อเลือกสิทธิ์การใช้งาน</p>
+                    <div class="space-y-3 text-xs text-slate-700 leading-relaxed">
+                        <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg space-y-1">
+                            <h3 class="font-bold text-blue-900">1. การเข้าสู่ระบบ</h3>
+                            <p>คลิกปุ่ม "🔑 เข้าสู่ระบบ" ที่เมนูด้านซ้ายเพื่อเลือกระหว่าง Admin หรือ Inspector</p>
                         </div>
                     </div>
                 </div>
@@ -388,23 +388,23 @@
             vPlan.classList.add('hidden');
             vMan.classList.add('hidden');
             
-            mDash.className = mInsp.className = mPlan.className = mMan.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition text-slate-300 hover:bg-slate-800 hover:text-white cursor-pointer";
+            mDash.className = mInsp.className = mPlan.className = mMan.className = "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white cursor-pointer";
 
             if(viewName === 'dashboard') {
                 vDash.classList.remove('hidden');
-                mDash.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition bg-blue-600 text-white shadow-md cursor-pointer font-bold";
+                mDash.className = "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition bg-blue-600 text-white shadow-xs cursor-pointer font-bold";
                 formListContainer.classList.add('hidden');
             } else if(viewName === 'inspection') {
                 vInsp.classList.remove('hidden');
-                mInsp.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition bg-blue-600 text-white shadow-md cursor-pointer font-bold";
+                mInsp.className = "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition bg-blue-600 text-white shadow-md cursor-pointer font-bold";
                 formListContainer.classList.remove('hidden');
             } else if(viewName === 'planning') {
                 vPlan.classList.remove('hidden');
-                mPlan.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition bg-blue-600 text-white shadow-md cursor-pointer font-bold";
+                mPlan.className = "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition bg-blue-600 text-white shadow-md cursor-pointer font-bold";
                 formListContainer.classList.add('hidden');
             } else {
                 vMan.classList.remove('hidden');
-                mMan.className = "w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium transition bg-blue-600 text-white shadow-md cursor-pointer font-bold";
+                mMan.className = "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition bg-blue-600 text-white shadow-md cursor-pointer font-bold";
                 formListContainer.classList.add('hidden');
             }
         }
@@ -419,9 +419,9 @@
 
             document.querySelectorAll('.form-pill').forEach(btn => {
                 if(btn.dataset.key === key) {
-                    btn.className = "form-pill px-3.5 py-2 bg-blue-600 text-white rounded-lg font-bold text-xs shadow-xs cursor-pointer transition-all";
+                    btn.className = "form-pill w-full text-left px-3 py-1.5 bg-blue-600 text-white rounded-lg font-bold text-xs shadow-xs cursor-pointer transition-all";
                 } else {
-                    btn.className = "form-pill px-3.5 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg font-medium text-xs hover:bg-blue-50 cursor-pointer transition-all";
+                    btn.className = "form-pill w-full text-left px-3 py-1.5 bg-slate-800/50 hover:bg-slate-800 text-slate-300 rounded-lg font-medium text-xs transition-all";
                 }
             });
         }
@@ -458,15 +458,17 @@
 
             document.getElementById('sidebarUserName').innerText = currentUser;
             document.getElementById('sidebarRoleBadge').innerText = role.toUpperCase();
-            document.getElementById('sidebarRoleBadge').className = role === 'Admin' ? "text-[9px] bg-purple-100 text-purple-800 px-2 py-0.5 rounded font-bold" : "text-[9px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-bold";
+            document.getElementById('sidebarRoleBadge').className = role === 'Admin' ? "text-[9px] bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded font-bold" : "text-[9px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-bold";
             
             document.getElementById('loginStatusBanner').innerHTML = `✅ เข้าสู่ระบบสำเร็จในฐานะ <b>${currentUser}</b> – กำลังใช้งานระบบในสิทธิ์ ${role}`;
-            document.getElementById('loginStatusBanner').className = "bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl flex justify-between items-center text-xs shadow-2xs";
+            document.getElementById('loginStatusBanner').className = "bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-2.5 rounded-xl flex justify-between items-center text-xs shadow-2xs";
             
             if (role === 'Admin') {
+                document.getElementById('adminControlPanel').classList.remove('hidden');
                 document.getElementById('savedRecordsList').innerHTML = `<div class="text-left p-2 text-xs">📂 รายการทั้งหมดในระบบ (12 รายการ)</div>`;
                 document.getElementById('savedCount').innerText = "12";
             } else {
+                document.getElementById('adminControlPanel').classList.add('hidden');
                 document.getElementById('savedRecordsList').innerHTML = `<div class="text-left p-2 text-xs">📂 รายการบันทึกของคุณ</div>`;
                 document.getElementById('savedCount').innerText = "3";
             }
@@ -491,6 +493,8 @@
         function createNewForm() { loadForm(currentFormKey); alert("➕ เริ่มต้นฟอร์มใหม่เรียบร้อย"); }
         function clearFormInputs() { loadForm(currentFormKey); alert("🧹 ล้างข้อมูลฟอร์มเรียบร้อย"); }
         function refreshSavedRecords() { alert("🔄 รีเฟรชรายการเรียบร้อย"); }
+        function adminApproveAll() { alert("👑 (Admin) อนุมัติงานทั้งหมดแล้ว"); }
+        function adminManageUsers() { alert("👥 (Admin) จัดการผู้ใช้งาน"); }
 
         function handleImageUpload(event) {
             const files = event.target.files;
@@ -523,7 +527,7 @@
             if (countSelected === 0) {
                 document.getElementById('totalScoreDisplay').innerText = "คะแนนรวม: - / 100";
                 document.getElementById('criticalityLevelText').innerText = "";
-                document.getElementById('criticalityStatusBadge').className = "px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[11px] font-medium";
+                document.getElementById('criticalityStatusBadge').className = "px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-[11px] font-medium";
                 document.getElementById('criticalityStatusBadge').innerText = "ยังไม่ประเมิน";
                 return;
             }
@@ -531,7 +535,7 @@
             const totalScore = ((saf + rel + opr + con + rec) * 5);
             document.getElementById('totalScoreDisplay').innerText = `คะแนนรวม: ${totalScore} / 100`;
             
-            let badgeClass = "px-2.5 py-1 rounded-md text-[11px] font-medium ";
+            let badgeClass = "px-2 py-0.5 rounded-md text-[11px] font-medium ";
             let levelText = "";
             if (totalScore >= 75) { badgeClass += "bg-rose-100 text-rose-800"; levelText = "⚠️ ความสำคัญระดับสูงมาก (Critical)"; }
             else if (totalScore >= 50) { badgeClass += "bg-amber-100 text-amber-800"; levelText = "⚡ ความสำคัญระดับปานกลาง-สูง"; }
