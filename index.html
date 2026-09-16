@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asset Inspection App. - By Dr. Phanuphon S.</title>
+    <title>Asset Inspection App.</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Sarabun', sans-serif; background-color: #f1f5f9; color: #1e293b; margin: 0; padding: 0; }
-        /* ธีมสีฟ้าพาสเทลและฟ้าคลาสสิกตามตัวอย่าง */
         .sidebar-bg { background-color: #1e293b; }
         .app-container { max-width: 1600px; margin: 0 auto; box-sizing: border-box; }
         .a4-sheet {
@@ -31,7 +30,6 @@
         .form-header-bg { background-color: #d1d5db; font-weight: bold; color: #000; }
         .sub-header-bg { background-color: #f3f4f6; font-weight: bold; color: #000; }
         
-        /* ปุ่มสไตล์สีฟ้าตามภาพตัวอย่าง */
         .btn-blue-action { background-color: #3b82f6; color: white; }
         .btn-blue-action:hover { background-color: #2563eb; }
         .btn-gray-action { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
@@ -49,14 +47,13 @@
     <!-- LEFT SIDEBAR -->
     <aside class="no-print sidebar-bg w-72 text-slate-300 flex flex-col justify-between shrink-0 min-h-screen sticky top-0 z-50 p-4 shadow-xl">
         <div class="space-y-6">
-            <!-- Brand / Logo -->
+            <!-- Brand / Logo (เอาชื่อออกแล้ว) -->
             <div class="flex items-center gap-3 px-2 pt-2">
                 <div class="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400 font-bold text-lg">
                     ⚡
                 </div>
                 <div>
                     <h1 class="text-sm font-bold text-white tracking-wide">Asset Inspection</h1>
-                    <p class="text-[10px] text-blue-300">By Dr. Phanuphon S.</p>
                 </div>
             </div>
 
@@ -105,10 +102,10 @@
 
     <!-- RIGHT MAIN CONTENT AREA -->
     <div class="flex-1 flex flex-col min-w-0">
-        <!-- Top Navbar -->
+        <!-- Top Navbar (เอาชื่อออกแล้ว) -->
         <header class="no-print bg-white border-b border-slate-200 sticky top-0 z-40 px-6 py-3.5 flex justify-between items-center shadow-xs">
             <div class="flex items-center gap-3">
-                <span class="text-xs font-bold text-slate-700">Asset Inspection App. By Dr. Phanuphon S.</span>
+                <span class="text-xs font-bold text-slate-700">Asset Inspection App.</span>
             </div>
             <div class="flex items-center gap-3">
                 <div id="networkStatusBadge" class="px-2.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-md text-[11px] font-medium flex items-center gap-1.5">
@@ -121,7 +118,6 @@
         </header>
 
         <main class="no-print p-6 space-y-4">
-            <!-- Login Status Banner สไตล์ภาพตัวอย่าง -->
             <div id="loginStatusBanner" class="bg-white border border-slate-200 text-slate-600 px-4 py-3 rounded-xl flex justify-between items-center text-xs shadow-2xs">
                 <span>ยังไม่ได้เข้าสู่ระบบ — ข้อมูลจะไม่ถูกบันทึก</span>
                 <span class="px-3 py-1.5 bg-blue-50 text-blue-600 border border-blue-200 rounded-lg font-medium">พร้อมใช้งาน</span>
@@ -139,7 +135,6 @@
 
             <!-- ================= VIEW: INSPECTION FORMS ================= -->
             <div id="viewInspection" class="space-y-4">
-                <!-- Action Toolbar สไตล์ตามภาพตัวอย่าง -->
                 <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-3">
                     <div class="flex flex-wrap items-center gap-2">
                         <button onclick="saveNewRecord()" class="px-4 py-2 btn-blue-action rounded-lg font-medium text-xs transition cursor-pointer shadow-2xs flex items-center gap-1.5">
@@ -165,12 +160,10 @@
                     </div>
                 </div>
 
-                <!-- Form Selection Pills สไตล์ตามภาพตัวอย่าง -->
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
                     <div id="pillsContainer" class="flex flex-wrap gap-2"></div>
                 </div>
 
-                <!-- Saved Records Section สไตล์ตามภาพตัวอย่าง -->
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
                     <div class="flex justify-between items-center">
                         <div class="text-slate-700 font-bold text-xs flex items-center gap-2" id="recordSectionTitle">
@@ -181,15 +174,14 @@
                         </button>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <input type="text" placeholder="Plant" class="planning-input text-xs">
-                        <input type="text" placeholder="Work Order" class="planning-input text-xs">
+                        <input type="text" placeholder="Plant" class="planning-input text-xs border border-slate-200 p-2 rounded">
+                        <input type="text" placeholder="Work Order" class="planning-input text-xs border border-slate-200 p-2 rounded">
                     </div>
                     <div id="savedRecordsList" class="text-center py-4 text-slate-400 text-xs border border-dashed border-slate-200 rounded-lg bg-slate-50/50">
                         เข้าสู่ระบบเพื่อดูรายการที่บันทึกไว้
                     </div>
                 </div>
 
-                <!-- Inspection Images Section สไตล์ตามภาพตัวอย่าง -->
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
                     <div class="flex justify-between items-center">
                         <div class="text-slate-700 font-bold text-xs flex items-center gap-2">
@@ -207,7 +199,6 @@
                     </div>
                 </div>
 
-                <!-- Criticality Assessment Section สไตล์ตามภาพตัวอย่าง -->
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
                     <div class="flex justify-between items-center">
                         <div class="text-slate-700 font-bold text-xs flex items-center gap-2">
@@ -220,23 +211,23 @@
                     <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-[11px]">
                         <div>
                             <label class="block text-slate-600 font-medium mb-1">SAF – ความปลอดภัย</label>
-                            <select id="critSAF" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+                            <select id="critSAF" onchange="calculateCriticality()" class="planning-input border border-slate-200 p-1.5 rounded w-full"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
                         </div>
                         <div>
                             <label class="block text-slate-600 font-medium mb-1">REL – ความต่อเนื่องจ่ายไฟ</label>
-                            <select id="critREL" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+                            <select id="critREL" onchange="calculateCriticality()" class="planning-input border border-slate-200 p-1.5 rounded w-full"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
                         </div>
                         <div>
                             <label class="block text-slate-600 font-medium mb-1">OPR – การปฏิบัติงาน/ภารกิจ</label>
-                            <select id="critOPR" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+                            <select id="critOPR" onchange="calculateCriticality()" class="planning-input border border-slate-200 p-1.5 rounded w-full"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
                         </div>
                         <div>
                             <label class="block text-slate-600 font-medium mb-1">CON – แนวโน้มขัดข้อง/สภาพ</label>
-                            <select id="critCON" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+                            <select id="critCON" onchange="calculateCriticality()" class="planning-input border border-slate-200 p-1.5 rounded w-full"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
                         </div>
                         <div>
                             <label class="block text-slate-600 font-medium mb-1">REC – ความยากในการกู้คืน/หาอะไหล่</label>
-                            <select id="critREC" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+                            <select id="critREC" onchange="calculateCriticality()" class="planning-input border border-slate-200 p-1.5 rounded w-full"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
                         </div>
                     </div>
                     <div class="pt-2 border-t border-slate-100 font-bold text-xs">
@@ -473,11 +464,9 @@
             document.getElementById('loginStatusBanner').className = "bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl flex justify-between items-center text-xs shadow-2xs";
             
             if (role === 'Admin') {
-                document.getElementById('adminControlPanel').classList.remove('hidden');
                 document.getElementById('savedRecordsList').innerHTML = `<div class="text-left p-2 text-xs">📂 รายการทั้งหมดในระบบ (12 รายการ)</div>`;
                 document.getElementById('savedCount').innerText = "12";
             } else {
-                document.getElementById('adminControlPanel').classList.add('hidden');
                 document.getElementById('savedRecordsList').innerHTML = `<div class="text-left p-2 text-xs">📂 รายการบันทึกของคุณ</div>`;
                 document.getElementById('savedCount').innerText = "3";
             }
@@ -502,9 +491,6 @@
         function createNewForm() { loadForm(currentFormKey); alert("➕ เริ่มต้นฟอร์มใหม่เรียบร้อย"); }
         function clearFormInputs() { loadForm(currentFormKey); alert("🧹 ล้างข้อมูลฟอร์มเรียบร้อย"); }
         function refreshSavedRecords() { alert("🔄 รีเฟรชรายการเรียบร้อย"); }
-        function adminApproveAll() { alert("👑 (Admin) อนุมัติงานทั้งหมดแล้ว"); }
-        function adminManageUsers() { alert("👥 (Admin) จัดการผู้ใช้งาน"); }
-        function exportExcel() { alert("🟩 ส่งออกข้อมูลเป็นไฟล์ Excel สำเร็จ!"); }
 
         function handleImageUpload(event) {
             const files = event.target.files;
