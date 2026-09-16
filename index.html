@@ -132,22 +132,13 @@
 
             <!-- ================= VIEW: INSPECTION FORMS ================= -->
             <div id="viewInspection" class="space-y-4">
-                <!-- Action Toolbar -->
+                <!-- Action Toolbar (ปรับเหลือ 2 ปุ่มตามต้องการ) -->
                 <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-2.5">
-                    <div class="flex flex-wrap items-center gap-1.5">
-                        <button onclick="saveNewRecord()" class="px-3 py-1.5 btn-blue-action rounded-lg font-medium text-xs transition cursor-pointer shadow-xs">
-                            💾 บันทึกเป็นรายการใหม่
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="saveNewRecord()" class="px-4 py-2 btn-blue-action rounded-lg font-medium text-xs transition cursor-pointer shadow-xs flex items-center gap-1.5">
+                            💾 บันทึกรายการ
                         </button>
-                        <button onclick="saveCurrentRecord()" class="px-3 py-1.5 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer">
-                            📝 บันทึกทับ
-                        </button>
-                        <button onclick="copyNewDraft()" class="px-3 py-1.5 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer">
-                            📄 คัดลอก
-                        </button>
-                        <button onclick="createNewForm()" class="px-3 py-1.5 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer">
-                            ➕ ฟอร์มใหม่
-                        </button>
-                        <button onclick="clearFormInputs()" class="px-3 py-1.5 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer text-rose-600">
+                        <button onclick="clearFormInputs()" class="px-4 py-2 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer text-rose-600 flex items-center gap-1.5">
                             🗑️ ล้างฟอร์ม
                         </button>
                     </div>
@@ -446,15 +437,14 @@
             if (typeof window.saveDataToFirebase === 'function') {
                 window.saveDataToFirebase(formData);
             } else {
-                alert(`💾 บันทึกเป็นรายการใหม่สำเร็จในนามคุณ ${currentUser}!`);
+                alert(`💾 บันทึกรายการสำเร็จในนามคุณ ${currentUser}!`);
             }
         }
 
-        function saveCurrentRecord() { alert("📝 บันทึกทับรายการปัจจุบันสำเร็จ!"); }
-        function copyNewDraft() { alert("📄 คัดลอกเป็นฉบับใหม่สำเร็จ!"); }
-        function createNewForm() { loadForm(currentFormKey); alert("➕ เริ่มต้นฟอร์มใหม่เรียบร้อย"); }
         function clearFormInputs() { loadForm(currentFormKey); alert("🧹 ล้างข้อมูลฟอร์มเรียบร้อย"); }
         function refreshSavedRecords() { alert("🔄 รีเฟรชรายการเรียบร้อย"); }
+        function adminApproveAll() { alert("👑 (Admin) อนุมัติงานทั้งหมดแล้ว"); }
+        function adminManageUsers() { alert("👥 (Admin) จัดการผู้ใช้งาน"); }
 
         function handleImageUpload(event) {
             const files = event.target.files;
