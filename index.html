@@ -201,44 +201,6 @@
                     </div>
                 </div>
 
-                <!-- Criticality Assessment Section -->
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2.5">
-                    <div class="flex justify-between items-center">
-                        <div class="text-slate-700 font-bold text-xs flex items-center gap-1.5">
-                            <span>🎯</span> การประเมินความสำคัญของอุปกรณ์ (Criticality)
-                        </div>
-                        <div id="criticalityStatusBadge" class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-[11px] font-medium">
-                            ยังไม่ประเมิน
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-[11px]">
-                        <div>
-                            <label class="block text-slate-600 font-medium mb-1">SAF – ความปลอดภัย</label>
-                            <select id="critSAF" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-                        </div>
-                        <div>
-                            <label class="block text-slate-600 font-medium mb-1">REL – ความต่อเนื่องจ่ายไฟ</label>
-                            <select id="critREL" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-                        </div>
-                        <div>
-                            <label class="block text-slate-600 font-medium mb-1">OPR – ภารกิจ</label>
-                            <select id="critOPR" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-                        </div>
-                        <div>
-                            <label class="block text-slate-600 font-medium mb-1">CON – สภาพอุปกรณ์</label>
-                            <select id="critCON" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-                        </div>
-                        <div>
-                            <label class="block text-slate-600 font-medium mb-1">REC – หาอะไหล่ยาก</label>
-                            <select id="critREC" onchange="calculateCriticality()" class="planning-input"><option value="0">- เลือก -</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-                        </div>
-                    </div>
-                    <div class="pt-2 border-t border-slate-100 font-bold text-xs flex items-center justify-between">
-                        <span id="totalScoreDisplay">คะแนนรวม: - / 100</span>
-                        <span id="criticalityLevelText" class="text-blue-600"></span>
-                    </div>
-                </div>
-
                 <!-- A4 Document Workspace -->
                 <div class="overflow-x-auto flex justify-center bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
                     <div id="zoomContainer" class="transition-transform duration-200 origin-top">
@@ -419,9 +381,9 @@
 
             document.querySelectorAll('.form-pill').forEach(btn => {
                 if(btn.dataset.key === key) {
-                    btn.className = "form-pill w-full text-left px-3 py-1.5 bg-blue-600 text-white rounded-lg font-bold text-xs shadow-xs cursor-pointer transition-all";
+                    btn.className = "form-pill w-full text-left px-3.5 py-1.5 bg-blue-600 text-white rounded-lg font-bold text-xs shadow-xs cursor-pointer transition-all";
                 } else {
-                    btn.className = "form-pill w-full text-left px-3 py-1.5 bg-slate-800/50 hover:bg-slate-800 text-slate-300 rounded-lg font-medium text-xs transition-all";
+                    btn.className = "form-pill w-full text-left px-3.5 py-1.5 bg-slate-800/50 hover:bg-slate-800 text-slate-300 rounded-lg font-medium text-xs transition-all";
                 }
             });
         }
@@ -493,8 +455,6 @@
         function createNewForm() { loadForm(currentFormKey); alert("➕ เริ่มต้นฟอร์มใหม่เรียบร้อย"); }
         function clearFormInputs() { loadForm(currentFormKey); alert("🧹 ล้างข้อมูลฟอร์มเรียบร้อย"); }
         function refreshSavedRecords() { alert("🔄 รีเฟรชรายการเรียบร้อย"); }
-        function adminApproveAll() { alert("👑 (Admin) อนุมัติงานทั้งหมดแล้ว"); }
-        function adminManageUsers() { alert("👥 (Admin) จัดการผู้ใช้งาน"); }
 
         function handleImageUpload(event) {
             const files = event.target.files;
@@ -514,36 +474,6 @@
                 reader.readAsDataURL(files[i]);
             }
             document.getElementById('imageSizeInfo').innerText = (totalBytes / 1024).toFixed(1) + " KB";
-        }
-
-        function calculateCriticality() {
-            const saf = parseInt(document.getElementById('critSAF').value) || 0;
-            const rel = parseInt(document.getElementById('critREL').value) || 0;
-            const opr = parseInt(document.getElementById('critOPR').value) || 0;
-            const con = parseInt(document.getElementById('critCON').value) || 0;
-            const rec = parseInt(document.getElementById('critREC').value) || 0;
-
-            const countSelected = [saf, rel, opr, con, rec].filter(v => v > 0).length;
-            if (countSelected === 0) {
-                document.getElementById('totalScoreDisplay').innerText = "คะแนนรวม: - / 100";
-                document.getElementById('criticalityLevelText').innerText = "";
-                document.getElementById('criticalityStatusBadge').className = "px-2 py-0.5 bg-slate-100 text-slate-600 rounded-md text-[11px] font-medium";
-                document.getElementById('criticalityStatusBadge').innerText = "ยังไม่ประเมิน";
-                return;
-            }
-
-            const totalScore = ((saf + rel + opr + con + rec) * 5);
-            document.getElementById('totalScoreDisplay').innerText = `คะแนนรวม: ${totalScore} / 100`;
-            
-            let badgeClass = "px-2 py-0.5 rounded-md text-[11px] font-medium ";
-            let levelText = "";
-            if (totalScore >= 75) { badgeClass += "bg-rose-100 text-rose-800"; levelText = "⚠️ ความสำคัญระดับสูงมาก (Critical)"; }
-            else if (totalScore >= 50) { badgeClass += "bg-amber-100 text-amber-800"; levelText = "⚡ ความสำคัญระดับปานกลาง-สูง"; }
-            else { badgeClass += "bg-emerald-100 text-emerald-800"; levelText = "✅ ความสำคัญระดับปกติ"; }
-
-            document.getElementById('criticalityStatusBadge').className = badgeClass;
-            document.getElementById('criticalityStatusBadge').innerText = `รวม ${totalScore} คะแนน`;
-            document.getElementById('criticalityLevelText').innerText = levelText;
         }
 
         loadForm("015");
