@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asset Inspection App. - Advanced Field CMMS</title>
+    <title>Asset Inspection App. - Complete Forms</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -147,7 +147,7 @@
 
             <!-- ================= VIEW: INSPECTION FORMS ================= -->
             <div id="viewInspection" class="space-y-4">
-                <!-- Action Toolbar (จัดชิดขวาตามต้องการ) -->
+                <!-- Action Toolbar (ชิดขวาตามต้องการ) -->
                 <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs flex items-center justify-end gap-2.5">
                     <button onclick="saveNewRecord()" class="px-4 py-2 btn-blue-action rounded-lg font-medium text-xs transition cursor-pointer shadow-xs flex items-center gap-1">
                         💾 บันทึกรายการ
@@ -179,8 +179,8 @@
                         </button>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <input type="text" placeholder="Plant / สถานที่" class="planning-input text-xs border border-slate-200 p-2 rounded">
-                        <input type="text" placeholder="Work Order / เลขใบงาน" class="planning-input text-xs border border-slate-200 p-2 rounded">
+                        <input type="text" placeholder="Plant / สถานที่" class="border border-slate-200 p-2 rounded text-xs">
+                        <input type="text" placeholder="Work Order / เลขใบงาน" class="border border-slate-200 p-2 rounded text-xs">
                     </div>
                     <div id="savedRecordsList" class="text-center py-3 text-slate-400 text-xs border border-dashed border-slate-200 rounded-lg bg-slate-50/50">
                         เข้าสู่ระบบเพื่อดูรายการที่บันทึกไว้
@@ -233,8 +233,8 @@
                             <p>คลิกปุ่ม "🔑 เข้าสู่ระบบ" ที่เมนูด้านซ้ายเพื่อเลือกระหว่าง Admin หรือ Inspector</p>
                         </div>
                         <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-1">
-                            <h3 class="font-bold text-slate-900">2. การเลือกแบบฟอร์ม</h3>
-                            <p>เลือกแบบฟอร์มตรวจสอบทั้ง 11 ฟอร์มได้จากเมนูด้านซ้าย ระบบจะอัปเดตหน้ากระดาษ A4 อัตโนมัติ</p>
+                            <h3 class="font-bold text-slate-900">2. การเลือกแบบฟอร์ม 11 ใบงาน</h3>
+                            <p>เลือกแบบฟอร์มตรวจสอบทั้ง 11 ฟอร์มจากเมนูด้านซ้าย ระบบจะอัปเดตหน้ากระดาษ A4 ตามข้อมูลต้นฉบับอย่างแม่นยำ</p>
                         </div>
                     </div>
                 </div>
@@ -302,7 +302,7 @@
         let currentUser = null;
         let userRole = null;
 
-        // ข้อมูลฟอร์มใบงานทั้ง 11 แบบฟอร์มอย่างสมบูรณ์
+        // โครงสร้างฟอร์มใบงานทั้ง 11 แบบฟอร์มอย่างสมบูรณ์ตรงตามต้นฉบับ
         const formsData = {
             "015": {
                 title: "แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย",
@@ -329,16 +329,148 @@
                     </table>
                 `
             },
-            "016": { title: "แบบตรวจสอบบำรุงรักษา Load Break Switch", code: "SF-07-0-016", render: () => `<div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบ Load Break Switch (SF-07-0-016)</div><table><tr><td class="form-header-bg">รายการตรวจสอบ LBS</td></tr><tr><td><input type="text" placeholder="รายละเอียด..."></td></tr></table>` },
-            "017": { title: "แบบตรวจสอบบำรุงรักษา Sectionalizer", code: "SF-07-0-017", render: () => `<div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบ Sectionalizer (SF-07-0-017)</div><table><tr><td class="form-header-bg">รายการตรวจสอบ SZ</td></tr><tr><td><input type="text" placeholder="รายละเอียด..."></td></tr></table>` },
-            "018": { title: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)", code: "SF-07-0-018", render: () => `<div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบ RMU (SF-07-0-018)</div><table><tr><td class="form-header-bg">รายการตรวจสอบ RMU</td></tr><tr><td><input type="text" placeholder="รายละเอียด..."></td></tr></table>` },
-            "019": { title: "แบบตรวจสอบบำรุงรักษา Unit Substation", code: "SF-07-0-019", render: () => `<div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบ Unit Substation (SF-07-0-019 - รวมปุ่มเดียว)</div><table><tr><td class="form-header-bg">รายการตรวจสอบ Unit Substation ส่วนที่ 1 และ 2</td></tr><tr><td><input type="text" placeholder="รายละเอียด..."></td></tr></table>` },
-            "020": { title: "แบบตรวจสอบบำรุงรักษา Capacitor Bank", code: "SF-07-0-020", render: () => `<div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบ Capacitor Bank (SF-07-0-020)</div><table><tr><td class="form-header-bg">รายการตรวจสอบ Cap Bank</td></tr><tr><td><input type="text" placeholder="รายละเอียด..."></td></tr></table>` },
-            "021": { title: "แบบตรวจสอบเครื่องป้องกันหม้อแปลงวงจรตาข่าย", code: "SF-07-0-021", render: () => `<div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบเครื่องป้องกันหม้อแปลงวงจรตาข่าย (SF-07-0-021)</div><table><tr><td class="form-header-bg">รายการตรวจสอบ</td></tr><tr><td><input type="text" placeholder="รายละเอียด..."></td></tr></table>` },
-            "022": { title: "แบบตรวจสอบหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง", code: "SF-07-0-022", render: () => `<div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง (SF-07-0-022)</div><table><tr><td class="form-header-bg">รายการตรวจสอบ</td></tr><tr><td><input type="text" placeholder="รายละเอียด..."></td></tr></table>` },
-            "023": { title: "แบบตรวจสอบทดสอบและกรองน้ำมันหม้อแปลง", code: "SF-07-0-023", render: () => `<div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบทดสอบและกรองน้ำมันหม้อแปลง (SF-07-0-023)</div><table><tr><td class="form-header-bg">บันทึกผลการทดสอบ Breakdown Voltage</td></tr><tr><td><input type="text" placeholder="รายละเอียด..."></td></tr></table>` },
-            "024": { title: "รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)", code: "SF-07-0-024", render: () => `<div class="text-center font-bold text-sm mb-2 text-black">รายงานผลการตรวจสอบจุดร้อนแดง Hot Spot (SF-07-0-024)</div><table><tr><td class="form-header-bg">บันทึกอุณหภูมิ Delta T</td></tr><tr><td><input type="text" placeholder="รายละเอียด..."></td></tr></table>` },
-            "025": { title: "รายงานผลการตรวจสอบการคายประจุไฟฟ้า", code: "SF-07-0-025", render: () => `<div class="text-center font-bold text-sm mb-2 text-black">รายงานผลการตรวจสอบ Partial Discharge (SF-07-0-025)</div><table><tr><td class="form-header-bg">บันทึกผล Acoustic Camera</td></tr><tr><td><input type="text" placeholder="รายละเอียด..."></td></tr></table>` }
+            "016": {
+                title: "แบบตรวจสอบบำรุงรักษา Load Break Switch",
+                code: "SF-07-0-016",
+                render: () => `
+                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษา Load Break Switch</div>
+                    <table>
+                        <tr><td class="form-header-bg text-center w-6">1</td><td colspan="5" class="form-header-bg">ข้อมูลทั่วไป LBS</td></tr>
+                        <tr><td colspan="2" class="sub-header-bg w-28">Station ID</td><td colspan="2"><input type="text"></td><td class="sub-header-bg">สถานที่</td><td><input type="text"></td></tr>
+                        <tr><td class="form-header-bg text-center">2</td><td colspan="5" class="form-header-bg">รายการตรวจสอบบำรุงรักษา LBS</td></tr>
+                        ${["2.1 ตัวถัง LBS /สลักล็อค", "2.2 สถานะก๊าซ SF6", "2.3 Bushing", "2.4 กับดักฟ้าผ่า", "2.5 VT", "2.6 Drop Fuse ลง VT", "2.7 คอนสาย", "2.8 สายควบคุม LBS", "2.9 อุปกรณ์ป้องกันสัตว์"].map((item) => `
+                            <tr><td colspan="2">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td><input type="text"></td></tr>
+                        `).join('')}
+                    </table>
+                `
+            },
+            "017": {
+                title: "แบบตรวจสอบบำรุงรักษา Sectionalizer",
+                code: "SF-07-0-017",
+                render: () => `
+                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษา Sectionalizer</div>
+                    <table>
+                        <tr><td class="form-header-bg text-center w-6">1</td><td colspan="5" class="form-header-bg">ข้อมูลทั่วไป Sectionalizer</td></tr>
+                        <tr><td colspan="2" class="sub-header-bg w-28">Station ID</td><td colspan="2"><input type="text"></td><td class="sub-header-bg">สถานที่</td><td><input type="text"></td></tr>
+                        <tr><td class="form-header-bg text-center">2</td><td colspan="5" class="form-header-bg">รายการตรวจสอบ SZ</td></tr>
+                        ${["2.1 ตัวถัง SZ", "2.2 ก๊าซ SF6", "2.3 Bushing", "2.4 ตู้ Control และแบตเตอรี่"].map((item) => `
+                            <tr><td colspan="2">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td><input type="text"></td></tr>
+                        `).join('')}
+                    </table>
+                `
+            },
+            "018": {
+                title: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",
+                code: "SF-07-0-018",
+                render: () => `
+                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</div>
+                    <table>
+                        <tr><td class="form-header-bg text-center w-6">1</td><td colspan="5" class="form-header-bg">ข้อมูลทั่วไป RMU</td></tr>
+                        <tr><td colspan="2" class="sub-header-bg w-28">Station ID</td><td colspan="2"><input type="text"></td><td class="sub-header-bg">ยี่ห้อ RMU</td><td><input type="text"></td></tr>
+                        <tr><td class="form-header-bg text-center">2</td><td colspan="5" class="form-header-bg">รายการตรวจสอบ RMU</td></tr>
+                        ${["2.1 สภาพตู้ภายนอก", "2.2 แรงดันก๊าซ SF6", "2.3 ระบบปลดสับ Remote/Local"].map((item) => `
+                            <tr><td colspan="2">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td><input type="text"></td></tr>
+                        `).join('')}
+                    </table>
+                `
+            },
+            "019": {
+                title: "แบบตรวจสอบบำรุงรักษา Unit Substation",
+                code: "SF-07-0-019",
+                render: () => `
+                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษา Unit Substation (SF-07-0-019 - รวมปุ่มเดียว)</div>
+                    <table>
+                        <tr><td class="form-header-bg text-center w-6">1</td><td colspan="5" class="form-header-bg">ข้อมูลทั่วไป Unit Substation</td></tr>
+                        <tr><td colspan="2" class="sub-header-bg w-28">Station ID</td><td colspan="2"><input type="text"></td><td class="sub-header-bg">สถานที่</td><td><input type="text"></td></tr>
+                        <tr><td class="form-header-bg text-center">2</td><td colspan="5" class="form-header-bg">รายการตรวจสอบ Unit Substation ส่วนที่ 1 และ 2</td></tr>
+                        ${["2.1 ตู้ Enclosure & ฐานตู้", "2.2 RMU & ก๊าซ SF6", "2.3 ตัวถังหม้อแปลง & Bushing", "2.4 ด้านแรงต่ำ CB/Fuse & Busbar"].map((item) => `
+                            <tr><td colspan="2">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td><input type="text"></td></tr>
+                        `).join('')}
+                    </table>
+                `
+            },
+            "020": {
+                title: "แบบตรวจสอบบำรุงรักษา Capacitor Bank",
+                code: "SF-07-0-020",
+                render: () => `
+                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV</div>
+                    <table>
+                        <tr><td class="form-header-bg text-center w-6">1</td><td colspan="5" class="form-header-bg">ข้อมูลทั่วไป Capacitor Bank</td></tr>
+                        <tr><td colspan="2" class="sub-header-bg w-28">Station ID</td><td colspan="2"><input type="text"></td><td class="sub-header-bg">สายป้อน</td><td><input type="text"></td></tr>
+                        <tr><td class="form-header-bg text-center">2</td><td colspan="5" class="form-header-bg">รายการตรวจสอบ Cap Bank</td></tr>
+                        ${["2.1 Drop Fuse & L/A", "2.2 ตู้ Control & Digital Display", "2.3 Capacitor Cell & Bushing"].map((item) => `
+                            <tr><td colspan="2">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td><input type="text"></td></tr>
+                        `).join('')}
+                    </table>
+                `
+            },
+            "021": {
+                title: "แบบตรวจสอบเครื่องป้องกันหม้อแปลงวงจรตาข่าย",
+                code: "SF-07-0-021",
+                render: () => `
+                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย</div>
+                    <table>
+                        <tr><td class="sub-header-bg w-20">สถานที่</td><td colspan="3"><input type="text"></td><td class="sub-header-bg w-20">STATION</td><td><input type="text"></td></tr>
+                        <tr><td class="form-header-bg text-center" colspan="6">รายการตรวจสอบเครื่องป้องกันวงจรตาข่าย</td></tr>
+                        ${["1.1 สถานะ MV.SW. (CLOSE)", "1.2 สถานะ NP (CLOSE)", "1.3 สภาพรีเลย์ MPCR/MPCV", "1.4 อุปกรณ์สื่อสารระยะไกล"].map((item) => `
+                            <tr><td colspan="4">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"> ปกติ</td><td><input type="text" placeholder="ข้อบกพร่อง..."></td></tr>
+                        `).join('')}
+                    </table>
+                `
+            },
+            "022": {
+                title: "แบบตรวจสอบหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",
+                code: "SF-07-0-022",
+                render: () => `
+                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง</div>
+                    <table>
+                        <tr><td class="sub-header-bg w-24">สถานที่</td><td colspan="3"><input type="text"></td><td class="sub-header-bg">STATION</td><td><input type="text"></td></tr>
+                        <tr><td class="form-header-bg text-center" colspan="6">รายการตรวจสอบหม้อแปลงตาข่าย</td></tr>
+                        ${["1. สวิตช์แรงกลาง & ก๊าซ SF6", "2. ตัวถังหม้อแปลง & ระดับน้ำมัน", "3. อุปกรณ์แรงต่ำ & คาปาซิเตอร์"].map((item) => `
+                            <tr><td colspan="4">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"> ปกติ</td><td><input type="text" placeholder="ข้อบกพร่อง..."></td></tr>
+                        `).join('')}
+                    </table>
+                `
+            },
+            "023": {
+                title: "แบบตรวจสอบทดสอบและกรองน้ำมันหม้อแปลง",
+                code: "SF-07-0-023",
+                render: () => `
+                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย</div>
+                    <table>
+                        <tr><td class="sub-header-bg w-20">สถานที่</td><td colspan="4"><input type="text"></td></tr>
+                        <tr><td class="form-header-bg text-center" colspan="5">บันทึกผลการทดสอบ Breakdown Voltage (kV)</td></tr>
+                        <tr class="sub-header-bg text-center"><th>การทดสอบ</th><th>ครั้ง 1</th><th>ครั้ง 2</th><th>ครั้ง 3</th><th>ค่าเฉลี่ย</th></tr>
+                        <tr><td>ก่อนกรองน้ำมัน</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                        <tr><td>หลังกรองรอบที่ 1</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                    </table>
+                `
+            },
+            "024": {
+                title: "รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",
+                code: "SF-07-0-024",
+                render: () => `
+                    <div class="text-center font-bold text-sm mb-2 text-black">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot - Infrared)</div>
+                    <table>
+                        <tr><td class="sub-header-bg w-24">Station ID</td><td><input type="text"></td><td class="sub-header-bg">อุปกรณ์</td><td><input type="text"></td></tr>
+                        <tr><td class="form-header-bg text-center" colspan="4">อุณหภูมิและความแตกต่าง (Delta T)</td></tr>
+                        <tr><td colspan="2">อุณหภูมิสูงสุดที่จุดวัด (°C): <input type="text"></td><td colspan="2">Delta T (°C): <input type="text"></td></tr>
+                        <tr><td colspan="4">ระดับความสำคัญ: [ ] P1 (>40°C) &nbsp;&nbsp; [ ] P2 (20-40°C) &nbsp;&nbsp; [ ] P3 (10-20°C)</td></tr>
+                    </table>
+                `
+            },
+            "025": {
+                title: "รายงานผลการตรวจสอบการคายประจุไฟฟ้า (Partial Discharge)",
+                code: "SF-07-0-025",
+                render: () => `
+                    <div class="text-center font-bold text-sm mb-2 text-black">รายงานผลการตรวจสอบ Partial Discharge ด้วย Acoustic Camera</div>
+                    <table>
+                        <tr><td class="sub-header-bg w-24">Station ID</td><td><input type="text"></td><td class="sub-header-bg">อุปกรณ์</td><td><input type="text"></td></tr>
+                        <tr><td class="form-header-bg text-center" colspan="4">ผลการตรวจวัดเสียงคายประจุ</td></tr>
+                        <tr><td colspan="2">ระดับความเข้มเสียง (dB): <input type="text"></td><td colspan="2">ระดับความรุนแรง: <select><option>สูงมาก</option><option>สูง</option><option>ปานกลาง</option><option>ต่ำ</option></select></td></tr>
+                    </table>
+                `
+            }
         };
 
         function switchView(viewName) {
