@@ -179,6 +179,112 @@ body.dark .manage-question{color:#dbeaf5}body.dark .manage-primary>button,body.d
 body.dark .plan-flow-hero{background:#102c40;border-color:#234b64}body.dark .plan-flow-hero h2{color:#e2f2fb}body.dark .route-point{background:#0d2333;border-color:#24465b}body.dark .route-summary{background:#102c40;border-color:#234b64;color:#a8c0d0}
 @media(max-width:900px){.route-picker{grid-template-columns:1fr 1fr}.plan-flow-hero{align-items:flex-start;flex-direction:column}.flow-badges{justify-content:flex-start}}@media(max-width:600px){.route-picker{grid-template-columns:1fr}}
 
+
+/* ===== SKY BLUE PREMIUM UX ===== */
+:root{
+ --sky:#168fd3;--sky2:#55b9ea;--sky3:#eaf8ff;--deep:#123f61;
+ --mint:#39b99a;--amber:#f3ad46;--violet:#7f75e8;
+ --glass:rgba(255,255,255,.88);--softshadow:0 16px 45px rgba(25,91,132,.11);
+}
+body{
+ background:
+ radial-gradient(circle at 80% -10%,rgba(95,195,241,.28),transparent 30%),
+ radial-gradient(circle at 45% 105%,rgba(151,222,247,.18),transparent 32%),
+ #f2f9fd;
+}
+.sidebar{
+ background:linear-gradient(180deg,#0a527e 0%,#073d63 55%,#062f4d 100%);
+ border-right:1px solid rgba(255,255,255,.12);
+}
+.brand{padding:4px 6px 17px;border-bottom:1px solid rgba(255,255,255,.12)}
+.menu{border:1px solid transparent}
+.menu:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.10)}
+.menu.active{background:linear-gradient(120deg,#1b96d7,#35afe7);box-shadow:0 8px 20px rgba(0,0,0,.12)}
+.header{
+ border:1px solid rgba(255,255,255,.9);
+ background:rgba(255,255,255,.88);
+ box-shadow:var(--softshadow);
+}
+.panel,.stat,.card,.job-card{
+ border:1px solid rgba(209,231,243,.9);
+ box-shadow:0 9px 30px rgba(32,94,130,.075);
+}
+.panel{border-radius:20px}.card,.job-card,.stat{border-radius:18px}
+.btn{border-radius:11px;box-shadow:none}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(20,136,212,.18)}
+.btn-green{background:linear-gradient(120deg,#24a883,#43c5a5)}
+.btn-light{background:#edf8fe;color:#0876b7}
+.field input,.field select,.field textarea,.search{
+ border:1px solid #d6e6ef;background:#fbfdff;border-radius:11px;
+ transition:.18s ease;
+}
+.field input:focus,.field select:focus,.field textarea:focus,.search:focus{
+ outline:none;border-color:#54b9e8;box-shadow:0 0 0 4px rgba(84,185,232,.12);background:#fff;
+}
+.plan-flow-hero{
+ position:relative;overflow:hidden;
+ background:linear-gradient(125deg,#0d78b6,#22a2df 62%,#69c8ef);
+ color:#fff;border:0;box-shadow:0 18px 45px rgba(18,113,166,.22);
+}
+.plan-flow-hero:after{
+ content:"";position:absolute;width:240px;height:240px;border-radius:50%;
+ right:-80px;top:-130px;background:rgba(255,255,255,.13);
+}
+.plan-flow-hero span,.plan-flow-hero h2,.plan-flow-hero p{color:#fff;position:relative;z-index:1}
+.plan-flow-hero p{opacity:.87}.plan-flow-hero .btn{position:relative;z-index:2}
+.flow-badges{position:relative;z-index:2}
+.flow-badges b{
+ background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);
+ color:#fff;backdrop-filter:blur(8px);
+}
+.flow-badges i{color:#fff}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.soft-label{background:#e8f6fd;color:#0b7fbd;padding:6px 10px;border-radius:999px;font-size:10px;font-weight:800}
+.route-point{border-radius:13px;background:#fbfdff;transition:.18s}
+.route-point:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(25,113,162,.10)}
+.route-point:has(input:checked){background:#eaf8ff;border-color:#35a9df;box-shadow:0 0 0 3px rgba(53,169,223,.10)}
+.route-summary{border-radius:14px;background:linear-gradient(90deg,#eef9ff,#f7fcff)}
+.workflow-actions button{transition:.16s}.workflow-actions button:hover{transform:translateY(-1px);background:#d9f1fd}
+table{overflow:hidden;border-radius:12px}th{background:#f0f8fc;color:#28516d;font-size:12px}
+td{background:rgba(255,255,255,.72)}
+.status{border-radius:999px}
+.fab{background:linear-gradient(145deg,#1b96d7,#36b3e9);box-shadow:0 12px 30px rgba(17,126,188,.35)}
+/* visual workflow navigator */
+.workflow-nav{
+ display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 18px;
+}
+.workflow-step{
+ position:relative;border:1px solid #d7eaf4;background:rgba(255,255,255,.9);
+ border-radius:16px;padding:14px 14px 14px 54px;min-height:72px;cursor:pointer;
+ box-shadow:0 7px 22px rgba(28,93,130,.06);transition:.18s;
+}
+.workflow-step:hover{transform:translateY(-2px);border-color:#6cc4ed}
+.workflow-step .ws-no{
+ position:absolute;left:13px;top:14px;width:31px;height:31px;border-radius:10px;
+ display:grid;place-items:center;background:#e6f6fd;color:#087abb;font-weight:900;
+}
+.workflow-step b{display:block;font-size:13px;color:#204c69;margin-bottom:4px}
+.workflow-step small{font-size:10px;color:#7890a0;line-height:1.35}
+.workflow-step:after{
+ content:"›";position:absolute;right:-10px;top:23px;color:#8fc8e4;font-size:25px;font-weight:300;z-index:2
+}
+.workflow-step:last-child:after{display:none}
+/* compact planning overview */
+.planning-overview{
+ display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:12px;margin-bottom:18px
+}
+.plan-overview-card{
+ background:rgba(255,255,255,.9);border:1px solid #d9ebf4;border-radius:17px;padding:16px;
+ box-shadow:0 8px 24px rgba(26,91,128,.06)
+}
+.plan-overview-card.hero-mini{background:linear-gradient(135deg,#eaf8ff,#fff)}
+.plan-overview-card small{color:#7890a0}.plan-overview-card strong{display:block;font-size:24px;color:#154c6e;margin-top:5px}
+.plan-overview-card b{display:block;color:#154c6e;margin-bottom:4px}
+body.dark .workflow-step,body.dark .plan-overview-card{background:#0d2333;border-color:#21455b}
+body.dark .workflow-step b,body.dark .plan-overview-card b,body.dark .plan-overview-card strong{color:#dff3ff}
+@media(max-width:1050px){.workflow-nav{grid-template-columns:1fr 1fr}.workflow-step:nth-child(2):after{display:none}.planning-overview{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.workflow-nav,.planning-overview{grid-template-columns:1fr}.workflow-step:after{display:none}}
+
 </style>
 </head>
 <body>
@@ -321,13 +427,25 @@ body.dark .plan-flow-hero{background:#102c40;border-color:#234b64}body.dark .pla
 <section id="history" class="page"><div class="panel"><div style="display:flex;justify-content:space-between;gap:10px"><h2>ประวัติการตรวจสอบ</h2><button class="btn btn-green" onclick="exportCSV()">Export CSV</button></div><div style="overflow:auto"><table><thead><tr><th>วันที่</th><th>ใบตรวจ</th><th>Station ID</th><th>MEA No.</th><th>ผู้ตรวจ</th><th>สถานะ</th><th></th></tr></thead><tbody id="historyBody"></tbody></table></div></div></section>
 
 <section id="jobplans" class="page">
+ <div class="workflow-nav">
+  <div class="workflow-step" onclick="showPage('jobplans',null)"><span class="ws-no">1</span><b>Job Plan</b><small>สร้างงานมาตรฐานไว้ใช้ซ้ำ</small></div>
+  <div class="workflow-step" onclick="showPage('routes',null)"><span class="ws-no">2</span><b>Route</b><small>จัดกลุ่มจุดงานตามพื้นที่</small></div>
+  <div class="workflow-step" onclick="showPage('pm',null)"><span class="ws-no">3</span><b>PM Plan</b><small>กำหนดรอบและผู้รับผิดชอบ</small></div>
+  <div class="workflow-step" onclick="showPage('workorder',null)"><span class="ws-no">4</span><b>Work Order</b><small>ส่งงานไปดำเนินการจริง</small></div>
+ </div>
+ <div class="planning-overview">
+  <div class="plan-overview-card hero-mini"><b>ศูนย์วางแผน PM</b><small>เริ่มจากซ้ายไปขวา ระบบจะเชื่อมข้อมูลให้ต่อเนื่อง</small></div>
+  <div class="plan-overview-card"><small>Job Plans</small><strong id="overviewJP">0</strong></div>
+  <div class="plan-overview-card"><small>Routes</small><strong id="overviewRoute">0</strong></div>
+  <div class="plan-overview-card"><small>PM Plans</small><strong id="overviewPM">0</strong></div>
+ </div>
  <div class="plan-flow-hero">
   <div><span>STEP 1 • เตรียมงานก่อนวาง PM</span><h2>🧩 Job Plans</h2>
   <p>กำหนด “งานมาตรฐาน” ของอุปกรณ์ไว้ก่อน เช่น ประเภทอุปกรณ์ กิจกรรม ระยะเวลา และทรัพยากรที่ต้องใช้ แล้วนำไปใช้ซ้ำในแผน PM / Work Order</p></div>
   <div class="flow-badges"><b>Job Plan</b><i>→</i><b>Route</b><i>→</i><b>PM</b><i>→</i><b>Work Order</b></div>
  </div>
  <div class="panel">
-  <div class="section-title"><h2>สร้าง Job Plan</h2><span class="soft-label">Reusable Template</span></div>
+  <div class="section-title"><div><h2 style="margin-bottom:4px">สร้าง Job Plan</h2><small style="color:#7890a0">กรอกเฉพาะข้อมูลสำหรับวางแผนงาน — สร้างครั้งเดียวแล้วเลือกใช้ซ้ำได้</small></div><span class="soft-label">Reusable Template</span></div>
   <div class="row3">
    <div class="field"><label>Job Plan ID</label><input id="jpId" placeholder="เช่น JP-TR-001"></div>
    <div class="field"><label>ประเภทอุปกรณ์</label><select id="jpType"><option>Distribution Transformer</option><option>Load Break Switch (LBS)</option><option>Sectionalizer</option><option>Ring Main Unit (RMU)</option><option>Unit Substation</option><option>Capacitor Bank</option><option>Network Transformer</option><option>Other</option></select></div>
@@ -345,6 +463,12 @@ body.dark .plan-flow-hero{background:#102c40;border-color:#234b64}body.dark .pla
 </section>
 
 <section id="routes" class="page">
+ <div class="workflow-nav">
+  <div class="workflow-step" onclick="showPage('jobplans',null)"><span class="ws-no">1</span><b>Job Plan</b><small>สร้างงานมาตรฐานไว้ใช้ซ้ำ</small></div>
+  <div class="workflow-step" onclick="showPage('routes',null)"><span class="ws-no">2</span><b>Route</b><small>จัดกลุ่มจุดงานตามพื้นที่</small></div>
+  <div class="workflow-step" onclick="showPage('pm',null)"><span class="ws-no">3</span><b>PM Plan</b><small>กำหนดรอบและผู้รับผิดชอบ</small></div>
+  <div class="workflow-step" onclick="showPage('workorder',null)"><span class="ws-no">4</span><b>Work Order</b><small>ส่งงานไปดำเนินการจริง</small></div>
+ </div>
  <div class="plan-flow-hero">
   <div><span>STEP 2 • จัดกลุ่มจุดงาน</span><h2>🛣️ Routes</h2>
   <p>รวมจุดตรวจ/อุปกรณ์ที่อยู่ในพื้นที่เดียวกันเป็น Route เพื่อให้ผู้วางแผนเห็นลำดับจุดงาน ระยะเวลารวม และเปิดดูตำแหน่งบนแผนที่ได้ง่าย</p></div>
@@ -354,9 +478,9 @@ body.dark .plan-flow-hero{background:#102c40;border-color:#234b64}body.dark .pla
   <div class="row3">
    <div class="field"><label>Route ID</label><input id="routeId" placeholder="เช่น RT-001"></div>
    <div class="field"><label>ชื่อ Route / พื้นที่</label><input id="routeName" placeholder="เช่น Route A"></div>
-   <div class="field"><label>Job Plan</label><select id="routeJobPlan"></select></div>
+   <div class="field"><label>Job Plan</label><select id="routeJobPlan" onchange="updateRouteEstimate()"></select></div>
   </div><br>
-  <div class="field"><label>เลือกจุดงานใน Route</label><div id="routeStationPicker" class="route-picker"></div></div><br>
+  <div class="field"><label>เลือกจุดงานใน Route <span id="routeSelectedBadge" class="soft-label">0 จุด</span></label><div id="routeStationPicker" class="route-picker"></div></div><br>
   <div class="route-summary" id="routeEstimate">เลือกจุดงานเพื่อคำนวณเวลางานโดยประมาณ</div><br>
   <button class="btn btn-green" onclick="saveRoute()">＋ บันทึก Route</button>
  </div>
@@ -365,6 +489,12 @@ body.dark .plan-flow-hero{background:#102c40;border-color:#234b64}body.dark .pla
 
 <section id="workorder" class="page"><div class="panel"><h2>Work Order</h2><div class="row3"><div class="field"><label>WO Number</label><input id="woNo"></div><div class="field"><label>Plant / Location</label><input id="woLocation"></div><div class="field"><label>Status</label><select id="woStatus"><option>Open</option><option>In Progress</option><option>Completed</option></select></div></div><br><div class="field"><label>รายละเอียดงาน</label><textarea id="woDetail"></textarea></div><br><button class="btn" onclick="saveWO()">บันทึก Work Order</button></div><div class="panel"><h2>Work Order History</h2><div id="woList"></div></div></section>
 <section id="pm" class="page">
+ <div class="workflow-nav">
+  <div class="workflow-step" onclick="showPage('jobplans',null)"><span class="ws-no">1</span><b>Job Plan</b><small>สร้างงานมาตรฐานไว้ใช้ซ้ำ</small></div>
+  <div class="workflow-step" onclick="showPage('routes',null)"><span class="ws-no">2</span><b>Route</b><small>จัดกลุ่มจุดงานตามพื้นที่</small></div>
+  <div class="workflow-step" onclick="showPage('pm',null)"><span class="ws-no">3</span><b>PM Plan</b><small>กำหนดรอบและผู้รับผิดชอบ</small></div>
+  <div class="workflow-step" onclick="showPage('workorder',null)"><span class="ws-no">4</span><b>Work Order</b><small>ส่งงานไปดำเนินการจริง</small></div>
+ </div>
  <div class="plan-flow-hero">
   <div><span>STEP 3 • จัดรอบบำรุงรักษา</span><h2>🗓️ PM Planning</h2>
   <p>นำ Job Plan + Route มาสร้างแผน PM เพื่อรู้ว่า “ทำอะไร • ที่ไหน • เมื่อไร • ใครรับผิดชอบ” จากนั้นค่อยสร้าง Work Order เมื่อต้องนำงานไปดำเนินการ</p></div>
@@ -707,6 +837,7 @@ function updateRouteEstimate(){
  const ids=routeSelectedStations(),jp=planningGet("assetJobPlans").find(x=>x.id===routeJobPlan.value);
  const mins=(Number(jp?.duration||0)*ids.length);
  const e=document.getElementById("routeEstimate");if(e)e.innerHTML=`<b>${ids.length} จุดงาน</b> • เวลางานตาม Job Plan โดยประมาณ <b>${mins||0} นาที</b>${jp?` • ${esc(jp.id)} / ${esc(jp.name)}`:""}`;
+ const badge=document.getElementById("routeSelectedBadge");if(badge)badge.textContent=ids.length+" จุด";
 }
 function saveRoute(){
  const id=routeId.value.trim(),name=routeName.value.trim(),points=routeSelectedStations();
@@ -747,6 +878,8 @@ function refreshPlanningWorkflow(){
  const picker=document.getElementById("routeStationPicker");if(picker)picker.innerHTML=stations.map(s=>`<label class="route-point"><input class="routeStationCheck" type="checkbox" value="${s.id}" onchange="updateRouteEstimate()"><span><b>${esc(s.station)}</b><small>${esc(s.location)} • ${esc(s.mea)}</small></span></label>`).join("");
  if(document.getElementById("jpCount"))jpCount.textContent=jps.length+" รายการ";
  if(document.getElementById("routeCount"))routeCount.textContent=routes.length+" Routes";
+ const oj=document.getElementById("overviewJP"),or=document.getElementById("overviewRoute"),op=document.getElementById("overviewPM");
+ if(oj)oj.textContent=jps.length;if(or)or.textContent=routes.length;if(op)op.textContent=pms.length;
  const jl=document.getElementById("jpList");if(jl)jl.innerHTML=moduleTable(jps.slice().reverse().map(x=>`<tr><td><span class="pill">${esc(x.id)}</span></td><td>${esc(x.type)}</td><td>${esc(x.name)}</td><td>${esc(x.activity||"-")}</td><td>${x.duration||0} นาที</td><td>${x.crew||1} คน</td></tr>`),["ID","Equipment","Job Plan","Activity","Duration","Crew"]);
  const rl=document.getElementById("routeList");if(rl)rl.innerHTML=moduleTable(routes.slice().reverse().map(x=>{const jp=jps.find(j=>j.id===x.jobPlan);return `<tr><td><span class="pill">${esc(x.id)}</span></td><td>${esc(x.name)}</td><td>${esc(jp?.name||x.jobPlan)}</td><td>${x.points.length} จุด</td><td><div class="workflow-actions"><button onclick="openRouteOnMap('${escAttr(x.id)}')">🗺️ ดูแผนที่</button></div></td></tr>`}),["Route","Area","Job Plan","Points",""]);
  const pl=document.getElementById("pmList");if(pl)pl.innerHTML=moduleTable(pms.slice().reverse().map(x=>{const jp=jps.find(j=>j.id===x.jobPlan),r=routes.find(z=>z.id===x.route);return `<tr><td>${esc(jp?.name||x.jobPlan||x.task||"-")}</td><td>${esc(r?.name||x.route||x.asset||"-")}</td><td>${esc(x.due||"-")}</td><td>${esc(x.owner||"-")}</td><td>${esc(x.status)}</td><td><div class="workflow-actions"><button onclick="createWOFromPM(${x.id})">＋ Work Order</button></div></td></tr>`}),["Job Plan","Route","Due","Owner","Status",""]);
