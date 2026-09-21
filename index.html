@@ -1,622 +1,1369 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asset Inspection App. - Complete Forms</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Sarabun', sans-serif; background-color: #f1f5f9; color: #1e293b; margin: 0; padding: 0; }
-        .sidebar-bg { background-color: #0f172a; }
-        .app-container { max-width: 1400px; margin: 0 auto; box-sizing: border-box; }
-        .a4-sheet {
-            width: 210mm;
-            min-height: 297mm;
-            padding: 12mm 15mm;
-            background: #ffffff;
-            box-shadow: 0 10px 25px -5px rgba(30, 41, 59, 0.08), 0 5px 10px -5px rgba(30, 41, 59, 0.05);
-            border-radius: 8px;
-            position: relative;
-            box-sizing: border-box;
-            border: 1px solid #cbd5e1;
-            margin: 0 auto;
-        }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #000000; padding: 3px 5px; font-size: 10px; color: #000000; }
-        th { background-color: #f1f5f9; font-weight: 600; text-align: center; }
-        input[type="text"], input[type="date"], input[type="number"], select { border: none; outline: none; background: transparent; width: 100%; font-family: 'Sarabun', sans-serif; font-size: 10px; color: #000000; }
-        textarea { color: #000000; }
-        .form-header-bg { background-color: #cbd5e1; font-weight: bold; color: #000; }
-        .sub-header-bg { background-color: #f1f5f9; font-weight: bold; color: #000; }
-        
-        .btn-blue-action { background-color: #0284c7; color: white; }
-        .btn-blue-action:hover { background-color: #0369a1; }
-        .btn-gray-action { background-color: #f8fafc; color: #334155; border: 1px solid #cbd5e1; }
-        .btn-gray-action:hover { background-color: #f1f5f9; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        @media print {
-            body { background: white !important; }
-            .no-print { display: none !important; }
-            .a4-sheet { box-shadow: none !important; margin: 0 !important; width: 100% !important; padding: 8mm !important; border-radius: 0 !important; border: none !important; }
-        }
-    </style>
+<title>Asset Inspection App</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,"Tahoma",sans-serif;
+    background:#f4f7fb;
+    color:#16375b;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    position:fixed;
+    width:260px;
+    height:100vh;
+    background:linear-gradient(180deg,#073d70,#062b50);
+    color:white;
+    padding:25px 15px;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.logo-small{
+    font-size:13px;
+    opacity:.7;
+    margin-bottom:30px;
+}
+
+.menu{
+    padding:13px 15px;
+    margin:6px 0;
+    border-radius:9px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.menu:hover{
+    background:#0d5b9e;
+}
+
+.menu.active{
+    background:#1385d1;
+}
+
+.menu span{
+    margin-right:10px;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    margin-left:260px;
+    padding:25px;
+}
+
+.header{
+    background:white;
+    border-radius:14px;
+    padding:20px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 3px 12px rgba(0,0,0,.05);
+    margin-bottom:25px;
+}
+
+.header h1{
+    margin:0;
+    font-size:26px;
+}
+
+.subtitle{
+    color:#6d8097;
+    margin-top:5px;
+}
+
+.user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#1385d1;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 3px 12px rgba(0,0,0,.06);
+}
+
+.card-title{
+    color:#71849b;
+    font-size:14px;
+}
+
+.card-value{
+    font-size:30px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.green{
+    color:#16a773;
+}
+
+.orange{
+    color:#ff8c2a;
+}
+
+.red{
+    color:#e84d4d;
+}
+
+.blue{
+    color:#1685d1;
+}
+
+/* =========================
+   DASHBOARD CHART
+========================= */
+
+.dashboard-grid{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+}
+
+.chart{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+.bar-container{
+    height:220px;
+    display:flex;
+    align-items:flex-end;
+    gap:25px;
+    padding:20px;
+}
+
+.bar{
+    width:45px;
+    background:#188bd1;
+    border-radius:5px 5px 0 0;
+    position:relative;
+}
+
+.bar span{
+    position:absolute;
+    top:-25px;
+    width:100%;
+    text-align:center;
+    font-size:12px;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-box{
+    background:white;
+    border-radius:14px;
+    margin-top:20px;
+    padding:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    text-align:left;
+    color:#6d8097;
+    padding:12px;
+    border-bottom:1px solid #eee;
+}
+
+td{
+    padding:14px 12px;
+    border-bottom:1px solid #eee;
+}
+
+.status{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.completed{
+    background:#dff7ec;
+    color:#11905e;
+}
+
+.progress{
+    background:#e0efff;
+    color:#1974c5;
+}
+
+.overdue{
+    background:#ffe2e2;
+    color:#d83c3c;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn{
+    border:0;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    background:#1685d1;
+    color:white;
+    font-weight:bold;
+}
+
+.btn:hover{
+    background:#0968ad;
+}
+
+.btn-green{
+    background:#18a874;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form{
+    background:white;
+    padding:25px;
+    border-radius:14px;
+    box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:11px;
+    border:1px solid #ccd6e0;
+    border-radius:8px;
+    margin-top:5px;
+}
+
+textarea{
+    height:100px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+@media(max-width:1000px){
+
+.grid{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.dashboard-grid{
+    grid-template-columns:1fr;
+}
+
+}
+
+</style>
 </head>
-<body class="flex min-h-screen">
 
-    <!-- LEFT SIDEBAR -->
-    <aside class="no-print sidebar-bg w-64 text-slate-300 flex flex-col justify-between shrink-0 min-h-screen sticky top-0 z-50 p-3.5 shadow-2xl">
-        <div class="space-y-5">
-            <!-- Brand / Logo -->
-            <div class="flex items-center gap-2.5 px-2 pt-1">
-                <div class="w-8 h-8 rounded-lg bg-sky-500/20 border border-sky-400/30 flex items-center justify-center text-sky-400 font-bold text-base">
-                    ⚡
-                </div>
-                <div>
-                    <h1 class="text-xs font-bold text-white tracking-wide">Asset Inspection</h1>
-                    <p class="text-[9px] text-sky-400">Field CMMS Workspace</p>
-                </div>
-            </div>
+<body>
 
-            <!-- User Profile Box -->
-            <div class="bg-slate-800/80 border border-slate-700/60 p-2.5 rounded-xl space-y-1">
-                <div class="flex justify-between items-center">
-                    <span class="text-xs font-semibold text-white truncate max-w-[120px]" id="sidebarUserName">Guest User</span>
-                    <span id="sidebarRoleBadge" class="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-1.5 py-0.5 rounded font-bold">GUEST</span>
-                </div>
-                <p class="text-[10px] text-slate-400">สถานะ: พร้อมใช้งาน</p>
-                <button onclick="openLoginModal()" class="mt-1 w-full py-1 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-[10px] font-medium transition cursor-pointer shadow-xs">
-                    🔑 เข้าสู่ระบบ (Admin / User)
-                </button>
-            </div>
+<!-- =========================
+SIDEBAR
+========================= -->
 
-            <!-- Navigation Menu Links -->
-            <nav class="space-y-1 text-xs">
-                <button onclick="switchView('dashboard')" id="menuDashboard" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white cursor-pointer">
-                    📊 Dashboard ภาพรวม
-                </button>
-                <button onclick="switchView('inspection')" id="menuInspection" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition bg-sky-600 text-white shadow-md cursor-pointer font-bold">
-                    📋 แบบฟอร์มตรวจหน้างาน
-                </button>
-                <button onclick="switchView('planning')" id="menuPlanning" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white cursor-pointer">
-                    🗓️ แผนงาน PM & KPIs
-                </button>
-                <button onclick="switchView('manual')" id="menuManual" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white cursor-pointer">
-                    📖 คู่มือการใช้งาน
-                </button>
-            </nav>
+<div class="sidebar">
 
-            <!-- Form Selection List (11 Forms ครบถ้วน) -->
-            <div id="sidebarFormListContainer" class="pt-2 border-t border-slate-800 space-y-1">
-                <p class="text-[10px] uppercase font-bold tracking-wider text-slate-400 px-2 mb-1">เลือกแบบฟอร์มใบงาน (11 ฟอร์ม)</p>
-                <div id="pillsContainer" class="flex flex-col gap-1 max-h-48 overflow-y-auto pr-1"></div>
-            </div>
-        </div>
+<div class="logo">
+⚙ Asset Inspection
+</div>
 
-        <!-- Sidebar Footer Action -->
-        <div class="pt-3 border-t border-slate-800">
-            <button onclick="clearFormInputs()" class="w-full py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/20 rounded-lg text-[11px] font-medium transition cursor-pointer flex items-center justify-center gap-1.5">
-                🗑️ ล้างข้อมูลทั้งหมด
-            </button>
-        </div>
-    </aside>
+<div class="logo-small">
+Maintenance Management System
+</div>
 
-    <!-- RIGHT MAIN CONTENT AREA -->
-    <div class="flex-1 flex flex-col min-w-0">
-        <!-- Top Navbar -->
-        <header class="no-print bg-white border-b border-slate-200 sticky top-0 z-40 px-6 py-3 flex justify-between items-center shadow-xs">
-            <span class="text-xs font-bold text-slate-700">Asset Inspection App. (Field Operations)</span>
-            <div class="flex items-center gap-2.5">
-                <div id="networkStatusBadge" class="px-2.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-md text-[11px] font-medium flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Firebase Connected
-                </div>
-                <button onclick="window.print()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-medium transition cursor-pointer shadow-xs flex items-center gap-1">
-                    🖨️ พิมพ์ / PDF
-                </button>
-            </div>
-        </header>
+<div class="menu active" onclick="showPage('dashboard',this)">
+<span>📊</span> Dashboard
+</div>
 
-        <main class="no-print p-5 app-container w-full space-y-4">
-            <!-- Login Status Banner -->
-            <div id="loginStatusBanner" class="bg-white border border-slate-200 text-slate-600 px-4 py-2.5 rounded-xl flex justify-between items-center text-xs shadow-2xs">
-                <span>ยังไม่ได้เข้าสู่ระบบ — ข้อมูลจะไม่ถูกบันทึก</span>
-                <span class="px-2.5 py-1 bg-sky-50 text-sky-600 border border-sky-200 rounded-lg font-medium text-[11px]">พร้อมใช้งาน</span>
-            </div>
+<div class="menu" onclick="showPage('inspection',this)">
+<span>🔍</span> Asset Inspection
+</div>
 
-            <!-- ================= VIEW: DASHBOARD ================= -->
-            <div id="viewDashboard" class="hidden space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-                        <span class="text-slate-500 text-[11px]">งานตรวจทั้งหมด</span>
-                        <h3 class="text-lg font-bold text-sky-700 mt-1">12 รายการ</h3>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-                        <span class="text-slate-500 text-[11px]">สถานะซิงค์ข้อมูล</span>
-                        <h3 class="text-lg font-bold text-emerald-600 mt-1">Realtime (Firebase)</h3>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-                        <span class="text-slate-500 text-[11px]">โหมดออฟไลน์</span>
-                        <h3 class="text-lg font-bold text-amber-600 mt-1">พร้อมใช้งาน</h3>
-                    </div>
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-                        <span class="text-slate-500 text-[11px]">แบบฟอร์มทั้งหมด</span>
-                        <h3 class="text-lg font-bold text-purple-600 mt-1">11 แบบฟอร์ม</h3>
-                    </div>
-                </div>
-            </div>
+<div class="menu" onclick="showPage('workorder',this)">
+<span>📋</span> Work Order
+</div>
 
-            <!-- ================= VIEW: INSPECTION FORMS ================= -->
-            <div id="viewInspection" class="space-y-4">
-                <!-- Action Toolbar (ชิดขวาตามต้องการ) -->
-                <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-xs flex items-center justify-end gap-2.5">
-                    <button onclick="saveNewRecord()" class="px-4 py-2 btn-blue-action rounded-lg font-medium text-xs transition cursor-pointer shadow-xs flex items-center gap-1">
-                        💾 บันทึกรายการ
-                    </button>
-                    <button onclick="clearFormInputs()" class="px-4 py-2 btn-gray-action rounded-lg font-medium text-xs transition cursor-pointer text-rose-600 flex items-center gap-1">
-                        🗑️ ล้างฟอร์ม
-                    </button>
-                </div>
+<div class="menu" onclick="showPage('pm',this)">
+<span>🗓</span> PM Planning
+</div>
 
-                <div id="adminControlPanel" class="hidden bg-sky-50 p-3.5 rounded-xl border border-sky-200 shadow-xs space-y-2">
-                    <div class="text-sky-900 font-bold text-xs flex justify-between">
-                        <span>👑 แผงควบคุมผู้ดูแลระบบ (Admin Field Dashboard)</span>
-                        <span class="text-[10px] bg-sky-200 text-sky-800 px-2 py-0.5 rounded">สิทธิ์สูงสุด</span>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="adminApproveAll()" class="px-3 py-1 bg-sky-600 text-white rounded-lg text-xs font-medium cursor-pointer">✔️ อนุมัติงานทั้งหมด</button>
-                        <button onclick="adminManageUsers()" class="px-3 py-1 bg-white border border-sky-300 text-sky-700 rounded-lg text-xs font-medium cursor-pointer">👥 จัดการทีมช่าง</button>
-                    </div>
-                </div>
+<div class="menu" onclick="showPage('labor',this)">
+<span>⏱</span> Labor Tracking
+</div>
 
-                <!-- Saved Records Section -->
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2.5">
-                    <div class="flex justify-between items-center">
-                        <div class="text-slate-700 font-bold text-xs flex items-center gap-1.5" id="recordSectionTitle">
-                            <span>🗂️</span> ข้อมูลที่บันทึกไว้ (<span id="savedCount">0</span>)
-                        </div>
-                        <button onclick="refreshSavedRecords()" class="px-2.5 py-1 btn-gray-action rounded-lg text-xs font-medium flex items-center gap-1">
-                            🔄 รีเฟรช
-                        </button>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <input type="text" placeholder="Plant / สถานที่" class="border border-slate-200 p-2 rounded text-xs">
-                        <input type="text" placeholder="Work Order / เลขใบงาน" class="border border-slate-200 p-2 rounded text-xs">
-                    </div>
-                    <div id="savedRecordsList" class="text-center py-3 text-slate-400 text-xs border border-dashed border-slate-200 rounded-lg bg-slate-50/50">
-                        เข้าสู่ระบบเพื่อดูรายการที่บันทึกไว้
-                    </div>
-                </div>
+<div class="menu" onclick="showPage('cost',this)">
+<span>💰</span> Cost Analysis
+</div>
 
-                <!-- Inspection Images Section -->
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-2.5">
-                    <div class="flex justify-between items-center">
-                        <div class="text-slate-700 font-bold text-xs flex items-center gap-1.5">
-                            <span>📷</span> รูปภาพประกอบการตรวจสอบพร้อม Timestamp & GPS
-                        </div>
-                        <div class="flex items-center gap-2.5">
-                            <span class="text-xs text-slate-400" id="imageSizeInfo">0 KB</span>
-                            <label class="px-3 py-1.5 btn-blue-action rounded-lg font-medium cursor-pointer text-xs shadow-xs">
-                                + เพิ่มรูป <input type="file" id="imageInput" accept="image/*" multiple class="hidden" onchange="handleImageUpload(event)">
-                            </label>
-                        </div>
-                    </div>
-                    <div id="imageGallery" class="text-center py-3 text-slate-400 text-xs border border-dashed border-slate-200 rounded-lg bg-slate-50/50">
-                        ยังไม่มีรูปภาพ – กด "เพิ่มรูป" เพื่อถ่ายหรือเลือกจากคลังภาพ
-                    </div>
-                </div>
+<div class="menu" onclick="showPage('kpi',this)">
+<span>📈</span> KPI
+</div>
 
-                <!-- A4 Document Workspace -->
-                <div class="overflow-x-auto flex justify-center bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-                    <div id="zoomContainer" class="transition-transform duration-200 origin-top">
-                        <div id="a4Paper" class="a4-sheet text-slate-900 bg-white"></div>
-                    </div>
-                </div>
-            </div>
+<div class="menu" onclick="showPage('users',this)">
+<span>👷</span> Users
+</div>
 
-            <!-- ================= VIEW: PLANNING & KPIS ================= -->
-            <div id="viewPlanning" class="hidden space-y-4">
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex justify-between items-center">
-                    <h2 class="text-xs font-bold text-slate-800">📊 ระบบวางแผน PM, KPIs และวิเคราะห์ต้นทุนเชิงลึก</h2>
-                    <button onclick="exportExcel()" class="px-3.5 py-1.5 btn-blue-action rounded-lg text-xs font-medium transition cursor-pointer shadow-xs">🟩 ส่งออก Excel</button>
-                </div>
-            </div>
+<div class="menu" onclick="exportData()">
+<span>📥</span> Export Data
+</div>
 
-            <!-- ================= VIEW: USER MANUAL ================= -->
-            <div id="viewManual" class="hidden space-y-4">
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-4">
-                    <div class="border-b border-slate-200 pb-3">
-                        <h2 class="text-sm font-bold text-slate-800">📖 คู่มือการใช้งานระบบ Asset Inspection App</h2>
-                    </div>
-                    <div class="space-y-3 text-xs text-slate-700 leading-relaxed">
-                        <div class="p-3 bg-sky-50 border border-sky-200 rounded-lg space-y-1">
-                            <h3 class="font-bold text-sky-900">1. การเข้าสู่ระบบ</h3>
-                            <p>คลิกปุ่ม "🔑 เข้าสู่ระบบ" ที่เมนูด้านซ้ายเพื่อเลือกระหว่าง Admin หรือ Inspector</p>
-                        </div>
-                        <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-1">
-                            <h3 class="font-bold text-slate-900">2. การเลือกแบบฟอร์ม 11 ใบงาน</h3>
-                            <p>เลือกแบบฟอร์มตรวจสอบทั้ง 11 ฟอร์มจากเมนูด้านซ้าย ระบบจะอัปเดตหน้ากระดาษ A4 ตามข้อมูลต้นฉบับอย่างแม่นยำ</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
+</div>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative border border-slate-200 space-y-4">
-            <h3 class="text-sm font-bold text-slate-800 text-center">🔐 เลือกรูปแบบการเข้าสู่ระบบ</h3>
-            <div class="space-y-3">
-                <button onclick="loginAs('Admin')" class="w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-semibold text-xs transition cursor-pointer shadow-sm">
-                    👑 เข้าสู่ระบบในฐานะ Admin (ผู้จัดการระบบ)
-                </button>
-                <button onclick="loginAs('User')" class="w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-semibold text-xs transition cursor-pointer shadow-sm">
-                    👤 เข้าสู่ระบบในฐานะ Field Inspector (เจ้าหน้าที่ตรวจหน้างาน)
-                </button>
-            </div>
-            <button onclick="closeLoginModal()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs transition cursor-pointer">ยกเลิก</button>
-        </div>
-    </div>
+<!-- =========================
+MAIN
+========================= -->
 
-    <!-- Firebase SDK Integration -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+<div class="main">
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBhGsuODnc97RnnrgjOq_wAmFFn-k0uAKQ",
-            databaseURL: "https://sirapasson-f4981-default-rtdb.firebaseio.com",
-            projectId: "sirapasson-f4981"
-        };
+<div class="header">
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
+<div>
+<h1 id="pageTitle">
+Maintenance Dashboard
+</h1>
 
-        signInWithEmailAndPassword(auth, "device@Sirapasson.local", "12345678")
-            .then(() => console.log("✅ Firebase Connected & Authenticated"))
-            .catch(err => console.error("Firebase Auth Error:", err.message));
+<div class="subtitle">
+Asset Inspection & Preventive Maintenance
+</div>
 
-        window.saveDataToFirebase = async function(formData) {
-            try {
-                const recordsRef = ref(db, 'inspection_records/' + currentFormKey);
-                const newRecordRef = push(recordsRef);
-                await set(newRecordRef, {
-                    formCode: currentFormKey,
-                    inspector: currentUser || "Guest",
-                    timestamp: new Date().toISOString(),
-                    data: formData
-                });
-                alert("💾 บันทึกและซิงค์ข้อมูลขึ้น Firebase สำเร็จเรียบร้อย!");
-            } catch (e) {
-                console.error("Firebase save error: ", e);
-                alert("⚠️ เกิดข้อผิดพลาดในการซิงค์ข้อมูลขึ้น Firebase");
-            }
-        };
-    </script>
+</div>
 
-    <script>
-        let currentFormKey = "015";
-        let uploadedImages = [];
-        let currentUser = null;
-        let userRole = null;
+<div class="user">
 
-        // โครงสร้างฟอร์มใบงานทั้ง 11 แบบฟอร์มอย่างสมบูรณ์ตรงตามต้นฉบับ
-        const formsData = {
-            "015": {
-                title: "แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย",
-                code: "SF-07-0-015",
-                render: () => `
-                    <div class="text-center font-bold text-sm mb-3 text-black">แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย</div>
-                    <table>
-                        <tr><td class="form-header-bg text-center w-6">1</td><td colspan="5" class="form-header-bg">ข้อมูลทั่วไป</td></tr>
-                        <tr>
-                            <td colspan="2" class="sub-header-bg w-24">Station ID</td><td colspan="2"><input type="text" id="fieldStationId" placeholder="สแกน QR..."></td>
-                            <td class="sub-header-bg w-16">สถานที่</td><td><input type="text"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" class="sub-header-bg flex justify-between items-center"><span>GIS</span><button onclick="getGPSLocation('lat015','long015')" class="no-print text-sky-700 bg-sky-50 px-1 rounded text-[9px]">📍 ดึงพิกัด</button></td>
-                            <td colspan="2">Lat. <input type="text" id="lat015" class="inline-block w-3/4"></td>
-                            <td colspan="2">Long. <input type="text" id="long015" class="inline-block w-3/4"></td>
-                        </tr>
-                        <tr><td class="form-header-bg text-center">2</td><td colspan="5" class="form-header-bg">รายการตรวจสอบบำรุงรักษา</td></tr>
-                        <tr><td rowspan="2" colspan="2" class="sub-header-bg text-center">รายการ</td><td colspan="3" class="sub-header-bg text-center">ผลการตรวจสอบ</td><td rowspan="2" class="sub-header-bg text-center w-48">ข้อบกพร่อง</td></tr>
-                        <tr><td class="sub-header-bg text-center w-12">ปกติ</td><td class="sub-header-bg text-center w-12">ชำรุด</td><td class="sub-header-bg text-center w-12">ไม่มี</td></tr>
-                        ${["2.1 Drop Fuse", "2.2 Station Post Type Insulator", "2.3 สายเข้า-ออก Drop Fuse", "2.4 คอนสาย", "2.5 อุปกรณ์ป้องกันสัตว์", "2.6 Low Voltage Capacitor", "2.7 กับดักฟ้าผ่า (L/A)", "2.8 ตัวถังหม้อแปลง", "2.9 Bushing HV-LV", "2.10 Cover (Bushing,L/A,Term. kit)", "2.11 สายหน้าหม้อแปลง LV", "2.12 LV Ground", "2.13 HV Ground", "2.14 CT-TLM Meter (ถ้ามี)"].map((item) => `
-                            <tr><td colspan="2">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td><input type="text"></td></tr>
-                        `).join('')}
-                    </table>
-                `
-            },
-            "016": {
-                title: "แบบตรวจสอบบำรุงรักษา Load Break Switch",
-                code: "SF-07-0-016",
-                render: () => `
-                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษา Load Break Switch</div>
-                    <table>
-                        <tr><td class="form-header-bg text-center w-6">1</td><td colspan="5" class="form-header-bg">ข้อมูลทั่วไป LBS</td></tr>
-                        <tr><td colspan="2" class="sub-header-bg w-28">Station ID</td><td colspan="2"><input type="text"></td><td class="sub-header-bg">สถานที่</td><td><input type="text"></td></tr>
-                        <tr><td class="form-header-bg text-center">2</td><td colspan="5" class="form-header-bg">รายการตรวจสอบบำรุงรักษา LBS</td></tr>
-                        ${["2.1 ตัวถัง LBS /สลักล็อค", "2.2 สถานะก๊าซ SF6", "2.3 Bushing", "2.4 กับดักฟ้าผ่า", "2.5 VT", "2.6 Drop Fuse ลง VT", "2.7 คอนสาย", "2.8 สายควบคุม LBS", "2.9 อุปกรณ์ป้องกันสัตว์"].map((item) => `
-                            <tr><td colspan="2">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td><input type="text"></td></tr>
-                        `).join('')}
-                    </table>
-                `
-            },
-            "017": {
-                title: "แบบตรวจสอบบำรุงรักษา Sectionalizer",
-                code: "SF-07-0-017",
-                render: () => `
-                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษา Sectionalizer</div>
-                    <table>
-                        <tr><td class="form-header-bg text-center w-6">1</td><td colspan="5" class="form-header-bg">ข้อมูลทั่วไป Sectionalizer</td></tr>
-                        <tr><td colspan="2" class="sub-header-bg w-28">Station ID</td><td colspan="2"><input type="text"></td><td class="sub-header-bg">สถานที่</td><td><input type="text"></td></tr>
-                        <tr><td class="form-header-bg text-center">2</td><td colspan="5" class="form-header-bg">รายการตรวจสอบ SZ</td></tr>
-                        ${["2.1 ตัวถัง SZ", "2.2 ก๊าซ SF6", "2.3 Bushing", "2.4 ตู้ Control และแบตเตอรี่"].map((item) => `
-                            <tr><td colspan="2">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td><input type="text"></td></tr>
-                        `).join('')}
-                    </table>
-                `
-            },
-            "018": {
-                title: "แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",
-                code: "SF-07-0-018",
-                render: () => `
-                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)</div>
-                    <table>
-                        <tr><td class="form-header-bg text-center w-6">1</td><td colspan="5" class="form-header-bg">ข้อมูลทั่วไป RMU</td></tr>
-                        <tr><td colspan="2" class="sub-header-bg w-28">Station ID</td><td colspan="2"><input type="text"></td><td class="sub-header-bg">ยี่ห้อ RMU</td><td><input type="text"></td></tr>
-                        <tr><td class="form-header-bg text-center">2</td><td colspan="5" class="form-header-bg">รายการตรวจสอบ RMU</td></tr>
-                        ${["2.1 สภาพตู้ภายนอก", "2.2 แรงดันก๊าซ SF6", "2.3 ระบบปลดสับ Remote/Local"].map((item) => `
-                            <tr><td colspan="2">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td><input type="text"></td></tr>
-                        `).join('')}
-                    </table>
-                `
-            },
-            "019": {
-                title: "แบบตรวจสอบบำรุงรักษา Unit Substation",
-                code: "SF-07-0-019",
-                render: () => `
-                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษา Unit Substation (SF-07-0-019 - รวมปุ่มเดียว)</div>
-                    <table>
-                        <tr><td class="form-header-bg text-center w-6">1</td><td colspan="5" class="form-header-bg">ข้อมูลทั่วไป Unit Substation</td></tr>
-                        <tr><td colspan="2" class="sub-header-bg w-28">Station ID</td><td colspan="2"><input type="text"></td><td class="sub-header-bg">สถานที่</td><td><input type="text"></td></tr>
-                        <tr><td class="form-header-bg text-center">2</td><td colspan="5" class="form-header-bg">รายการตรวจสอบ Unit Substation ส่วนที่ 1 และ 2</td></tr>
-                        ${["2.1 ตู้ Enclosure & ฐานตู้", "2.2 RMU & ก๊าซ SF6", "2.3 ตัวถังหม้อแปลง & Bushing", "2.4 ด้านแรงต่ำ CB/Fuse & Busbar"].map((item) => `
-                            <tr><td colspan="2">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td><input type="text"></td></tr>
-                        `).join('')}
-                    </table>
-                `
-            },
-            "020": {
-                title: "แบบตรวจสอบบำรุงรักษา Capacitor Bank",
-                code: "SF-07-0-020",
-                render: () => `
-                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV</div>
-                    <table>
-                        <tr><td class="form-header-bg text-center w-6">1</td><td colspan="5" class="form-header-bg">ข้อมูลทั่วไป Capacitor Bank</td></tr>
-                        <tr><td colspan="2" class="sub-header-bg w-28">Station ID</td><td colspan="2"><input type="text"></td><td class="sub-header-bg">สายป้อน</td><td><input type="text"></td></tr>
-                        <tr><td class="form-header-bg text-center">2</td><td colspan="5" class="form-header-bg">รายการตรวจสอบ Cap Bank</td></tr>
-                        ${["2.1 Drop Fuse & L/A", "2.2 ตู้ Control & Digital Display", "2.3 Capacitor Cell & Bushing"].map((item) => `
-                            <tr><td colspan="2">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td class="text-center"><input type="checkbox" class="accent-radio"></td><td><input type="text"></td></tr>
-                        `).join('')}
-                    </table>
-                `
-            },
-            "021": {
-                title: "แบบตรวจสอบเครื่องป้องกันหม้อแปลงวงจรตาข่าย",
-                code: "SF-07-0-021",
-                render: () => `
-                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย</div>
-                    <table>
-                        <tr><td class="sub-header-bg w-20">สถานที่</td><td colspan="3"><input type="text"></td><td class="sub-header-bg w-20">STATION</td><td><input type="text"></td></tr>
-                        <tr><td class="form-header-bg text-center" colspan="6">รายการตรวจสอบเครื่องป้องกันวงจรตาข่าย</td></tr>
-                        ${["1.1 สถานะ MV.SW. (CLOSE)", "1.2 สถานะ NP (CLOSE)", "1.3 สภาพรีเลย์ MPCR/MPCV", "1.4 อุปกรณ์สื่อสารระยะไกล"].map((item) => `
-                            <tr><td colspan="4">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"> ปกติ</td><td><input type="text" placeholder="ข้อบกพร่อง..."></td></tr>
-                        `).join('')}
-                    </table>
-                `
-            },
-            "022": {
-                title: "แบบตรวจสอบหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",
-                code: "SF-07-0-022",
-                render: () => `
-                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง</div>
-                    <table>
-                        <tr><td class="sub-header-bg w-24">สถานที่</td><td colspan="3"><input type="text"></td><td class="sub-header-bg">STATION</td><td><input type="text"></td></tr>
-                        <tr><td class="form-header-bg text-center" colspan="6">รายการตรวจสอบหม้อแปลงตาข่าย</td></tr>
-                        ${["1. สวิตช์แรงกลาง & ก๊าซ SF6", "2. ตัวถังหม้อแปลง & ระดับน้ำมัน", "3. อุปกรณ์แรงต่ำ & คาปาซิเตอร์"].map((item) => `
-                            <tr><td colspan="4">${item}</td><td class="text-center"><input type="checkbox" class="accent-radio"> ปกติ</td><td><input type="text" placeholder="ข้อบกพร่อง..."></td></tr>
-                        `).join('')}
-                    </table>
-                `
-            },
-            "023": {
-                title: "แบบตรวจสอบทดสอบและกรองน้ำมันหม้อแปลง",
-                code: "SF-07-0-023",
-                render: () => `
-                    <div class="text-center font-bold text-sm mb-2 text-black">แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย</div>
-                    <table>
-                        <tr><td class="sub-header-bg w-20">สถานที่</td><td colspan="4"><input type="text"></td></tr>
-                        <tr><td class="form-header-bg text-center" colspan="5">บันทึกผลการทดสอบ Breakdown Voltage (kV)</td></tr>
-                        <tr class="sub-header-bg text-center"><th>การทดสอบ</th><th>ครั้ง 1</th><th>ครั้ง 2</th><th>ครั้ง 3</th><th>ค่าเฉลี่ย</th></tr>
-                        <tr><td>ก่อนกรองน้ำมัน</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-                        <tr><td>หลังกรองรอบที่ 1</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
-                    </table>
-                `
-            },
-            "024": {
-                title: "รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",
-                code: "SF-07-0-024",
-                render: () => `
-                    <div class="text-center font-bold text-sm mb-2 text-black">รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot - Infrared)</div>
-                    <table>
-                        <tr><td class="sub-header-bg w-24">Station ID</td><td><input type="text"></td><td class="sub-header-bg">อุปกรณ์</td><td><input type="text"></td></tr>
-                        <tr><td class="form-header-bg text-center" colspan="4">อุณหภูมิและความแตกต่าง (Delta T)</td></tr>
-                        <tr><td colspan="2">อุณหภูมิสูงสุดที่จุดวัด (°C): <input type="text"></td><td colspan="2">Delta T (°C): <input type="text"></td></tr>
-                        <tr><td colspan="4">ระดับความสำคัญ: [ ] P1 (>40°C) &nbsp;&nbsp; [ ] P2 (20-40°C) &nbsp;&nbsp; [ ] P3 (10-20°C)</td></tr>
-                    </table>
-                `
-            },
-            "025": {
-                title: "รายงานผลการตรวจสอบการคายประจุไฟฟ้า (Partial Discharge)",
-                code: "SF-07-0-025",
-                render: () => `
-                    <div class="text-center font-bold text-sm mb-2 text-black">รายงานผลการตรวจสอบ Partial Discharge ด้วย Acoustic Camera</div>
-                    <table>
-                        <tr><td class="sub-header-bg w-24">Station ID</td><td><input type="text"></td><td class="sub-header-bg">อุปกรณ์</td><td><input type="text"></td></tr>
-                        <tr><td class="form-header-bg text-center" colspan="4">ผลการตรวจวัดเสียงคายประจุ</td></tr>
-                        <tr><td colspan="2">ระดับความเข้มเสียง (dB): <input type="text"></td><td colspan="2">ระดับความรุนแรง: <select><option>สูงมาก</option><option>สูง</option><option>ปานกลาง</option><option>ต่ำ</option></select></td></tr>
-                    </table>
-                `
-            }
-        };
+<div class="avatar">
+A
+</div>
 
-        function switchView(viewName) {
-            const vDash = document.getElementById('viewDashboard');
-            const vInsp = document.getElementById('viewInspection');
-            const vPlan = document.getElementById('viewPlanning');
-            const vMan = document.getElementById('viewManual');
-            
-            const mDash = document.getElementById('menuDashboard');
-            const mInsp = document.getElementById('menuInspection');
-            const mPlan = document.getElementById('menuPlanning');
-            const mMan = document.getElementById('menuManual');
-            
-            const formListContainer = document.getElementById('sidebarFormListContainer');
+<div>
+<b>Admin</b><br>
+<small>Maintenance Manager</small>
+</div>
 
-            vDash.classList.add('hidden');
-            vInsp.classList.add('hidden');
-            vPlan.classList.add('hidden');
-            vMan.classList.add('hidden');
-            
-            mDash.className = mInsp.className = mPlan.className = mMan.className = "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition text-slate-400 hover:bg-slate-800 hover:text-white cursor-pointer";
+</div>
 
-            if(viewName === 'dashboard') {
-                vDash.classList.remove('hidden');
-                mDash.className = "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition bg-sky-600 text-white shadow-xs cursor-pointer font-bold";
-                formListContainer.classList.add('hidden');
-            } else if(viewName === 'inspection') {
-                vInsp.classList.remove('hidden');
-                mInsp.className = "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition bg-sky-600 text-white shadow-md cursor-pointer font-bold";
-                formListContainer.classList.remove('hidden');
-            } else if(viewName === 'planning') {
-                vPlan.classList.remove('hidden');
-                mPlan.className = "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition bg-sky-600 text-white shadow-md cursor-pointer font-bold";
-                formListContainer.classList.add('hidden');
-            } else {
-                vMan.classList.remove('hidden');
-                mMan.className = "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg font-medium transition bg-sky-600 text-white shadow-md cursor-pointer font-bold";
-                formListContainer.classList.add('hidden');
-            }
-        }
+</div>
 
-        const pillsContainer = document.getElementById('pillsContainer');
-        const a4Paper = document.getElementById('a4Paper');
+<!-- =========================
+DASHBOARD
+========================= -->
 
-        function loadForm(key) {
-            currentFormKey = key;
-            const form = formsData[key] || formsData["015"];
-            a4Paper.innerHTML = form.render();
+<div id="dashboard" class="page active">
 
-            document.querySelectorAll('.form-pill').forEach(btn => {
-                if(btn.dataset.key === key) {
-                    btn.className = "form-pill w-full text-left px-3.5 py-1.5 bg-sky-600 text-white rounded-lg font-bold text-xs shadow-xs cursor-pointer transition-all";
-                } else {
-                    btn.className = "form-pill w-full text-left px-3.5 py-1.5 bg-slate-800/50 hover:bg-slate-800 text-slate-300 rounded-lg font-medium text-xs transition-all";
-                }
-            });
-        }
+<div class="grid">
 
-        Object.keys(formsData).forEach(key => {
-            const btn = document.createElement('button');
-            btn.dataset.key = key;
-            btn.className = "form-pill";
-            btn.innerText = formsData[key].code;
-            btn.onclick = () => { switchView('inspection'); loadForm(key); };
-            pillsContainer.appendChild(btn);
-        });
+<div class="card">
+<div class="card-title">
+Total PM
+</div>
+<div class="card-value blue">
+120
+</div>
+</div>
 
-        function getGPSLocation(latId, longId) {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        document.getElementById(latId).value = position.coords.latitude.toFixed(6);
-                        document.getElementById(longId).value = position.coords.longitude.toFixed(6);
-                        alert("📍 ดึงพิกัด GPS หน้างานสำเร็จ!");
-                    },
-                    () => alert("⚠️ ไม่สามารถดึงพิกัดได้: กรุณาเปิด GPS")
-                );
-            }
-        }
+<div class="card">
+<div class="card-title">
+Completed
+</div>
+<div class="card-value green">
+98
+</div>
+</div>
 
-        function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
-        function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
+<div class="card">
+<div class="card-title">
+Overdue
+</div>
+<div class="card-value red">
+12
+</div>
+</div>
 
-        function loginAs(role) {
-            userRole = role;
-            currentUser = role === 'Admin' ? 'วิศวกรหัวหน้างาน (Admin)' : 'เจ้าหน้าที่ตรวจหน้างาน (Inspector)';
-            closeLoginModal();
+<div class="card">
+<div class="card-title">
+PM Compliance
+</div>
+<div class="card-value green">
+87%
+</div>
+</div>
 
-            document.getElementById('sidebarUserName').innerText = currentUser;
-            document.getElementById('sidebarRoleBadge').innerText = role.toUpperCase();
-            document.getElementById('sidebarRoleBadge').className = role === 'Admin' ? "text-[9px] bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded font-bold" : "text-[9px] bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded font-bold";
-            
-            document.getElementById('loginStatusBanner').innerHTML = `✅ เข้าสู่ระบบสำเร็จในฐานะ <b>${currentUser}</b> – กำลังใช้งานระบบในสิทธิ์ ${role}`;
-            document.getElementById('loginStatusBanner').className = "bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-2.5 rounded-xl flex justify-between items-center text-xs shadow-2xs";
-            
-            if (role === 'Admin') {
-                document.getElementById('adminControlPanel').classList.remove('hidden');
-                document.getElementById('savedRecordsList').innerHTML = `<div class="text-left p-2 text-xs">📂 รายการทั้งหมดในระบบ (12 รายการ)</div>`;
-                document.getElementById('savedCount').innerText = "12";
-            } else {
-                document.getElementById('adminControlPanel').classList.add('hidden');
-                document.getElementById('savedRecordsList').innerHTML = `<div class="text-left p-2 text-xs">📂 รายการบันทึกของคุณ</div>`;
-                document.getElementById('savedCount').innerText = "3";
-            }
-        }
+</div>
 
-        function saveNewRecord() { 
-            if (!currentUser) { alert("⚠️ กรุณาเข้าสู่ระบบก่อนทำการบันทึกข้อมูล"); openLoginModal(); return; }
-            const inputs = document.querySelectorAll('#a4Paper input, #a4Paper textarea, #a4Paper select');
-            let formData = {};
-            inputs.forEach((input, index) => {
-                formData[`field_${index}`] = input.type === 'checkbox' ? input.checked : input.value;
-            });
-            if (typeof window.saveDataToFirebase === 'function') {
-                window.saveDataToFirebase(formData);
-            } else {
-                alert(`💾 บันทึกรายการสำเร็จในนามคุณ ${currentUser}!`);
-            }
-        }
 
-        function clearFormInputs() { loadForm(currentFormKey); alert("🧹 ล้างข้อมูลฟอร์มเรียบร้อย"); }
-        function refreshSavedRecords() { alert("🔄 รีเฟรชรายการเรียบร้อย"); }
-        function adminApproveAll() { alert("👑 (Admin) อนุมัติงานทั้งหมดแล้ว"); }
-        function adminManageUsers() { alert("👥 (Admin) จัดการผู้ใช้งาน"); }
+<div class="dashboard-grid">
 
-        function handleImageUpload(event) {
-            const files = event.target.files;
-            if (!files.length) return;
-            const gallery = document.getElementById('imageGallery');
-            gallery.innerHTML = "";
-            let totalBytes = 0;
-            for (let i = 0; i < files.length; i++) {
-                totalBytes += files[i].size;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const div = document.createElement('div');
-                    div.className = "relative group border border-slate-200 rounded-md overflow-hidden aspect-square bg-slate-100 flex items-center justify-center";
-                    div.innerHTML = `<img src="${e.target.result}" class="object-cover w-full h-full">`;
-                    gallery.appendChild(div);
-                }
-                reader.readAsDataURL(files[i]);
-            }
-            document.getElementById('imageSizeInfo').innerText = (totalBytes / 1024).toFixed(1) + " KB";
-        }
+<div class="chart">
 
-        loadForm("015");
-    </script>
+<h3>
+Maintenance Performance
+</h3>
+
+<div class="bar-container">
+
+<div class="bar" style="height:70px">
+<span>45</span>
+</div>
+
+<div class="bar" style="height:100px">
+<span>65</span>
+</div>
+
+<div class="bar" style="height:130px">
+<span>82</span>
+</div>
+
+<div class="bar" style="height:160px">
+<span>98</span>
+</div>
+
+<div class="bar" style="height:190px">
+<span>120</span>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>KPI</h3>
+
+<p>
+PM Compliance
+</p>
+
+<h2 class="green">
+87%
+</h2>
+
+<hr>
+
+<p>
+Wrench Time
+</p>
+
+<h2 class="blue">
+72%
+</h2>
+
+<hr>
+
+<p>
+PM Man-hours
+</p>
+
+<h2>
+8.3 hr
+</h2>
+
+</div>
+
+</div>
+
+
+<div class="table-box">
+
+<h3>
+Recent Work Orders
+</h3>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Work Order</th>
+<th>Type</th>
+<th>Equipment</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody id="dashboardWO">
+
+<tr>
+<td>WO-001</td>
+<td>PM</td>
+<td>Transformer TR-01</td>
+<td>
+<span class="status completed">
+Completed
+</span>
+</td>
+</tr>
+
+<tr>
+<td>WO-002</td>
+<td>CM</td>
+<td>Cooling Pump P-02</td>
+<td>
+<span class="status progress">
+In Progress
+</span>
+</td>
+</tr>
+
+<tr>
+<td>WO-003</td>
+<td>PM</td>
+<td>Transformer TR-03</td>
+<td>
+<span class="status overdue">
+Overdue
+</span>
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- =========================
+INSPECTION
+========================= -->
+
+<div id="inspection" class="page">
+
+<div class="form">
+
+<h2>
+Asset Inspection
+</h2>
+
+<div class="form-grid">
+
+<div>
+<label>
+Plant / Location
+</label>
+
+<select>
+<option>Ploenchit</option>
+<option>Chidlom</option>
+<option>Bangkok</option>
+</select>
+</div>
+
+<div>
+<label>
+Asset ID
+</label>
+
+<input
+type="text"
+placeholder="TR-001">
+</div>
+
+<div>
+<label>
+Inspection Type
+</label>
+
+<select>
+<option>Transformer Inspection</option>
+<option>Visual Inspection</option>
+<option>Electrical Inspection</option>
+<option>Safety Inspection</option>
+</select>
+</div>
+
+<div>
+<label>
+Inspector
+</label>
+
+<input
+type="text"
+placeholder="Inspector name">
+</div>
+
+</div>
+
+<br>
+
+<label>
+Inspection Result
+</label>
+
+<textarea
+placeholder="รายละเอียดผลการตรวจสอบ">
+</textarea>
+
+<br><br>
+
+<label>
+Upload Photo
+</label>
+
+<input type="file">
+
+<br><br>
+
+<button
+class="btn"
+onclick="saveInspection()">
+
+💾 บันทึกผลตรวจสอบ
+
+</button>
+
+</div>
+
+</div>
+
+<!-- =========================
+WORK ORDER
+========================= -->
+
+<div id="workorder" class="page">
+
+<button
+class="btn"
+onclick="addWorkOrder()">
+
++ Create Work Order
+
+</button>
+
+<div class="table-box">
+
+<h2>
+Work Order Management
+</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>WO</th>
+<th>Type</th>
+<th>Equipment</th>
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody id="workOrderTable">
+
+<tr>
+
+<td>WO-001</td>
+
+<td>PM</td>
+
+<td>Transformer TR-01</td>
+
+<td>
+<span class="status completed">
+Completed
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td>WO-002</td>
+
+<td>CM</td>
+
+<td>Cooling Pump</td>
+
+<td>
+<span class="status progress">
+In Progress
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td>WO-003</td>
+
+<td>PM</td>
+
+<td>Transformer TR-03</td>
+
+<td>
+<span class="status overdue">
+Overdue
+</span>
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- =========================
+PM
+========================= -->
+
+<div id="pm" class="page">
+
+<div class="table-box">
+
+<h2>
+Preventive Maintenance Schedule
+</h2>
+
+<table>
+
+<tr>
+<th>Equipment</th>
+<th>PM Task</th>
+<th>Due Date</th>
+<th>Responsible</th>
+<th>Status</th>
+</tr>
+
+<tr>
+
+<td>TR-001</td>
+
+<td>
+Transformer Inspection
+</td>
+
+<td>
+25/09/2026
+</td>
+
+<td>
+Maintenance Team A
+</td>
+
+<td>
+<span class="status progress">
+Upcoming
+</span>
+</td>
+
+</tr>
+
+<tr>
+
+<td>PUMP-002</td>
+
+<td>
+Pump Inspection
+</td>
+
+<td>
+21/09/2026
+</td>
+
+<td>
+Maintenance Team B
+</td>
+
+<td>
+<span class="status completed">
+Completed
+</span>
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- =========================
+LABOR
+========================= -->
+
+<div id="labor" class="page">
+
+<div class="grid">
+
+<div class="card">
+
+<div class="card-title">
+Start Time
+</div>
+
+<div class="card-value">
+08:30
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+End Time
+</div>
+
+<div class="card-value">
+12:45
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+Technicians
+</div>
+
+<div class="card-value">
+2
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+Man-hours
+</div>
+
+<div class="card-value">
+8.3 hr
+</div>
+
+</div>
+
+</div>
+
+<br>
+
+<button
+class="btn btn-green"
+onclick="startWork()">
+
+▶ Start Work
+
+</button>
+
+<button
+class="btn"
+onclick="stopWork()">
+
+■ Stop Work
+
+</button>
+
+</div>
+
+<!-- =========================
+COST
+========================= -->
+
+<div id="cost" class="page">
+
+<div class="grid">
+
+<div class="card">
+
+<div class="card-title">
+Plan Cost
+</div>
+
+<div class="card-value">
+1,200
+</div>
+
+บาท
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+Actual Cost
+</div>
+
+<div class="card-value blue">
+1,680
+</div>
+
+บาท
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+Variance
+</div>
+
+<div class="card-value red">
++480
+</div>
+
+บาท
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+Labor Cost
+</div>
+
+<div class="card-value orange">
+1,680
+</div>
+
+บาท
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+KPI
+========================= -->
+
+<div id="kpi" class="page">
+
+<div class="grid">
+
+<div class="card">
+
+<div class="card-title">
+PM Compliance
+</div>
+
+<div class="card-value green">
+87%
+</div>
+
+<p>
+Target ≥ 90%
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+Wrench Time
+</div>
+
+<div class="card-value blue">
+72%
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+PM Labor Cost
+</div>
+
+<div class="card-value orange">
+1,680
+</div>
+
+บาท
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+PM Man-hours
+</div>
+
+<div class="card-value">
+8.3
+</div>
+
+hr
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+USERS
+========================= -->
+
+<div id="users" class="page">
+
+<div class="table-box">
+
+<h2>
+User Management
+</h2>
+
+<table>
+
+<tr>
+
+<th>Name</th>
+<th>Role</th>
+<th>Permission</th>
+
+</tr>
+
+<tr>
+
+<td>
+Admin
+</td>
+
+<td>
+Administrator
+</td>
+
+<td>
+Full Access
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+Inspector 01
+</td>
+
+<td>
+Field Inspector
+</td>
+
+<td>
+Inspection
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+Technician 01
+</td>
+
+<td>
+Maintenance
+</td>
+
+<td>
+Work Order
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+PAGE NAVIGATION
+========================= */
+
+function showPage(page,element){
+
+document.querySelectorAll(".page")
+.forEach(p=>{
+p.classList.remove("active");
+});
+
+document
+.getElementById(page)
+.classList.add("active");
+
+
+document.querySelectorAll(".menu")
+.forEach(m=>{
+m.classList.remove("active");
+});
+
+element.classList.add("active");
+
+
+let titles={
+
+dashboard:"Maintenance Dashboard",
+
+inspection:"Asset Inspection",
+
+workorder:"Work Order Management",
+
+pm:"Preventive Maintenance",
+
+labor:"Labor Tracking",
+
+cost:"Maintenance Cost Analysis",
+
+kpi:"Maintenance KPI",
+
+users:"User Management"
+
+};
+
+document
+.getElementById("pageTitle")
+.innerText=titles[page];
+
+}
+
+
+/* =========================
+INSPECTION SAVE
+========================= */
+
+function saveInspection(){
+
+alert(
+"บันทึกข้อมูลการตรวจสอบเรียบร้อย"
+);
+
+}
+
+
+/* =========================
+ADD WORK ORDER
+========================= */
+
+let workOrderNumber=4;
+
+function addWorkOrder(){
+
+let table=
+document.getElementById(
+"workOrderTable"
+);
+
+let row=
+table.insertRow();
+
+let wo=
+"WO-"+
+String(workOrderNumber)
+.padStart(3,"0");
+
+row.innerHTML=`
+
+<td>${wo}</td>
+
+<td>PM</td>
+
+<td>New Equipment</td>
+
+<td>
+<span class="status progress">
+In Progress
+</span>
+</td>
+
+`;
+
+workOrderNumber++;
+
+}
+
+
+/* =========================
+LABOR TRACKING
+========================= */
+
+let startTime;
+
+function startWork(){
+
+startTime=new Date();
+
+alert(
+"เริ่มจับเวลาการทำงานแล้ว"
+);
+
+}
+
+function stopWork(){
+
+if(!startTime){
+
+alert(
+"กรุณากด Start Work ก่อน"
+);
+
+return;
+
+}
+
+let end=new Date();
+
+let diff=
+(end-startTime)
+/1000/60;
+
+alert(
+"เวลาทำงาน "+
+diff.toFixed(1)+
+" นาที"
+);
+
+}
+
+
+/* =========================
+EXPORT CSV
+========================= */
+
+function exportData(){
+
+let data=[
+
+[
+"Work Order",
+"Type",
+"Equipment",
+"Status"
+],
+
+[
+"WO-001",
+"PM",
+"Transformer TR-01",
+"Completed"
+],
+
+[
+"WO-002",
+"CM",
+"Cooling Pump",
+"In Progress"
+],
+
+[
+"WO-003",
+"PM",
+"Transformer TR-03",
+"Overdue"
+]
+
+];
+
+let csv=
+data
+.map(row=>row.join(","))
+.join("\n");
+
+let blob=
+new Blob(
+[csv],
+{
+type:"text/csv"
+}
+);
+
+let url=
+URL.createObjectURL(blob);
+
+let a=
+document.createElement("a");
+
+a.href=url;
+
+a.download=
+"maintenance_data.csv";
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+}
+
+</script>
+
 </body>
 </html>
