@@ -64,16 +64,27 @@ body.dark{--bg:#071826;--ink:#dbeaf5;--surface:#0d2333;background:#071826;color:
 .field-flow{display:flex;align-items:stretch;gap:9px;margin-bottom:18px}.flow-card{flex:1;background:#fff;border:1px solid #dbe6ed;border-radius:15px;padding:17px;text-align:left;display:flex;gap:13px;cursor:pointer;box-shadow:0 7px 20px #073b680c;transition:.18s}.flow-card:hover{transform:translateY(-3px);border-color:#1488d4}.flow-card>span{width:30px;height:30px;min-width:30px;border-radius:50%;display:grid;place-items:center;background:#1488d4;color:#fff;font-weight:700}.flow-card div{font-size:23px}.flow-card b,.flow-card small{display:block;font-size:14px;margin-top:5px}.flow-card small{font-size:11px;color:#71889a;font-weight:400}.flow-arrow{display:grid;place-items:center;font-size:23px;color:#8ba1b1}
 body.dark .guided-form .field,body.dark .flow-card{background:#0d2333;border-color:#1d3d52}body.dark .guide-box{background:#102d41;border-color:#24506b}
 @media(max-width:900px){.field-flow{display:grid;grid-template-columns:1fr}.flow-arrow{transform:rotate(90deg);height:18px}.form-footer{align-items:flex-start;flex-direction:column}}
+
+.menuSub{display:block;font-size:9px;font-weight:500;opacity:.62;margin-top:2px}
+.field-hub-head{display:flex;justify-content:space-between;align-items:center;gap:16px;background:linear-gradient(120deg,#073b68,#0a79bd);color:#fff;padding:22px 24px;border-radius:17px;margin-bottom:14px;box-shadow:0 14px 34px #073b6827}
+.field-hub-head h2{font-size:25px;margin:5px 0}.field-hub-head p{margin:0;opacity:.82}.eyebrow{font-size:10px;font-weight:800;letter-spacing:1.4px;opacity:.7}
+.field-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}.field-tab{border:1px solid #d8e4ec;background:#fff;border-radius:13px;padding:14px 18px;text-align:left;font-size:15px;font-weight:800;color:#173f5d;cursor:pointer;transition:.18s}.field-tab small{display:block;font-size:10px;font-weight:500;color:#748b9d;margin-top:4px}.field-tab.active{background:#1488d4;color:#fff;border-color:#1488d4;box-shadow:0 7px 20px #1488d430}.field-tab.active small{color:#dff3ff}.field-tab-body{display:none}.field-tab-body.active{display:block}
+.mini-flow{display:flex;align-items:center;justify-content:center;gap:13px;background:#fff;border:1px solid #dce6ed;border-radius:13px;padding:12px 16px;margin-bottom:14px}.mini-flow>div{display:flex;align-items:center;gap:7px}.mini-flow i{font-style:normal;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#e3f3fd;color:#087bc1;font-weight:800}.mini-flow b{font-size:12px}.mini-flow small{font-size:10px;color:#7a8f9f}.mini-flow span{color:#a5b5c1}
+.manual-intro{display:flex;justify-content:space-between;align-items:center;gap:15px}.manual-intro .search{max-width:430px}.legacy-manual-page{display:none!important}
+.manual-mini-card{position:relative}.manual-mini-card .manual-code{display:inline-block;background:#e7f4fc;color:#0879bd;padding:4px 8px;border-radius:7px;font-size:10px;font-weight:800;margin-bottom:8px}.manual-mini-card h3{margin:3px 0 7px}.manual-mini-card p{font-size:11px;color:#72899b;min-height:32px}
+body.dark .field-tab,body.dark .mini-flow{background:#0d2333;border-color:#1c3d52;color:#dbeaf5}body.dark .field-tab small{color:#8fa8ba}body.dark .field-tab.active{background:#1488d4}
+@media(max-width:800px){.field-tabs{grid-template-columns:1fr}.field-hub-head,.manual-intro{align-items:flex-start;flex-direction:column}.mini-flow{align-items:flex-start;flex-direction:column}.mini-flow>span{transform:rotate(90deg);align-self:center}.manual-intro .search{max-width:none;width:100%}}
 </style>
 </head>
 <body>
 <aside class="sidebar">
  <div class="brand">⚡ MEA Asset Inspection<small>Maintenance Management System</small></div>
  <div class="menu active" data-page="dashboard" onclick="showPage('dashboard',this)"><span>📊</span> <b class="menuText">แดชบอร์ด</b></div>
- <div class="menu" data-page="fieldHome" onclick="showPage('fieldHome',this)"><span>🚶</span> <b class="menuText">เริ่มงานภาคสนาม</b></div>
+ <div class="menu" data-page="fieldHome" onclick="showPage('fieldHome',this)"><span>🚶</span> <b class="menuText">หน้าเริ่มงาน</b></div>
  <div class="menu" data-page="mapPage" onclick="showPage('mapPage',this)"><span>🗺️</span> <b class="menuText">แผนที่ตรวจภาคสนาม</b></div>
- <div class="menu" data-page="inspection" onclick="showPage('inspection',this)"><span>📝</span> <b class="menuText">ใบตรวจภาคสนาม</b></div>
- <div class="menu" data-page="manual" onclick="showPage('manual',this)"><span>📖</span> <b class="menuText">คู่มือปฏิบัติงาน</b></div>
+ <div class="menu" data-page="inspection" onclick="showPage('inspection',this)"><span>📋</span>
+       <div><b class="menuText">ตรวจภาคสนาม</b><small class="menuSub">ใบตรวจ • คู่มือ • บันทึกผล</small></div>
+     </div>
  <div class="menu" data-page="history" onclick="showPage('history',this)"><span>📚</span> <b class="menuText">ประวัติการตรวจ</b></div>
  <div class="menu" data-page="workorder" onclick="showPage('workorder',this)"><span>📋</span> <b class="menuText">Work Order</b></div>
  <div class="menu" data-page="pm" onclick="showPage('pm',this)"><span>🗓️</span> <b class="menuText">แผนบำรุงรักษา</b></div>
@@ -101,15 +112,15 @@ body.dark .guided-form .field,body.dark .flow-card{background:#0d2333;border-col
 </header>
 
 <section id="fieldHome" class="page">
- <div class="hero"><div><h2>🚶 เริ่มงานภาคสนาม</h2><p>ทำตาม 3 ขั้นตอน ไม่ต้องกดเมนูซ้ำ</p></div></div>
- <div class="field-flow">
-  <button class="flow-card" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))"><span>1</span><div>🗺️<b>เลือกจุด / อุปกรณ์</b><small>ค้นหา Station หรือเลือกจากแผนที่</small></div></button>
+ <div class="hero"><div><h2>🚶 เริ่มงานภาคสนาม</h2><p>เลือกจุดตรวจ แล้วทำทุกอย่างต่อในหน้า “ตรวจภาคสนาม”</p></div></div>
+ <div class="field-flow compact-flow">
+  <button class="flow-card" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))"><span>1</span><div>🗺️<b>เลือกจุด / อุปกรณ์</b><small>จากแผนที่หรือค้นหา Station</small></div></button>
   <div class="flow-arrow">→</div>
-  <button class="flow-card" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))"><span>2</span><div>📝<b>ตรวจและบันทึกผล</b><small>ระบบเลือกใบตรวจและคู่มือที่เกี่ยวข้องให้</small></div></button>
+  <button class="flow-card" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))"><span>2</span><div>📋<b>ตรวจภาคสนาม</b><small>ใบตรวจ + คู่มือ + บันทึกผล อยู่หน้าเดียว</small></div></button>
   <div class="flow-arrow">→</div>
-  <button class="flow-card" onclick="showPage('history',document.querySelector('[data-page=history]'))"><span>3</span><div>✓<b>เสร็จ / ดูประวัติ</b><small>ตรวจสอบผลย้อนหลังและสถานะงาน</small></div></button>
+  <button class="flow-card" onclick="showPage('history',document.querySelector('[data-page=history]'))"><span>✓</span><div>📚<b>ดูผลย้อนหลัง</b><small>ประวัติและสถานะงาน</small></div></button>
  </div>
- <div class="panel"><h2>เลือกทางลัด</h2><div class="grid"><div class="card"><div class="number">📍</div><h3>ฉันอยู่หน้างานแล้ว</h3><p>เปิดแผนที่และ GPS เพื่อเลือก Asset ใกล้จุดตรวจ</p><button class="btn" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'));setTimeout(locateMe,400)">เปิด GPS & Map</button></div><div class="card"><div class="number">🔎</div><h3>รู้ Station ID</h3><p>ค้นหา Station / MEA No. จากช่องค้นหาด้านบน</p><button class="btn btn-light" onclick="openCommand()">ค้นหา Station</button></div><div class="card"><div class="number">📝</div><h3>รู้ประเภทใบตรวจแล้ว</h3><p>ข้ามไปเลือกใบตรวจทั้ง 11 ประเภทได้ทันที</p><button class="btn btn-light" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">เลือกใบตรวจ</button></div></div></div>
+ <div class="panel"><h2>เลือกทางลัด</h2><div class="grid"><div class="card"><div class="number">📍</div><h3>ฉันอยู่หน้างานแล้ว</h3><p>เปิดแผนที่และ GPS เพื่อเลือก Asset ใกล้จุดตรวจ</p><button class="btn" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'));setTimeout(locateMe,400)">เปิด GPS & Map</button></div><div class="card"><div class="number">🔎</div><h3>รู้ Station ID</h3><p>ค้นหา Station / MEA No. จากช่องค้นหาด้านบน</p><button class="btn btn-light" onclick="openCommand()">ค้นหา Station</button></div><div class="card"><div class="number">📝</div><h3>เริ่มตรวจทันที</h3><p>เปิดศูนย์ตรวจภาคสนาม แล้วเลือกใบตรวจหรือคู่มือได้ในหน้าเดียว</p><button class="btn btn-light" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">เลือกใบตรวจ</button></div></div></div>
 </section>
 <section id="dashboard" class="page active">
  <div class="hero"><div><h2>⚡ Maintenance Command Center</h2><p>Inspection • RCM • Health Index • Work Order • PM อยู่ใน Flow เดียว</p></div><div class="hero-actions"><button class="btn btn-light" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เริ่มจากแผนที่</button><button class="btn btn-light" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">📝 เริ่มตรวจ</button></div></div>
@@ -144,9 +155,40 @@ body.dark .guided-form .field,body.dark .flow-card{background:#0d2333;border-col
  </div>
 </section>
 
-<section id="inspection" class="page"><div class="panel"><h2>ใบตรวจภาคสนาม 11 แบบ</h2><p>เปิดเป็นแบบกระดาษ A4 สำหรับกรอกข้อมูลและพิมพ์/PDF</p><input class="search" id="formSearch" placeholder="ค้นหาใบตรวจ..." oninput="filterForms()"><div class="grid" id="formCards"></div></div></section>
+<section id="inspection" class="page">
+ <div class="field-hub-head">
+  <div>
+   <span class="eyebrow">FIELD WORK</span>
+   <h2>📋 ตรวจภาคสนาม</h2>
+   <p>จุดเดียวสำหรับเลือกใบตรวจ ดูคู่มือที่เกี่ยวข้อง บันทึกผล และส่งข้อมูล</p>
+  </div>
+  <button class="btn btn-light" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เลือกจากแผนที่</button>
+ </div>
 
-<section id="manual" class="page"><div class="panel"><h2>📖 คู่มือปฏิบัติงาน</h2><p>คู่มือ SW-OH เชื่อมกับใบตรวจแต่ละประเภท กดดูขั้นตอนก่อนปฏิบัติงาน ขั้นตอนปฏิบัติงาน และหลังปฏิบัติงาน</p><input class="search" id="manualSearch" placeholder="ค้นหาคู่มือ..." oninput="renderManualCards()"><div class="grid" id="manualCards"></div></div></section>
+ <div class="field-tabs">
+  <button id="tabFormBtn" class="field-tab active" onclick="switchFieldTab('forms')">📝 ใบตรวจ <small>เริ่มตรวจ / บันทึกผล</small></button>
+  <button id="tabManualBtn" class="field-tab" onclick="switchFieldTab('manuals')">📖 คู่มือและมาตรฐาน <small>ดูประกอบก่อน/ระหว่างตรวจ</small></button>
+ </div>
+
+ <div id="fieldFormsTab" class="field-tab-body active">
+  <div class="mini-flow">
+   <div><i>1</i><b>เลือกอุปกรณ์</b><small>เลือกใบตรวจตามประเภท Asset</small></div>
+   <span>→</span><div><i>2</i><b>กรอกผลตรวจ</b><small>ค่า • รูปภาพ • หมายเหตุ</small></div>
+   <span>→</span><div><i>3</i><b>บันทึก / ส่งผล</b><small>เก็บประวัติไว้ในระบบ</small></div>
+  </div>
+  <div class="panel"><h2>ใบตรวจภาคสนาม 11 แบบ</h2><p>เปิดเป็นแบบกระดาษ A4 สำหรับกรอกข้อมูลและพิมพ์/PDF</p><input class="search" id="formSearch" placeholder="ค้นหาใบตรวจ..." oninput="filterForms()"><div class="grid" id="formCards"></div></div>
+ </div>
+
+ <div id="fieldManualsTab" class="field-tab-body">
+  <div class="panel manual-intro">
+   <div><h2>📖 คู่มือและมาตรฐาน</h2><p>ค้นหาคู่มือ SW-OH ที่จับคู่กับใบตรวจแต่ละประเภท โดยไม่ต้องออกจากหน้าตรวจภาคสนาม</p></div>
+   <input id="manualSearchUnified" class="search" placeholder="ค้นหาคู่มือ / SW-OH / ประเภทอุปกรณ์..." oninput="filterUnifiedManuals()">
+  </div>
+  <div id="unifiedManualGrid" class="grid"></div>
+ </div>
+</section>
+
+<section id="manual" class="page legacy-manual-page"><div class="panel"><h2>📖 คู่มือปฏิบัติงาน</h2><p>คู่มือ SW-OH เชื่อมกับใบตรวจแต่ละประเภท กดดูขั้นตอนก่อนปฏิบัติงาน ขั้นตอนปฏิบัติงาน และหลังปฏิบัติงาน</p><input class="search" id="manualSearch" placeholder="ค้นหาคู่มือ..." oninput="renderManualCards()"><div class="grid" id="manualCards"></div></div></section>
 
 <section id="history" class="page"><div class="panel"><div style="display:flex;justify-content:space-between;gap:10px"><h2>ประวัติการตรวจสอบ</h2><button class="btn btn-green" onclick="exportCSV()">Export CSV</button></div><div style="overflow:auto"><table><thead><tr><th>วันที่</th><th>ใบตรวจ</th><th>Station ID</th><th>MEA No.</th><th>ผู้ตรวจ</th><th>สถานะ</th><th></th></tr></thead><tbody id="historyBody"></tbody></table></div></div></section>
 <section id="workorder" class="page"><div class="panel"><h2>Work Order</h2><div class="row3"><div class="field"><label>WO Number</label><input id="woNo"></div><div class="field"><label>Plant / Location</label><input id="woLocation"></div><div class="field"><label>Status</label><select id="woStatus"><option>Open</option><option>In Progress</option><option>Completed</option></select></div></div><br><div class="field"><label>รายละเอียดงาน</label><textarea id="woDetail"></textarea></div><br><button class="btn" onclick="saveWO()">บันทึก Work Order</button></div><div class="panel"><h2>Work Order History</h2><div id="woList"></div></div></section>
@@ -242,7 +284,7 @@ let stations=JSON.parse(localStorage.getItem("inspectionStations")||"null")||[
 function showPage(id,el){
  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active")); document.getElementById(id).classList.add("active");
  document.querySelectorAll(".menu").forEach(x=>x.classList.remove("active")); if(el)el.classList.add("active");
- const titles={fieldHome:"เริ่มงานภาคสนาม",dashboard:"แดชบอร์ดงานบำรุงรักษา",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ใบตรวจภาคสนาม",manual:"คู่มือปฏิบัติงาน",history:"ประวัติการตรวจสอบ",workorder:"Work Order",pm:"PM Planning",labor:"Labor Tracking",cost:"Maintenance Cost Analysis",kpi:"KPI & Management Dashboard",users:"User / Team Management",assets:"Asset Management",functionsPage:"Functions & Performance Standards",failurePage:"Functional Failure",fmeaPage:"FMEA",criticalityPage:"Consequence / Criticality",hiPage:"Health Index",strategyPage:"Maintenance Strategy",settingsPage:"Settings"};
+ const titles={fieldHome:"เริ่มงานภาคสนาม",dashboard:"แดชบอร์ดงานบำรุงรักษา",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ตรวจภาคสนาม",manual:"คู่มือปฏิบัติงาน",history:"ประวัติการตรวจสอบ",workorder:"Work Order",pm:"PM Planning",labor:"Labor Tracking",cost:"Maintenance Cost Analysis",kpi:"KPI & Management Dashboard",users:"User / Team Management",assets:"Asset Management",functionsPage:"Functions & Performance Standards",failurePage:"Functional Failure",fmeaPage:"FMEA",criticalityPage:"Consequence / Criticality",hiPage:"Health Index",strategyPage:"Maintenance Strategy",settingsPage:"Settings"};
  pageTitle.textContent=titles[id]||id; if(id==="mapPage")setTimeout(initMap,80);
 }
 function setLanguage(v){lang=v;localStorage.setItem("inspectionLang",v);thBtn.classList.toggle("active",v==="th");enBtn.classList.toggle("active",v==="en");renderForms();renderManualCards();refresh();renderMapMarkers()}
@@ -402,7 +444,7 @@ function exportRCM(){
 
 
 const UX_ACTIONS=[
-["dashboard","📊 Dashboard"],["mapPage","🗺️ Field Map"],["inspection","📝 Inspection Forms"],["manual","📖 Manuals"],["history","📚 Inspection History"],
+["dashboard","📊 Dashboard"],["mapPage","🗺️ Field Map"],["inspection","📋 ตรวจภาคสนาม"],["history","📚 Inspection History"],
 ["assets","⚙️ Asset Management"],["functionsPage","ƒ Functions"],["failurePage","⚠️ Functional Failure"],["fmeaPage","▦ FMEA"],["criticalityPage","◆ Criticality"],
 ["hiPage","♥ Health Index"],["strategyPage","🛠️ Maintenance Strategy"],
 ["workorder","📋 Work Order"],["pm","🗓️ PM Planning"],["labor","👷 Labor Tracking"],["cost","💰 Cost Analysis"],["kpi","📈 KPI"],["users","👥 User / Team"],["settingsPage","⚙ Settings"]
@@ -449,7 +491,35 @@ function refreshFriendly(){
  let b=document.getElementById("advancedToggle");if(b)b.textContent=document.body.classList.contains("advanced-on")?"✕ ซ่อนเครื่องมือวิศวกรรม":"⚙ แสดงเครื่องมือวิศวกรรม";
 }
 
+
+function switchFieldTab(tab){
+ const forms=document.getElementById("fieldFormsTab"), manuals=document.getElementById("fieldManualsTab");
+ const fb=document.getElementById("tabFormBtn"), mb=document.getElementById("tabManualBtn");
+ if(!forms||!manuals)return;
+ const isManual=tab==="manuals";
+ forms.classList.toggle("active",!isManual);manuals.classList.toggle("active",isManual);
+ fb.classList.toggle("active",!isManual);mb.classList.toggle("active",isManual);
+ if(isManual)renderUnifiedManuals();
+}
+function openFieldManuals(){
+ showPage("inspection",document.querySelector('[data-page="inspection"]'));
+ setTimeout(()=>switchFieldTab("manuals"),60);
+}
+function renderUnifiedManuals(){
+ const g=document.getElementById("unifiedManualGrid"); if(!g)return;
+ const q=(document.getElementById("manualSearchUnified")?.value||"").toLowerCase();
+ const list=MANUALS.filter(m=>(m.code+" "+m.title+" "+m.form).toLowerCase().includes(q));
+ g.innerHTML=list.map(m=>`<div class="card manual-mini-card">
+   <span class="manual-code">${esc(m.code)}</span>
+   <h3>${esc(m.title)}</h3>
+   <p>จับคู่กับใบตรวจ ${esc(m.form)}</p>
+   <button class="btn btn-light" onclick="openManual('${escAttr(m.code)}')">เปิดรายละเอียดคู่มือ</button>
+ </div>`).join("")||'<div class="empty"><b>ไม่พบคู่มือ</b>ลองค้นหาด้วยรหัส SW-OH หรือชื่ออุปกรณ์</div>';
+}
+function filterUnifiedManuals(){renderUnifiedManuals()}
+
 renderForms();renderManualCards();setLanguage(lang);refresh();refreshModules();refreshRCM();
+renderUnifiedManuals();
 refreshFriendly();
 refreshUX();
 </script>
