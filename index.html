@@ -209,104 +209,66 @@ body.dark .cmd-item:hover{background:#25445a!important}
 
 @media(max-width:1000px){.home-main-actions{grid-template-columns:1fr}.home-quick-row{grid-template-columns:1fr 1fr}.home-clean-grid{grid-template-columns:1fr}}
 @media(max-width:760px){.sidebar{width:72px;padding:15px 7px}.brand{font-size:0}.brand:after{content:"MEA";font-size:15px}.brand small{display:none}.menu{font-size:0;text-align:center}.menu span{font-size:21px}.app{margin-left:72px;padding:10px}.stats,.grid,.row2,.row3{grid-template-columns:1fr}}
+
+/* ===== EASY BLUE UX ===== */
+.sidebar-divider{height:1px;background:#ffffff18;margin:14px 8px}.more-menu{display:none;padding:2px 5px 8px}.more-menu.open{display:grid;gap:5px}.more-menu button{border:0;background:#ffffff0c;color:#fff;border-radius:9px;padding:10px;text-align:left;cursor:pointer}
+.icon-action{width:38px;height:38px;border:1px solid var(--calm-line);background:#f5f9fc;color:#285f8c;border-radius:11px;cursor:pointer;font-size:19px}
+.simple-welcome{display:flex;justify-content:space-between;align-items:center;gap:18px;margin:4px 0 18px}.simple-welcome h1{font-size:29px;margin:5px 0}.simple-welcome p{margin:0;color:var(--calm-muted)}
+.start-work-card{width:100%;border:0;background:linear-gradient(120deg,#337fb6,#65a7cf);color:#fff;border-radius:20px;padding:23px 25px;display:flex;align-items:center;gap:17px;text-align:left;cursor:pointer;box-shadow:0 15px 35px rgba(52,127,181,.18);margin-bottom:13px}.start-icon{width:55px;height:55px;border-radius:16px;background:#ffffff24;display:grid;place-items:center;font-size:27px}.start-copy{flex:1}.start-copy b,.start-copy small{display:block}.start-copy b{font-size:18px}.start-copy small{font-size:11px;color:#e9f6ff;margin-top:5px}.start-arrow{font-size:25px}
+.two-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:15px}.two-actions button{border:1px solid var(--calm-line);background:#fff;border-radius:16px;padding:17px;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;color:var(--calm-text);box-shadow:var(--calm-shadow)}.two-actions button>span{font-size:23px}.two-actions button div{flex:1}.two-actions b,.two-actions small{display:block}.two-actions small{font-size:9px;color:var(--calm-muted);margin-top:3px}.two-actions i{font-style:normal;color:var(--calm-primary)}
+.simple-home-bottom{display:grid;grid-template-columns:1.4fr .8fr;gap:13px}.simple-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding-top:15px}.simple-metrics div{text-align:center;background:#f4f9fc;border-radius:12px;padding:15px 5px}.simple-metrics b,.simple-metrics span{display:block}.simple-metrics b{font-size:23px;color:#2f74a4}.simple-metrics span{font-size:9px;color:var(--calm-muted)}
+.simple-page-title{display:flex;align-items:center;gap:13px;margin:4px 0 17px}.simple-page-title span{font-size:9px;letter-spacing:1.2px;color:var(--calm-primary);font-weight:800}.simple-page-title h2{font-size:25px;margin:2px 0}.simple-page-title p{margin:0;color:var(--calm-muted)}.back-lite{width:42px;height:42px;border-radius:12px;border:1px solid var(--calm-line);background:#fff;color:#285f8c;cursor:pointer}
+.simple-steps{display:flex;align-items:center;justify-content:center;gap:14px;background:#fff;border:1px solid var(--calm-line);border-radius:14px;padding:13px;margin-bottom:14px}.simple-steps div{display:flex;align-items:center;gap:7px}.simple-steps i{font-style:normal;width:27px;height:27px;background:#eaf4fb;color:#2d6d99;border-radius:50%;display:grid;place-items:center;font-weight:800}.simple-steps b{font-size:11px}.simple-steps>span{color:#a0b2bf}
+.start-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.choice-card{position:relative;border:1px solid var(--calm-line);background:#fff;border-radius:18px;padding:25px;text-align:left;cursor:pointer;color:var(--calm-text);box-shadow:var(--calm-shadow)}.choice-card>i{display:block;font-style:normal;font-size:31px;margin-bottom:14px}.choice-card>b,.choice-card>small,.choice-card>strong{display:block}.choice-card>b{font-size:16px}.choice-card>small{color:var(--calm-muted);font-size:10px;margin:5px 0 20px}.choice-card>strong{font-size:11px;color:var(--calm-primary)}.choice-card.recommended{border:2px solid #79b3d6}.choice-badge{position:absolute;right:15px;top:15px;background:#e8f4fb;color:#31749f;border-radius:20px;padding:5px 8px;font-size:9px;font-weight:800}
+body.dark .two-actions button,body.dark .simple-metrics div,body.dark .simple-steps,body.dark .choice-card,body.dark .back-lite{background:#1b3242!important;border-color:#2e5066!important;color:#deebf4!important}
+@media(max-width:800px){.simple-home-bottom,.two-actions,.start-choice-grid{grid-template-columns:1fr}.simple-steps{flex-direction:column;align-items:flex-start}.simple-steps>span{display:none}.simple-welcome{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
 <aside class="sidebar">
  <div class="brand">⚡ MEA Asset Inspection<small>Maintenance Management System</small></div>
- <div class="menu active" data-page="dashboard" onclick="showPage('dashboard',this)"><span>📊</span> <b class="menuText">หน้าหลัก</b></div>
- <div class="menu" data-page="fieldHome" onclick="showPage('fieldHome',this)"><span>🚶</span> <b class="menuText">เริ่มตรวจภาคสนาม</b></div>
- <div class="menu" data-page="inspection" onclick="showPage('inspection',this)"><span>📋</span>
-       <div><b class="menuText">ใบตรวจ</b><small class="menuSub" style="display:block;font-size:9px;opacity:.6">ใบตรวจ • คู่มือ • บันทึก</small></div>
-     </div>
- <div class="menu" data-page="history" onclick="showPage('history',this)"><span>📚</span> <b class="menuText">สรุปผล / ประวัติ</b></div>
- <div class="menu" data-page="workorder" onclick="showPage('workorder',this)"><span>🔧</span> <b class="menuText">งานที่ต้องทำ</b></div>
- <div class="menu" data-page="settingsPage" onclick="showPage('settingsPage',this)"><span>⚙</span> <b class="menuText">ตั้งค่า</b></div>
+ <div class="menu active" data-page="dashboard" onclick="showPage('dashboard',this)"><span>⌂</span><b class="menuText">หน้าหลัก</b></div>
+ <div class="menu" data-page="fieldHome" onclick="showPage('fieldHome',this)"><span>✓</span><b class="menuText">เริ่มตรวจ</b></div>
+ <div class="menu" data-page="workorder" onclick="showPage('workorder',this)"><span>🔧</span><b class="menuText">งานที่ต้องทำ</b></div>
+ <div class="menu" data-page="history" onclick="showPage('history',this)"><span>▤</span><b class="menuText">ผลการตรวจ</b></div>
+ <div class="sidebar-divider"></div>
+ <div class="menu" onclick="document.getElementById('moreMenu').classList.toggle('open')"><span>•••</span><b class="menuText">เพิ่มเติม</b></div>
+ <div id="moreMenu" class="more-menu">
+  <button onclick="showPage('inspection',null)">📄 เลือกใบตรวจโดยตรง</button>
+  <button onclick="showPage('settingsPage',null)">⚙️ ตั้งค่า</button>
+ </div>
 </aside>
 
 <main class="app">
 <header class="header">
  <div><h1 id="pageTitle">แดชบอร์ดงานบำรุงรักษา</h1><p id="pageSub">ระบบตรวจสอบอุปกรณ์ภาคสนาม</p></div>
- <div class="header-right">
-  <div style="position:relative"><input id="globalSearch" placeholder="ค้นหาเมนู, Asset, Station...  (Ctrl+K)" onclick="openCommand()" readonly style="width:min(320px,25vw);padding:10px 14px;border:1px solid var(--calm-line);border-radius:12px;cursor:pointer"></div>
-  <span id="onlineBadge" class="badge-online">● Online</span>
-  <button class="btn btn-light" onclick="toggleDark()" title="Dark mode">◐</button>
-  <div class="lang"><button id="thBtn" class="active" onclick="setLanguage('th')">🇹🇭 TH</button><button id="enBtn" onclick="setLanguage('en')">🇬🇧 EN</button></div>
-  <div><b>Admin</b><br><small>Manager</small></div>
- </div>
+ <div class="header-right simple-header-actions">
+ <span id="onlineBadge" class="badge-online">● พร้อมใช้งาน</span>
+ <button class="icon-action" onclick="openCommand()" title="ค้นหา">⌕</button>
+ <button class="icon-action" onclick="toggleDark()" title="โหมดกลางคืน">◐</button>
+</div>
 </header>
 
 <section id="fieldHome" class="page">
- <div class="field-hub-head"><div><h2>📋 เริ่มตรวจภาคสนาม</h2><p>ทำตามลำดับนี้ครั้งเดียว ไม่ต้องสลับหลายเมนู</p></div></div>
- <div class="panel">
-  <div class="mini-flow">
-   <div><i>1</i><b>เลือกจุดตรวจ</b><small>แผนที่ / Station</small></div><span>→</span>
-   <div><i>2</i><b>เลือกอุปกรณ์</b><small>ระบบจับคู่ใบตรวจ</small></div><span>→</span>
-   <div><i>3</i><b>กรอกผลตรวจ</b><small>ข้อมูล / รูป / หมายเหตุ</small></div><span>→</span>
-   <div><i>4</i><b>บันทึกผล</b><small>เก็บในประวัติ</small></div>
-  </div>
-  <div style="text-align:center;padding:18px 0 8px">
-   <button class="btn" style="font-size:16px;padding:14px 28px" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เริ่มจากเลือกจุดตรวจ</button>
-   <p style="font-size:11px;color:var(--calm-muted);margin-top:10px">หากรู้ใบตรวจอยู่แล้ว สามารถ <a href="#" onclick="event.preventDefault();showPage('inspection',document.querySelector('[data-page=inspection]'))">เลือกใบตรวจโดยตรง</a></p>
-  </div>
+ <div class="simple-page-title"><button class="back-lite" onclick="showPage('dashboard',document.querySelector('[data-page=dashboard]'))">←</button><div><span>FIELD INSPECTION</span><h2>เริ่มตรวจภาคสนาม</h2><p>เลือกวิธีเริ่มงานที่สะดวกที่สุด</p></div></div>
+ <div class="simple-steps"><div><i>1</i><b>เลือกจุด / อุปกรณ์</b></div><span>→</span><div><i>2</i><b>กรอกผลตรวจ</b></div><span>→</span><div><i>3</i><b>บันทึกผล</b></div></div>
+ <div class="start-choice-grid">
+  <button class="choice-card recommended" onclick="showPage('mapPage',null)"><span class="choice-badge">แนะนำ</span><i>🗺️</i><b>เลือกจากแผนที่</b><small>ค้นหา Station แล้วระบบเลือกใบตรวจให้</small><strong>เริ่มจากแผนที่ →</strong></button>
+  <button class="choice-card" onclick="showPage('inspection',null)"><i>📄</i><b>เลือกใบตรวจโดยตรง</b><small>ใช้เมื่อรู้ประเภทอุปกรณ์หรือรหัสใบตรวจแล้ว</small><strong>ดูใบตรวจ →</strong></button>
  </div>
 </section>
 
 <section id="dashboard" class="page active">
-  <div class="home-clean-hero">
-    <div>
-      <span class="home-kicker">MEA ASSET INSPECTION</span>
-      <h1>วันนี้จะทำอะไร?</h1>
-      <p>เลือกงานที่ต้องการได้เลย ไม่ต้องไล่หาเมนู</p>
-    </div>
-    <div class="home-date" id="simpleToday">วันนี้</div>
-  </div>
-
-  <div class="home-main-actions">
-    <button class="home-main-card primary" onclick="showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))">
-      <span class="home-main-icon">📋</span>
-      <div><b>เริ่มตรวจภาคสนาม</b><small>เลือกจุดตรวจ → กรอกผล → บันทึก</small></div>
-      <i>→</i>
-    </button>
-
-    <button class="home-main-card" onclick="showPage('workorder',document.querySelector('[data-page=workorder]'))">
-      <span class="home-main-icon">🔧</span>
-      <div><b>ดูงานที่ต้องทำ</b><small>Work Order และงานที่ต้องติดตาม</small></div>
-      <i>→</i>
-    </button>
-
-    <button class="home-main-card" onclick="showPage('history',document.querySelector('[data-page=history]'))">
-      <span class="home-main-icon">📊</span>
-      <div><b>ดูผลการตรวจ</b><small>ประวัติ ผลตรวจ และรายการล่าสุด</small></div>
-      <i>→</i>
-    </button>
-  </div>
-
-  <div class="home-quick-row">
-    <button onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ <span><b>แผนที่</b><small>เลือก Station</small></span></button>
-    <button onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">📝 <span><b>ใบตรวจ</b><small>เลือกแบบโดยตรง</small></span></button>
-    <button onclick="openCommand()">🔎 <span><b>ค้นหา</b><small>Asset / Station</small></span></button>
-    <button onclick="showPage('settingsPage',document.querySelector('[data-page=settingsPage]'))">⚙️ <span><b>ตั้งค่า</b><small>ระบบและข้อมูล</small></span></button>
-  </div>
-
-  <div class="home-clean-grid">
-    <div class="panel home-recent-panel">
-      <div class="home-section-head">
-        <div><h2>งานล่าสุด</h2><small>รายการที่เพิ่งบันทึก</small></div>
-        <button onclick="showPage('history',document.querySelector('[data-page=history]'))">ดูทั้งหมด →</button>
-      </div>
-      <div id="simpleRecent"></div>
-    </div>
-
-    <div class="panel home-summary-panel">
-      <div class="home-section-head"><div><h2>สรุปสั้น ๆ</h2><small>ภาพรวมข้อมูลในเครื่องนี้</small></div></div>
-      <div class="home-summary-list">
-        <div><span>📋 ผลตรวจ</span><b id="homeInspectionCount">0</b></div>
-        <div><span>🔧 Work Order</span><b id="homeWOCount">0</b></div>
-        <div><span>✓ PM เสร็จแล้ว</span><b id="homePMDone">0</b></div>
-      </div>
-    </div>
-  </div>
+ <div class="simple-welcome"><div><span class="home-kicker">MEA ASSET INSPECTION</span><h1>พร้อมเริ่มงานวันนี้</h1><p>เลือกสิ่งที่ต้องการทำได้เลย</p></div><div class="home-date" id="simpleToday">วันนี้</div></div>
+ <button class="start-work-card" onclick="showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))"><span class="start-icon">✓</span><span class="start-copy"><b>เริ่มตรวจภาคสนาม</b><small>เลือกจุดตรวจ → กรอกข้อมูล → บันทึกผล</small></span><span class="start-arrow">→</span></button>
+ <div class="two-actions">
+  <button onclick="showPage('workorder',document.querySelector('[data-page=workorder]'))"><span>🔧</span><div><b>งานที่ต้องทำ</b><small>ติดตาม Work Order</small></div><i>→</i></button>
+  <button onclick="showPage('history',document.querySelector('[data-page=history]'))"><span>▤</span><div><b>ผลการตรวจ</b><small>ดูประวัติและรายการล่าสุด</small></div><i>→</i></button>
+ </div>
+ <div class="simple-home-bottom">
+  <div class="panel"><div class="home-section-head"><div><h2>งานล่าสุด</h2><small>รายการที่เพิ่งบันทึก</small></div><button onclick="showPage('history',document.querySelector('[data-page=history]'))">ดูทั้งหมด</button></div><div id="simpleRecent"></div></div>
+  <div class="panel"><div class="home-section-head"><div><h2>ภาพรวม</h2><small>ข้อมูลในเครื่องนี้</small></div></div><div class="simple-metrics"><div><b id="homeInspectionCount">0</b><span>ผลตรวจ</span></div><div><b id="homeWOCount">0</b><span>งาน</span></div><div><b id="homePMDone">0</b><span>เสร็จแล้ว</span></div></div></div>
+ </div>
 </section>
 
 <section id="mapPage" class="page">
@@ -439,7 +401,7 @@ let stations=JSON.parse(localStorage.getItem("inspectionStations")||"null")||[
 function showPage(id,el){
  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active")); document.getElementById(id).classList.add("active");
  document.querySelectorAll(".sidebar .menu").forEach(x=>x.classList.remove("active")); if(el)el.classList.add("active");
- const titles={dashboard:"แดชบอร์ดงานบำรุงรักษา",fieldHome:"เริ่มงานภาคสนาม",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ตรวจภาคสนาม",history:"ประวัติการตรวจสอบ",workorder:"Work Order",settingsPage:"Settings"};
+ const titles={dashboard:"หน้าหลัก",fieldHome:"เริ่มงานภาคสนาม",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ตรวจภาคสนาม",history:"ผลการตรวจ",workorder:"งานที่ต้องทำ",settingsPage:"ตั้งค่า"};
  document.getElementById("pageTitle").textContent=titles[id]||id; 
  if(id==="mapPage")setTimeout(initMap,80);
 }
