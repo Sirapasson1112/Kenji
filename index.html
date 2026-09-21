@@ -74,6 +74,21 @@ body.dark .guided-form .field,body.dark .flow-card{background:#0d2333;border-col
 .manual-mini-card{position:relative}.manual-mini-card .manual-code{display:inline-block;background:#e7f4fc;color:#0879bd;padding:4px 8px;border-radius:7px;font-size:10px;font-weight:800;margin-bottom:8px}.manual-mini-card h3{margin:3px 0 7px}.manual-mini-card p{font-size:11px;color:#72899b;min-height:32px}
 body.dark .field-tab,body.dark .mini-flow{background:#0d2333;border-color:#1c3d52;color:#dbeaf5}body.dark .field-tab small{color:#8fa8ba}body.dark .field-tab.active{background:#1488d4}
 @media(max-width:800px){.field-tabs{grid-template-columns:1fr}.field-hub-head,.manual-intro{align-items:flex-start;flex-direction:column}.mini-flow{align-items:flex-start;flex-direction:column}.mini-flow>span{transform:rotate(90deg);align-self:center}.manual-intro .search{max-width:none;width:100%}}
+
+/* ===== SIMPLE UX V2 ===== */
+.simple-section-label{font-size:10px;opacity:.55;margin:16px 12px 6px;letter-spacing:.7px}
+.managementMenu{display:none!important}body.manage-open .managementMenu{display:flex!important}
+.manage-toggle{margin:10px 12px;width:calc(100% - 24px);border:1px solid #ffffff25;background:#ffffff10;color:#fff;border-radius:10px;padding:9px;cursor:pointer;text-align:left;font-weight:700}
+.simple-home{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:18px}
+.job-card{border:0;background:#fff;border-radius:18px;padding:22px;text-align:left;cursor:pointer;box-shadow:0 8px 28px #073b6810;transition:.18s;display:flex;gap:15px;align-items:flex-start}
+.job-card:hover{transform:translateY(-3px);box-shadow:0 14px 35px #073b681c}
+.job-icon{width:50px;height:50px;min-width:50px;border-radius:14px;background:#e8f5fd;display:grid;place-items:center;font-size:25px}
+.job-card h3{margin:0 0 5px;font-size:17px}.job-card p{margin:0;color:#708698;font-size:12px;line-height:1.55}
+.job-card.primary{background:linear-gradient(125deg,#0879bd,#1599dc);color:#fff}.job-card.primary .job-icon{background:#ffffff25}.job-card.primary p{color:#e3f5ff}
+.simple-status{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.simple-status .stat{padding:16px}.simple-status .number{font-size:25px}
+.help-strip{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#eef8ff;border:1px solid #d3eafa;border-radius:13px;padding:13px 16px;margin-bottom:16px}.help-strip p{margin:0;font-size:12px}
+body.dark .job-card{background:#0d2333;color:#dbeaf5}.managementMenu .menuSub{display:none}
+@media(max-width:800px){.simple-home{grid-template-columns:1fr}.simple-status{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -86,23 +101,22 @@ body.dark .field-tab,body.dark .mini-flow{background:#0d2333;border-color:#1c3d5
        <div><b class="menuText">ตรวจภาคสนาม</b><small class="menuSub">ใบตรวจ • คู่มือ • บันทึกผล</small></div>
      </div>
  <div class="menu" data-page="history" onclick="showPage('history',this)"><span>📚</span> <b class="menuText">ประวัติการตรวจ</b></div>
- <div class="menu" data-page="workorder" onclick="showPage('workorder',this)"><span>📋</span> <b class="menuText">Work Order</b></div>
- <div class="menu" data-page="pm" onclick="showPage('pm',this)"><span>🗓️</span> <b class="menuText">แผนบำรุงรักษา</b></div>
- <div class="menu" data-page="labor" onclick="showPage('labor',this)"><span>👷</span> <b class="menuText">เวลาและกำลังคน</b></div>
- <div class="menu" data-page="cost" onclick="showPage('cost',this)"><span>💰</span> <b class="menuText">ค่าใช้จ่าย</b></div>
- <div class="menu" data-page="kpi" onclick="showPage('kpi',this)"><span>📈</span> <b class="menuText">สรุปผล / KPI</b></div>
- <div class="menu" data-page="users" onclick="showPage('users',this)"><span>👥</span> <b class="menuText">ทีมงาน</b></div>
- <div style="margin:16px 10px 7px;font-size:10px;opacity:.55">ENGINEERING / วางแผนงาน</div>
- <div style="margin:0 10px 8px;padding:8px 9px;border-radius:9px;background:#ffffff12;font-size:10px;line-height:1.45">เมนูขั้นสูงถูกซ่อนไว้ เพื่อให้คนหน้างานใช้งานง่าย</div>
- <div class="menu" data-page="assets" onclick="showPage('assets',this)"><span>⚙️</span> <b class="menuText">ทะเบียนอุปกรณ์</b></div>
- <div style="padding:6px 10px 10px"><button id="advancedToggle" class="btn btn-light" style="width:100%;font-size:11px" onclick="toggleAdvanced()">⚙ แสดงเครื่องมือวิศวกรรม</button></div>
- <div class="menu advancedMenu" data-page="functionsPage" onclick="showPage('functionsPage',this)"><span>ƒ</span> <b class="menuText">Functions</b></div>
- <div class="menu advancedMenu" data-page="failurePage" onclick="showPage('failurePage',this)"><span>⚠️</span> <b class="menuText">Functional Failure</b></div>
- <div class="menu advancedMenu" data-page="fmeaPage" onclick="showPage('fmeaPage',this)"><span>▦</span> <b class="menuText">FMEA</b></div>
- <div class="menu advancedMenu" data-page="criticalityPage" onclick="showPage('criticalityPage',this)"><span>◆</span> <b class="menuText">Criticality</b></div>
- <div class="menu" data-page="hiPage" onclick="showPage('hiPage',this)"><span>♥</span> <b class="menuText">สภาพอุปกรณ์</b></div>
- <div class="menu advancedMenu" data-page="strategyPage" onclick="showPage('strategyPage',this)"><span>🛠️</span> <b class="menuText">แนวทางบำรุงรักษา</b></div>
- <div class="menu" data-page="settingsPage" onclick="showPage('settingsPage',this)"><span>⚙</span> <b class="menuText">Settings</b></div>
+ <div class="simple-section-label">งานประจำ</div>
+ <button id="manageToggle" class="manage-toggle" onclick="toggleManagement()">⚙ งานวางแผน / จัดการ</button>
+ <div class="menu managementMenu" data-page="workorder" onclick="showPage('workorder',this)"><span>📋</span> <b class="menuText">Work Order</b></div>
+ <div class="menu managementMenu" data-page="pm" onclick="showPage('pm',this)"><span>🗓️</span> <b class="menuText">แผนบำรุงรักษา</b></div>
+ <div class="menu managementMenu" data-page="labor" onclick="showPage('labor',this)"><span>👷</span> <b class="menuText">เวลาและกำลังคน</b></div>
+ <div class="menu managementMenu" data-page="cost" onclick="showPage('cost',this)"><span>💰</span> <b class="menuText">ค่าใช้จ่าย</b></div>
+ <div class="menu managementMenu" data-page="kpi" onclick="showPage('kpi',this)"><span>📈</span> <b class="menuText">สรุปผล / KPI</b></div>
+ <div class="menu managementMenu" data-page="users" onclick="showPage('users',this)"><span>👥</span> <b class="menuText">ทีมงาน</b></div>
+ 
+ <div class="menu advancedMenu managementMenu" data-page="functionsPage" onclick="showPage('functionsPage',this)"><span>ƒ</span> <b class="menuText">Functions</b></div>
+ <div class="menu advancedMenu managementMenu" data-page="failurePage" onclick="showPage('failurePage',this)"><span>⚠️</span> <b class="menuText">Functional Failure</b></div>
+ <div class="menu advancedMenu managementMenu" data-page="fmeaPage" onclick="showPage('fmeaPage',this)"><span>▦</span> <b class="menuText">FMEA</b></div>
+ <div class="menu advancedMenu managementMenu" data-page="criticalityPage" onclick="showPage('criticalityPage',this)"><span>◆</span> <b class="menuText">Criticality</b></div>
+ <div class="menu managementMenu" data-page="hiPage" onclick="showPage('hiPage',this)"><span>♥</span> <b class="menuText">สภาพอุปกรณ์</b></div>
+ <div class="menu advancedMenu managementMenu" data-page="strategyPage" onclick="showPage('strategyPage',this)"><span>🛠️</span> <b class="menuText">แนวทางบำรุงรักษา</b></div>
+ <div class="menu managementMenu" data-page="settingsPage" onclick="showPage('settingsPage',this)"><span>⚙</span> <b class="menuText">Settings</b></div>
 </aside>
 
 <main class="app">
@@ -112,26 +126,26 @@ body.dark .field-tab,body.dark .mini-flow{background:#0d2333;border-color:#1c3d5
 </header>
 
 <section id="fieldHome" class="page">
- <div class="hero"><div><h2>🚶 เริ่มงานภาคสนาม</h2><p>เลือกจุดตรวจ แล้วทำทุกอย่างต่อในหน้า “ตรวจภาคสนาม”</p></div></div>
- <div class="field-flow compact-flow">
-  <button class="flow-card" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))"><span>1</span><div>🗺️<b>เลือกจุด / อุปกรณ์</b><small>จากแผนที่หรือค้นหา Station</small></div></button>
-  <div class="flow-arrow">→</div>
-  <button class="flow-card" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))"><span>2</span><div>📋<b>ตรวจภาคสนาม</b><small>ใบตรวจ + คู่มือ + บันทึกผล อยู่หน้าเดียว</small></div></button>
-  <div class="flow-arrow">→</div>
-  <button class="flow-card" onclick="showPage('history',document.querySelector('[data-page=history]'))"><span>✓</span><div>📚<b>ดูผลย้อนหลัง</b><small>ประวัติและสถานะงาน</small></div></button>
+ <div class="hero"><div><h2>📋 เริ่มตรวจภาคสนาม</h2><p>ทำตามลำดับนี้ครั้งเดียว ไม่ต้องสลับหลายเมนู</p></div></div>
+ <div class="panel">
+  <div class="mini-flow">
+   <div><i>1</i><b>เลือกจุดตรวจ</b><small>แผนที่ / Station</small></div><span>→</span>
+   <div><i>2</i><b>เลือกอุปกรณ์</b><small>ระบบจับคู่ใบตรวจ</small></div><span>→</span>
+   <div><i>3</i><b>กรอกผลตรวจ</b><small>ข้อมูล / รูป / หมายเหตุ</small></div><span>→</span>
+   <div><i>4</i><b>บันทึกผล</b><small>เก็บในประวัติ</small></div>
+  </div>
+  <div style="text-align:center;padding:18px 0 8px"><button class="btn" style="font-size:16px;padding:14px 28px" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เริ่มจากเลือกจุดตรวจ</button><p style="font-size:11px;color:#71889a;margin-top:10px">หากรู้ใบตรวจอยู่แล้ว สามารถ <a href="#" onclick="event.preventDefault();showPage('inspection',document.querySelector('[data-page=inspection]'))">เลือกใบตรวจโดยตรง</a></p></div>
  </div>
- <div class="panel"><h2>เลือกทางลัด</h2><div class="grid"><div class="card"><div class="number">📍</div><h3>ฉันอยู่หน้างานแล้ว</h3><p>เปิดแผนที่และ GPS เพื่อเลือก Asset ใกล้จุดตรวจ</p><button class="btn" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'));setTimeout(locateMe,400)">เปิด GPS & Map</button></div><div class="card"><div class="number">🔎</div><h3>รู้ Station ID</h3><p>ค้นหา Station / MEA No. จากช่องค้นหาด้านบน</p><button class="btn btn-light" onclick="openCommand()">ค้นหา Station</button></div><div class="card"><div class="number">📝</div><h3>เริ่มตรวจทันที</h3><p>เปิดศูนย์ตรวจภาคสนาม แล้วเลือกใบตรวจหรือคู่มือได้ในหน้าเดียว</p><button class="btn btn-light" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">เลือกใบตรวจ</button></div></div></div>
 </section>
 <section id="dashboard" class="page active">
- <div class="hero"><div><h2>⚡ Maintenance Command Center</h2><p>Inspection • RCM • Health Index • Work Order • PM อยู่ใน Flow เดียว</p></div><div class="hero-actions"><button class="btn btn-light" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เริ่มจากแผนที่</button><button class="btn btn-light" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">📝 เริ่มตรวจ</button></div></div>
- <div class="quickbar">
-  <button class="quick" onclick="showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))">🚶<b>เริ่มงานตรวจ</b><small>Flow สำหรับภาคสนาม</small></button>
-  <button class="quick" onclick="showPage('assets',document.querySelector('[data-page=assets]'))">⚙️<b>ทะเบียนอุปกรณ์</b><small>ค้นหาและจัดการ Asset</small></button>
-  <button class="quick" onclick="showPage('workorder',document.querySelector('[data-page=workorder]'))">📋<b>งานซ่อม</b><small>Work Order</small></button>
-  <button class="quick" onclick="showPage('pm',document.querySelector('[data-page=pm]'))">🗓️<b>แผนบำรุงรักษา</b><small>PM Schedule</small></button>
-  <button class="quick" onclick="showPage('kpi',document.querySelector('[data-page=kpi]'))">📈<b>สรุปผล</b><small>KPI และภาพรวม</small></button>
+ <div class="hero"><div><h2>วันนี้ต้องทำอะไร?</h2><p>เลือกงานที่ต้องการ ระบบจะพาไปหน้าที่เกี่ยวข้องโดยตรง</p></div></div>
+ <div class="help-strip"><p>💡 <b>สำหรับผู้ตรวจภาคสนาม:</b> กด “เริ่มตรวจ” ปุ่มเดียว แล้วทำตามขั้นตอนบนหน้าจอ</p><button class="btn btn-light" onclick="showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))">ดูขั้นตอน</button></div>
+ <div class="simple-home">
+  <button class="job-card primary" onclick="showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))"><span class="job-icon">📋</span><div><h3>เริ่มตรวจภาคสนาม</h3><p>เลือกจุด → เลือกอุปกรณ์ → กรอกใบตรวจ → บันทึกผล</p></div></button>
+  <button class="job-card" onclick="showPage('history',document.querySelector('[data-page=history]'))"><span class="job-icon">📚</span><div><h3>ดูผลการตรวจ</h3><p>ค้นหาผลย้อนหลัง ดู Draft และรายการที่ส่งแล้ว</p></div></button>
+  <button class="job-card" onclick="showPage('workorder',document.querySelector('[data-page=workorder]'))"><span class="job-icon">🔧</span><div><h3>งานที่ต้องดำเนินการ</h3><p>ดู Work Order และติดตามสถานะงานซ่อม</p></div></button>
+  <button class="job-card" onclick="showPage('pm',document.querySelector('[data-page=pm]'))"><span class="job-icon">🗓️</span><div><h3>แผนงานบำรุงรักษา</h3><p>ดูงานที่กำลังจะถึงกำหนดและงานที่เสร็จแล้ว</p></div></button>
  </div>
- <div class="panel progress-card"><div class="ring" id="pmRing"><b id="pmRingText">0%</b></div><div><b>PM Progress</b><div style="height:6px"></div><div class="progress-line"><i id="pmProgress" style="width:0%"></i></div><small id="pmProgressText">ยังไม่มีแผน PM</small></div><button class="btn btn-light" onclick="showPage('pm',document.querySelector('[data-page=pm]'))">ดูแผน →</button></div>
  <div class="stats"><div class="stat"><small>การตรวจทั้งหมด</small><strong id="total">0</strong></div><div class="stat"><small>ส่งแล้ว</small><strong id="submitted">0</strong></div><div class="stat"><small>ฉบับร่าง</small><strong id="draft">0</strong></div><div class="stat"><small>ใบตรวจในระบบ</small><strong>11</strong></div></div>
  <div class="panel"><h2>รายการตรวจล่าสุด</h2><div style="overflow:auto"><table><thead><tr><th>วันที่</th><th>ใบตรวจ</th><th>Station ID</th><th>MEA No.</th><th>สถานะ</th></tr></thead><tbody id="recentBody"></tbody></table></div></div>
 </section>
@@ -463,6 +477,14 @@ function refreshUX(){
 const _refreshModules=refreshModules;refreshModules=function(){_refreshModules();refreshUX()}
 
 
+function toggleManagement(){
+ document.body.classList.toggle("manage-open");
+ const on=document.body.classList.contains("manage-open");
+ const b=document.getElementById("manageToggle");if(b)b.textContent=on?"✕ ซ่อนงานวางแผน / จัดการ":"⚙ งานวางแผน / จัดการ";
+ localStorage.setItem("manageOpen",on?"1":"0");
+}
+if(localStorage.getItem("manageOpen")==="1")document.body.classList.add("manage-open");
+
 function toggleAdvanced(){
  document.body.classList.toggle("advanced-on");
  const on=document.body.classList.contains("advanced-on");
@@ -470,7 +492,7 @@ function toggleAdvanced(){
  localStorage.setItem("advancedMode",on?"1":"0");
  toastMsg(on?"เปิด Engineering Mode แล้ว":"กลับสู่โหมดใช้งานทั่วไปแล้ว");
 }
-if(localStorage.getItem("advancedMode")==="1")document.body.classList.add("advanced-on");
+
 function saveFunctionFriendly(){
  if(!fnAsset.value)return toastMsg("กรุณาเลือก Asset ก่อน");
  if(!fnName.value.trim())return toastMsg("กรุณาระบุหน้าที่ของอุปกรณ์");
