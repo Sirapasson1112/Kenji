@@ -130,6 +130,35 @@ body{background:
 .fab{display:none!important}
 body.dark .welcome-simple{background:linear-gradient(120deg,#082f4d,#075a88)}body.dark .admin-shortcut{background:#0b2130!important}body.dark #quickHelp{background:#0d2333;border-color:#23445a}body.dark .qh-option{background:#102c40;color:#dbeaf5}
 @media(max-width:700px){#quickHelp{left:12px;right:12px;bottom:85px;width:auto}.welcome-simple{padding:21px}.welcome-simple h1{font-size:27px}}
+
+/* ===== CLEAN HOME ===== */
+.home-clean-hero{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:10px 2px 20px}
+.home-kicker{font-size:10px;font-weight:900;letter-spacing:1.4px;color:#1488d4}
+.home-clean-hero h1{margin:4px 0;font-size:31px;color:#143d5c}
+.home-clean-hero p{margin:0;color:#718797}
+.home-date{padding:9px 13px;border:1px solid #dce6ed;background:#fff;border-radius:11px;font-size:12px;color:#60798b}
+.home-main-actions{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:13px;margin-bottom:13px}
+.home-main-card{border:1px solid #dce6ed;background:#fff;border-radius:17px;padding:20px;text-align:left;display:flex;align-items:center;gap:13px;cursor:pointer;box-shadow:0 7px 22px #073b680b;transition:.18s}
+.home-main-card:hover{transform:translateY(-2px);border-color:#1488d4}
+.home-main-card.primary{background:linear-gradient(125deg,#0879bd,#1499d8);border-color:transparent;color:#fff}
+.home-main-icon{width:50px;height:50px;min-width:50px;border-radius:14px;background:#edf7fd;display:grid;place-items:center;font-size:25px}
+.home-main-card.primary .home-main-icon{background:#ffffff22}
+.home-main-card div{flex:1}.home-main-card b,.home-main-card small{display:block}
+.home-main-card b{font-size:15px}.home-main-card small{font-size:10px;margin-top:5px;color:#748b9c;line-height:1.4}
+.home-main-card.primary small{color:#dff4ff}.home-main-card i{font-style:normal;font-size:20px}
+.home-quick-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px}
+.home-quick-row button{border:1px solid #dce6ed;background:#fff;border-radius:13px;padding:12px 14px;text-align:left;display:flex;gap:10px;align-items:center;cursor:pointer;font-size:19px}
+.home-quick-row button:hover{border-color:#1488d4;background:#f7fcff}
+.home-quick-row b,.home-quick-row small{display:block;font-size:12px}.home-quick-row small{font-size:9px;color:#7a8f9f;margin-top:2px}
+.home-clean-grid{display:grid;grid-template-columns:1.5fr .8fr;gap:14px}
+.home-section-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid #e8eef2}
+.home-section-head h2{margin:0 0 3px;font-size:17px}.home-section-head small{color:#8295a3}.home-section-head button{border:0;background:transparent;color:#1488d4;font-weight:800;cursor:pointer}
+.home-summary-list{padding-top:5px}.home-summary-list>div{display:flex;justify-content:space-between;align-items:center;padding:14px 3px;border-bottom:1px solid #edf1f4}.home-summary-list>div:last-child{border:0}.home-summary-list span{font-size:12px;color:#5f7789}.home-summary-list b{font-size:21px;color:#143d5c}
+body.dark .home-clean-hero h1,body.dark .home-summary-list b{color:#dbeaf5}
+body.dark .home-date,body.dark .home-main-card,body.dark .home-quick-row button{background:#0d2333;border-color:#1f4055;color:#dbeaf5}
+body.dark .home-main-card.primary{background:linear-gradient(125deg,#075b8a,#0879bd)}
+@media(max-width:1000px){.home-main-actions{grid-template-columns:1fr}.home-quick-row{grid-template-columns:1fr 1fr}.home-clean-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.home-quick-row{grid-template-columns:1fr}.home-clean-hero{align-items:flex-start;flex-direction:column}.home-clean-hero h1{font-size:27px}}
 </style>
 </head>
 <body>
@@ -164,35 +193,60 @@ body.dark .welcome-simple{background:linear-gradient(120deg,#082f4d,#075a88)}bod
  </div>
 </section>
 <section id="dashboard" class="page active">
- <div class="welcome-simple">
-  <div><small>MEA ASSET INSPECTION</small><h1>สวัสดีครับ 👋</h1><p>วันนี้ต้องการทำอะไร?</p></div>
-  <div class="today-chip" id="simpleToday">วันนี้</div>
- </div>
- <div class="simple-actions">
-  <button class="action-big blue" onclick="showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))"><span>📍</span><div><b>เริ่มตรวจภาคสนาม</b><small>เลือกจุดตรวจ แล้วกรอกผลได้ทันที</small></div><i>→</i></button>
-  <button class="action-big green" onclick="showPage('workorder',document.querySelector('[data-page=workorder]'))"><span>🔧</span><div><b>งานที่ต้องทำ</b><small>ดูงานซ่อมและงานที่ยังค้าง</small></div><i>→</i></button>
-  <button class="action-big purple" onclick="showPage('history',document.querySelector('[data-page=history]'))"><span>📊</span><div><b>ดูสรุปผล</b><small>ผลตรวจ ประวัติ และข้อมูลย้อนหลัง</small></div><i>→</i></button>
-  <button class="action-big gray" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))"><span>📖</span><div><b>ใบตรวจ / คู่มือ</b><small>เปิดจากประเภทอุปกรณ์ที่ต้องการ</small></div><i>→</i></button>
- </div>
- <div class="home-two">
-  <div class="panel">
-   <div class="panel-title-row"><div><h2>🕒 งานล่าสุด</h2><small>รายการที่เพิ่งบันทึก</small></div><button class="link-btn" onclick="showPage('history',document.querySelector('[data-page=history]'))">ดูทั้งหมด →</button></div>
-   <div id="simpleRecent"></div>
+  <div class="home-clean-hero">
+    <div>
+      <span class="home-kicker">MEA ASSET INSPECTION</span>
+      <h1>วันนี้จะทำอะไร?</h1>
+      <p>เลือกงานที่ต้องการได้เลย ไม่ต้องไล่หาเมนู</p>
+    </div>
+    <div class="home-date" id="simpleToday">วันนี้</div>
   </div>
-  <div class="panel">
-   <div class="panel-title-row"><div><h2>📍 จุดตรวจ</h2><small>เลือกจุดแล้วเริ่มตรวจได้ทันที</small></div><button class="link-btn" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">เปิดแผนที่ →</button></div>
-   <div class="map-preview-simple"><div>🗺️</div><b>Field Inspection Map</b><small>ดู Station และอุปกรณ์บนแผนที่</small><button class="btn" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">เลือกจุดตรวจ</button></div>
+
+  <div class="home-main-actions">
+    <button class="home-main-card primary" onclick="showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))">
+      <span class="home-main-icon">📋</span>
+      <div><b>เริ่มตรวจภาคสนาม</b><small>เลือกจุดตรวจ → กรอกผล → บันทึก</small></div>
+      <i>→</i>
+    </button>
+
+    <button class="home-main-card" onclick="showPage('workorder',document.querySelector('[data-page=workorder]'))">
+      <span class="home-main-icon">🔧</span>
+      <div><b>ดูงานที่ต้องทำ</b><small>Work Order และงานที่ต้องติดตาม</small></div>
+      <i>→</i>
+    </button>
+
+    <button class="home-main-card" onclick="showPage('history',document.querySelector('[data-page=history]'))">
+      <span class="home-main-icon">📊</span>
+      <div><b>ดูผลการตรวจ</b><small>ประวัติ ผลตรวจ และรายการล่าสุด</small></div>
+      <i>→</i>
+    </button>
   </div>
- </div>
- <div class="panel" style="margin-top:15px">
- <div class="section-title"><div><h2>ภาพรวมวันนี้</h2><small style="color:#7c91a0">ข้อมูลจากงานที่บันทึกในเครื่องนี้</small></div><span class="soft-label">LIVE</span></div>
- <div class="simple-status">
-  <div class="stat"><div><small>ผลตรวจทั้งหมด</small><div class="number" id="homeInspectionCount">0</div></div><span>📋</span></div>
-  <div class="stat"><div><small>Work Order</small><div class="number" id="homeWOCount">0</div></div><span>🔧</span></div>
-  <div class="stat"><div><small>PM ที่เสร็จแล้ว</small><div class="number" id="homePMDone">0</div></div><span>✓</span></div>
- </div>
-</div>
-<div class="admin-shortcut"><span>⚙️ สำหรับผู้วางแผน / วิศวกร</span><button class="btn btn-light" onclick="openAdminTools()">เปิดเครื่องมือจัดการ</button></div>
+
+  <div class="home-quick-row">
+    <button onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ <span><b>แผนที่</b><small>เลือก Station</small></span></button>
+    <button onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">📝 <span><b>ใบตรวจ</b><small>เลือกแบบโดยตรง</small></span></button>
+    <button onclick="openCommand()">🔎 <span><b>ค้นหา</b><small>Asset / Station</small></span></button>
+    <button onclick="openAdminTools()">⚙️ <span><b>จัดการ</b><small>สำหรับผู้วางแผน</small></span></button>
+  </div>
+
+  <div class="home-clean-grid">
+    <div class="panel home-recent-panel">
+      <div class="home-section-head">
+        <div><h2>งานล่าสุด</h2><small>รายการที่เพิ่งบันทึก</small></div>
+        <button onclick="showPage('history',document.querySelector('[data-page=history]'))">ดูทั้งหมด →</button>
+      </div>
+      <div id="simpleRecent"></div>
+    </div>
+
+    <div class="panel home-summary-panel">
+      <div class="home-section-head"><div><h2>สรุปสั้น ๆ</h2><small>ภาพรวมข้อมูลในเครื่องนี้</small></div></div>
+      <div class="home-summary-list">
+        <div><span>📋 ผลตรวจ</span><b id="homeInspectionCount">0</b></div>
+        <div><span>🔧 Work Order</span><b id="homeWOCount">0</b></div>
+        <div><span>✓ PM เสร็จแล้ว</span><b id="homePMDone">0</b></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="mapPage" class="page">
