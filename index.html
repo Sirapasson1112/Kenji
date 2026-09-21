@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MEA Asset Inspection — Paper + Map + Manual</title>
+<title>MEA Asset Inspection — Smart Maintenance Workspace</title>
 
 <!-- แผนที่จริง: Leaflet + OpenStreetMap -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -97,6 +97,39 @@ body.dark .job-card{background:#0d2333;color:#dbeaf5}.managementMenu .menuSub{di
 .admin-tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.admin-tool-grid button{border:1px solid #dce6ed;background:#fff;border-radius:15px;padding:20px;text-align:left;font-size:27px;cursor:pointer;transition:.18s}.admin-tool-grid button:hover{transform:translateY(-2px);border-color:#1488d4}.admin-tool-grid b,.admin-tool-grid small{display:block;font-size:14px;margin-top:9px}.admin-tool-grid small{font-size:10px;color:#7b8f9e;margin-top:4px}
 body.dark .action-big,body.dark .admin-tool-grid button,body.dark .today-chip{background:#0d2333;border-color:#1e4056}body.dark .action-big b{color:#dbeaf5}body.dark .admin-shortcut{background:#0a1d2b;border-color:#25465a}
 @media(max-width:1000px){.simple-actions{grid-template-columns:1fr 1fr}.admin-tool-grid{grid-template-columns:1fr 1fr}}@media(max-width:700px){.simple-actions,.home-two,.admin-tool-grid{grid-template-columns:1fr}}
+
+/* ===== PREMIUM / WOW FINISH ===== */
+:root{--brand:#0879bd;--brand2:#12a2df;--navy:#073b68;--success:#20a46b;--warn:#f1a43c;--danger:#d95c5c}
+body{background:
+ radial-gradient(circle at 78% -8%,rgba(18,162,223,.16),transparent 28%),
+ radial-gradient(circle at 25% 100%,rgba(32,164,107,.08),transparent 24%),
+ #edf5fa}
+.main{max-width:1700px}
+.sidebar{background:linear-gradient(180deg,#063e69 0%,#053453 55%,#042b46 100%);border-right:1px solid #ffffff14}
+.brand{padding-bottom:17px;border-bottom:1px solid #ffffff18}.brand:before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:#46d995;box-shadow:0 0 0 5px #46d99520;margin-right:8px}
+.header{border-radius:18px!important;box-shadow:0 14px 38px rgba(4,45,76,.10)!important}
+.page{animation:pageIn .22s ease}@keyframes pageIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.welcome-simple{background:linear-gradient(120deg,#063d68 0%,#087dc0 58%,#12a2df 100%);border-radius:22px;padding:25px 27px;color:#fff;margin-bottom:16px;box-shadow:0 20px 45px #075e9135;position:relative;overflow:hidden}
+.welcome-simple:after{content:"";position:absolute;width:240px;height:240px;border:45px solid #ffffff0c;border-radius:50%;right:-70px;top:-105px}.welcome-simple small,.welcome-simple p{color:#d9f2ff}.welcome-simple h1{font-size:34px}.today-chip{background:#ffffff20!important;border:1px solid #ffffff35!important;color:#fff!important;backdrop-filter:blur(8px)}
+.action-big{position:relative;overflow:hidden;min-height:126px}.action-big:after{content:"";position:absolute;width:75px;height:75px;border-radius:50%;right:-30px;bottom:-35px;background:#fff6}.action-big>span{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;background:#fff;box-shadow:0 5px 18px #073b6810}
+.panel{border-radius:18px!important}.panel-title-row{padding-bottom:10px;border-bottom:1px solid #edf1f4}
+.map-preview-simple{background:
+ linear-gradient(#ffffff30,#ffffff30),
+ repeating-linear-gradient(35deg,#dcebf3 0 1px,transparent 1px 34px),
+ repeating-linear-gradient(125deg,#dcebf3 0 1px,transparent 1px 34px),
+ #edf7fc!important}
+.admin-shortcut{background:linear-gradient(90deg,#f8fbfd,#eef7fc)!important}
+.admin-tool-grid button{box-shadow:0 8px 22px #073b680b}.admin-tool-grid button:hover{box-shadow:0 14px 30px #073b6818}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}.section-title h2{margin:0}.soft-label{font-size:10px;padding:5px 8px;background:#edf7fd;color:#0879bd;border-radius:20px;font-weight:800}
+.empty-state-premium{text-align:center;padding:28px;border:1px dashed #cedce5;border-radius:13px;background:#fafcfd}.empty-state-premium .emoji{font-size:34px}.empty-state-premium b{display:block;margin:7px 0}.empty-state-premium small{color:#7a909f}
+.notification-dot{position:relative}.notification-dot:after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:#ef5c5c;right:8px;top:7px;border:2px solid #fff}
+#quickHelp{position:fixed;right:24px;bottom:94px;width:330px;background:#fff;border:1px solid #dbe6ed;border-radius:17px;box-shadow:0 18px 55px #00294335;z-index:5500;display:none;overflow:hidden}
+#quickHelp .qh-head{padding:14px 16px;background:linear-gradient(120deg,#073b68,#087ec1);color:#fff;display:flex;justify-content:space-between;align-items:center}
+#quickHelp .qh-body{padding:14px}.qh-option{width:100%;border:0;background:#f5f9fc;border-radius:10px;padding:11px;text-align:left;margin:4px 0;cursor:pointer}.qh-option:hover{background:#e9f5fc}
+.help-fab{position:fixed;right:25px;bottom:25px;width:58px;height:58px;border-radius:50%;border:0;background:linear-gradient(135deg,#0879bd,#12a2df);color:#fff;font-size:24px;box-shadow:0 12px 30px #0879bd55;z-index:5400;cursor:pointer}
+.fab{display:none!important}
+body.dark .welcome-simple{background:linear-gradient(120deg,#082f4d,#075a88)}body.dark .admin-shortcut{background:#0b2130!important}body.dark #quickHelp{background:#0d2333;border-color:#23445a}body.dark .qh-option{background:#102c40;color:#dbeaf5}
+@media(max-width:700px){#quickHelp{left:12px;right:12px;bottom:85px;width:auto}.welcome-simple{padding:21px}.welcome-simple h1{font-size:27px}}
 </style>
 </head>
 <body>
@@ -151,7 +184,15 @@ body.dark .action-big,body.dark .admin-tool-grid button,body.dark .today-chip{ba
    <div class="map-preview-simple"><div>🗺️</div><b>Field Inspection Map</b><small>ดู Station และอุปกรณ์บนแผนที่</small><button class="btn" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">เลือกจุดตรวจ</button></div>
   </div>
  </div>
- <div class="admin-shortcut"><span>⚙️ สำหรับผู้วางแผน / วิศวกร</span><button class="btn btn-light" onclick="openAdminTools()">เปิดเครื่องมือจัดการ</button></div>
+ <div class="panel" style="margin-top:15px">
+ <div class="section-title"><div><h2>ภาพรวมวันนี้</h2><small style="color:#7c91a0">ข้อมูลจากงานที่บันทึกในเครื่องนี้</small></div><span class="soft-label">LIVE</span></div>
+ <div class="simple-status">
+  <div class="stat"><div><small>ผลตรวจทั้งหมด</small><div class="number" id="homeInspectionCount">0</div></div><span>📋</span></div>
+  <div class="stat"><div><small>Work Order</small><div class="number" id="homeWOCount">0</div></div><span>🔧</span></div>
+  <div class="stat"><div><small>PM ที่เสร็จแล้ว</small><div class="number" id="homePMDone">0</div></div><span>✓</span></div>
+ </div>
+</div>
+<div class="admin-shortcut"><span>⚙️ สำหรับผู้วางแผน / วิศวกร</span><button class="btn btn-light" onclick="openAdminTools()">เปิดเครื่องมือจัดการ</button></div>
 </section>
 
 <section id="mapPage" class="page">
@@ -244,17 +285,24 @@ body.dark .action-big,body.dark .admin-tool-grid button,body.dark .today-chip{ba
 
 <section id="settingsPage" class="page"><div class="panel"><h2>Settings</h2><div class="row2"><div class="field"><label>Organization</label><input id="setOrg" value="Asset Inspection"></div><div class="field"><label>Default Inspector</label><input id="setInspector"></div></div><br><button class="btn" onclick="localStorage.setItem('assetSettings',JSON.stringify({org:setOrg.value,inspector:setInspector.value}));alert('บันทึกแล้ว')">บันทึก Settings</button></div><div class="panel"><h2>Local Data</h2><p>เวอร์ชัน HTML เดียวนี้จัดเก็บข้อมูลใน Browser ด้วย localStorage</p></div></section>
 <section id="adminTools" class="page">
- <div class="field-hub-head"><div><span class="eyebrow">MANAGEMENT</span><h2>⚙️ เครื่องมือจัดการ</h2><p>รวมเครื่องมือสำหรับผู้วางแผนและวิศวกรไว้ที่เดียว ไม่รบกวนหน้าของผู้ตรวจ</p></div><button class="btn btn-light" onclick="showPage('dashboard',document.querySelector('[data-page=dashboard]'))">← กลับหน้าหลัก</button></div>
+ <div class="field-hub-head"><div><span class="eyebrow">MANAGEMENT WORKSPACE</span><h2>⚙️ ศูนย์จัดการงานบำรุงรักษา</h2><p>เครื่องมือขั้นสูงถูกรวมไว้ที่นี่ เพื่อให้หน้าของผู้ตรวจภาคสนามเรียบง่าย</p></div><button class="btn btn-light" onclick="showPage('dashboard',document.querySelector('[data-page=dashboard]'))">← หน้าหลัก</button></div>
+ <div class="section-title"><h2>วางแผนและติดตามงาน</h2><span class="soft-label">PLANNING</span></div>
  <div class="admin-tool-grid">
-  <button onclick="goAdmin('assets')">⚙️<b>ทะเบียนอุปกรณ์</b><small>Asset Management</small></button>
-  <button onclick="goAdmin('pm')">🗓️<b>แผนบำรุงรักษา</b><small>PM Planning</small></button>
-  <button onclick="goAdmin('labor')">👷<b>เวลาและกำลังคน</b><small>Labor Tracking</small></button>
-  <button onclick="goAdmin('cost')">💰<b>ค่าใช้จ่าย</b><small>Cost Analysis</small></button>
-  <button onclick="goAdmin('kpi')">📈<b>KPI</b><small>Management Summary</small></button>
-  <button onclick="goAdmin('users')">👥<b>ทีมงาน</b><small>User / Team</small></button>
-  <button onclick="goAdmin('hiPage')">♥<b>สภาพอุปกรณ์</b><small>Health Index</small></button>
-  <button onclick="goAdmin('fmeaPage')">▦<b>วิเคราะห์ความขัดข้อง</b><small>FMEA</small></button>
-  <button onclick="goAdmin('strategyPage')">🛠️<b>แนวทางบำรุงรักษา</b><small>Maintenance Strategy</small></button>
+  <button onclick="goAdmin('assets')">⚙️<b>ทะเบียนอุปกรณ์</b><small>Asset / Station / Location</small></button>
+  <button onclick="goAdmin('pm')">🗓️<b>แผนบำรุงรักษา</b><small>กำหนดรอบและ Due Date</small></button>
+  <button onclick="goAdmin('workorder')">🔧<b>Work Order</b><small>ติดตามงานที่ต้องดำเนินการ</small></button>
+  <button onclick="goAdmin('labor')">👷<b>กำลังคน</b><small>เวลาและ Man-hours</small></button>
+  <button onclick="goAdmin('cost')">💰<b>ค่าใช้จ่าย</b><small>Plan เทียบ Actual</small></button>
+  <button onclick="goAdmin('kpi')">📈<b>สรุป KPI</b><small>ภาพรวมสำหรับผู้บริหาร</small></button>
+ </div>
+ <div class="section-title" style="margin-top:22px"><h2>วิเคราะห์สภาพและ RCM</h2><span class="soft-label">ENGINEERING</span></div>
+ <div class="admin-tool-grid">
+  <button onclick="goAdmin('hiPage')">♥<b>Health Index</b><small>ติดตามสภาพอุปกรณ์</small></button>
+  <button onclick="goAdmin('fmeaPage')">▦<b>FMEA</b><small>Failure Mode / RPN</small></button>
+  <button onclick="goAdmin('criticalityPage')">◆<b>Criticality</b><small>จัดระดับผลกระทบ</small></button>
+  <button onclick="goAdmin('strategyPage')">🛠️<b>Maintenance Strategy</b><small>เลือกแนวทางบำรุงรักษา</small></button>
+  <button onclick="goAdmin('users')">👥<b>ทีมงาน</b><small>ผู้ใช้และบทบาท</small></button>
+  <button onclick="goAdmin('settingsPage')">⚙<b>ตั้งค่าระบบ</b><small>ค่าพื้นฐานของระบบ</small></button>
  </div>
 </section>
 </main>
@@ -263,6 +311,16 @@ body.dark .action-big,body.dark .admin-tool-grid button,body.dark .today-chip{ba
 <button class="fab" onclick="openCommand()" title="Quick actions">＋</button>
 <div id="command" class="command" onclick="if(event.target===this)closeCommand()"><div class="command-box"><input id="cmdSearch" placeholder="ค้นหาเมนู / Asset / Station / ใบตรวจ..." oninput="renderCommand()"><div class="cmd-results" id="cmdResults"></div></div></div>
 <div id="toast" class="toast">บันทึกแล้ว</div>
+<button class="help-fab" onclick="toggleQuickHelp()" title="ช่วยเหลือ">?</button>
+<div id="quickHelp">
+ <div class="qh-head"><b>✨ ให้ช่วยอะไร?</b><button onclick="toggleQuickHelp()" style="border:0;background:transparent;color:#fff;cursor:pointer">✕</button></div>
+ <div class="qh-body">
+  <button class="qh-option" onclick="toggleQuickHelp();showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))">📋 เริ่มตรวจภาคสนาม</button>
+  <button class="qh-option" onclick="toggleQuickHelp();openCommand()">🔎 ค้นหา Station / Asset</button>
+  <button class="qh-option" onclick="toggleQuickHelp();showPage('history',document.querySelector('[data-page=history]'))">📚 ดูผลตรวจย้อนหลัง</button>
+  <button class="qh-option" onclick="toggleQuickHelp();openAdminTools()">⚙️ เครื่องมือสำหรับผู้วางแผน</button>
+ </div>
+</div>
 <section id="paperMode"><div class="paper-toolbar"><div><b id="paperToolbarTitle"></b> <small id="paperToolbarCode"></small></div><div class="paper-actions"><button class="btn btn-gray" onclick="closePaper()">← กลับ</button><button class="btn btn-light" onclick="manualForActive()">📖 คู่มือ</button><button class="btn btn-orange" onclick="savePaper('Draft')">💾 บันทึกร่าง</button><button class="btn btn-green" onclick="savePaper('Submitted')">✓ ส่งผลตรวจ</button><button class="btn" onclick="window.print()">🖨 พิมพ์/PDF</button></div></div><div class="paper-wrap" id="paperContainer"></div></section>
 
 <section id="manualOverlay"><div class="overlay-toolbar"><b id="manualOverlayTitle">คู่มือ</b><button class="btn btn-gray" onclick="closeManual()">✕ ปิด</button></div><div class="overlay-content" id="manualContent"></div></section>
@@ -548,7 +606,14 @@ function filterUnifiedManuals(){renderUnifiedManuals()}
 
 function openAdminTools(){showPage("adminTools",null)}
 function goAdmin(id){showPage(id,null)}
+function toggleQuickHelp(){const q=document.getElementById("quickHelp");q.style.display=q.style.display==="block"?"none":"block"}
+function renderHomeCounts(){
+ const r=getRecords(),w=storeGet("assetWO"),p=storeGet("assetPM");
+ const a=document.getElementById("homeInspectionCount"),b=document.getElementById("homeWOCount"),c=document.getElementById("homePMDone");
+ if(a)a.textContent=r.length;if(b)b.textContent=w.length;if(c)c.textContent=p.filter(x=>x.status==="Completed").length;
+}
 function renderSimpleHome(){
+ renderHomeCounts();
  const d=document.getElementById("simpleToday");if(d)d.textContent=new Date().toLocaleDateString("th-TH",{weekday:"short",day:"numeric",month:"short"});
  const box=document.getElementById("simpleRecent");if(!box)return;
  const r=getRecords().slice().reverse().slice(0,5);
