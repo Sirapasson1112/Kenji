@@ -8,7 +8,7 @@
 <style>
 :root{
   --navy:#083b68;
-  --navy2:#062b4d;
+  --navy2:#052b4d;
   --blue:#1686d4;
   --light:#f3f7fb;
   --border:#dce6ef;
@@ -18,83 +18,79 @@
   --text:#183b5c;
   --muted:#72869a;
 }
-
 *{box-sizing:border-box}
-
 body{
   margin:0;
   font-family:Arial,"Tahoma",sans-serif;
   background:var(--light);
   color:var(--text);
 }
+button,input,select,textarea{font-family:inherit}
 
 /* SIDEBAR */
 .sidebar{
   position:fixed;
-  top:0;
-  left:0;
-  width:260px;
-  height:100vh;
+  inset:0 auto 0 0;
+  width:265px;
   background:linear-gradient(180deg,var(--navy),var(--navy2));
-  color:white;
+  color:#fff;
   padding:24px 15px;
   overflow:auto;
 }
-
-.logo{
-  font-size:23px;
-  font-weight:700;
-}
-
-.logo-sub{
-  opacity:.7;
-  font-size:12px;
-  margin:6px 0 25px;
-}
-
+.logo{font-size:23px;font-weight:800}
+.logo-sub{font-size:12px;opacity:.7;margin:6px 0 25px}
 .menu{
   padding:13px 15px;
   border-radius:9px;
   margin:5px 0;
   cursor:pointer;
+  transition:.2s;
 }
-
 .menu:hover,.menu.active{background:#1384ce}
 
 /* MAIN */
-.main{
-  margin-left:260px;
-  padding:25px;
-}
-
+.main{margin-left:265px;padding:25px}
 .header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  background:white;
-  border-radius:15px;
+  gap:20px;
+  background:#fff;
   padding:20px 25px;
+  border-radius:15px;
   box-shadow:0 3px 15px #0000000d;
   margin-bottom:22px;
 }
-
 .header h1{margin:0;font-size:26px}
 .header p{margin:5px 0 0;color:var(--muted)}
-
-.user{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.header-right{display:flex;align-items:center;gap:20px}
+.user{display:flex;align-items:center;gap:10px}
+.avatar{
+  width:43px;height:43px;border-radius:50%;
+  background:var(--blue);color:#fff;
+  display:flex;align-items:center;justify-content:center;
 }
 
-.avatar{
-  width:43px;height:43px;
-  border-radius:50%;
+/* LANGUAGE */
+.language-switch{
   display:flex;
-  align-items:center;
-  justify-content:center;
-  color:white;
+  background:#edf3f8;
+  padding:4px;
+  border-radius:10px;
+}
+.lang-btn{
+  border:0;
+  background:transparent;
+  color:#61768a;
+  padding:8px 12px;
+  border-radius:7px;
+  cursor:pointer;
+  font-weight:bold;
+}
+.lang-btn.active{
   background:var(--blue);
+  color:white;
+  box-shadow:0 2px 6px #0002;
 }
 
 /* PAGES */
@@ -108,36 +104,34 @@ body{
   gap:16px;
   margin-bottom:20px;
 }
-
 .stat{
-  background:white;
+  background:#fff;
   padding:20px;
   border-radius:14px;
   box-shadow:0 3px 12px #0000000c;
 }
-
 .stat small{color:var(--muted)}
-.stat strong{
-  display:block;
-  margin-top:8px;
-  font-size:30px;
-}
-
+.stat strong{display:block;font-size:30px;margin-top:8px}
 .green{color:var(--green)}
 .red{color:var(--red)}
-.blue{color:var(--blue)}
 .orange{color:var(--orange)}
+.blue{color:var(--blue)}
 
-/* PANEL */
+/* PANELS */
 .panel{
-  background:white;
+  background:#fff;
   border-radius:15px;
   padding:22px;
   box-shadow:0 3px 15px #0000000c;
   margin-bottom:20px;
 }
-
 .panel h2{margin-top:0}
+.panel-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
 
 /* FORM CARDS */
 .toolbar{
@@ -145,163 +139,144 @@ body{
   gap:12px;
   margin-bottom:20px;
 }
-
 .search{
-  flex:1;
+  width:100%;
   padding:13px;
   border:1px solid var(--border);
   border-radius:10px;
 }
-
 .forms-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:16px;
 }
-
 .form-card{
-  background:white;
+  background:#fff;
   border:1px solid var(--border);
   border-radius:14px;
   padding:18px;
   transition:.2s;
 }
-
 .form-card:hover{
   transform:translateY(-3px);
   box-shadow:0 7px 20px #00000012;
 }
-
 .form-number{
-  width:40px;height:40px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:10px;
+  width:42px;height:42px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:11px;
   background:#e5f3ff;
   color:var(--blue);
-  font-weight:bold;
+  font-weight:800;
 }
-
-.form-card h3{
-  margin:13px 0 7px;
-  font-size:16px;
+.form-card h3{margin:13px 0 7px;font-size:17px}
+.form-card .description{
+  min-height:42px;
+  font-size:14px;
 }
-
-.code{
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:14px;
-}
+.code{color:var(--muted);font-size:13px;margin:8px 0 14px}
 
 /* BUTTONS */
 .btn{
   border:0;
-  border-radius:8px;
   padding:10px 16px;
-  color:white;
+  border-radius:8px;
+  color:#fff;
   background:var(--blue);
   cursor:pointer;
-  font-weight:600;
+  font-weight:700;
 }
-
 .btn:hover{opacity:.9}
 .btn-green{background:var(--green)}
 .btn-gray{background:#6f8293}
-.btn-red{background:var(--red)}
 .btn-orange{background:var(--orange)}
+.btn-red{background:var(--red)}
 
-/* FORM */
+/* TABLE */
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse}
+th{
+  background:#f1f6fa;
+  color:#567086;
+  text-align:left;
+}
+th,td{
+  padding:11px;
+  border-bottom:1px solid #e5edf3;
+  vertical-align:middle;
+}
+.status{
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+}
+.draft{background:#fff1ce;color:#9a6700}
+.submitted{background:#dff6eb;color:#12855c}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  z-index:1000;
+  inset:0;
+  background:#0008;
+  padding:30px;
+  overflow:auto;
+}
+.modal-content{
+  max-width:1150px;
+  margin:auto;
+  background:var(--light);
+  border-radius:16px;
+  padding:22px;
+}
 .form-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:15px;
 }
-
 .form-header h2{margin:0}
+.close{font-size:30px;cursor:pointer}
 
+/* INPUT */
 .grid2{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:repeat(2,1fr);
   gap:15px;
 }
-
 .grid3{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:15px;
 }
-
 .field label{
   display:block;
   font-size:13px;
-  font-weight:bold;
+  font-weight:700;
   margin-bottom:6px;
 }
-
 input,select,textarea{
   width:100%;
+  padding:11px;
   border:1px solid #ccd8e3;
   border-radius:8px;
-  padding:11px;
+  background:#fff;
   font-size:14px;
-  background:white;
 }
-
-textarea{
-  resize:vertical;
-  min-height:90px;
-}
-
+textarea{min-height:95px;resize:vertical}
 .section-title{
   margin:25px 0 12px;
   padding:10px 14px;
   background:#edf6fd;
   border-left:4px solid var(--blue);
-  font-weight:bold;
+  font-weight:800;
 }
+.check-row select{min-width:115px}
 
-/* CHECK TABLE */
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
-th{
-  background:#f1f6fa;
-  color:#567086;
-  text-align:left;
-}
-
-th,td{
-  padding:11px;
-  border-bottom:1px solid #e5edf3;
-  vertical-align:middle;
-}
-
-.check-row select{
-  min-width:115px;
-}
-
-.status{
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:bold;
-}
-
-.draft{
-  background:#fff1ce;
-  color:#9a6700;
-}
-
-.submitted{
-  background:#dff6eb;
-  color:#12855c;
-}
-
-/* IMAGE */
+/* UPLOAD */
 .upload-box{
   border:2px dashed #c7d6e3;
   padding:20px;
@@ -309,36 +284,22 @@ th,td{
   border-radius:12px;
   background:#f9fbfd;
 }
-
 .preview{
+  display:block;
   max-width:100%;
   max-height:280px;
-  margin-top:10px;
+  margin:10px auto 0;
   border-radius:8px;
 }
 
-/* MODAL */
-.modal{
-  display:none;
-  position:fixed;
-  z-index:999;
-  inset:0;
-  background:#0008;
-  padding:30px;
-  overflow:auto;
-}
-
-.modal-content{
-  max-width:1100px;
-  margin:auto;
-  background:#f4f7fb;
-  border-radius:16px;
-  padding:22px;
-}
-
-.close{
-  font-size:27px;
-  cursor:pointer;
+/* NOTICE */
+.notice{
+  background:#fff7dd;
+  border:1px solid #f2dc9d;
+  padding:12px 15px;
+  border-radius:9px;
+  margin:12px 0;
+  color:#795b00;
 }
 
 /* TOAST */
@@ -349,16 +310,16 @@ th,td{
   bottom:25px;
   padding:15px 20px;
   background:#173d5d;
-  color:white;
+  color:#fff;
   border-radius:10px;
   z-index:2000;
 }
 
+/* MOBILE */
 @media(max-width:1100px){
   .forms-grid{grid-template-columns:repeat(2,1fr)}
   .stats{grid-template-columns:repeat(2,1fr)}
 }
-
 @media(max-width:800px){
   .sidebar{width:75px;padding:20px 8px}
   .logo{font-size:0}
@@ -368,6 +329,8 @@ th,td{
   .menu span{font-size:22px}
   .main{margin-left:75px;padding:12px}
   .forms-grid,.grid2,.grid3{grid-template-columns:1fr}
+  .header{align-items:flex-start}
+  .header-right{flex-direction:column;align-items:flex-end}
 }
 </style>
 </head>
@@ -378,98 +341,131 @@ th,td{
   <div class="logo">⚙ Asset Inspection</div>
   <div class="logo-sub">Maintenance Management System</div>
 
-  <div class="menu active" onclick="page('dashboard',this)">
-    <span>📊</span> Dashboard
+  <div class="menu active" data-menu="dashboard"
+       onclick="showPage('dashboard',this)">
+    <span>📊</span> <b class="menu-text">Dashboard</b>
   </div>
 
-  <div class="menu" onclick="page('inspection',this)">
-    <span>🔍</span> Asset Inspection
+  <div class="menu" data-menu="inspection"
+       onclick="showPage('inspection',this)">
+    <span>🔍</span> <b class="menu-text">Asset Inspection</b>
   </div>
 
-  <div class="menu" onclick="page('history',this)">
-    <span>📚</span> Inspection History
+  <div class="menu" data-menu="history"
+       onclick="showPage('history',this)">
+    <span>📚</span> <b class="menu-text">Inspection History</b>
   </div>
 
-  <div class="menu" onclick="page('workorder',this)">
-    <span>📋</span> Work Order
+  <div class="menu" data-menu="workorder"
+       onclick="showPage('workorder',this)">
+    <span>📋</span> <b class="menu-text">Work Order</b>
   </div>
 
-  <div class="menu" onclick="page('pm',this)">
-    <span>🗓️</span> PM Planning
+  <div class="menu" data-menu="pm"
+       onclick="showPage('pm',this)">
+    <span>🗓️</span> <b class="menu-text">PM Planning</b>
   </div>
 
-  <div class="menu" onclick="page('kpi',this)">
-    <span>📈</span> KPI
+  <div class="menu" data-menu="kpi"
+       onclick="showPage('kpi',this)">
+    <span>📈</span> <b class="menu-text">KPI</b>
   </div>
 </aside>
 
 <main class="main">
 
 <header class="header">
+
   <div>
     <h1 id="pageTitle">Maintenance Dashboard</h1>
-    <p>Asset Inspection & Preventive Maintenance</p>
+    <p id="subtitle">Asset Inspection & Preventive Maintenance</p>
   </div>
 
-  <div class="user">
-    <div class="avatar">A</div>
-    <div><b>Admin</b><br><small>Maintenance Manager</small></div>
+  <div class="header-right">
+
+    <div class="language-switch">
+      <button id="btnTH" class="lang-btn"
+              onclick="changeLanguage('th')">🇹🇭 TH</button>
+
+      <button id="btnEN" class="lang-btn"
+              onclick="changeLanguage('en')">🇬🇧 EN</button>
+    </div>
+
+    <div class="user">
+      <div class="avatar">A</div>
+      <div>
+        <b>Admin</b><br>
+        <small id="userRole">Maintenance Manager</small>
+      </div>
+    </div>
+
   </div>
+
 </header>
 
-<!-- DASHBOARD -->
+<!-- ================= DASHBOARD ================= -->
+
 <section id="dashboard" class="page active">
 
   <div class="stats">
+
     <div class="stat">
-      <small>Inspection ทั้งหมด</small>
+      <small data-i18n="totalInspection">Total Inspections</small>
       <strong class="blue" id="totalCount">0</strong>
     </div>
 
     <div class="stat">
-      <small>Submitted</small>
+      <small data-i18n="submitted">Submitted</small>
       <strong class="green" id="submitCount">0</strong>
     </div>
 
     <div class="stat">
-      <small>Draft</small>
+      <small data-i18n="draft">Draft</small>
       <strong class="orange" id="draftCount">0</strong>
     </div>
 
     <div class="stat">
-      <small>แบบฟอร์มที่รองรับ</small>
+      <small data-i18n="supportedForms">Supported Forms</small>
       <strong>11</strong>
     </div>
+
   </div>
 
   <div class="panel">
-    <h2>Maintenance Dashboard</h2>
-    <p>ภาพรวมข้อมูลจากการตรวจสอบอุปกรณ์และงานบำรุงรักษา</p>
 
-    <table>
-      <thead>
-        <tr>
-          <th>วันที่</th>
-          <th>แบบฟอร์ม</th>
-          <th>Station ID</th>
-          <th>MEA No.</th>
-          <th>สถานะ</th>
-        </tr>
-      </thead>
-      <tbody id="recentTable"></tbody>
-    </table>
+    <h2 data-i18n="dashboardOverview">Maintenance Overview</h2>
+    <p data-i18n="dashboardDescription">
+      Overview of asset inspection and maintenance information
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="date">Date</th>
+            <th data-i18n="form">Form</th>
+            <th>Station ID</th>
+            <th>MEA No.</th>
+            <th data-i18n="status">Status</th>
+          </tr>
+        </thead>
+        <tbody id="recentTable"></tbody>
+      </table>
+    </div>
+
   </div>
 
 </section>
 
-<!-- INSPECTION -->
+<!-- ================= INSPECTION ================= -->
+
 <section id="inspection" class="page">
 
   <div class="toolbar">
     <input
       id="searchForm"
       class="search"
-      placeholder="🔍 ค้นหาแบบฟอร์ม เช่น Transformer, RMU, Hot Spot..."
+      placeholder="Search inspection forms..."
       oninput="filterForms()"
     >
   </div>
@@ -478,1402 +474,2135 @@ th,td{
 
 </section>
 
-<!-- HISTORY -->
+<!-- ================= HISTORY ================= -->
+
 <section id="history" class="page">
 
   <div class="panel">
-    <div class="form-header">
-      <h2>Inspection History</h2>
-      <button class="btn btn-green" onclick="exportCSV()">Export CSV</button>
+
+    <div class="panel-header">
+      <h2 data-i18n="inspectionHistory">Inspection History</h2>
+
+      <button class="btn btn-green"
+              onclick="exportCSV()"
+              data-i18n="exportCSV">
+        Export CSV
+      </button>
     </div>
 
     <br>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Form</th>
-          <th>Station</th>
-          <th>MEA No.</th>
-          <th>Inspector</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="historyTable"></tbody>
-    </table>
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th data-i18n="date">Date</th>
+            <th data-i18n="form">Form</th>
+            <th>Station ID</th>
+            <th>MEA No.</th>
+            <th data-i18n="inspector">Inspector</th>
+            <th data-i18n="status">Status</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody id="historyTable"></tbody>
+
+      </table>
+
+    </div>
+
   </div>
 
 </section>
 
-<!-- WORK ORDER -->
+<!-- ================= WORK ORDER ================= -->
+
 <section id="workorder" class="page">
+
   <div class="panel">
-    <h2>Work Order Management</h2>
-    <p>
-      เมื่อพบข้อบกพร่องจาก Inspection สามารถนำรายการไปสร้าง
-      Corrective / Maintenance Work Order ได้
+
+    <h2 data-i18n="workOrderManagement">
+      Work Order Management
+    </h2>
+
+    <p data-i18n="workOrderDescription">
+      Defects found during inspection can be used to create maintenance work orders.
     </p>
+
+    <button class="btn" onclick="alertWorkOrder()"
+            data-i18n="createWO">
+      + Create Work Order
+    </button>
+
   </div>
+
 </section>
 
-<!-- PM -->
+<!-- ================= PM ================= -->
+
 <section id="pm" class="page">
+
   <div class="panel">
-    <h2>Preventive Maintenance Planning</h2>
-    <p>พื้นที่สำหรับกำหนดรอบ PM, Due Date และผู้รับผิดชอบ</p>
+
+    <h2 data-i18n="pmPlanning">
+      Preventive Maintenance Planning
+    </h2>
+
+    <p data-i18n="pmDescription">
+      Schedule PM, due dates and responsible maintenance teams.
+    </p>
+
   </div>
+
 </section>
 
-<!-- KPI -->
+<!-- ================= KPI ================= -->
+
 <section id="kpi" class="page">
+
   <div class="stats">
+
     <div class="stat">
-      <small>Inspection Completion</small>
+      <small data-i18n="completion">Inspection Completion</small>
       <strong class="green" id="completionKPI">0%</strong>
     </div>
 
     <div class="stat">
-      <small>Total Inspection</small>
+      <small data-i18n="totalInspection">Total Inspections</small>
       <strong class="blue" id="kpiTotal">0</strong>
     </div>
 
     <div class="stat">
-      <small>Submitted</small>
+      <small data-i18n="submitted">Submitted</small>
       <strong class="green" id="kpiSubmit">0</strong>
     </div>
 
     <div class="stat">
-      <small>Draft</small>
+      <small data-i18n="draft">Draft</small>
       <strong class="orange" id="kpiDraft">0</strong>
     </div>
+
   </div>
+
 </section>
 
 </main>
 
-<!-- INSPECTION MODAL -->
+<!-- ================= MODAL ================= -->
+
 <div id="inspectionModal" class="modal">
-  <div class="modal-content">
 
-    <div class="form-header">
-      <div>
-        <h2 id="modalTitle"></h2>
-        <div id="modalCode" class="code"></div>
-      </div>
+<div class="modal-content">
 
-      <span class="close" onclick="closeModal()">×</span>
+  <div class="form-header">
+
+    <div>
+      <h2 id="modalTitle"></h2>
+      <div id="modalCode" class="code"></div>
     </div>
 
-    <div class="panel">
+    <span class="close" onclick="closeModal()">×</span>
 
-      <div class="section-title">1. ข้อมูลทั่วไป</div>
+  </div>
 
-      <div class="grid3">
+  <div class="panel">
 
-        <div class="field">
-          <label>วันที่ตรวจ</label>
-          <input id="inspectionDate" type="date">
-        </div>
+    <div class="section-title" data-i18n="generalInfo">
+      1. General Information
+    </div>
 
-        <div class="field">
-          <label>Station ID</label>
-          <input id="stationId" placeholder="Station ID">
-        </div>
+    <div class="grid3">
 
-        <div class="field">
-          <label>MEA No.</label>
-          <input id="meaNo" placeholder="MEA No.">
-        </div>
-
-        <div class="field">
-          <label>สถานที่</label>
-          <input id="location" placeholder="สถานที่">
-        </div>
-
-        <div class="field">
-          <label>GIS Latitude</label>
-          <input id="lat" type="number" step="any" placeholder="13.xxxxxx">
-        </div>
-
-        <div class="field">
-          <label>GIS Longitude</label>
-          <input id="lng" type="number" step="any" placeholder="100.xxxxxx">
-        </div>
-
-        <div class="field">
-          <label>ผู้ตรวจ</label>
-          <input id="inspector" placeholder="ชื่อผู้ตรวจ">
-        </div>
-
-        <div class="field">
-          <label>ตำแหน่ง</label>
-          <input id="position" placeholder="ตำแหน่ง">
-        </div>
-
-        <div class="field">
-          <label>Work Order</label>
-          <input id="workOrder" placeholder="WO-xxxx">
-        </div>
-
+      <div class="field">
+        <label data-i18n="inspectionDate">Inspection Date</label>
+        <input id="inspectionDate" type="date">
       </div>
 
-      <div id="dynamicForm"></div>
-
-      <div class="section-title">ข้อเสนอแนะ / ข้อมูลเพิ่มเติม</div>
-
-      <textarea
-        id="remark"
-        placeholder="ระบุข้อบกพร่อง สิ่งที่ต้องปรับปรุง หรือข้อมูลเพิ่มเติม"
-      ></textarea>
-
-      <div class="section-title">หลักฐานการตรวจสอบ</div>
-
-      <div class="upload-box">
-        <b>📷 แนบรูปภาพ</b><br><br>
-        <input type="file" accept="image/*" onchange="previewImage(this,'generalPreview')">
-        <br>
-        <img id="generalPreview" class="preview">
+      <div class="field">
+        <label>Station ID</label>
+        <input id="stationId">
       </div>
 
-      <br>
-
-      <div style="display:flex;gap:10px;justify-content:flex-end">
-        <button class="btn btn-gray" onclick="closeModal()">ยกเลิก</button>
-        <button class="btn btn-orange" onclick="saveInspection('Draft')">
-          Save Draft
-        </button>
-        <button class="btn btn-green" onclick="saveInspection('Submitted')">
-          ✓ Submit Inspection
-        </button>
+      <div class="field">
+        <label>MEA No.</label>
+        <input id="meaNo">
       </div>
+
+      <div class="field">
+        <label data-i18n="location">Location</label>
+        <input id="location">
+      </div>
+
+      <div class="field">
+        <label>GIS Latitude</label>
+        <input id="lat" type="number" step="any">
+      </div>
+
+      <div class="field">
+        <label>GIS Longitude</label>
+        <input id="lng" type="number" step="any">
+      </div>
+
+      <div class="field">
+        <label data-i18n="inspector">Inspector</label>
+        <input id="inspector">
+      </div>
+
+      <div class="field">
+        <label data-i18n="position">Position</label>
+        <input id="position">
+      </div>
+
+      <div class="field">
+        <label>Work Order</label>
+        <input id="workOrder" placeholder="WO-xxxx">
+      </div>
+
+    </div>
+
+    <div id="dynamicForm"></div>
+
+    <div class="section-title" data-i18n="recommendations">
+      Recommendations / Additional Information
+    </div>
+
+    <textarea id="remark"></textarea>
+
+    <div class="section-title" data-i18n="evidence">
+      Inspection Evidence
+    </div>
+
+    <div class="upload-box">
+
+      <b data-i18n="uploadImage">📷 Upload Image</b>
+
+      <br><br>
+
+      <input
+        type="file"
+        accept="image/*"
+        onchange="previewImage(this,'generalPreview')"
+      >
+
+      <img id="generalPreview" class="preview">
+
+    </div>
+
+    <br>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">
+
+      <button class="btn btn-gray"
+              onclick="closeModal()"
+              data-i18n="cancel">
+        Cancel
+      </button>
+
+      <button class="btn btn-orange"
+              onclick="saveInspection('Draft')"
+              data-i18n="saveDraft">
+        Save Draft
+      </button>
+
+      <button class="btn btn-green"
+              onclick="saveInspection('Submitted')"
+              data-i18n="submitInspection">
+        ✓ Submit Inspection
+      </button>
 
     </div>
 
   </div>
+
+</div>
+
 </div>
 
 <div id="toast" class="toast"></div>
 
+
 <script>
 
-/* =====================================================
-   11 INSPECTION FORMS
-===================================================== */
+/* =========================================================
+   LANGUAGE
+========================================================= */
 
-const forms = [
+let currentLanguage =
+  localStorage.getItem("assetLanguage") || "th";
+
+const text = {
+
+th:{
+  dashboard:"แดชบอร์ด",
+  inspection:"ตรวจสอบอุปกรณ์",
+  history:"ประวัติการตรวจสอบ",
+  workorder:"ใบสั่งงาน",
+  pm:"วางแผน PM",
+  kpi:"KPI",
+
+  dashboardTitle:"แดชบอร์ดงานบำรุงรักษา",
+  inspectionTitle:"ตรวจสอบอุปกรณ์",
+  historyTitle:"ประวัติการตรวจสอบ",
+  workorderTitle:"จัดการใบสั่งงาน",
+  pmTitle:"การบำรุงรักษาเชิงป้องกัน",
+  kpiTitle:"KPI งานบำรุงรักษา",
+
+  subtitle:"ระบบตรวจสอบอุปกรณ์และบำรุงรักษาเชิงป้องกัน",
+  userRole:"ผู้จัดการงานบำรุงรักษา",
+
+  totalInspection:"การตรวจสอบทั้งหมด",
+  submitted:"ส่งแล้ว",
+  draft:"ฉบับร่าง",
+  supportedForms:"แบบฟอร์มที่รองรับ",
+
+  dashboardOverview:"ภาพรวมงานบำรุงรักษา",
+  dashboardDescription:"ภาพรวมข้อมูลจากการตรวจสอบอุปกรณ์และงานบำรุงรักษา",
+
+  date:"วันที่",
+  form:"แบบฟอร์ม",
+  status:"สถานะ",
+  inspector:"ผู้ตรวจ",
+  inspectionHistory:"ประวัติการตรวจสอบ",
+  exportCSV:"ส่งออก CSV",
+
+  workOrderManagement:"จัดการใบสั่งงาน",
+  workOrderDescription:"ข้อบกพร่องที่พบจากการตรวจสามารถนำไปสร้างใบสั่งงานบำรุงรักษาได้",
+  createWO:"+ สร้าง Work Order",
+
+  pmPlanning:"การวางแผนบำรุงรักษาเชิงป้องกัน",
+  pmDescription:"กำหนดรอบ PM, Due Date และทีมผู้รับผิดชอบ",
+
+  completion:"ความสำเร็จของการตรวจ",
+
+  generalInfo:"1. ข้อมูลทั่วไป",
+  inspectionDate:"วันที่ตรวจ",
+  location:"สถานที่",
+  position:"ตำแหน่ง",
+  recommendations:"ข้อเสนอแนะ / ข้อมูลเพิ่มเติม",
+  evidence:"หลักฐานการตรวจสอบ",
+  uploadImage:"📷 แนบรูปภาพ",
+  cancel:"ยกเลิก",
+  saveDraft:"บันทึกฉบับร่าง",
+  submitInspection:"✓ ส่งผลการตรวจ",
+
+  search:"🔍 ค้นหาแบบฟอร์ม เช่น หม้อแปลง, RMU, Hot Spot...",
+  openInspection:"เปิดแบบตรวจ →",
+
+  checklist:"2. รายการตรวจสอบบำรุงรักษา",
+  no:"ลำดับ",
+  inspectionItem:"รายการตรวจสอบ",
+  result:"ผลตรวจ",
+  defectRemark:"ข้อบกพร่อง / หมายเหตุ",
+
+  select:"-- เลือก --",
+  normal:"ปกติ",
+  damaged:"ชำรุด",
+  none:"ไม่มี",
+  na:"N/A",
+
+  electrical:"3. ตรวจวัดกระแสและแรงดันไฟฟ้า",
+  capacitorMeasurement:"3. การตรวจวัด Capacitor",
+
+  oilTitle:"2. ทดสอบ Breakdown Voltage น้ำมันหม้อแปลง",
+  oilHelp:"กรอกผลการทดสอบ Breakdown Voltage จำนวน 5 ครั้ง",
+  testNo:"ครั้งที่",
+  oilAverage:"ค่าเฉลี่ย Breakdown Voltage",
+  evaluation:"ผลประเมิน",
+  passed:"ผ่านเกณฑ์",
+  below26:"ต่ำกว่า 26 kV / ตรวจสอบการกรองน้ำมัน",
+  filtering:"3. การกรองน้ำมัน",
+  filteringResult:"ขั้นตอน / ผลหลังการกรองน้ำมัน",
+
+  hotspotInfo:"2. ข้อมูล Hot Spot",
+  equipment:"อุปกรณ์",
+  maxTemperature:"อุณหภูมิสูงสุดที่จุดวัด (°C)",
+  referenceTemperature:"อุณหภูมิเปรียบเทียบ (°C)",
+  priority:"ระดับความสำคัญ",
+  photoInfo:"3. ข้อมูลภาพถ่าย",
+  normalPhoto:"ภาพถ่ายจริง",
+  thermalPhoto:"ภาพถ่ายความร้อน",
+
+  pdInfo:"2. การตรวจสอบ Partial Discharge",
+  abnormalPoint:"จุดที่ผิดปกติ",
+  soundLevel:"ระดับความเข้มเสียง (dB)",
+  severity:"ระดับความรุนแรง",
+  veryHigh:"สูงมาก",
+  high:"สูง",
+  medium:"ปานกลาง",
+  low:"ต่ำ",
+  normalCamera:"ภาพถ่ายจากกล้องปกติ",
+  acousticCamera:"ภาพถ่ายจาก Acoustic Camera",
+  correctiveForward:"4. การส่งต่อดำเนินการแก้ไข",
+  forwardGroup:"ส่งต่อให้กลุ่มงาน",
+  correctiveAction:"โปรดดำเนินการแก้ไข",
+  improvement:"5. การดำเนินการปรับปรุง",
+  improvementDetail:"รายละเอียดการดำเนินการแก้ไข",
+
+  noData:"ยังไม่มีข้อมูลการตรวจสอบ",
+  delete:"ลบ",
+  confirmDelete:"ต้องการลบข้อมูลนี้หรือไม่?",
+  deleted:"ลบข้อมูลแล้ว",
+  draftSaved:"บันทึก Draft เรียบร้อย",
+  submittedSaved:"ส่งผล Inspection เรียบร้อย",
+  noExportData:"ยังไม่มีข้อมูลสำหรับส่งออก"
+},
+
+en:{
+  dashboard:"Dashboard",
+  inspection:"Asset Inspection",
+  history:"Inspection History",
+  workorder:"Work Order",
+  pm:"PM Planning",
+  kpi:"KPI",
+
+  dashboardTitle:"Maintenance Dashboard",
+  inspectionTitle:"Asset Inspection",
+  historyTitle:"Inspection History",
+  workorderTitle:"Work Order Management",
+  pmTitle:"Preventive Maintenance",
+  kpiTitle:"Maintenance KPI",
+
+  subtitle:"Asset Inspection & Preventive Maintenance",
+  userRole:"Maintenance Manager",
+
+  totalInspection:"Total Inspections",
+  submitted:"Submitted",
+  draft:"Draft",
+  supportedForms:"Supported Forms",
+
+  dashboardOverview:"Maintenance Overview",
+  dashboardDescription:"Overview of asset inspection and maintenance information",
+
+  date:"Date",
+  form:"Form",
+  status:"Status",
+  inspector:"Inspector",
+  inspectionHistory:"Inspection History",
+  exportCSV:"Export CSV",
+
+  workOrderManagement:"Work Order Management",
+  workOrderDescription:"Defects found during inspection can be used to create maintenance work orders.",
+  createWO:"+ Create Work Order",
+
+  pmPlanning:"Preventive Maintenance Planning",
+  pmDescription:"Schedule PM, due dates and responsible maintenance teams.",
+
+  completion:"Inspection Completion",
+
+  generalInfo:"1. General Information",
+  inspectionDate:"Inspection Date",
+  location:"Location",
+  position:"Position",
+  recommendations:"Recommendations / Additional Information",
+  evidence:"Inspection Evidence",
+  uploadImage:"📷 Upload Image",
+  cancel:"Cancel",
+  saveDraft:"Save Draft",
+  submitInspection:"✓ Submit Inspection",
+
+  search:"🔍 Search forms e.g. Transformer, RMU, Hot Spot...",
+  openInspection:"Open Inspection →",
+
+  checklist:"2. Maintenance Inspection Checklist",
+  no:"No.",
+  inspectionItem:"Inspection Item",
+  result:"Result",
+  defectRemark:"Defect / Remark",
+
+  select:"-- Select --",
+  normal:"Normal",
+  damaged:"Damaged",
+  none:"None",
+  na:"N/A",
+
+  electrical:"3. Electrical Measurements",
+  capacitorMeasurement:"3. Capacitor Measurement",
+
+  oilTitle:"2. Transformer Oil Breakdown Voltage Test",
+  oilHelp:"Enter five Breakdown Voltage test results.",
+  testNo:"Test No.",
+  oilAverage:"Average Breakdown Voltage",
+  evaluation:"Evaluation",
+  passed:"Passed",
+  below26:"Below 26 kV / Check oil filtering",
+  filtering:"3. Oil Filtering",
+  filteringResult:"Filtering procedure / result",
+
+  hotspotInfo:"2. Hot Spot Information",
+  equipment:"Equipment",
+  maxTemperature:"Maximum Temperature (°C)",
+  referenceTemperature:"Reference Temperature (°C)",
+  priority:"Priority",
+  photoInfo:"3. Photo Information",
+  normalPhoto:"Normal Photo",
+  thermalPhoto:"Thermal Image",
+
+  pdInfo:"2. Partial Discharge Inspection",
+  abnormalPoint:"Abnormal Point",
+  soundLevel:"Measured Sound Level (dB)",
+  severity:"Severity",
+  veryHigh:"Very High",
+  high:"High",
+  medium:"Medium",
+  low:"Low",
+  normalCamera:"Normal Camera Image",
+  acousticCamera:"Acoustic Camera Image",
+  correctiveForward:"4. Corrective Action Forwarding",
+  forwardGroup:"Forward to Work Group",
+  correctiveAction:"Required Corrective Action",
+  improvement:"5. Improvement Action",
+  improvementDetail:"Corrective / improvement details",
+
+  noData:"No inspection data",
+  delete:"Delete",
+  confirmDelete:"Delete this inspection record?",
+  deleted:"Record deleted",
+  draftSaved:"Draft saved successfully",
+  submittedSaved:"Inspection submitted successfully",
+  noExportData:"No data available for export"
+}
+
+};
+
+
+/* =========================================================
+   11 FORMS
+========================================================= */
+
+const forms=[
+
 {
  id:1,
  code:"SF-07-0-015",
- name:"แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย",
+
+ th:"แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย",
+ en:"Distribution Transformer Maintenance Inspection",
+
  short:"Distribution Transformer",
+
  items:[
-   "ตัวถังหม้อแปลง",
-   "Drop Fuse",
-   "Station Post Type Insulator",
-   "สายเข้า-ออก Drop Fuse",
-   "คอนสาย",
-   "กับดักฟ้าผ่า (L/A)",
-   "Bushing HV-LV",
-   "Cover (Bushing / L/A / Termination Kit)",
-   "สายหน้าหม้อแปลง LV",
-   "อุปกรณ์ป้องกันสัตว์",
-   "LV Ground",
-   "HV Ground",
-   "CT-TLM Meter",
-   "Low Voltage Capacitor"
+  ["ตัวถังหม้อแปลง","Transformer Tank"],
+  ["Drop Fuse","Drop Fuse"],
+  ["Station Post Type Insulator","Station Post Type Insulator"],
+  ["สายเข้า-ออก Drop Fuse","Drop Fuse Incoming / Outgoing Cable"],
+  ["คอนสาย","Crossarm"],
+  ["กับดักฟ้าผ่า (L/A)","Lightning Arrester (L/A)"],
+  ["Bushing HV-LV","HV-LV Bushing"],
+  ["Cover (Bushing / L/A / Termination Kit)","Cover (Bushing / L/A / Termination Kit)"],
+  ["สายหน้าหม้อแปลง LV","LV Transformer Cable"],
+  ["อุปกรณ์ป้องกันสัตว์","Animal Protection Device"],
+  ["LV Ground","LV Ground"],
+  ["HV Ground","HV Ground"],
+  ["CT-TLM Meter","CT-TLM Meter"],
+  ["Low Voltage Capacitor","Low Voltage Capacitor"]
  ],
+
  measurements:true
 },
 
 {
  id:2,
  code:"SF-07-0-016",
- name:"แบบตรวจสอบบำรุงรักษา Load Break Switch",
+
+ th:"แบบตรวจสอบบำรุงรักษา Load Break Switch",
+ en:"Load Break Switch Maintenance Inspection",
+
  short:"Load Break Switch (LBS)",
+
  items:[
-   "ตัวถัง LBS / สลักล็อกการปลดสับ",
-   "สถานะก๊าซ SF6",
-   "Bushing",
-   "กับดักฟ้าผ่า",
-   "VT",
-   "Drop Fuse ลง VT",
-   "คอนสาย",
-   "สายควบคุม LBS",
-   "อุปกรณ์ป้องกันสัตว์",
-   "ตู้ Control / FRTU / Ground",
-   "ไฟสถานะหน้าตู้",
-   "แหล่งจ่ายไฟฟ้าและสายควบคุม",
-   "สภาพ Battery / Capacitor",
-   "Ground HV",
-   "Ground LV",
-   "ทดสอบ Remote",
-   "ทดสอบ Local",
-   "ระบบ ATS"
+  ["ตัวถัง LBS / สลักล็อกการปลดสับ","LBS Body / Switching Lock"],
+  ["สถานะก๊าซ SF6","SF6 Gas Condition"],
+  ["Bushing","Bushing"],
+  ["กับดักฟ้าผ่า","Lightning Arrester"],
+  ["VT","VT"],
+  ["Drop Fuse ลง VT","VT Drop Fuse"],
+  ["คอนสาย","Crossarm"],
+  ["สายควบคุม LBS","LBS Control Cable"],
+  ["อุปกรณ์ป้องกันสัตว์","Animal Protection Device"],
+  ["ตู้ Control / FRTU / Ground","Control / FRTU / Ground Cabinet"],
+  ["ไฟสถานะหน้าตู้","Cabinet Status Lamp"],
+  ["แหล่งจ่ายไฟฟ้าและสายควบคุม","Power Supply & Control Cable"],
+  ["สภาพ Battery / Capacitor","Battery / Capacitor Condition"],
+  ["Ground HV","HV Ground"],
+  ["Ground LV","LV Ground"],
+  ["ทดสอบ Remote","Remote Operation Test"],
+  ["ทดสอบ Local","Local Operation Test"],
+  ["ระบบ ATS","ATS System"]
  ]
 },
 
 {
  id:3,
  code:"SF-07-0-017",
- name:"แบบตรวจสอบบำรุงรักษา Sectionalizer",
+
+ th:"แบบตรวจสอบบำรุงรักษา Sectionalizer",
+ en:"Sectionalizer Maintenance Inspection",
+
  short:"Sectionalizer",
+
  items:[
-   "ตัวถัง SZ / สลักล็อกการปลดสับ",
-   "สถานะก๊าซ SF6",
-   "Bushing",
-   "กับดักฟ้าผ่า",
-   "คอนสาย",
-   "สายควบคุม SZ",
-   "อุปกรณ์ป้องกันสัตว์",
-   "ตู้ Control / Ground",
-   "ไฟสถานะหน้าตู้",
-   "แหล่งจ่ายไฟฟ้าและสายควบคุม",
-   "สภาพ Battery / Capacitor",
-   "Ground HV",
-   "Ground LV",
-   "ทดสอบ Local"
+  ["ตัวถัง SZ / สลักล็อกการปลดสับ","SZ Body / Switching Lock"],
+  ["สถานะก๊าซ SF6","SF6 Gas Condition"],
+  ["Bushing","Bushing"],
+  ["กับดักฟ้าผ่า","Lightning Arrester"],
+  ["คอนสาย","Crossarm"],
+  ["สายควบคุม SZ","SZ Control Cable"],
+  ["อุปกรณ์ป้องกันสัตว์","Animal Protection Device"],
+  ["ตู้ Control / Ground","Control / Ground Cabinet"],
+  ["ไฟสถานะหน้าตู้","Cabinet Status Lamp"],
+  ["แหล่งจ่ายไฟฟ้าและสายควบคุม","Power Supply & Control Cable"],
+  ["สภาพ Battery / Capacitor","Battery / Capacitor Condition"],
+  ["Ground HV","HV Ground"],
+  ["Ground LV","LV Ground"],
+  ["ทดสอบ Local","Local Operation Test"]
  ]
 },
 
 {
  id:4,
  code:"SF-07-0-018",
- name:"แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",
- short:"Ring Main Unit",
+
+ th:"แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",
+ en:"Ring Main Unit (RMU) Maintenance Inspection",
+
+ short:"Ring Main Unit (RMU)",
+
  items:[
-   "สภาพภายนอก RMU",
-   "ประตู",
-   "ฐานตู้",
-   "สภาพ RMU / ห้อง",
-   "ก๊าซ SF6",
-   "ตัวแสดงสถานะสวิตช์",
-   "กุญแจล็อกป้องกันการปลด-สับ",
-   "คันสับ",
-   "ตัวตรวจสอบแรงดัน",
-   "ตัวตรวจสอบการลัดวงจร",
-   "แรงดันไฟฟ้าเลี้ยงอุปกรณ์",
-   "Battery / UPS",
-   "FRTU",
-   "อุปกรณ์ควบคุมอื่น ๆ",
-   "ทดสอบปลด-สับด้วยคันสับ",
-   "ทดสอบ LOCAL",
-   "ทดสอบ REMOTE",
-   "ทดสอบ ATF"
+  ["สภาพภายนอก RMU","RMU External Condition"],
+  ["ประตู","Door"],
+  ["ฐานตู้","Cabinet Base"],
+  ["สภาพ RMU / ห้อง","RMU / Room Condition"],
+  ["ก๊าซ SF6","SF6 Gas"],
+  ["ตัวแสดงสถานะสวิตช์","Switch Position Indicator"],
+  ["กุญแจล็อกป้องกันการปลด-สับ","Switching Interlock"],
+  ["คันสับ","Operating Handle"],
+  ["ตัวตรวจสอบแรงดัน","Voltage Indicator"],
+  ["ตัวตรวจสอบการลัดวงจร","Short Circuit Indicator"],
+  ["แรงดันไฟฟ้าเลี้ยงอุปกรณ์","Auxiliary Supply Voltage"],
+  ["Battery / UPS","Battery / UPS"],
+  ["FRTU","FRTU"],
+  ["อุปกรณ์ควบคุมอื่น ๆ","Other Control Equipment"],
+  ["ทดสอบปลด-สับด้วยคันสับ","Manual Switching Test"],
+  ["ทดสอบ LOCAL","LOCAL Switching Test"],
+  ["ทดสอบ REMOTE","REMOTE Switching Test"],
+  ["ทดสอบ ATF","ATF Test"]
  ]
 },
 
 {
  id:5,
  code:"SF-07-0-019",
- name:"แบบตรวจสอบบำรุงรักษา UNIT SUBSTATION",
+
+ th:"แบบตรวจสอบบำรุงรักษา UNIT SUBSTATION",
+ en:"Unit Substation Maintenance Inspection",
+
  short:"Unit Substation",
+
  items:[
-   "สภาพภายนอก",
-   "ตู้ครอบ Enclosure",
-   "ฐานตู้ / นั่งร้าน",
-   "สภาพ RMU",
-   "ก๊าซ SF6",
-   "ตัวแสดงสถานะสวิตช์",
-   "หม้อแปลง",
-   "ตัวถังหม้อแปลง",
-   "Bushing HV-LV",
-   "สายหน้าหม้อแปลง HV-LV",
-   "LV Ground",
-   "HV Ground",
-   "CB / Fuse",
-   "สายไฟฟ้า",
-   "Busbar",
-   "เครื่องวัดไฟฟ้า",
-   "CT-TLM Meter"
+  ["สภาพภายนอก","External Condition"],
+  ["ตู้ครอบ Enclosure","Enclosure"],
+  ["ฐานตู้ / นั่งร้าน","Cabinet Base"],
+  ["สภาพ RMU","RMU Condition"],
+  ["ก๊าซ SF6","SF6 Gas"],
+  ["ตัวแสดงสถานะสวิตช์","Switch Position Indicator"],
+  ["หม้อแปลง","Transformer"],
+  ["ตัวถังหม้อแปลง","Transformer Tank"],
+  ["Bushing HV-LV","HV-LV Bushing"],
+  ["สายหน้าหม้อแปลง HV-LV","HV-LV Transformer Cable"],
+  ["LV Ground","LV Ground"],
+  ["HV Ground","HV Ground"],
+  ["CB / Fuse","CB / Fuse"],
+  ["สายไฟฟ้า","Electrical Cable"],
+  ["Busbar","Busbar"],
+  ["เครื่องวัดไฟฟ้า","Electrical Meter"],
+  ["CT-TLM Meter","CT-TLM Meter"]
  ],
+
  measurements:true
 },
 
 {
  id:6,
  code:"SF-07-0-020",
- name:"แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV",
- short:"Capacitor Bank",
+
+ th:"แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน",
+ en:"12-24 kV Feeder Capacitor Bank Maintenance Inspection",
+
+ short:"Capacitor Bank 12-24 kV",
+
  items:[
-   "Drop Fuse",
-   "Station Post Type Insulator",
-   "สายเข้า-ออก Drop Fuse",
-   "คอนสาย",
-   "อุปกรณ์ป้องกันสัตว์",
-   "กับดักฟ้าผ่า (L/A)",
-   "Cover (Bushing / L/A)",
-   "HV Ground",
-   "Vacuum CB",
-   "Supply",
-   "Fuse Control ภายในตู้",
-   "หลอดไฟแสดงสถานะภายในตู้",
-   "หน้าจอ Digital Control",
-   "อุปกรณ์ทั่วไปภายในตู้",
-   "ตัวถัง Capacitor",
-   "Bushing",
-   "Fuse ภายใน"
+  ["Drop Fuse","Drop Fuse"],
+  ["Station Post Type Insulator","Station Post Type Insulator"],
+  ["สายเข้า-ออก Drop Fuse","Drop Fuse Incoming / Outgoing Cable"],
+  ["คอนสาย","Crossarm"],
+  ["อุปกรณ์ป้องกันสัตว์","Animal Protection Device"],
+  ["กับดักฟ้าผ่า (L/A)","Lightning Arrester (L/A)"],
+  ["Cover (Bushing / L/A)","Cover (Bushing / L/A)"],
+  ["HV Ground","HV Ground"],
+  ["Vacuum CB","Vacuum CB"],
+  ["Supply","Supply"],
+  ["Fuse Control ภายในตู้","Cabinet Control Fuse"],
+  ["หลอดไฟแสดงสถานะภายในตู้","Cabinet Status Lamp"],
+  ["หน้าจอ Digital Control","Digital Control Display"],
+  ["อุปกรณ์ทั่วไปภายในตู้","General Cabinet Equipment"],
+  ["ตัวถัง Capacitor","Capacitor Body"],
+  ["Bushing","Bushing"],
+  ["Fuse ภายใน","Internal Fuse"]
  ],
+
  capacitor:true
 },
 
 {
  id:7,
  code:"SF-07-0-021",
- name:"แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",
- short:"Network Transformer Protection",
+
+ th:"แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",
+ en:"Network Transformer Protection Equipment Maintenance Inspection",
+
+ short:"Network Protection",
+
  items:[
-   "สถานะ MV Switch",
-   "สถานะ NP",
-   "เบอร์ตู้ / สีตู้",
-   "ระบบ Ground N และ G",
-   "อุปกรณ์ป้องกันแรงดันเกิน",
-   "ตัวถัง / รอยต่อหม้อแปลง",
-   "ฝาตู้",
-   "ป้ายแดงห้ามปลด-สับ",
-   "ทดสอบปลด MV Switch",
-   "ทดสอบสับ MV Switch",
-   "อุปกรณ์ภายใน",
-   "Relay",
-   "ตู้อุปกรณ์ส่งข้อมูลระยะไกล",
-   "ไฟเลี้ยง / CB & Fuse",
-   "Internet Switch"
+  ["สถานะ MV Switch","MV Switch Status"],
+  ["สถานะ NP","NP Status"],
+  ["เบอร์ตู้ / สีตู้","Cabinet Number / Color"],
+  ["ระบบ Ground N และ G","N & G Grounding System"],
+  ["อุปกรณ์ป้องกันแรงดันเกิน","Overvoltage Protection Device"],
+  ["ตัวถัง / รอยต่อหม้อแปลง","Transformer Tank / Joint"],
+  ["ฝาตู้","Cabinet Cover"],
+  ["ป้ายแดงห้ามปลด-สับ","Do Not Operate Warning Sign"],
+  ["ทดสอบปลด MV Switch","MV Switch Opening Test"],
+  ["ทดสอบสับ MV Switch","MV Switch Closing Test"],
+  ["อุปกรณ์ภายใน","Internal Equipment"],
+  ["Relay","Relay"],
+  ["ตู้อุปกรณ์ส่งข้อมูลระยะไกล","Remote Communication Cabinet"],
+  ["ไฟเลี้ยง / CB & Fuse","Power Supply / CB & Fuse"],
+  ["Internet Switch","Internet Switch"]
  ]
 },
 
 {
  id:8,
  code:"SF-07-0-022",
- name:"แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",
+
+ th:"แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",
+ en:"Network Transformer & Medium Voltage Switch Maintenance Inspection",
+
  short:"Network Transformer & MV Switch",
+
  items:[
-   "สภาพภายนอกสวิตช์แรงกลาง",
-   "ก๊าซ SF6",
-   "หัวต่อสาย / สายไฟฟ้า",
-   "ระบบ Ground",
-   "ตัวถังหม้อแปลง",
-   "น้ำมันหม้อแปลง",
-   "Fuse 12 kV",
-   "สายไฟฟ้าด้านแรงต่ำ",
-   "Capacitor แรงต่ำ"
+  ["สภาพภายนอกสวิตช์แรงกลาง","MV Switch External Condition"],
+  ["ก๊าซ SF6","SF6 Gas"],
+  ["หัวต่อสาย / สายไฟฟ้า","Cable Termination / Cable"],
+  ["ระบบ Ground","Grounding System"],
+  ["ตัวถังหม้อแปลง","Transformer Tank"],
+  ["น้ำมันหม้อแปลง","Transformer Oil"],
+  ["Fuse 12 kV","12 kV Fuse"],
+  ["สายไฟฟ้าด้านแรงต่ำ","LV Cable"],
+  ["Capacitor แรงต่ำ","LV Capacitor"]
  ],
+
  measurements:true
 },
 
 {
  id:9,
  code:"SF-07-0-023",
- name:"แบบทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย",
+
+ th:"แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย",
+ en:"Network Transformer Oil Testing & Filtering Inspection",
+
  short:"Transformer Oil Test",
+
  type:"oil"
 },
 
 {
  id:10,
  code:"SF-07-0-024",
- name:"รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",
- short:"Hot Spot Inspection",
+
+ th:"รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",
+ en:"Hot Spot Inspection Report",
+
+ short:"Hot Spot",
+
  type:"hotspot"
 },
 
 {
  id:11,
  code:"SF-07-0-025",
- name:"รายงานผลการตรวจสอบ Partial Discharge",
+
+ th:"รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge)",
+ en:"Partial Discharge Inspection Report",
+
  short:"Partial Discharge",
+
  type:"pd"
 }
+
 ];
 
-let currentForm = null;
+let currentForm=null;
 
 
-/* =====================================================
+/* =========================================================
    NAVIGATION
-===================================================== */
+========================================================= */
 
-function page(id,el){
+function showPage(id,element){
 
- document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
- document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".page")
+    .forEach(p=>p.classList.remove("active"));
 
- document.querySelectorAll(".menu").forEach(x=>x.classList.remove("active"));
- if(el) el.classList.add("active");
+  document.getElementById(id)
+    .classList.add("active");
 
- const titles={
-   dashboard:"Maintenance Dashboard",
-   inspection:"Asset Inspection",
-   history:"Inspection History",
-   workorder:"Work Order Management",
-   pm:"Preventive Maintenance",
-   kpi:"Maintenance KPI"
- };
+  document.querySelectorAll(".menu")
+    .forEach(m=>m.classList.remove("active"));
 
- document.getElementById("pageTitle").textContent=titles[id];
+  if(element) element.classList.add("active");
 
- refresh();
+  updatePageTitle(id);
+  refresh();
+}
+
+function updatePageTitle(id){
+
+  const t=text[currentLanguage];
+
+  const titles={
+    dashboard:t.dashboardTitle,
+    inspection:t.inspectionTitle,
+    history:t.historyTitle,
+    workorder:t.workorderTitle,
+    pm:t.pmTitle,
+    kpi:t.kpiTitle
+  };
+
+  document.getElementById("pageTitle").textContent=titles[id];
 }
 
 
-/* =====================================================
-   DISPLAY 11 FORMS
-===================================================== */
+/* =========================================================
+   LANGUAGE CHANGE
+========================================================= */
+
+function changeLanguage(lang){
+
+  currentLanguage=lang;
+
+  localStorage.setItem("assetLanguage",lang);
+
+  document.documentElement.lang=lang;
+
+  document.getElementById("btnTH")
+    .classList.toggle("active",lang==="th");
+
+  document.getElementById("btnEN")
+    .classList.toggle("active",lang==="en");
+
+  updateLanguage();
+}
+
+function updateLanguage(){
+
+  const t=text[currentLanguage];
+
+  document.getElementById("subtitle").textContent=t.subtitle;
+  document.getElementById("userRole").textContent=t.userRole;
+  document.getElementById("searchForm").placeholder=t.search;
+
+  document.querySelectorAll("[data-i18n]")
+    .forEach(el=>{
+      const key=el.dataset.i18n;
+      if(t[key]) el.textContent=t[key];
+    });
+
+  const menuMap={
+    dashboard:"dashboard",
+    inspection:"inspection",
+    history:"history",
+    workorder:"workorder",
+    pm:"pm",
+    kpi:"kpi"
+  };
+
+  document.querySelectorAll(".menu").forEach(menu=>{
+    const key=menuMap[menu.dataset.menu];
+    const label=menu.querySelector(".menu-text");
+    if(label) label.textContent=t[key];
+  });
+
+  const active=document.querySelector(".page.active");
+  if(active) updatePageTitle(active.id);
+
+  renderForms();
+  refresh();
+
+  if(
+    currentForm &&
+    document.getElementById("inspectionModal").style.display==="block"
+  ){
+    updateModalTitle();
+    rebuildDynamicForm();
+  }
+}
+
+
+/* =========================================================
+   FORM CARDS
+========================================================= */
 
 function renderForms(list=forms){
 
- const box=document.getElementById("formCards");
+  const t=text[currentLanguage];
+  const box=document.getElementById("formCards");
 
- box.innerHTML=list.map(f=>`
-   <div class="form-card">
+  box.innerHTML=list.map(f=>`
 
-     <div class="form-number">
-       ${String(f.id).padStart(2,"0")}
-     </div>
+    <div class="form-card">
 
-     <h3>${f.short}</h3>
+      <div class="form-number">
+        ${String(f.id).padStart(2,"0")}
+      </div>
 
-     <div>${f.name}</div>
+      <h3>${f.short}</h3>
 
-     <div class="code">${f.code}</div>
+      <div class="description">
+        ${currentLanguage==="th" ? f.th : f.en}
+      </div>
 
-     <button class="btn" onclick="openInspection(${f.id})">
-       เปิดแบบตรวจ →
-     </button>
+      <div class="code">${f.code}</div>
 
-   </div>
- `).join("");
+      <button class="btn" onclick="openInspection(${f.id})">
+        ${t.openInspection}
+      </button>
+
+    </div>
+
+  `).join("");
 }
 
 function filterForms(){
 
- const q=document.getElementById("searchForm").value.toLowerCase();
+  const q=document.getElementById("searchForm")
+    .value.toLowerCase();
 
- renderForms(
-   forms.filter(f=>
-     f.name.toLowerCase().includes(q) ||
-     f.short.toLowerCase().includes(q) ||
-     f.code.toLowerCase().includes(q)
-   )
- );
+  renderForms(
+    forms.filter(f=>
+      f.th.toLowerCase().includes(q) ||
+      f.en.toLowerCase().includes(q) ||
+      f.short.toLowerCase().includes(q) ||
+      f.code.toLowerCase().includes(q)
+    )
+  );
 }
 
 
-/* =====================================================
-   OPEN FORM
-===================================================== */
+/* =========================================================
+   OPEN INSPECTION
+========================================================= */
 
 function openInspection(id){
 
- currentForm=forms.find(f=>f.id===id);
+  currentForm=forms.find(f=>f.id===id);
 
- document.getElementById("modalTitle").textContent=currentForm.name;
- document.getElementById("modalCode").textContent=currentForm.code;
+  clearFields();
 
- document.getElementById("inspectionDate").value =
-   new Date().toISOString().split("T")[0];
+  document.getElementById("inspectionDate").value=
+    new Date().toISOString().split("T")[0];
 
- clearFields();
+  updateModalTitle();
+  rebuildDynamicForm();
 
- const dynamic=document.getElementById("dynamicForm");
+  document.getElementById("inspectionModal").style.display="block";
+}
 
- if(currentForm.type==="oil"){
-   dynamic.innerHTML=oilForm();
- }
- else if(currentForm.type==="hotspot"){
-   dynamic.innerHTML=hotSpotForm();
- }
- else if(currentForm.type==="pd"){
-   dynamic.innerHTML=partialDischargeForm();
- }
- else{
-   dynamic.innerHTML=standardForm(currentForm);
- }
+function updateModalTitle(){
 
- document.getElementById("inspectionModal").style.display="block";
+  document.getElementById("modalTitle").textContent=
+    currentLanguage==="th"
+      ? currentForm.th
+      : currentForm.en;
+
+  document.getElementById("modalCode").textContent=currentForm.code;
+}
+
+function rebuildDynamicForm(){
+
+  const dynamic=document.getElementById("dynamicForm");
+
+  if(currentForm.type==="oil"){
+    dynamic.innerHTML=oilForm();
+  }
+  else if(currentForm.type==="hotspot"){
+    dynamic.innerHTML=hotSpotForm();
+  }
+  else if(currentForm.type==="pd"){
+    dynamic.innerHTML=partialDischargeForm();
+  }
+  else{
+    dynamic.innerHTML=standardForm(currentForm);
+  }
 }
 
 
-/* =====================================================
+/* =========================================================
    STANDARD CHECKLIST
-===================================================== */
+========================================================= */
 
 function standardForm(form){
 
- let html=`
- <div class="section-title">
-   2. รายการตรวจสอบบำรุงรักษา
- </div>
+  const t=text[currentLanguage];
 
- <table>
+  let html=`
 
- <thead>
- <tr>
-   <th style="width:55px">ลำดับ</th>
-   <th>รายการตรวจสอบ</th>
-   <th style="width:150px">ผลตรวจ</th>
-   <th>ข้อบกพร่อง / หมายเหตุ</th>
- </tr>
- </thead>
+  <div class="section-title">
+    ${t.checklist}
+  </div>
 
- <tbody>
- `;
+  <div class="table-wrap">
 
- form.items.forEach((item,i)=>{
+  <table>
 
- html+=`
- <tr class="check-row">
+  <thead>
+  <tr>
+    <th style="width:60px">${t.no}</th>
+    <th>${t.inspectionItem}</th>
+    <th style="width:160px">${t.result}</th>
+    <th>${t.defectRemark}</th>
+  </tr>
+  </thead>
 
-   <td>${i+1}</td>
+  <tbody>
 
-   <td>${item}</td>
+  `;
 
-   <td>
-     <select class="result">
-       <option value="">-- เลือก --</option>
-       <option>ปกติ</option>
-       <option>ชำรุด</option>
-       <option>ไม่มี</option>
-       <option>N/A</option>
-     </select>
-   </td>
+  form.items.forEach((item,i)=>{
 
-   <td>
-     <input class="defect" placeholder="รายละเอียด">
-   </td>
+    const label=currentLanguage==="th" ? item[0] : item[1];
 
- </tr>
- `;
+    html+=`
 
- });
+    <tr class="check-row">
 
- html+="</tbody></table>";
+      <td>${i+1}</td>
 
- if(form.measurements){
-   html+=electricalMeasurements();
- }
+      <td class="item-label"
+          data-th="${escapeAttribute(item[0])}"
+          data-en="${escapeAttribute(item[1])}">
+        ${label}
+      </td>
 
- if(form.capacitor){
-   html+=capacitorMeasurements();
- }
+      <td>
 
- return html;
+        <select class="result">
+
+          <option value="">
+            ${t.select}
+          </option>
+
+          <option value="normal">
+            ${t.normal}
+          </option>
+
+          <option value="damaged">
+            ${t.damaged}
+          </option>
+
+          <option value="none">
+            ${t.none}
+          </option>
+
+          <option value="na">
+            ${t.na}
+          </option>
+
+        </select>
+
+      </td>
+
+      <td>
+        <input class="defect">
+      </td>
+
+    </tr>
+
+    `;
+  });
+
+  html+=`
+  </tbody>
+  </table>
+  </div>
+  `;
+
+  if(form.measurements){
+    html+=electricalMeasurements();
+  }
+
+  if(form.capacitor){
+    html+=capacitorMeasurements();
+  }
+
+  return html;
 }
 
 
-/* =====================================================
-   ELECTRICAL MEASUREMENT
-===================================================== */
+/* =========================================================
+   ELECTRICAL
+========================================================= */
 
 function electricalMeasurements(){
 
-return `
-<div class="section-title">
-3. ตรวจวัดกระแสและแรงดันไฟฟ้า
-</div>
+  const t=text[currentLanguage];
 
-<div class="grid3">
+  return `
 
-<div class="field">
-<label>V1-N (V)</label>
-<input class="measurement" data-name="V1-N">
-</div>
+  <div class="section-title">
+    ${t.electrical}
+  </div>
 
-<div class="field">
-<label>V2-N (V)</label>
-<input class="measurement" data-name="V2-N">
-</div>
+  <div class="grid3">
 
-<div class="field">
-<label>V3-N (V)</label>
-<input class="measurement" data-name="V3-N">
-</div>
+    ${measurementInput("V1-N","V1-N (V)")}
+    ${measurementInput("V2-N","V2-N (V)")}
+    ${measurementInput("V3-N","V3-N (V)")}
 
-<div class="field">
-<label>V1-2 (V)</label>
-<input class="measurement" data-name="V1-2">
-</div>
+    ${measurementInput("V1-2","V1-2 (V)")}
+    ${measurementInput("V1-3","V1-3 (V)")}
+    ${measurementInput("V2-3","V2-3 (V)")}
 
-<div class="field">
-<label>V1-3 (V)</label>
-<input class="measurement" data-name="V1-3">
-</div>
+    ${measurementInput("IN","IN (A)")}
+    ${measurementInput("I1","I1 (A)")}
+    ${measurementInput("I2","I2 (A)")}
+    ${measurementInput("I3","I3 (A)")}
 
-<div class="field">
-<label>V2-3 (V)</label>
-<input class="measurement" data-name="V2-3">
-</div>
+  </div>
 
-<div class="field">
-<label>IN (A)</label>
-<input class="measurement" data-name="IN">
-</div>
+  `;
+}
 
-<div class="field">
-<label>I1 (A)</label>
-<input class="measurement" data-name="I1">
-</div>
+function measurementInput(name,label){
 
-<div class="field">
-<label>I2 (A)</label>
-<input class="measurement" data-name="I2">
-</div>
-
-<div class="field">
-<label>I3 (A)</label>
-<input class="measurement" data-name="I3">
-</div>
-
-</div>
-`;
+  return `
+  <div class="field">
+    <label>${label}</label>
+    <input
+      type="number"
+      step="any"
+      class="measurement"
+      data-name="${name}"
+    >
+  </div>
+  `;
 }
 
 
-/* =====================================================
+/* =========================================================
    CAPACITOR
-===================================================== */
+========================================================= */
 
 function capacitorMeasurements(){
 
-return `
-<div class="section-title">
-3. Capacitor Measurement
-</div>
+  const t=text[currentLanguage];
 
-<div class="grid3">
+  return `
 
-<div class="field">
-<label>Cap Off</label>
-<input type="time" class="measurement" data-name="Cap Off">
-</div>
+  <div class="section-title">
+    ${t.capacitorMeasurement}
+  </div>
 
-<div class="field">
-<label>Cap On</label>
-<input type="time" class="measurement" data-name="Cap On">
-</div>
+  <div class="grid3">
 
-<div class="field">
-<label>ค่าคาปาซิแตนซ์</label>
-<input class="measurement" data-name="Capacitance">
-</div>
+    <div class="field">
+      <label>Cap Off</label>
+      <input
+        type="time"
+        class="measurement"
+        data-name="Cap Off"
+      >
+    </div>
 
-</div>
-`;
+    <div class="field">
+      <label>Cap On</label>
+      <input
+        type="time"
+        class="measurement"
+        data-name="Cap On"
+      >
+    </div>
+
+    <div class="field">
+      <label>Capacitance</label>
+      <input
+        type="number"
+        step="any"
+        class="measurement"
+        data-name="Capacitance"
+      >
+    </div>
+
+  </div>
+
+  `;
 }
 
 
-/* =====================================================
+/* =========================================================
    OIL TEST
-===================================================== */
+========================================================= */
 
 function oilForm(){
 
-return `
-<div class="section-title">
-2. ทดสอบ Breakdown Voltage น้ำมันหม้อแปลง
-</div>
+  const t=text[currentLanguage];
 
-<p>
-กรอกผลการทดสอบ Breakdown Voltage จำนวน 5 ครั้ง
-</p>
+  return `
 
-<table>
-<thead>
-<tr>
-<th>ครั้งที่</th>
-<th>Breakdown Voltage (kV)</th>
-</tr>
-</thead>
+  <div class="section-title">
+    ${t.oilTitle}
+  </div>
 
-<tbody>
+  <div class="notice">
+    ${t.oilHelp}
+  </div>
 
-${[1,2,3,4,5].map(i=>`
-<tr>
-<td>${i}</td>
-<td>
-<input
- type="number"
- step="0.01"
- class="oilValue"
- oninput="calculateOilAverage()"
->
-</td>
-</tr>
-`).join("")}
+  <div class="table-wrap">
 
-</tbody>
-</table>
+  <table>
 
-<br>
+    <thead>
+      <tr>
+        <th>${t.testNo}</th>
+        <th>Breakdown Voltage (kV)</th>
+      </tr>
+    </thead>
 
-<div class="grid2">
+    <tbody>
 
-<div class="field">
-<label>ค่าเฉลี่ย Breakdown Voltage</label>
-<input id="oilAverage" readonly>
-</div>
+      ${[1,2,3,4,5].map(i=>`
 
-<div class="field">
-<label>ผลประเมิน</label>
-<input id="oilResult" readonly>
-</div>
+        <tr>
+          <td>${i}</td>
 
-</div>
+          <td>
+            <input
+              type="number"
+              step="0.01"
+              class="oilValue"
+              oninput="calculateOilAverage()"
+            >
+          </td>
 
-<div class="section-title">
-3. การกรองน้ำมัน
-</div>
+        </tr>
 
-<div class="field">
-<label>ขั้นตอน / ผลหลังการกรองน้ำมัน</label>
-<textarea id="oilFiltering"></textarea>
-</div>
-`;
+      `).join("")}
+
+    </tbody>
+
+  </table>
+
+  </div>
+
+  <br>
+
+  <div class="grid2">
+
+    <div class="field">
+      <label>${t.oilAverage}</label>
+      <input id="oilAverage" readonly>
+    </div>
+
+    <div class="field">
+      <label>${t.evaluation}</label>
+      <input id="oilResult" readonly>
+    </div>
+
+  </div>
+
+  <div class="section-title">
+    ${t.filtering}
+  </div>
+
+  <div class="field">
+    <label>${t.filteringResult}</label>
+    <textarea id="oilFiltering"></textarea>
+  </div>
+
+  `;
 }
 
 function calculateOilAverage(){
 
- const vals=[...document.querySelectorAll(".oilValue")]
-   .map(x=>parseFloat(x.value))
-   .filter(x=>!isNaN(x));
+  const values=[...document.querySelectorAll(".oilValue")]
+    .map(x=>parseFloat(x.value))
+    .filter(x=>!isNaN(x));
 
- if(!vals.length){
-   document.getElementById("oilAverage").value="";
-   return;
- }
+  const average=document.getElementById("oilAverage");
+  const result=document.getElementById("oilResult");
 
- const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+  if(!values.length){
+    average.value="";
+    result.value="";
+    return;
+  }
 
- document.getElementById("oilAverage").value=avg.toFixed(2)+" kV";
+  const avg=
+    values.reduce((a,b)=>a+b,0)/values.length;
 
- document.getElementById("oilResult").value =
-   avg>=26 ? "ผ่านเกณฑ์" : "ต่ำกว่า 26 kV / ตรวจสอบการกรองน้ำมัน";
+  average.value=avg.toFixed(2)+" kV";
+
+  result.value=
+    avg>=26
+      ? text[currentLanguage].passed
+      : text[currentLanguage].below26;
 }
 
 
-/* =====================================================
+/* =========================================================
    HOT SPOT
-===================================================== */
+========================================================= */
 
 function hotSpotForm(){
 
-return `
-<div class="section-title">
-2. ข้อมูล Hot Spot
-</div>
+  const t=text[currentLanguage];
 
-<div class="grid3">
+  return `
 
-<div class="field">
-<label>อุปกรณ์</label>
-<input id="hotEquipment">
-</div>
+  <div class="section-title">
+    ${t.hotspotInfo}
+  </div>
 
-<div class="field">
-<label>อุณหภูมิสูงสุดที่จุดวัด (°C)</label>
-<input id="hotMax" type="number" step="0.1">
-</div>
+  <div class="grid3">
 
-<div class="field">
-<label>อุณหภูมิเปรียบเทียบ (°C)</label>
-<input id="hotReference" type="number" step="0.1"
-oninput="calculateDelta()">
-</div>
+    <div class="field">
+      <label>${t.equipment}</label>
+      <input id="hotEquipment">
+    </div>
 
-<div class="field">
-<label>Delta T (°C)</label>
-<input id="deltaT" readonly>
-</div>
+    <div class="field">
+      <label>${t.maxTemperature}</label>
+      <input
+        id="hotMax"
+        type="number"
+        step="0.1"
+        oninput="calculateDelta()"
+      >
+    </div>
 
-<div class="field">
-<label>ระดับความสำคัญ</label>
-<select id="hotPriority">
-<option value="">-- เลือก --</option>
-<option>อุปกรณ์ปกติ</option>
-<option>แก้ไขในการบำรุงรักษาครั้งต่อไป</option>
-<option>ควรแก้ไขภายใน 1 เดือน</option>
-<option>ควรได้รับการแก้ไขเร่งด่วน</option>
-</select>
-</div>
+    <div class="field">
+      <label>${t.referenceTemperature}</label>
+      <input
+        id="hotReference"
+        type="number"
+        step="0.1"
+        oninput="calculateDelta()"
+      >
+    </div>
 
-</div>
+    <div class="field">
+      <label>Delta T (°C)</label>
+      <input id="deltaT" readonly>
+    </div>
 
-<div class="section-title">
-3. ภาพถ่าย
-</div>
+    <div class="field">
 
-<div class="grid2">
+      <label>${t.priority}</label>
 
-<div class="upload-box">
-<b>ภาพถ่ายจริง</b><br><br>
-<input type="file" accept="image/*"
-onchange="previewImage(this,'hotNormal')">
-<img id="hotNormal" class="preview">
-</div>
+      <select id="hotPriority">
 
-<div class="upload-box">
-<b>ภาพถ่ายความร้อน</b><br><br>
-<input type="file" accept="image/*"
-onchange="previewImage(this,'hotThermal')">
-<img id="hotThermal" class="preview">
-</div>
+        <option value="">
+          ${t.select}
+        </option>
 
-</div>
-`;
+        <option value="normal">
+          ${currentLanguage==="th"
+            ? "อุปกรณ์ปกติ"
+            : "Normal Equipment"}
+        </option>
+
+        <option value="nextMaintenance">
+          ${currentLanguage==="th"
+            ? "แก้ไขในการบำรุงรักษาครั้งต่อไป"
+            : "Correct at Next Maintenance"}
+        </option>
+
+        <option value="oneMonth">
+          ${currentLanguage==="th"
+            ? "ควรแก้ไขภายใน 1 เดือน"
+            : "Correct Within 1 Month"}
+        </option>
+
+        <option value="urgent">
+          ${currentLanguage==="th"
+            ? "ควรได้รับการแก้ไขเร่งด่วน"
+            : "Urgent Corrective Action"}
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+  <div class="section-title">
+    ${t.photoInfo}
+  </div>
+
+  <div class="grid2">
+
+    <div class="upload-box">
+
+      <b>${t.normalPhoto}</b>
+      <br><br>
+
+      <input
+        type="file"
+        accept="image/*"
+        onchange="previewImage(this,'hotNormal')"
+      >
+
+      <img id="hotNormal" class="preview">
+
+    </div>
+
+    <div class="upload-box">
+
+      <b>${t.thermalPhoto}</b>
+      <br><br>
+
+      <input
+        type="file"
+        accept="image/*"
+        onchange="previewImage(this,'hotThermal')"
+      >
+
+      <img id="hotThermal" class="preview">
+
+    </div>
+
+  </div>
+
+  `;
 }
 
 function calculateDelta(){
 
- const max=parseFloat(document.getElementById("hotMax").value);
- const ref=parseFloat(document.getElementById("hotReference").value);
+  const max=parseFloat(
+    document.getElementById("hotMax")?.value
+  );
 
- if(!isNaN(max)&&!isNaN(ref)){
-   document.getElementById("deltaT").value=(max-ref).toFixed(1);
- }
+  const ref=parseFloat(
+    document.getElementById("hotReference")?.value
+  );
+
+  const output=document.getElementById("deltaT");
+
+  if(output && !isNaN(max) && !isNaN(ref)){
+    output.value=(max-ref).toFixed(1);
+  }
 }
 
 
-/* =====================================================
+/* =========================================================
    PARTIAL DISCHARGE
-===================================================== */
+========================================================= */
 
 function partialDischargeForm(){
 
-return `
-<div class="section-title">
-2. Partial Discharge Inspection
-</div>
+  const t=text[currentLanguage];
 
-<div class="grid3">
+  return `
 
-<div class="field">
-<label>อุปกรณ์</label>
-<input id="pdEquipment">
-</div>
+  <div class="section-title">
+    ${t.pdInfo}
+  </div>
 
-<div class="field">
-<label>จุดที่ผิดปกติ</label>
-<input id="pdPoint">
-</div>
+  <div class="grid3">
 
-<div class="field">
-<label>ระดับความเข้มเสียง (dB)</label>
-<input id="pdDb" type="number" step="0.1">
-</div>
+    <div class="field">
+      <label>${t.equipment}</label>
+      <input id="pdEquipment">
+    </div>
 
-<div class="field">
-<label>ระดับความรุนแรง</label>
+    <div class="field">
+      <label>${t.abnormalPoint}</label>
+      <input id="pdPoint">
+    </div>
 
-<select id="pdSeverity">
-<option value="">-- เลือก --</option>
-<option>สูงมาก</option>
-<option>สูง</option>
-<option>ปานกลาง</option>
-<option>ต่ำ</option>
-</select>
+    <div class="field">
+      <label>${t.soundLevel}</label>
+      <input id="pdDb" type="number" step="0.1">
+    </div>
 
-</div>
+    <div class="field">
 
-</div>
+      <label>${t.severity}</label>
 
-<div class="section-title">
-3. ข้อมูลภาพถ่าย
-</div>
+      <select id="pdSeverity">
 
-<div class="grid2">
+        <option value="">
+          ${t.select}
+        </option>
 
-<div class="upload-box">
-<b>📷 ภาพถ่ายจากกล้องปกติ</b>
-<br><br>
+        <option value="veryHigh">${t.veryHigh}</option>
+        <option value="high">${t.high}</option>
+        <option value="medium">${t.medium}</option>
+        <option value="low">${t.low}</option>
 
-<input
- type="file"
- accept="image/*"
- onchange="previewImage(this,'normalCamera')"
->
+      </select>
 
-<img id="normalCamera" class="preview">
+    </div>
 
-</div>
+  </div>
 
-<div class="upload-box">
+  <div class="section-title">
+    ${t.photoInfo}
+  </div>
 
-<b>🎙️ ภาพถ่ายจาก Acoustic Camera</b>
-<br><br>
+  <div class="grid2">
 
-<input
- type="file"
- accept="image/*"
- onchange="previewImage(this,'acousticCamera')"
->
+    <div class="upload-box">
 
-<img id="acousticCamera" class="preview">
+      <b>📷 ${t.normalCamera}</b>
+      <br><br>
 
-</div>
+      <input
+        type="file"
+        accept="image/*"
+        onchange="previewImage(this,'normalCamera')"
+      >
 
-</div>
+      <img id="normalCamera" class="preview">
 
-<div class="section-title">
-4. การส่งต่อดำเนินการแก้ไข
-</div>
+    </div>
 
-<div class="grid3">
+    <div class="upload-box">
 
-<div class="field">
-<label>ส่งต่อให้กลุ่มงาน</label>
-<input id="pdForward">
-</div>
+      <b>🎙️ ${t.acousticCamera}</b>
+      <br><br>
 
-<div class="field">
-<label>โปรดดำเนินการแก้ไข</label>
-<input id="pdAction">
-</div>
+      <input
+        type="file"
+        accept="image/*"
+        onchange="previewImage(this,'acousticCamera')"
+      >
 
-<div class="field">
-<label>วันที่</label>
-<input id="pdActionDate" type="date">
-</div>
+      <img id="acousticCamera" class="preview">
 
-</div>
+    </div>
 
-<div class="section-title">
-5. การดำเนินการปรับปรุง
-</div>
+  </div>
 
-<textarea
- id="pdImprovement"
- placeholder="รายละเอียดการดำเนินการแก้ไข"
-></textarea>
-`;
+  <div class="section-title">
+    ${t.correctiveForward}
+  </div>
+
+  <div class="grid3">
+
+    <div class="field">
+      <label>${t.forwardGroup}</label>
+      <input id="pdForward">
+    </div>
+
+    <div class="field">
+      <label>${t.correctiveAction}</label>
+      <input id="pdAction">
+    </div>
+
+    <div class="field">
+      <label>${t.date}</label>
+      <input id="pdActionDate" type="date">
+    </div>
+
+  </div>
+
+  <div class="section-title">
+    ${t.improvement}
+  </div>
+
+  <textarea
+    id="pdImprovement"
+    placeholder="${t.improvementDetail}"
+  ></textarea>
+
+  `;
 }
 
 
-/* =====================================================
+/* =========================================================
    IMAGE PREVIEW
-===================================================== */
+========================================================= */
 
 function previewImage(input,id){
 
- if(!input.files[0]) return;
+  if(!input.files || !input.files[0]) return;
 
- const reader=new FileReader();
+  const reader=new FileReader();
 
- reader.onload=e=>{
-   document.getElementById(id).src=e.target.result;
- };
+  reader.onload=e=>{
+    document.getElementById(id).src=e.target.result;
+  };
 
- reader.readAsDataURL(input.files[0]);
+  reader.readAsDataURL(input.files[0]);
 }
 
 
-/* =====================================================
+/* =========================================================
    SAVE
-===================================================== */
+========================================================= */
 
 function saveInspection(status){
 
- const record={
+  if(!currentForm) return;
 
-   id:Date.now(),
+  const record={
 
-   formId:currentForm.id,
-   code:currentForm.code,
-   form:currentForm.short,
+    id:Date.now(),
 
-   date:document.getElementById("inspectionDate").value,
+    formId:currentForm.id,
+    code:currentForm.code,
 
-   station:document.getElementById("stationId").value,
+    formTH:currentForm.th,
+    formEN:currentForm.en,
 
-   mea:document.getElementById("meaNo").value,
+    date:value("inspectionDate"),
+    station:value("stationId"),
+    mea:value("meaNo"),
+    location:value("location"),
 
-   location:document.getElementById("location").value,
+    lat:value("lat"),
+    lng:value("lng"),
 
-   lat:document.getElementById("lat").value,
+    inspector:value("inspector"),
+    position:value("position"),
 
-   lng:document.getElementById("lng").value,
+    workOrder:value("workOrder"),
+    remark:value("remark"),
 
-   inspector:document.getElementById("inspector").value,
+    status:status,
 
-   position:document.getElementById("position").value,
+    timestamp:new Date().toISOString(),
 
-   workOrder:document.getElementById("workOrder").value,
-
-   remark:document.getElementById("remark").value,
-
-   status:status,
-
-   timestamp:new Date().toLocaleString("th-TH"),
-
-   checklist:[],
-
-   measurements:{}
-
- };
+    checklist:[],
+    measurements:{}
+  };
 
 
- document.querySelectorAll(".check-row").forEach(row=>{
+  document.querySelectorAll(".check-row")
+    .forEach(row=>{
 
-   record.checklist.push({
+      const item=row.querySelector(".item-label");
 
-     item:row.children[1].textContent,
+      record.checklist.push({
 
-     result:row.querySelector(".result").value,
+        itemTH:item?.dataset.th || "",
+        itemEN:item?.dataset.en || "",
 
-     defect:row.querySelector(".defect").value
+        result:row.querySelector(".result")?.value || "",
 
-   });
+        defect:row.querySelector(".defect")?.value || ""
 
- });
+      });
 
-
- document.querySelectorAll(".measurement").forEach(x=>{
-   record.measurements[x.dataset.name]=x.value;
- });
-
-
- if(currentForm.type==="oil"){
-
-   record.oilValues=
-   [...document.querySelectorAll(".oilValue")]
-   .map(x=>x.value);
-
-   record.oilAverage=
-   document.getElementById("oilAverage")?.value || "";
-
-   record.oilResult=
-   document.getElementById("oilResult")?.value || "";
-
- }
+    });
 
 
- if(currentForm.type==="hotspot"){
-
-   record.hotspot={
-
-     equipment:document.getElementById("hotEquipment").value,
-
-     max:document.getElementById("hotMax").value,
-
-     reference:document.getElementById("hotReference").value,
-
-     delta:document.getElementById("deltaT").value,
-
-     priority:document.getElementById("hotPriority").value
-
-   };
-
- }
+  document.querySelectorAll(".measurement")
+    .forEach(x=>{
+      record.measurements[x.dataset.name]=x.value;
+    });
 
 
- if(currentForm.type==="pd"){
+  if(currentForm.type==="oil"){
 
-   record.partialDischarge={
+    record.oil={
 
-     equipment:document.getElementById("pdEquipment").value,
+      values:[
+        ...document.querySelectorAll(".oilValue")
+      ].map(x=>x.value),
 
-     abnormalPoint:document.getElementById("pdPoint").value,
+      average:value("oilAverage"),
+      result:value("oilResult"),
+      filtering:value("oilFiltering")
 
-     db:document.getElementById("pdDb").value,
+    };
 
-     severity:document.getElementById("pdSeverity").value,
-
-     forward:document.getElementById("pdForward").value,
-
-     action:document.getElementById("pdAction").value,
-
-     actionDate:document.getElementById("pdActionDate").value,
-
-     improvement:document.getElementById("pdImprovement").value
-
-   };
-
- }
+  }
 
 
- const records=getRecords();
+  if(currentForm.type==="hotspot"){
 
- records.push(record);
+    record.hotspot={
 
- localStorage.setItem(
-   "assetInspectionRecords",
-   JSON.stringify(records)
- );
+      equipment:value("hotEquipment"),
 
- closeModal();
+      maximumTemperature:value("hotMax"),
 
- refresh();
+      referenceTemperature:value("hotReference"),
 
- toast(
-   status==="Draft"
-   ? "บันทึก Draft เรียบร้อย"
-   : "Submit Inspection เรียบร้อย"
- );
+      deltaT:value("deltaT"),
+
+      priority:value("hotPriority")
+
+    };
+
+  }
+
+
+  if(currentForm.type==="pd"){
+
+    record.partialDischarge={
+
+      equipment:value("pdEquipment"),
+
+      abnormalPoint:value("pdPoint"),
+
+      db:value("pdDb"),
+
+      severity:value("pdSeverity"),
+
+      forwardGroup:value("pdForward"),
+
+      correctiveAction:value("pdAction"),
+
+      actionDate:value("pdActionDate"),
+
+      improvement:value("pdImprovement")
+
+    };
+
+  }
+
+
+  const records=getRecords();
+
+  records.push(record);
+
+  localStorage.setItem(
+    "assetInspectionRecords",
+    JSON.stringify(records)
+  );
+
+  closeModal();
+
+  refresh();
+
+  toast(
+    status==="Draft"
+      ? text[currentLanguage].draftSaved
+      : text[currentLanguage].submittedSaved
+  );
 }
 
 
-/* =====================================================
+/* =========================================================
    STORAGE
-===================================================== */
+========================================================= */
 
 function getRecords(){
 
- try{
-   return JSON.parse(
-     localStorage.getItem("assetInspectionRecords")
-   ) || [];
- }
- catch{
-   return [];
- }
+  try{
 
+    return JSON.parse(
+      localStorage.getItem("assetInspectionRecords")
+    ) || [];
+
+  }
+  catch{
+    return [];
+  }
 }
 
 
-/* =====================================================
-   HISTORY / DASHBOARD
-===================================================== */
+/* =========================================================
+   DASHBOARD
+========================================================= */
 
 function refresh(){
 
- const data=getRecords();
+  const t=text[currentLanguage];
+  const data=getRecords();
 
- document.getElementById("totalCount").textContent=data.length;
+  const submitted=
+    data.filter(x=>x.status==="Submitted").length;
 
- const submitted=data.filter(x=>x.status==="Submitted").length;
- const drafts=data.filter(x=>x.status==="Draft").length;
+  const drafts=
+    data.filter(x=>x.status==="Draft").length;
 
- document.getElementById("submitCount").textContent=submitted;
- document.getElementById("draftCount").textContent=drafts;
+  document.getElementById("totalCount").textContent=data.length;
+  document.getElementById("submitCount").textContent=submitted;
+  document.getElementById("draftCount").textContent=drafts;
 
- document.getElementById("kpiTotal").textContent=data.length;
- document.getElementById("kpiSubmit").textContent=submitted;
- document.getElementById("kpiDraft").textContent=drafts;
+  document.getElementById("kpiTotal").textContent=data.length;
+  document.getElementById("kpiSubmit").textContent=submitted;
+  document.getElementById("kpiDraft").textContent=drafts;
 
- document.getElementById("completionKPI").textContent=
-   data.length
-   ? Math.round(submitted/data.length*100)+"%"
-   : "0%";
-
-
- document.getElementById("recentTable").innerHTML=
-   data.slice(-5).reverse().map(x=>`
-
-   <tr>
-
-     <td>${x.date||"-"}</td>
-
-     <td>
-       <b>${x.form}</b>
-       <br>
-       <small>${x.code}</small>
-     </td>
-
-     <td>${x.station||"-"}</td>
-
-     <td>${x.mea||"-"}</td>
-
-     <td>
-       <span class="status ${x.status==="Submitted"?"submitted":"draft"}">
-         ${x.status}
-       </span>
-     </td>
-
-   </tr>
-
- `).join("") || `
-   <tr>
-     <td colspan="5" style="text-align:center;color:#888">
-       ยังไม่มีข้อมูลการตรวจสอบ
-     </td>
-   </tr>
- `;
+  document.getElementById("completionKPI").textContent=
+    data.length
+      ? Math.round(submitted/data.length*100)+"%"
+      : "0%";
 
 
- document.getElementById("historyTable").innerHTML=
-   data.slice().reverse().map(x=>`
+  const recent=data.slice(-5).reverse();
 
-   <tr>
+  document.getElementById("recentTable").innerHTML=
 
-     <td>${x.date||"-"}</td>
+    recent.length
 
-     <td>
-       ${x.form}
-       <br>
-       <small>${x.code}</small>
-     </td>
+    ? recent.map(x=>`
 
-     <td>${x.station||"-"}</td>
+      <tr>
 
-     <td>${x.mea||"-"}</td>
+        <td>${safe(x.date)||"-"}</td>
 
-     <td>${x.inspector||"-"}</td>
+        <td>
+          <b>
+            ${safe(
+              currentLanguage==="th"
+                ? x.formTH
+                : x.formEN
+            )}
+          </b>
 
-     <td>
-       <span class="status ${x.status==="Submitted"?"submitted":"draft"}">
-         ${x.status}
-       </span>
-     </td>
+          <br>
 
-     <td>
-       <button class="btn btn-red" onclick="deleteRecord(${x.id})">
-         ลบ
-       </button>
-     </td>
+          <small>${safe(x.code)}</small>
+        </td>
 
-   </tr>
+        <td>${safe(x.station)||"-"}</td>
 
- `).join("");
+        <td>${safe(x.mea)||"-"}</td>
 
+        <td>
+          <span class="status ${
+            x.status==="Submitted"
+              ? "submitted"
+              : "draft"
+          }">
+            ${
+              x.status==="Submitted"
+                ? t.submitted
+                : t.draft
+            }
+          </span>
+        </td>
+
+      </tr>
+
+    `).join("")
+
+    :`
+
+      <tr>
+        <td colspan="5"
+            style="text-align:center;color:#888">
+          ${t.noData}
+        </td>
+      </tr>
+
+    `;
+
+
+  document.getElementById("historyTable").innerHTML=
+
+    data.length
+
+    ? data.slice().reverse().map(x=>`
+
+      <tr>
+
+        <td>${safe(x.date)||"-"}</td>
+
+        <td>
+
+          ${
+            safe(
+              currentLanguage==="th"
+                ? x.formTH
+                : x.formEN
+            )
+          }
+
+          <br>
+
+          <small>${safe(x.code)}</small>
+
+        </td>
+
+        <td>${safe(x.station)||"-"}</td>
+
+        <td>${safe(x.mea)||"-"}</td>
+
+        <td>${safe(x.inspector)||"-"}</td>
+
+        <td>
+
+          <span class="status ${
+            x.status==="Submitted"
+              ? "submitted"
+              : "draft"
+          }">
+
+            ${
+              x.status==="Submitted"
+                ? t.submitted
+                : t.draft
+            }
+
+          </span>
+
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-red"
+            onclick="deleteRecord(${x.id})"
+          >
+            ${t.delete}
+          </button>
+
+        </td>
+
+      </tr>
+
+    `).join("")
+
+    :`
+
+      <tr>
+
+        <td colspan="7"
+            style="text-align:center;color:#888">
+
+          ${t.noData}
+
+        </td>
+
+      </tr>
+
+    `;
 }
 
 
-/* =====================================================
+/* =========================================================
    DELETE
-===================================================== */
+========================================================= */
 
 function deleteRecord(id){
 
- if(!confirm("ต้องการลบข้อมูลนี้หรือไม่?")) return;
+  if(!confirm(text[currentLanguage].confirmDelete)){
+    return;
+  }
 
- let data=getRecords();
+  let data=getRecords();
 
- data=data.filter(x=>x.id!==id);
+  data=data.filter(x=>x.id!==id);
 
- localStorage.setItem(
-   "assetInspectionRecords",
-   JSON.stringify(data)
- );
+  localStorage.setItem(
+    "assetInspectionRecords",
+    JSON.stringify(data)
+  );
 
- refresh();
+  refresh();
 
- toast("ลบข้อมูลแล้ว");
+  toast(text[currentLanguage].deleted);
 }
 
 
-/* =====================================================
-   CSV
-===================================================== */
+/* =========================================================
+   EXPORT CSV
+========================================================= */
 
 function exportCSV(){
 
- const data=getRecords();
+  const data=getRecords();
 
- if(!data.length){
-   alert("ยังไม่มีข้อมูล");
-   return;
- }
+  if(!data.length){
 
- const rows=[
-   [
-     "Date",
-     "Form Code",
-     "Form",
-     "Station ID",
-     "MEA No",
-     "Location",
-     "Latitude",
-     "Longitude",
-     "Inspector",
-     "Work Order",
-     "Status",
-     "Remark"
-   ]
- ];
+    alert(text[currentLanguage].noExportData);
 
- data.forEach(x=>{
+    return;
+  }
 
-   rows.push([
-     x.date,
-     x.code,
-     x.form,
-     x.station,
-     x.mea,
-     x.location,
-     x.lat,
-     x.lng,
-     x.inspector,
-     x.workOrder,
-     x.status,
-     x.remark
-   ]);
+  const rows=[[
+    "Date",
+    "Form Code",
+    "Form TH",
+    "Form EN",
+    "Station ID",
+    "MEA No.",
+    "Location",
+    "Latitude",
+    "Longitude",
+    "Inspector",
+    "Position",
+    "Work Order",
+    "Status",
+    "Remark"
+  ]];
 
- });
 
- const csv="\uFEFF"+
- rows.map(row=>
-   row.map(v=>
-     `"${String(v??"").replace(/"/g,'""')}"`
-   ).join(",")
- ).join("\n");
+  data.forEach(x=>{
 
- const blob=new Blob(
-   [csv],
-   {type:"text/csv;charset=utf-8;"}
- );
+    rows.push([
 
- const url=URL.createObjectURL(blob);
+      x.date,
+      x.code,
+      x.formTH,
+      x.formEN,
+      x.station,
+      x.mea,
+      x.location,
+      x.lat,
+      x.lng,
+      x.inspector,
+      x.position,
+      x.workOrder,
+      x.status,
+      x.remark
 
- const a=document.createElement("a");
+    ]);
 
- a.href=url;
- a.download="Asset_Inspection_Data.csv";
+  });
 
- a.click();
 
- URL.revokeObjectURL(url);
+  const csv=
+    "\uFEFF"+
+    rows.map(row=>
+
+      row.map(v=>
+        `"${String(v ?? "").replace(/"/g,'""')}"`
+      ).join(",")
+
+    ).join("\n");
+
+
+  const blob=new Blob(
+    [csv],
+    {type:"text/csv;charset=utf-8;"}
+  );
+
+  const url=URL.createObjectURL(blob);
+
+  const a=document.createElement("a");
+
+  a.href=url;
+
+  a.download=
+    "Asset_Inspection_Data.csv";
+
+  a.click();
+
+  URL.revokeObjectURL(url);
 }
 
 
-/* =====================================================
+/* =========================================================
    HELPERS
-===================================================== */
+========================================================= */
+
+function value(id){
+
+  return document.getElementById(id)?.value || "";
+}
 
 function clearFields(){
 
- [
- "stationId",
- "meaNo",
- "location",
- "lat",
- "lng",
- "inspector",
- "position",
- "workOrder",
- "remark"
- ].forEach(id=>{
-   document.getElementById(id).value="";
- });
+  [
+    "stationId",
+    "meaNo",
+    "location",
+    "lat",
+    "lng",
+    "inspector",
+    "position",
+    "workOrder",
+    "remark"
+  ].forEach(id=>{
 
- document.getElementById("generalPreview").src="";
+    const el=document.getElementById(id);
+
+    if(el) el.value="";
+
+  });
+
+  const img=document.getElementById("generalPreview");
+
+  if(img) img.src="";
 }
 
 function closeModal(){
- document.getElementById("inspectionModal").style.display="none";
+
+  document.getElementById(
+    "inspectionModal"
+  ).style.display="none";
 }
 
-function toast(text){
+function toast(message){
 
- const t=document.getElementById("toast");
+  const t=document.getElementById("toast");
 
- t.textContent=text;
- t.style.display="block";
+  t.textContent=message;
+  t.style.display="block";
 
- setTimeout(()=>{
-   t.style.display="none";
- },2500);
+  setTimeout(()=>{
+    t.style.display="none";
+  },2500);
 }
 
-window.onclick=e=>{
- if(e.target===document.getElementById("inspectionModal")){
-   closeModal();
- }
-};
+function safe(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function escapeAttribute(value){
+  return safe(value);
+}
+
+function alertWorkOrder(){
+
+  alert(
+    currentLanguage==="th"
+      ? "ส่วนสร้าง Work Order สามารถเชื่อมกับข้อบกพร่องจากใบตรวจได้ในขั้นต่อไป"
+      : "Work Orders can be linked to defects found during inspection in the next development stage."
+  );
+}
 
 
-/* INIT */
+/* =========================================================
+   CLOSE MODAL BY BACKGROUND
+========================================================= */
+
+window.addEventListener("click",function(e){
+
+  const modal=
+    document.getElementById("inspectionModal");
+
+  if(e.target===modal){
+    closeModal();
+  }
+
+});
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
 renderForms();
 refresh();
+changeLanguage(currentLanguage);
 
 </script>
 
