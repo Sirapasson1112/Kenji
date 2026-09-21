@@ -76,24 +76,21 @@ body.dark .guided-form .field,body.dark .flow-card{background:#0d2333;border-col
  <div class="menu" data-page="manual" onclick="showPage('manual',this)"><span>📖</span> <b class="menuText">คู่มือปฏิบัติงาน</b></div>
  <div class="menu" data-page="history" onclick="showPage('history',this)"><span>📚</span> <b class="menuText">ประวัติการตรวจ</b></div>
  <div class="menu" data-page="workorder" onclick="showPage('workorder',this)"><span>📋</span> <b class="menuText">Work Order</b></div>
- <div class="menu" data-page="pm" onclick="showPage('pm',this)"><span>🗓️</span> <b class="menuText">PM Planning</b></div>
- <div class="menu" data-page="labor" onclick="showPage('labor',this)"><span>👷</span> <b class="menuText">Labor Tracking</b></div>
- <div class="menu" data-page="cost" onclick="showPage('cost',this)"><span>💰</span> <b class="menuText">Cost Analysis</b></div>
- <div class="menu" data-page="kpi" onclick="showPage('kpi',this)"><span>📈</span> <b class="menuText">KPI</b></div>
- <div class="menu" data-page="users" onclick="showPage('users',this)"><span>👥</span> <b class="menuText">User / Team</b></div>
+ <div class="menu" data-page="pm" onclick="showPage('pm',this)"><span>🗓️</span> <b class="menuText">แผนบำรุงรักษา</b></div>
+ <div class="menu" data-page="labor" onclick="showPage('labor',this)"><span>👷</span> <b class="menuText">เวลาและกำลังคน</b></div>
+ <div class="menu" data-page="cost" onclick="showPage('cost',this)"><span>💰</span> <b class="menuText">ค่าใช้จ่าย</b></div>
+ <div class="menu" data-page="kpi" onclick="showPage('kpi',this)"><span>📈</span> <b class="menuText">สรุปผล / KPI</b></div>
+ <div class="menu" data-page="users" onclick="showPage('users',this)"><span>👥</span> <b class="menuText">ทีมงาน</b></div>
  <div style="margin:16px 10px 7px;font-size:10px;opacity:.55">ENGINEERING / วางแผนงาน</div>
- <div class="menu" data-page="assets" onclick="showPage('assets',this)"><span>⚙️</span> <b class="menuText">Asset Management</b></div>
+ <div style="margin:0 10px 8px;padding:8px 9px;border-radius:9px;background:#ffffff12;font-size:10px;line-height:1.45">เมนูขั้นสูงถูกซ่อนไว้ เพื่อให้คนหน้างานใช้งานง่าย</div>
+ <div class="menu" data-page="assets" onclick="showPage('assets',this)"><span>⚙️</span> <b class="menuText">ทะเบียนอุปกรณ์</b></div>
  <div style="padding:6px 10px 10px"><button id="advancedToggle" class="btn btn-light" style="width:100%;font-size:11px" onclick="toggleAdvanced()">⚙ แสดงเครื่องมือวิศวกรรม</button></div>
  <div class="menu advancedMenu" data-page="functionsPage" onclick="showPage('functionsPage',this)"><span>ƒ</span> <b class="menuText">Functions</b></div>
  <div class="menu advancedMenu" data-page="failurePage" onclick="showPage('failurePage',this)"><span>⚠️</span> <b class="menuText">Functional Failure</b></div>
  <div class="menu advancedMenu" data-page="fmeaPage" onclick="showPage('fmeaPage',this)"><span>▦</span> <b class="menuText">FMEA</b></div>
  <div class="menu advancedMenu" data-page="criticalityPage" onclick="showPage('criticalityPage',this)"><span>◆</span> <b class="menuText">Criticality</b></div>
- <div class="menu" data-page="hiPage" onclick="showPage('hiPage',this)"><span>♥</span> <b class="menuText">Health Index</b></div>
- <div class="menu advancedMenu" data-page="strategyPage" onclick="showPage('strategyPage',this)"><span>🛠️</span> <b class="menuText">Maintenance Strategy</b></div>
- <div class="menu advancedMenu" data-page="taskPage" onclick="showPage('taskPage',this)"><span>☑</span> <b class="menuText">Maintenance Task</b></div>
- <div class="menu advancedMenu" data-page="planPage" onclick="showPage('planPage',this)"><span>🗓</span> <b class="menuText">Maintenance Plan</b></div>
- <div class="menu" data-page="monitorPage" onclick="showPage('monitorPage',this)"><span>🔎</span> <b class="menuText">Inspection & Monitoring</b></div>
- <div class="menu" data-page="reportsPage" onclick="showPage('reportsPage',this)"><span>📑</span> <b class="menuText">Reports</b></div>
+ <div class="menu" data-page="hiPage" onclick="showPage('hiPage',this)"><span>♥</span> <b class="menuText">สภาพอุปกรณ์</b></div>
+ <div class="menu advancedMenu" data-page="strategyPage" onclick="showPage('strategyPage',this)"><span>🛠️</span> <b class="menuText">แนวทางบำรุงรักษา</b></div>
  <div class="menu" data-page="settingsPage" onclick="showPage('settingsPage',this)"><span>⚙</span> <b class="menuText">Settings</b></div>
 </aside>
 
@@ -104,27 +101,24 @@ body.dark .guided-form .field,body.dark .flow-card{background:#0d2333;border-col
 </header>
 
 <section id="fieldHome" class="page">
- <div class="hero"><div><h2>🚶 เริ่มงานภาคสนาม</h2><p>ทำตาม 4 ขั้นตอน ไม่ต้องเข้าเมนูวิศวกรรม</p></div></div>
+ <div class="hero"><div><h2>🚶 เริ่มงานภาคสนาม</h2><p>ทำตาม 3 ขั้นตอน ไม่ต้องกดเมนูซ้ำ</p></div></div>
  <div class="field-flow">
-  <button class="flow-card" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))"><span>1</span><div>🗺️<b>เลือกจุดตรวจ</b><small>ค้นหา Station หรือเลือกจากแผนที่</small></div></button>
+  <button class="flow-card" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))"><span>1</span><div>🗺️<b>เลือกจุด / อุปกรณ์</b><small>ค้นหา Station หรือเลือกจากแผนที่</small></div></button>
   <div class="flow-arrow">→</div>
-  <button class="flow-card" onclick="showPage('manual',document.querySelector('[data-page=manual]'))"><span>2</span><div>📖<b>ดูคู่มือ</b><small>ระบบจับคู่คู่มือกับอุปกรณ์</small></div></button>
+  <button class="flow-card" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))"><span>2</span><div>📝<b>ตรวจและบันทึกผล</b><small>ระบบเลือกใบตรวจและคู่มือที่เกี่ยวข้องให้</small></div></button>
   <div class="flow-arrow">→</div>
-  <button class="flow-card" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))"><span>3</span><div>📝<b>กรอกใบตรวจ</b><small>ใบตรวจ 11 แบบใน Paper Mode</small></div></button>
-  <div class="flow-arrow">→</div>
-  <button class="flow-card" onclick="showPage('history',document.querySelector('[data-page=history]'))"><span>4</span><div>✓<b>ส่งผลและติดตาม</b><small>ดูประวัติและสถานะงาน</small></div></button>
+  <button class="flow-card" onclick="showPage('history',document.querySelector('[data-page=history]'))"><span>3</span><div>✓<b>เสร็จ / ดูประวัติ</b><small>ตรวจสอบผลย้อนหลังและสถานะงาน</small></div></button>
  </div>
  <div class="panel"><h2>เลือกทางลัด</h2><div class="grid"><div class="card"><div class="number">📍</div><h3>ฉันอยู่หน้างานแล้ว</h3><p>เปิดแผนที่และ GPS เพื่อเลือก Asset ใกล้จุดตรวจ</p><button class="btn" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'));setTimeout(locateMe,400)">เปิด GPS & Map</button></div><div class="card"><div class="number">🔎</div><h3>รู้ Station ID</h3><p>ค้นหา Station / MEA No. จากช่องค้นหาด้านบน</p><button class="btn btn-light" onclick="openCommand()">ค้นหา Station</button></div><div class="card"><div class="number">📝</div><h3>รู้ประเภทใบตรวจแล้ว</h3><p>ข้ามไปเลือกใบตรวจทั้ง 11 ประเภทได้ทันที</p><button class="btn btn-light" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">เลือกใบตรวจ</button></div></div></div>
 </section>
 <section id="dashboard" class="page active">
  <div class="hero"><div><h2>⚡ Maintenance Command Center</h2><p>Inspection • RCM • Health Index • Work Order • PM อยู่ใน Flow เดียว</p></div><div class="hero-actions"><button class="btn btn-light" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เริ่มจากแผนที่</button><button class="btn btn-light" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">📝 เริ่มตรวจ</button></div></div>
  <div class="quickbar">
-  <button class="quick" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️<b>Field Map</b><small>เลือกจุดตรวจจากแผนที่</small></button>
-  <button class="quick" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">📝<b>New Inspection</b><small>ใบตรวจ 11 ประเภท</small></button>
-  <button class="quick" onclick="showPage('assets',document.querySelector('[data-page=assets]'))">⚙️<b>Asset</b><small>ทะเบียนอุปกรณ์</small></button>
-  <button class="quick" onclick="showPage('hiPage',document.querySelector('[data-page=hiPage]'))">♥<b>Health Index</b><small>ติดตามสุขภาพ Asset</small></button>
-  <button class="quick" onclick="showPage('workorder',document.querySelector('[data-page=workorder]'))">📋<b>Work Order</b><small>ติดตามงานซ่อม</small></button>
-  <button class="quick" onclick="showPage('pm',document.querySelector('[data-page=pm]'))">🗓️<b>PM Planning</b><small>วางแผนบำรุงรักษา</small></button>
+  <button class="quick" onclick="showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))">🚶<b>เริ่มงานตรวจ</b><small>Flow สำหรับภาคสนาม</small></button>
+  <button class="quick" onclick="showPage('assets',document.querySelector('[data-page=assets]'))">⚙️<b>ทะเบียนอุปกรณ์</b><small>ค้นหาและจัดการ Asset</small></button>
+  <button class="quick" onclick="showPage('workorder',document.querySelector('[data-page=workorder]'))">📋<b>งานซ่อม</b><small>Work Order</small></button>
+  <button class="quick" onclick="showPage('pm',document.querySelector('[data-page=pm]'))">🗓️<b>แผนบำรุงรักษา</b><small>PM Schedule</small></button>
+  <button class="quick" onclick="showPage('kpi',document.querySelector('[data-page=kpi]'))">📈<b>สรุปผล</b><small>KPI และภาพรวม</small></button>
  </div>
  <div class="panel progress-card"><div class="ring" id="pmRing"><b id="pmRingText">0%</b></div><div><b>PM Progress</b><div style="height:6px"></div><div class="progress-line"><i id="pmProgress" style="width:0%"></i></div><small id="pmProgressText">ยังไม่มีแผน PM</small></div><button class="btn btn-light" onclick="showPage('pm',document.querySelector('[data-page=pm]'))">ดูแผน →</button></div>
  <div class="stats"><div class="stat"><small>การตรวจทั้งหมด</small><strong id="total">0</strong></div><div class="stat"><small>ส่งแล้ว</small><strong id="submitted">0</strong></div><div class="stat"><small>ฉบับร่าง</small><strong id="draft">0</strong></div><div class="stat"><small>ใบตรวจในระบบ</small><strong>11</strong></div></div>
@@ -191,11 +185,11 @@ body.dark .guided-form .field,body.dark .flow-card{background:#0d2333;border-col
 <section id="fmeaPage" class="page"><div class="panel"><h2>RCM Step 4 — FMEA</h2><div class="row3"><div class="field"><label>Asset</label><select id="fmAsset"></select></div><div class="field"><label>Failure Mode</label><input id="fmMode"></div><div class="field"><label>Failure Effect</label><input id="fmEffect"></div></div><br><div class="row3"><div class="field"><label>Severity (S)</label><input type="number" min="1" max="10" id="fmS"></div><div class="field"><label>Occurrence (O)</label><input type="number" min="1" max="10" id="fmO"></div><div class="field"><label>Detection (D)</label><input type="number" min="1" max="10" id="fmD"></div></div><br><button class="btn" onclick="saveFMEA()">คำนวณ RPN และบันทึก</button></div><div class="panel"><div id="fmeaTable"></div></div></section>
 <section id="criticalityPage" class="page"><div class="panel"><h2>RCM Step 5 — Consequence / Criticality</h2><div class="row3"><div class="field"><label>Asset</label><select id="crAsset"></select></div><div class="field"><label>Consequence</label><select id="crCon"><option>Safety / Environment</option><option>Operational</option><option>Non-operational</option><option>Hidden Failure</option></select></div><div class="field"><label>Criticality</label><select id="crLevel"><option>High</option><option>Medium</option><option>Low</option></select></div></div><br><button class="btn" onclick="saveRCM('rcmCriticality',{asset:crAsset.value,consequence:crCon.value,level:crLevel.value})">บันทึก Criticality</button></div><div class="panel"><div id="crTable"></div></div></section>
 <section id="hiPage" class="page"><div class="panel"><h2>RCM Step 6 — Health Index</h2><p>บันทึกคะแนนสภาพอุปกรณ์จากผลตรวจ/ข้อมูลสภาพ เพื่อใช้ประกอบการเลือกกลยุทธ์บำรุงรักษา</p><div class="row3"><div class="field"><label>Asset</label><select id="hiAsset"></select></div><div class="field"><label>Health Index (0–100)</label><input type="number" min="0" max="100" id="hiScore"></div><div class="field"><label>Condition</label><select id="hiCondition"><option>Good</option><option>Fair</option><option>Poor</option><option>Critical</option></select></div></div><br><div class="field"><label>Evidence / Note</label><textarea id="hiNote"></textarea></div><br><button class="btn" onclick="saveRCM('rcmHI',{asset:hiAsset.value,score:Number(hiScore.value||0),condition:hiCondition.value,note:hiNote.value});hiScore.value=hiNote.value=''">บันทึก Health Index</button></div><div class="panel"><div id="hiTable"></div></div></section>
-<section id="strategyPage" class="page"><div class="panel"><h2>RCM Step 7 — Maintenance Strategy</h2><div class="row3"><div class="field"><label>Asset</label><select id="stAsset"></select></div><div class="field"><label>Strategy</label><select id="stType"><option>Condition Based Maintenance</option><option>Time Based Maintenance</option><option>Failure Finding</option><option>Run to Failure</option><option>Redesign / Modification</option></select></div><div class="field"><label>Reason</label><input id="stReason"></div></div><br><button class="btn" onclick="saveRCM('rcmStrategies',{asset:stAsset.value,type:stType.value,reason:stReason.value});stReason.value=''">บันทึก Strategy</button></div><div class="panel"><div id="stTable"></div></div></section>
-<section id="taskPage" class="page"><div class="panel"><h2>RCM Step 8 — Maintenance Task</h2><div class="row3"><div class="field"><label>Asset</label><select id="tkAsset"></select></div><div class="field"><label>Task</label><input id="tkName"></div><div class="field"><label>Frequency</label><input id="tkFreq" placeholder="เช่น 6 เดือน"></div></div><br><button class="btn" onclick="saveRCM('rcmTasks',{asset:tkAsset.value,name:tkName.value,frequency:tkFreq.value});tkName.value=tkFreq.value=''">บันทึก Task</button></div><div class="panel"><div id="tkTable"></div></div></section>
-<section id="planPage" class="page"><div class="panel"><h2>RCM Step 9 — Maintenance Plan</h2><div class="row3"><div class="field"><label>Asset</label><select id="plAsset"></select></div><div class="field"><label>Planned Date</label><input type="date" id="plDate"></div><div class="field"><label>Owner</label><input id="plOwner"></div></div><br><div class="field"><label>Plan / Job</label><input id="plJob"></div><br><button class="btn" onclick="saveRCM('rcmPlans',{asset:plAsset.value,date:plDate.value,owner:plOwner.value,job:plJob.value});plOwner.value=plJob.value=''">บันทึก Plan</button></div><div class="panel"><div id="plTable"></div></div></section>
-<section id="monitorPage" class="page"><div class="panel"><h2>RCM Step 10 — Inspection & Monitoring</h2><p>เชื่อมผลจากใบตรวจ 11 แบบกับ Asset/RCM และติดตามแนวโน้มสภาพ</p><button class="btn" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">📝 ไปใบตรวจภาคสนาม</button> <button class="btn btn-light" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เปิด Field Map</button></div><div class="panel"><h2>Inspection Records</h2><div id="monitorTable"></div></div></section>
-<section id="reportsPage" class="page"><div class="panel"><h2>Reports & Export</h2><div class="grid"><div class="card"><h3>Inspection Report</h3><p>ส่งออกประวัติการตรวจทั้งหมด</p><button class="btn" onclick="exportCSV()">Export CSV</button></div><div class="card"><h3>RCM Data</h3><p>ส่งออกข้อมูล Asset / FMEA / HI / Strategy</p><button class="btn" onclick="exportRCM()">Export RCM CSV</button></div><div class="card"><h3>Print Inspection</h3><p>เปิดใบตรวจแล้วใช้ Print/PDF ใน Paper Mode</p><button class="btn" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">Open Forms</button></div></div></div></section>
+<section id="strategyPage" class="page"><div class="panel"><h2>RCM Step 7 — Maintenance Strategy</h2><div class="row3"><div class="field"><label>Asset</label><select id="stAsset"></select></div><div class="field"><label>Strategy</label><select id="stType"><option>Condition Based Maintenance</option><option>Time Based Maintenance</option><option>Failure Finding</option><option>Run to Failure</option><option>Redesign / Modification</option></select></div><div class="field"><label>Reason</label><input id="stReason"></div></div><br><button class="btn" onclick="saveRCM('rcmStrategies',{asset:stAsset.value,type:stType.value,reason:stReason.value});stReason.value=''">บันทึก Strategy</button></div><div class="panel"><div id="stTable"></div></div><div class="panel" style="margin-top:12px"><b>ขั้นตอนถัดไป</b><p>เมื่อเลือกแนวทางแล้ว ให้สร้างงานและรอบบำรุงรักษาในหน้า “แผนบำรุงรักษา” เพียงหน้าเดียว</p><button class="btn" onclick="showPage('pm',document.querySelector('[data-page=pm]'))">ไปแผนบำรุงรักษา →</button></div></section>
+
+
+
+
 <section id="settingsPage" class="page"><div class="panel"><h2>Settings</h2><div class="row2"><div class="field"><label>Organization</label><input id="setOrg" value="Asset Inspection"></div><div class="field"><label>Default Inspector</label><input id="setInspector"></div></div><br><button class="btn" onclick="localStorage.setItem('assetSettings',JSON.stringify({org:setOrg.value,inspector:setInspector.value}));alert('บันทึกแล้ว')">บันทึก Settings</button></div><div class="panel"><h2>Local Data</h2><p>เวอร์ชัน HTML เดียวนี้จัดเก็บข้อมูลใน Browser ด้วย localStorage</p></div></section>
 </main>
 
@@ -248,7 +242,7 @@ let stations=JSON.parse(localStorage.getItem("inspectionStations")||"null")||[
 function showPage(id,el){
  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active")); document.getElementById(id).classList.add("active");
  document.querySelectorAll(".menu").forEach(x=>x.classList.remove("active")); if(el)el.classList.add("active");
- const titles={fieldHome:"เริ่มงานภาคสนาม",dashboard:"แดชบอร์ดงานบำรุงรักษา",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ใบตรวจภาคสนาม",manual:"คู่มือปฏิบัติงาน",history:"ประวัติการตรวจสอบ",workorder:"Work Order",pm:"PM Planning",labor:"Labor Tracking",cost:"Maintenance Cost Analysis",kpi:"KPI & Management Dashboard",users:"User / Team Management",assets:"Asset Management",functionsPage:"Functions & Performance Standards",failurePage:"Functional Failure",fmeaPage:"FMEA",criticalityPage:"Consequence / Criticality",hiPage:"Health Index",strategyPage:"Maintenance Strategy",taskPage:"Maintenance Task",planPage:"Maintenance Plan",monitorPage:"Inspection & Monitoring",reportsPage:"Reports",settingsPage:"Settings"};
+ const titles={fieldHome:"เริ่มงานภาคสนาม",dashboard:"แดชบอร์ดงานบำรุงรักษา",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ใบตรวจภาคสนาม",manual:"คู่มือปฏิบัติงาน",history:"ประวัติการตรวจสอบ",workorder:"Work Order",pm:"PM Planning",labor:"Labor Tracking",cost:"Maintenance Cost Analysis",kpi:"KPI & Management Dashboard",users:"User / Team Management",assets:"Asset Management",functionsPage:"Functions & Performance Standards",failurePage:"Functional Failure",fmeaPage:"FMEA",criticalityPage:"Consequence / Criticality",hiPage:"Health Index",strategyPage:"Maintenance Strategy",settingsPage:"Settings"};
  pageTitle.textContent=titles[id]||id; if(id==="mapPage")setTimeout(initMap,80);
 }
 function setLanguage(v){lang=v;localStorage.setItem("inspectionLang",v);thBtn.classList.toggle("active",v==="th");enBtn.classList.toggle("active",v==="en");renderForms();renderManualCards();refresh();renderMapMarkers()}
@@ -410,8 +404,8 @@ function exportRCM(){
 const UX_ACTIONS=[
 ["dashboard","📊 Dashboard"],["mapPage","🗺️ Field Map"],["inspection","📝 Inspection Forms"],["manual","📖 Manuals"],["history","📚 Inspection History"],
 ["assets","⚙️ Asset Management"],["functionsPage","ƒ Functions"],["failurePage","⚠️ Functional Failure"],["fmeaPage","▦ FMEA"],["criticalityPage","◆ Criticality"],
-["hiPage","♥ Health Index"],["strategyPage","🛠️ Maintenance Strategy"],["taskPage","☑ Maintenance Task"],["planPage","🗓 Maintenance Plan"],["monitorPage","🔎 Inspection & Monitoring"],
-["workorder","📋 Work Order"],["pm","🗓️ PM Planning"],["labor","👷 Labor Tracking"],["cost","💰 Cost Analysis"],["kpi","📈 KPI"],["users","👥 User / Team"],["reportsPage","📑 Reports"],["settingsPage","⚙ Settings"]
+["hiPage","♥ Health Index"],["strategyPage","🛠️ Maintenance Strategy"],
+["workorder","📋 Work Order"],["pm","🗓️ PM Planning"],["labor","👷 Labor Tracking"],["cost","💰 Cost Analysis"],["kpi","📈 KPI"],["users","👥 User / Team"],["settingsPage","⚙ Settings"]
 ];
 function openCommand(){command.style.display="block";cmdSearch.value="";renderCommand();setTimeout(()=>cmdSearch.focus(),50)}
 function closeCommand(){command.style.display="none"}
