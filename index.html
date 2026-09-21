@@ -38,6 +38,26 @@ button,input,select,textarea{font:inherit}.sidebar{position:fixed;inset:0 auto 0
 @media print{body *{visibility:hidden}#paperMode,#paperMode *{visibility:visible}#paperMode{position:absolute;display:block!important;inset:0;background:#fff;overflow:visible}.paper-toolbar{display:none!important}.paper-wrap{padding:0}.paper{width:210mm;min-height:297mm;margin:0;padding:8mm;box-shadow:none;page-break-after:always}.paper:last-child{page-break-after:auto}}
 @media(max-width:1000px){.stats,.grid{grid-template-columns:repeat(2,1fr)}.map-layout{grid-template-columns:1fr}.map-side{max-height:none}#map{height:65vh}}
 @media(max-width:760px){.sidebar{width:72px;padding:15px 7px}.brand{font-size:0}.brand:after{content:"MEA";font-size:15px}.brand small{display:none}.menu{font-size:0;text-align:center}.menu span{font-size:21px}.app{margin-left:72px;padding:10px}.stats,.grid,.row2,.row3{grid-template-columns:1fr}.header{align-items:flex-start}.paper-wrap{overflow:auto;padding:12px 5px 50px}.paper{width:210mm}.paper-toolbar{align-items:flex-start;flex-direction:column}}
+
+/* ===== WOW UX LAYER ===== */
+:root{--surface:#fff;--surface2:#f7fafc;--line:#dce6ee;--shadow:0 12px 35px rgba(5,45,78,.10)}
+body{background:radial-gradient(circle at 85% 0,#dff2ff 0,transparent 25%),var(--bg)}
+.sidebar{box-shadow:10px 0 35px #00294720}.brand{letter-spacing:.2px}.menu{transition:.18s ease;display:flex;align-items:center;gap:9px}.menu:hover{transform:translateX(3px)}
+.header{position:sticky;top:12px;z-index:900;backdrop-filter:blur(14px);background:#fffffff2;border:1px solid #fff;box-shadow:var(--shadow)}
+.panel,.stat,.card{transition:.2s ease;border:1px solid #ffffff80}.card:hover,.stat:hover{transform:translateY(-3px);box-shadow:0 14px 35px #073b6818}
+.btn{transition:.16s ease;box-shadow:0 4px 12px #1488d425}.btn:active{transform:scale(.97)}
+#globalSearch{width:min(420px,35vw);padding:10px 14px 10px 38px;border:1px solid #d4e0e8;border-radius:12px;background:#f7fafc}
+.search-wrap{position:relative}.search-wrap:before{content:"⌕";position:absolute;left:13px;top:5px;font-size:23px;color:#7990a2}
+.quickbar{display:flex;gap:10px;overflow:auto;padding:2px 2px 15px}.quick{min-width:155px;border:1px solid #dce7ee;background:#fff;border-radius:13px;padding:12px;text-align:left;cursor:pointer;box-shadow:0 5px 16px #073b680c}.quick:hover{border-color:#1488d4}.quick b{display:block;margin-top:5px}.quick small{color:#73889a}
+.hero{background:linear-gradient(120deg,#073b68,#0b72b7 62%,#14a2df);color:#fff;border-radius:18px;padding:23px;margin-bottom:17px;display:flex;justify-content:space-between;gap:20px;align-items:center;box-shadow:0 16px 40px #073b6830}.hero h2{margin:0 0 7px;font-size:25px}.hero p{margin:0;opacity:.83}.hero .hero-actions{display:flex;gap:8px;flex-wrap:wrap}.hero .btn-light{background:#fff;color:#073b68}
+.progress-card{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px}.ring{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#20a46b var(--pct,0%),#e6edf2 0);position:relative}.ring:after{content:"";position:absolute;width:46px;height:46px;background:#fff;border-radius:50%}.ring b{z-index:2;font-size:12px}.progress-line{height:8px;background:#e7eef3;border-radius:20px;overflow:hidden}.progress-line i{display:block;height:100%;background:linear-gradient(90deg,#1488d4,#20a46b);border-radius:20px}
+.fab{position:fixed;right:25px;bottom:25px;width:58px;height:58px;border:0;border-radius:50%;background:#1488d4;color:#fff;font-size:28px;box-shadow:0 10px 28px #075b914f;z-index:2200;cursor:pointer}
+.command{display:none;position:fixed;inset:0;background:#001a2c80;backdrop-filter:blur(5px);z-index:6000;padding:12vh 15px}.command-box{max-width:720px;margin:auto;background:#fff;border-radius:17px;box-shadow:0 25px 70px #001a2c66;overflow:hidden}.command-box input{width:100%;padding:19px;border:0;border-bottom:1px solid #e2e8ed;font-size:17px;outline:none}.cmd-results{max-height:55vh;overflow:auto;padding:8px}.cmd-item{padding:12px;border-radius:10px;cursor:pointer;display:flex;justify-content:space-between}.cmd-item:hover{background:#eef7fd}.cmd-item small{color:#8294a3}
+.toast{position:fixed;right:25px;top:90px;background:#123d5c;color:#fff;padding:13px 18px;border-radius:10px;z-index:7000;box-shadow:0 12px 35px #0003;opacity:0;transform:translateY(-8px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:none}
+.empty{text-align:center;padding:35px;color:#7890a2}.empty b{display:block;color:#274b68;margin:7px}
+.badge-online{padding:5px 9px;border-radius:20px;font-size:11px;background:#dff5e8;color:#16714e}.badge-online.off{background:#ffe5e2;color:#a43d33}
+body.dark{--bg:#071826;--ink:#dbeaf5;--surface:#0d2333;background:#071826;color:#dbeaf5}body.dark .header,body.dark .panel,body.dark .stat,body.dark .card,body.dark .map-side,body.dark .quick{background:#0d2333;color:#dbeaf5;border-color:#17384e}body.dark th{background:#102b3e}body.dark td,body.dark th{border-color:#1c3a4d}body.dark .header p,body.dark .card p,body.dark .quick small{color:#8fa9bb}body.dark input,body.dark select,body.dark textarea,body.dark #globalSearch{background:#0a1d2b;color:#e8f4fb;border-color:#264458}body.dark .command-box{background:#0d2333}body.dark .cmd-item:hover{background:#15354b}body.dark .ring:after{background:#0d2333}
+@media(max-width:900px){#globalSearch{display:none}.hero{align-items:flex-start;flex-direction:column}.quick{scroll-snap-type:x mandatory}.quick>*{scroll-snap-align:start}}
 </style>
 </head>
 <body>
@@ -72,10 +92,20 @@ button,input,select,textarea{font:inherit}.sidebar{position:fixed;inset:0 auto 0
 <main class="app">
 <header class="header">
  <div><h1 id="pageTitle">แดชบอร์ดงานบำรุงรักษา</h1><p id="pageSub">ระบบตรวจสอบอุปกรณ์ภาคสนาม</p></div>
- <div class="header-right"><div class="lang"><button id="thBtn" onclick="setLanguage('th')">🇹🇭 TH</button><button id="enBtn" onclick="setLanguage('en')">🇬🇧 EN</button></div><div><b>Admin</b><br><small>Maintenance Manager</small></div></div>
+ <div class="header-right"><div class="search-wrap"><input id="globalSearch" placeholder="ค้นหาเมนู, Asset, Station...  (Ctrl+K)" onclick="openCommand()" readonly></div><span id="onlineBadge" class="badge-online">● Online</span><button class="btn btn-light" onclick="toggleDark()" title="Dark mode">◐</button><div class="lang"><button id="thBtn" onclick="setLanguage('th')">🇹🇭 TH</button><button id="enBtn" onclick="setLanguage('en')">🇬🇧 EN</button></div><div><b>Admin</b><br><small>Maintenance Manager</small></div></div>
 </header>
 
 <section id="dashboard" class="page active">
+ <div class="hero"><div><h2>⚡ Maintenance Command Center</h2><p>Inspection • RCM • Health Index • Work Order • PM อยู่ใน Flow เดียว</p></div><div class="hero-actions"><button class="btn btn-light" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เริ่มจากแผนที่</button><button class="btn btn-light" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">📝 เริ่มตรวจ</button></div></div>
+ <div class="quickbar">
+  <button class="quick" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️<b>Field Map</b><small>เลือกจุดตรวจจากแผนที่</small></button>
+  <button class="quick" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">📝<b>New Inspection</b><small>ใบตรวจ 11 ประเภท</small></button>
+  <button class="quick" onclick="showPage('assets',document.querySelector('[data-page=assets]'))">⚙️<b>Asset</b><small>ทะเบียนอุปกรณ์</small></button>
+  <button class="quick" onclick="showPage('hiPage',document.querySelector('[data-page=hiPage]'))">♥<b>Health Index</b><small>ติดตามสุขภาพ Asset</small></button>
+  <button class="quick" onclick="showPage('workorder',document.querySelector('[data-page=workorder]'))">📋<b>Work Order</b><small>ติดตามงานซ่อม</small></button>
+  <button class="quick" onclick="showPage('pm',document.querySelector('[data-page=pm]'))">🗓️<b>PM Planning</b><small>วางแผนบำรุงรักษา</small></button>
+ </div>
+ <div class="panel progress-card"><div class="ring" id="pmRing"><b id="pmRingText">0%</b></div><div><b>PM Progress</b><div style="height:6px"></div><div class="progress-line"><i id="pmProgress" style="width:0%"></i></div><small id="pmProgressText">ยังไม่มีแผน PM</small></div><button class="btn btn-light" onclick="showPage('pm',document.querySelector('[data-page=pm]'))">ดูแผน →</button></div>
  <div class="stats"><div class="stat"><small>การตรวจทั้งหมด</small><strong id="total">0</strong></div><div class="stat"><small>ส่งแล้ว</small><strong id="submitted">0</strong></div><div class="stat"><small>ฉบับร่าง</small><strong id="draft">0</strong></div><div class="stat"><small>ใบตรวจในระบบ</small><strong>11</strong></div></div>
  <div class="panel"><h2>รายการตรวจล่าสุด</h2><div style="overflow:auto"><table><thead><tr><th>วันที่</th><th>ใบตรวจ</th><th>Station ID</th><th>MEA No.</th><th>สถานะ</th></tr></thead><tbody id="recentBody"></tbody></table></div></div>
 </section>
@@ -130,6 +160,9 @@ button,input,select,textarea{font:inherit}.sidebar{position:fixed;inset:0 auto 0
 </main>
 
 <div id="assetModal" style="display:none;position:fixed;inset:0;background:#0008;z-index:5000;padding:30px;overflow:auto"><div class="panel" style="max-width:720px;margin:auto"><div style="display:flex;justify-content:space-between"><h2>New Asset</h2><button class="btn btn-gray" onclick="assetModal.style.display='none'">✕</button></div><div class="row2"><div class="field"><label>Asset ID</label><input id="aId"></div><div class="field"><label>Asset Name</label><input id="aName"></div><div class="field"><label>Asset Type</label><select id="aType"><option>Distribution Transformer</option><option>Load Break Switch</option><option>Sectionalizer</option><option>RMU</option><option>Unit Substation</option><option>Capacitor Bank</option><option>Network Transformer</option><option>Other</option></select></div><div class="field"><label>Location</label><input id="aLocation"></div><div class="field"><label>Latitude</label><input type="number" step="any" id="aLat"></div><div class="field"><label>Longitude</label><input type="number" step="any" id="aLng"></div></div><br><button class="btn btn-green" onclick="saveAsset()">Save Asset</button></div></div>
+<button class="fab" onclick="openCommand()" title="Quick actions">＋</button>
+<div id="command" class="command" onclick="if(event.target===this)closeCommand()"><div class="command-box"><input id="cmdSearch" placeholder="ค้นหาเมนู / Asset / Station / ใบตรวจ..." oninput="renderCommand()"><div class="cmd-results" id="cmdResults"></div></div></div>
+<div id="toast" class="toast">บันทึกแล้ว</div>
 <section id="paperMode"><div class="paper-toolbar"><div><b id="paperToolbarTitle"></b> <small id="paperToolbarCode"></small></div><div class="paper-actions"><button class="btn btn-gray" onclick="closePaper()">← กลับ</button><button class="btn btn-light" onclick="manualForActive()">📖 คู่มือ</button><button class="btn btn-orange" onclick="savePaper('Draft')">💾 บันทึกร่าง</button><button class="btn btn-green" onclick="savePaper('Submitted')">✓ ส่งผลตรวจ</button><button class="btn" onclick="window.print()">🖨 พิมพ์/PDF</button></div></div><div class="paper-wrap" id="paperContainer"></div></section>
 
 <section id="manualOverlay"><div class="overlay-toolbar"><b id="manualOverlayTitle">คู่มือ</b><button class="btn btn-gray" onclick="closeManual()">✕ ปิด</button></div><div class="overlay-content" id="manualContent"></div></section>
@@ -333,7 +366,36 @@ function exportRCM(){
  let csv="\uFEFF"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n"),b=new Blob([csv],{type:"text/csv;charset=utf-8"}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="MEA_RCM_Data.csv";a.click();URL.revokeObjectURL(u)
 }
 
+
+const UX_ACTIONS=[
+["dashboard","📊 Dashboard"],["mapPage","🗺️ Field Map"],["inspection","📝 Inspection Forms"],["manual","📖 Manuals"],["history","📚 Inspection History"],
+["assets","⚙️ Asset Management"],["functionsPage","ƒ Functions"],["failurePage","⚠️ Functional Failure"],["fmeaPage","▦ FMEA"],["criticalityPage","◆ Criticality"],
+["hiPage","♥ Health Index"],["strategyPage","🛠️ Maintenance Strategy"],["taskPage","☑ Maintenance Task"],["planPage","🗓 Maintenance Plan"],["monitorPage","🔎 Inspection & Monitoring"],
+["workorder","📋 Work Order"],["pm","🗓️ PM Planning"],["labor","👷 Labor Tracking"],["cost","💰 Cost Analysis"],["kpi","📈 KPI"],["users","👥 User / Team"],["reportsPage","📑 Reports"],["settingsPage","⚙ Settings"]
+];
+function openCommand(){command.style.display="block";cmdSearch.value="";renderCommand();setTimeout(()=>cmdSearch.focus(),50)}
+function closeCommand(){command.style.display="none"}
+function goUX(id){closeCommand();showPage(id,document.querySelector(`[data-page="${id}"]`))}
+function renderCommand(){
+ let q=cmdSearch.value.toLowerCase(),items=UX_ACTIONS.filter(x=>x[1].toLowerCase().includes(q)).map(x=>`<div class="cmd-item" onclick="goUX('${x[0]}')"><b>${x[1]}</b><small>เปิดเมนู →</small></div>`);
+ let assets=storeGet("rcmAssets").filter(x=>(x.id+" "+x.name+" "+x.location).toLowerCase().includes(q)).slice(0,5).map(x=>`<div class="cmd-item" onclick="goUX('assets')"><b>⚙️ ${esc(x.id)} — ${esc(x.name)}</b><small>${esc(x.location)}</small></div>`);
+ let sts=stations.filter(x=>(x.station+" "+x.mea+" "+x.location).toLowerCase().includes(q)).slice(0,5).map(x=>`<div class="cmd-item" onclick="closeCommand();showPage('mapPage',document.querySelector('[data-page=mapPage]'));setTimeout(()=>focusStation(${x.id}),250)"><b>📍 ${esc(x.station)}</b><small>${esc(x.location)}</small></div>`);
+ cmdResults.innerHTML=[...items,...assets,...sts].join("")||'<div class="empty">⌕<b>ไม่พบข้อมูล</b>ลองค้นหาด้วย Asset ID, Station หรือชื่อเมนู</div>';
+}
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openCommand()}if(e.key==="Escape")closeCommand()});
+function toastMsg(t){toast.textContent=t;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),1800)}
+function toggleDark(){document.body.classList.toggle("dark");localStorage.setItem("assetDark",document.body.classList.contains("dark")?"1":"0")}
+if(localStorage.getItem("assetDark")==="1")document.body.classList.add("dark");
+function netState(){let on=navigator.onLine;onlineBadge.textContent=on?"● Online":"● Offline / Local";onlineBadge.classList.toggle("off",!on)}
+addEventListener("online",netState);addEventListener("offline",netState);netState();
+function refreshUX(){
+ let p=storeGet("assetPM"),done=p.filter(x=>x.status==="Completed").length,pct=p.length?Math.round(done/p.length*100):0;
+ pmRing.style.setProperty("--pct",pct+"%");pmRingText.textContent=pct+"%";pmProgress.style.width=pct+"%";pmProgressText.textContent=p.length?`${done} จาก ${p.length} งาน PM เสร็จแล้ว`:"ยังไม่มีแผน PM";
+}
+const _refreshModules=refreshModules;refreshModules=function(){_refreshModules();refreshUX()}
+
 renderForms();renderManualCards();setLanguage(lang);refresh();refreshModules();refreshRCM();
+refreshUX();
 </script>
 </body>
 </html>
