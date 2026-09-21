@@ -89,34 +89,27 @@ body.dark .field-tab,body.dark .mini-flow{background:#0d2333;border-color:#1c3d5
 .help-strip{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#eef8ff;border:1px solid #d3eafa;border-radius:13px;padding:13px 16px;margin-bottom:16px}.help-strip p{margin:0;font-size:12px}
 body.dark .job-card{background:#0d2333;color:#dbeaf5}.managementMenu .menuSub{display:none}
 @media(max-width:800px){.simple-home{grid-template-columns:1fr}.simple-status{grid-template-columns:1fr}}
+
+/* ===== ULTRA SIMPLE HOME ===== */
+.welcome-simple{display:flex;justify-content:space-between;align-items:center;padding:6px 2px 18px}.welcome-simple small{font-weight:800;letter-spacing:1px;color:#1488d4}.welcome-simple h1{font-size:31px;margin:5px 0 1px}.welcome-simple p{margin:0;color:#6f8596}.today-chip{background:#fff;border:1px solid #dce6ed;border-radius:12px;padding:10px 14px;font-size:12px;color:#577185}
+.simple-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:17px}.action-big{border:1px solid #dce7ee;border-radius:17px;padding:18px;text-align:left;background:#fff;cursor:pointer;display:flex;gap:12px;align-items:center;min-height:112px;transition:.18s;box-shadow:0 7px 20px #073b6809}.action-big:hover{transform:translateY(-3px);box-shadow:0 13px 30px #073b6817}.action-big>span{font-size:30px}.action-big div{flex:1}.action-big b,.action-big small{display:block}.action-big b{font-size:15px;color:#143d5c}.action-big small{font-size:10px;color:#748a9b;margin-top:5px;line-height:1.45}.action-big i{font-style:normal;width:27px;height:27px;border-radius:50%;display:grid;place-items:center;color:#fff}.action-big.blue{background:#eff8ff}.action-big.blue i{background:#1488d4}.action-big.green{background:#f0fbf6}.action-big.green i{background:#20a46b}.action-big.purple{background:#f6f3ff}.action-big.purple i{background:#7558d8}.action-big.gray{background:#f7f9fb}.action-big.gray i{background:#758b9b}
+.home-two{display:grid;grid-template-columns:1fr 1fr;gap:15px}.panel-title-row{display:flex;justify-content:space-between;align-items:center}.panel-title-row h2{margin:0 0 3px}.panel-title-row small{color:#8294a3}.link-btn{border:0;background:transparent;color:#1488d4;font-weight:700;cursor:pointer}.map-preview-simple{min-height:210px;border-radius:14px;background:linear-gradient(135deg,#eef7fc,#e3f0f8);display:grid;place-items:center;align-content:center;gap:7px;text-align:center;margin-top:12px}.map-preview-simple>div{font-size:42px}.map-preview-simple small{color:#728899}.admin-shortcut{margin-top:15px;display:flex;justify-content:space-between;align-items:center;background:#f7fafc;border:1px dashed #cddce6;padding:12px 15px;border-radius:12px;color:#607789;font-size:12px}
+.admin-tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.admin-tool-grid button{border:1px solid #dce6ed;background:#fff;border-radius:15px;padding:20px;text-align:left;font-size:27px;cursor:pointer;transition:.18s}.admin-tool-grid button:hover{transform:translateY(-2px);border-color:#1488d4}.admin-tool-grid b,.admin-tool-grid small{display:block;font-size:14px;margin-top:9px}.admin-tool-grid small{font-size:10px;color:#7b8f9e;margin-top:4px}
+body.dark .action-big,body.dark .admin-tool-grid button,body.dark .today-chip{background:#0d2333;border-color:#1e4056}body.dark .action-big b{color:#dbeaf5}body.dark .admin-shortcut{background:#0a1d2b;border-color:#25465a}
+@media(max-width:1000px){.simple-actions{grid-template-columns:1fr 1fr}.admin-tool-grid{grid-template-columns:1fr 1fr}}@media(max-width:700px){.simple-actions,.home-two,.admin-tool-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <aside class="sidebar">
  <div class="brand">⚡ MEA Asset Inspection<small>Maintenance Management System</small></div>
- <div class="menu active" data-page="dashboard" onclick="showPage('dashboard',this)"><span>📊</span> <b class="menuText">แดชบอร์ด</b></div>
- <div class="menu" data-page="fieldHome" onclick="showPage('fieldHome',this)"><span>🚶</span> <b class="menuText">หน้าเริ่มงาน</b></div>
- <div class="menu" data-page="mapPage" onclick="showPage('mapPage',this)"><span>🗺️</span> <b class="menuText">แผนที่ตรวจภาคสนาม</b></div>
+ <div class="menu active" data-page="dashboard" onclick="showPage('dashboard',this)"><span>📊</span> <b class="menuText">หน้าหลัก</b></div>
+ <div class="menu" data-page="fieldHome" onclick="showPage('fieldHome',this)"><span>🚶</span> <b class="menuText">เริ่มตรวจภาคสนาม</b></div>
  <div class="menu" data-page="inspection" onclick="showPage('inspection',this)"><span>📋</span>
-       <div><b class="menuText">ตรวจภาคสนาม</b><small class="menuSub">ใบตรวจ • คู่มือ • บันทึกผล</small></div>
+       <div><b class="menuText">ใบตรวจ</b><small class="menuSub">ใบตรวจ • คู่มือ • บันทึกผล</small></div>
      </div>
- <div class="menu" data-page="history" onclick="showPage('history',this)"><span>📚</span> <b class="menuText">ประวัติการตรวจ</b></div>
- <div class="simple-section-label">งานประจำ</div>
- <button id="manageToggle" class="manage-toggle" onclick="toggleManagement()">⚙ งานวางแผน / จัดการ</button>
- <div class="menu managementMenu" data-page="workorder" onclick="showPage('workorder',this)"><span>📋</span> <b class="menuText">Work Order</b></div>
- <div class="menu managementMenu" data-page="pm" onclick="showPage('pm',this)"><span>🗓️</span> <b class="menuText">แผนบำรุงรักษา</b></div>
- <div class="menu managementMenu" data-page="labor" onclick="showPage('labor',this)"><span>👷</span> <b class="menuText">เวลาและกำลังคน</b></div>
- <div class="menu managementMenu" data-page="cost" onclick="showPage('cost',this)"><span>💰</span> <b class="menuText">ค่าใช้จ่าย</b></div>
- <div class="menu managementMenu" data-page="kpi" onclick="showPage('kpi',this)"><span>📈</span> <b class="menuText">สรุปผล / KPI</b></div>
- <div class="menu managementMenu" data-page="users" onclick="showPage('users',this)"><span>👥</span> <b class="menuText">ทีมงาน</b></div>
- 
- <div class="menu advancedMenu managementMenu" data-page="functionsPage" onclick="showPage('functionsPage',this)"><span>ƒ</span> <b class="menuText">Functions</b></div>
- <div class="menu advancedMenu managementMenu" data-page="failurePage" onclick="showPage('failurePage',this)"><span>⚠️</span> <b class="menuText">Functional Failure</b></div>
- <div class="menu advancedMenu managementMenu" data-page="fmeaPage" onclick="showPage('fmeaPage',this)"><span>▦</span> <b class="menuText">FMEA</b></div>
- <div class="menu advancedMenu managementMenu" data-page="criticalityPage" onclick="showPage('criticalityPage',this)"><span>◆</span> <b class="menuText">Criticality</b></div>
- <div class="menu managementMenu" data-page="hiPage" onclick="showPage('hiPage',this)"><span>♥</span> <b class="menuText">สภาพอุปกรณ์</b></div>
- <div class="menu advancedMenu managementMenu" data-page="strategyPage" onclick="showPage('strategyPage',this)"><span>🛠️</span> <b class="menuText">แนวทางบำรุงรักษา</b></div>
- <div class="menu managementMenu" data-page="settingsPage" onclick="showPage('settingsPage',this)"><span>⚙</span> <b class="menuText">Settings</b></div>
+ <div class="menu" data-page="history" onclick="showPage('history',this)"><span>📚</span> <b class="menuText">สรุปผล / ประวัติ</b></div>
+ <div class="menu managementMenu" data-page="workorder" onclick="showPage('workorder',this)"><span>📋</span> <b class="menuText">งานที่ต้องทำ</b></div>
+ <div class="menu managementMenu" data-page="settingsPage" onclick="showPage('settingsPage',this)"><span>⚙</span> <b class="menuText">ตั้งค่า</b></div>
 </aside>
 
 <main class="app">
@@ -138,16 +131,27 @@ body.dark .job-card{background:#0d2333;color:#dbeaf5}.managementMenu .menuSub{di
  </div>
 </section>
 <section id="dashboard" class="page active">
- <div class="hero"><div><h2>วันนี้ต้องทำอะไร?</h2><p>เลือกงานที่ต้องการ ระบบจะพาไปหน้าที่เกี่ยวข้องโดยตรง</p></div></div>
- <div class="help-strip"><p>💡 <b>สำหรับผู้ตรวจภาคสนาม:</b> กด “เริ่มตรวจ” ปุ่มเดียว แล้วทำตามขั้นตอนบนหน้าจอ</p><button class="btn btn-light" onclick="showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))">ดูขั้นตอน</button></div>
- <div class="simple-home">
-  <button class="job-card primary" onclick="showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))"><span class="job-icon">📋</span><div><h3>เริ่มตรวจภาคสนาม</h3><p>เลือกจุด → เลือกอุปกรณ์ → กรอกใบตรวจ → บันทึกผล</p></div></button>
-  <button class="job-card" onclick="showPage('history',document.querySelector('[data-page=history]'))"><span class="job-icon">📚</span><div><h3>ดูผลการตรวจ</h3><p>ค้นหาผลย้อนหลัง ดู Draft และรายการที่ส่งแล้ว</p></div></button>
-  <button class="job-card" onclick="showPage('workorder',document.querySelector('[data-page=workorder]'))"><span class="job-icon">🔧</span><div><h3>งานที่ต้องดำเนินการ</h3><p>ดู Work Order และติดตามสถานะงานซ่อม</p></div></button>
-  <button class="job-card" onclick="showPage('pm',document.querySelector('[data-page=pm]'))"><span class="job-icon">🗓️</span><div><h3>แผนงานบำรุงรักษา</h3><p>ดูงานที่กำลังจะถึงกำหนดและงานที่เสร็จแล้ว</p></div></button>
+ <div class="welcome-simple">
+  <div><small>MEA ASSET INSPECTION</small><h1>สวัสดีครับ 👋</h1><p>วันนี้ต้องการทำอะไร?</p></div>
+  <div class="today-chip" id="simpleToday">วันนี้</div>
  </div>
- <div class="stats"><div class="stat"><small>การตรวจทั้งหมด</small><strong id="total">0</strong></div><div class="stat"><small>ส่งแล้ว</small><strong id="submitted">0</strong></div><div class="stat"><small>ฉบับร่าง</small><strong id="draft">0</strong></div><div class="stat"><small>ใบตรวจในระบบ</small><strong>11</strong></div></div>
- <div class="panel"><h2>รายการตรวจล่าสุด</h2><div style="overflow:auto"><table><thead><tr><th>วันที่</th><th>ใบตรวจ</th><th>Station ID</th><th>MEA No.</th><th>สถานะ</th></tr></thead><tbody id="recentBody"></tbody></table></div></div>
+ <div class="simple-actions">
+  <button class="action-big blue" onclick="showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))"><span>📍</span><div><b>เริ่มตรวจภาคสนาม</b><small>เลือกจุดตรวจ แล้วกรอกผลได้ทันที</small></div><i>→</i></button>
+  <button class="action-big green" onclick="showPage('workorder',document.querySelector('[data-page=workorder]'))"><span>🔧</span><div><b>งานที่ต้องทำ</b><small>ดูงานซ่อมและงานที่ยังค้าง</small></div><i>→</i></button>
+  <button class="action-big purple" onclick="showPage('history',document.querySelector('[data-page=history]'))"><span>📊</span><div><b>ดูสรุปผล</b><small>ผลตรวจ ประวัติ และข้อมูลย้อนหลัง</small></div><i>→</i></button>
+  <button class="action-big gray" onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))"><span>📖</span><div><b>ใบตรวจ / คู่มือ</b><small>เปิดจากประเภทอุปกรณ์ที่ต้องการ</small></div><i>→</i></button>
+ </div>
+ <div class="home-two">
+  <div class="panel">
+   <div class="panel-title-row"><div><h2>🕒 งานล่าสุด</h2><small>รายการที่เพิ่งบันทึก</small></div><button class="link-btn" onclick="showPage('history',document.querySelector('[data-page=history]'))">ดูทั้งหมด →</button></div>
+   <div id="simpleRecent"></div>
+  </div>
+  <div class="panel">
+   <div class="panel-title-row"><div><h2>📍 จุดตรวจ</h2><small>เลือกจุดแล้วเริ่มตรวจได้ทันที</small></div><button class="link-btn" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">เปิดแผนที่ →</button></div>
+   <div class="map-preview-simple"><div>🗺️</div><b>Field Inspection Map</b><small>ดู Station และอุปกรณ์บนแผนที่</small><button class="btn" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">เลือกจุดตรวจ</button></div>
+  </div>
+ </div>
+ <div class="admin-shortcut"><span>⚙️ สำหรับผู้วางแผน / วิศวกร</span><button class="btn btn-light" onclick="openAdminTools()">เปิดเครื่องมือจัดการ</button></div>
 </section>
 
 <section id="mapPage" class="page">
@@ -239,6 +243,20 @@ body.dark .job-card{background:#0d2333;color:#dbeaf5}.managementMenu .menuSub{di
 
 
 <section id="settingsPage" class="page"><div class="panel"><h2>Settings</h2><div class="row2"><div class="field"><label>Organization</label><input id="setOrg" value="Asset Inspection"></div><div class="field"><label>Default Inspector</label><input id="setInspector"></div></div><br><button class="btn" onclick="localStorage.setItem('assetSettings',JSON.stringify({org:setOrg.value,inspector:setInspector.value}));alert('บันทึกแล้ว')">บันทึก Settings</button></div><div class="panel"><h2>Local Data</h2><p>เวอร์ชัน HTML เดียวนี้จัดเก็บข้อมูลใน Browser ด้วย localStorage</p></div></section>
+<section id="adminTools" class="page">
+ <div class="field-hub-head"><div><span class="eyebrow">MANAGEMENT</span><h2>⚙️ เครื่องมือจัดการ</h2><p>รวมเครื่องมือสำหรับผู้วางแผนและวิศวกรไว้ที่เดียว ไม่รบกวนหน้าของผู้ตรวจ</p></div><button class="btn btn-light" onclick="showPage('dashboard',document.querySelector('[data-page=dashboard]'))">← กลับหน้าหลัก</button></div>
+ <div class="admin-tool-grid">
+  <button onclick="goAdmin('assets')">⚙️<b>ทะเบียนอุปกรณ์</b><small>Asset Management</small></button>
+  <button onclick="goAdmin('pm')">🗓️<b>แผนบำรุงรักษา</b><small>PM Planning</small></button>
+  <button onclick="goAdmin('labor')">👷<b>เวลาและกำลังคน</b><small>Labor Tracking</small></button>
+  <button onclick="goAdmin('cost')">💰<b>ค่าใช้จ่าย</b><small>Cost Analysis</small></button>
+  <button onclick="goAdmin('kpi')">📈<b>KPI</b><small>Management Summary</small></button>
+  <button onclick="goAdmin('users')">👥<b>ทีมงาน</b><small>User / Team</small></button>
+  <button onclick="goAdmin('hiPage')">♥<b>สภาพอุปกรณ์</b><small>Health Index</small></button>
+  <button onclick="goAdmin('fmeaPage')">▦<b>วิเคราะห์ความขัดข้อง</b><small>FMEA</small></button>
+  <button onclick="goAdmin('strategyPage')">🛠️<b>แนวทางบำรุงรักษา</b><small>Maintenance Strategy</small></button>
+ </div>
+</section>
 </main>
 
 <div id="assetModal" style="display:none;position:fixed;inset:0;background:#0008;z-index:5000;padding:30px;overflow:auto"><div class="panel" style="max-width:720px;margin:auto"><div style="display:flex;justify-content:space-between"><h2>New Asset</h2><button class="btn btn-gray" onclick="assetModal.style.display='none'">✕</button></div><div class="row2"><div class="field"><label>Asset ID</label><input id="aId"></div><div class="field"><label>Asset Name</label><input id="aName"></div><div class="field"><label>Asset Type</label><select id="aType"><option>Distribution Transformer</option><option>Load Break Switch</option><option>Sectionalizer</option><option>RMU</option><option>Unit Substation</option><option>Capacitor Bank</option><option>Network Transformer</option><option>Other</option></select></div><div class="field"><label>Location</label><input id="aLocation"></div><div class="field"><label>Latitude</label><input type="number" step="any" id="aLat"></div><div class="field"><label>Longitude</label><input type="number" step="any" id="aLng"></div></div><br><button class="btn btn-green" onclick="saveAsset()">Save Asset</button></div></div>
@@ -290,7 +308,7 @@ let stations=JSON.parse(localStorage.getItem("inspectionStations")||"null")||[
 function showPage(id,el){
  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active")); document.getElementById(id).classList.add("active");
  document.querySelectorAll(".menu").forEach(x=>x.classList.remove("active")); if(el)el.classList.add("active");
- const titles={fieldHome:"เริ่มงานภาคสนาม",dashboard:"แดชบอร์ดงานบำรุงรักษา",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ตรวจภาคสนาม",manual:"คู่มือปฏิบัติงาน",history:"ประวัติการตรวจสอบ",workorder:"Work Order",pm:"PM Planning",labor:"Labor Tracking",cost:"Maintenance Cost Analysis",kpi:"KPI & Management Dashboard",users:"User / Team Management",assets:"Asset Management",functionsPage:"Functions & Performance Standards",failurePage:"Functional Failure",fmeaPage:"FMEA",criticalityPage:"Consequence / Criticality",hiPage:"Health Index",strategyPage:"Maintenance Strategy",settingsPage:"Settings"};
+ const titles={adminTools:"เครื่องมือจัดการ",fieldHome:"เริ่มงานภาคสนาม",dashboard:"แดชบอร์ดงานบำรุงรักษา",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ตรวจภาคสนาม",manual:"คู่มือปฏิบัติงาน",history:"ประวัติการตรวจสอบ",workorder:"Work Order",pm:"PM Planning",labor:"Labor Tracking",cost:"Maintenance Cost Analysis",kpi:"KPI & Management Dashboard",users:"User / Team Management",assets:"Asset Management",functionsPage:"Functions & Performance Standards",failurePage:"Functional Failure",fmeaPage:"FMEA",criticalityPage:"Consequence / Criticality",hiPage:"Health Index",strategyPage:"Maintenance Strategy",settingsPage:"Settings"};
  pageTitle.textContent=titles[id]||id; if(id==="mapPage")setTimeout(initMap,80);
 }
 function setLanguage(v){lang=v;localStorage.setItem("inspectionLang",v);thBtn.classList.toggle("active",v==="th");enBtn.classList.toggle("active",v==="en");renderForms();renderManualCards();refresh();renderMapMarkers()}
@@ -527,7 +545,18 @@ function renderUnifiedManuals(){
 }
 function filterUnifiedManuals(){renderUnifiedManuals()}
 
+
+function openAdminTools(){showPage("adminTools",null)}
+function goAdmin(id){showPage(id,null)}
+function renderSimpleHome(){
+ const d=document.getElementById("simpleToday");if(d)d.textContent=new Date().toLocaleDateString("th-TH",{weekday:"short",day:"numeric",month:"short"});
+ const box=document.getElementById("simpleRecent");if(!box)return;
+ const r=getRecords().slice().reverse().slice(0,5);
+ box.innerHTML=r.length?r.map(x=>`<div style="display:flex;justify-content:space-between;gap:10px;padding:11px 3px;border-bottom:1px solid #e5edf2"><div><b>${esc(x.fields?.station||x.code)}</b><br><small style="color:#7c91a0">${esc(x.code)} • ${esc(x.fields?.date||"")}</small></div><span class="status ${x.status==="Submitted"?"submitted":"draft"}">${esc(x.status)}</span></div>`).join(""):'<div class="empty"><b>ยังไม่มีงานล่าสุด</b>เริ่มตรวจภาคสนามเพื่อสร้างรายการแรก</div>';
+}
+
 renderForms();renderManualCards();setLanguage(lang);refresh();refreshModules();refreshRCM();
+renderSimpleHome();
 refreshFriendly();
 refreshUX();
 </script>
