@@ -167,6 +167,18 @@ body.dark .home-main-card.primary{background:linear-gradient(125deg,#075b8a,#087
 .manage-tip{margin-top:13px;background:#eef8ff;border:1px solid #d5ebf9;border-radius:11px;padding:11px 13px;font-size:11px;color:#567286}
 body.dark .manage-question{color:#dbeaf5}body.dark .manage-primary>button,body.dark .manage-box{background:#0d2333;border-color:#1d3d52}body.dark .manage-primary b{color:#dbeaf5}body.dark .manage-box-content>button{background:#102b3e;border-color:#214359;color:#dbeaf5}body.dark .manage-tip{background:#102b3e;border-color:#214359;color:#a8c0d0}
 @media(max-width:800px){.manage-primary,.manage-secondary{grid-template-columns:1fr}.manage-hero{align-items:flex-start;flex-direction:column}.manage-box-content.open{grid-template-columns:1fr}}
+
+/* ===== JOB PLAN / ROUTE / PM WORKFLOW ===== */
+.plan-flow-hero{display:flex;justify-content:space-between;align-items:center;gap:18px;background:linear-gradient(120deg,#eaf7ff,#f7fcff);border:1px solid #d3e9f7;border-radius:19px;padding:22px 24px;margin-bottom:16px}
+.plan-flow-hero>div:first-child{max-width:760px}.plan-flow-hero span{font-size:10px;font-weight:900;letter-spacing:1px;color:#1683c4}.plan-flow-hero h2{margin:5px 0;font-size:25px;color:#153f5f}.plan-flow-hero p{margin:0;color:#688295;line-height:1.55;font-size:12px}
+.flow-badges{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}.flow-badges b{background:#fff;border:1px solid #cfe4f1;border-radius:10px;padding:9px 11px;color:#176b9d;font-size:11px}.flow-badges i{font-style:normal;color:#7ca2b9}
+.route-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.route-point{display:flex;gap:8px;align-items:flex-start;border:1px solid #dce7ee;background:#fafcfd;border-radius:10px;padding:10px;cursor:pointer}.route-point:hover{border-color:#1488d4;background:#f3faff}.route-point input{margin-top:3px}.route-point b,.route-point small{display:block}.route-point b{font-size:11px}.route-point small{font-size:9px;color:#7c91a0;margin-top:3px}
+.route-summary{background:#eef8ff;border:1px solid #d1eafa;border-radius:11px;padding:11px 13px;font-size:11px;color:#56758a}
+.workflow-table .pill{display:inline-block;padding:4px 8px;border-radius:20px;background:#e9f6fd;color:#1478b1;font-size:9px;font-weight:800}
+.workflow-actions{display:flex;gap:5px;flex-wrap:wrap}.workflow-actions button{border:0;border-radius:7px;padding:6px 8px;background:#eaf6fd;color:#0879bd;font-size:9px;font-weight:800;cursor:pointer}
+body.dark .plan-flow-hero{background:#102c40;border-color:#234b64}body.dark .plan-flow-hero h2{color:#e2f2fb}body.dark .route-point{background:#0d2333;border-color:#24465b}body.dark .route-summary{background:#102c40;border-color:#234b64;color:#a8c0d0}
+@media(max-width:900px){.route-picker{grid-template-columns:1fr 1fr}.plan-flow-hero{align-items:flex-start;flex-direction:column}.flow-badges{justify-content:flex-start}}@media(max-width:600px){.route-picker{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -178,6 +190,9 @@ body.dark .manage-question{color:#dbeaf5}body.dark .manage-primary>button,body.d
        <div><b class="menuText">ใบตรวจ</b><small class="menuSub">ใบตรวจ • คู่มือ • บันทึกผล</small></div>
      </div>
  <div class="menu" data-page="history" onclick="showPage('history',this)"><span>📚</span> <b class="menuText">สรุปผล / ประวัติ</b></div>
+ <div class="menu managementMenu" data-page="jobplans" onclick="showPage('jobplans',this)"><span>🧩</span> <b class="menuText">Job Plans</b></div>
+ <div class="menu managementMenu" data-page="routes" onclick="showPage('routes',this)"><span>🛣️</span> <b class="menuText">Routes</b></div>
+ <div class="menu managementMenu" data-page="pm" onclick="showPage('pm',this)"><span>🗓️</span> <b class="menuText">แผน PM</b></div>
  <div class="menu managementMenu" data-page="workorder" onclick="showPage('workorder',this)"><span>📋</span> <b class="menuText">งานที่ต้องทำ</b></div>
  <div class="menu managementMenu" data-page="settingsPage" onclick="showPage('settingsPage',this)"><span>⚙</span> <b class="menuText">ตั้งค่า</b></div>
 </aside>
@@ -304,8 +319,72 @@ body.dark .manage-question{color:#dbeaf5}body.dark .manage-primary>button,body.d
 <section id="manual" class="page legacy-manual-page"><div class="panel"><h2>📖 คู่มือปฏิบัติงาน</h2><p>คู่มือ SW-OH เชื่อมกับใบตรวจแต่ละประเภท กดดูขั้นตอนก่อนปฏิบัติงาน ขั้นตอนปฏิบัติงาน และหลังปฏิบัติงาน</p><input class="search" id="manualSearch" placeholder="ค้นหาคู่มือ..." oninput="renderManualCards()"><div class="grid" id="manualCards"></div></div></section>
 
 <section id="history" class="page"><div class="panel"><div style="display:flex;justify-content:space-between;gap:10px"><h2>ประวัติการตรวจสอบ</h2><button class="btn btn-green" onclick="exportCSV()">Export CSV</button></div><div style="overflow:auto"><table><thead><tr><th>วันที่</th><th>ใบตรวจ</th><th>Station ID</th><th>MEA No.</th><th>ผู้ตรวจ</th><th>สถานะ</th><th></th></tr></thead><tbody id="historyBody"></tbody></table></div></div></section>
+
+<section id="jobplans" class="page">
+ <div class="plan-flow-hero">
+  <div><span>STEP 1 • เตรียมงานก่อนวาง PM</span><h2>🧩 Job Plans</h2>
+  <p>กำหนด “งานมาตรฐาน” ของอุปกรณ์ไว้ก่อน เช่น ประเภทอุปกรณ์ กิจกรรม ระยะเวลา และทรัพยากรที่ต้องใช้ แล้วนำไปใช้ซ้ำในแผน PM / Work Order</p></div>
+  <div class="flow-badges"><b>Job Plan</b><i>→</i><b>Route</b><i>→</i><b>PM</b><i>→</i><b>Work Order</b></div>
+ </div>
+ <div class="panel">
+  <div class="section-title"><h2>สร้าง Job Plan</h2><span class="soft-label">Reusable Template</span></div>
+  <div class="row3">
+   <div class="field"><label>Job Plan ID</label><input id="jpId" placeholder="เช่น JP-TR-001"></div>
+   <div class="field"><label>ประเภทอุปกรณ์</label><select id="jpType"><option>Distribution Transformer</option><option>Load Break Switch (LBS)</option><option>Sectionalizer</option><option>Ring Main Unit (RMU)</option><option>Unit Substation</option><option>Capacitor Bank</option><option>Network Transformer</option><option>Other</option></select></div>
+   <div class="field"><label>ชื่องาน</label><input id="jpName" placeholder="เช่น งานตรวจสอบตามรอบ"></div>
+  </div><br>
+  <div class="row3">
+   <div class="field"><label>Activity / ขอบเขตงาน</label><textarea id="jpActivity" placeholder="ระบุขอบเขตงานในระดับแผนงาน"></textarea></div>
+   <div class="field"><label>Duration (นาที/จุด)</label><input type="number" min="1" id="jpDuration" placeholder="เช่น 10"></div>
+   <div class="field"><label>จำนวนช่างที่วางแผน</label><input type="number" min="1" id="jpCrew" value="1"></div>
+  </div><br>
+  <div class="field"><label>หมายเหตุ / ทรัพยากรที่ต้องเตรียม</label><input id="jpResource" placeholder="บันทึกเฉพาะข้อมูลสำหรับการวางแผนงาน"></div><br>
+  <button class="btn btn-green" onclick="saveJobPlan()">＋ บันทึก Job Plan</button>
+ </div>
+ <div class="panel"><div class="section-title"><h2>Job Plans ที่บันทึกไว้</h2><span id="jpCount" class="status draft">0 รายการ</span></div><div id="jpList"></div></div>
+</section>
+
+<section id="routes" class="page">
+ <div class="plan-flow-hero">
+  <div><span>STEP 2 • จัดกลุ่มจุดงาน</span><h2>🛣️ Routes</h2>
+  <p>รวมจุดตรวจ/อุปกรณ์ที่อยู่ในพื้นที่เดียวกันเป็น Route เพื่อให้ผู้วางแผนเห็นลำดับจุดงาน ระยะเวลารวม และเปิดดูตำแหน่งบนแผนที่ได้ง่าย</p></div>
+  <button class="btn btn-light" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เปิดแผนที่</button>
+ </div>
+ <div class="panel">
+  <div class="row3">
+   <div class="field"><label>Route ID</label><input id="routeId" placeholder="เช่น RT-001"></div>
+   <div class="field"><label>ชื่อ Route / พื้นที่</label><input id="routeName" placeholder="เช่น Route A"></div>
+   <div class="field"><label>Job Plan</label><select id="routeJobPlan"></select></div>
+  </div><br>
+  <div class="field"><label>เลือกจุดงานใน Route</label><div id="routeStationPicker" class="route-picker"></div></div><br>
+  <div class="route-summary" id="routeEstimate">เลือกจุดงานเพื่อคำนวณเวลางานโดยประมาณ</div><br>
+  <button class="btn btn-green" onclick="saveRoute()">＋ บันทึก Route</button>
+ </div>
+ <div class="panel"><div class="section-title"><h2>Routes ที่วางไว้</h2><span id="routeCount" class="status draft">0 Routes</span></div><div id="routeList"></div></div>
+</section>
+
 <section id="workorder" class="page"><div class="panel"><h2>Work Order</h2><div class="row3"><div class="field"><label>WO Number</label><input id="woNo"></div><div class="field"><label>Plant / Location</label><input id="woLocation"></div><div class="field"><label>Status</label><select id="woStatus"><option>Open</option><option>In Progress</option><option>Completed</option></select></div></div><br><div class="field"><label>รายละเอียดงาน</label><textarea id="woDetail"></textarea></div><br><button class="btn" onclick="saveWO()">บันทึก Work Order</button></div><div class="panel"><h2>Work Order History</h2><div id="woList"></div></div></section>
-<section id="pm" class="page"><div class="panel"><h2>Preventive Maintenance Planning</h2><div class="row3"><div class="field"><label>Station / Asset</label><input id="pmAsset"></div><div class="field"><label>Due Date</label><input type="date" id="pmDue"></div><div class="field"><label>ผู้รับผิดชอบ</label><input id="pmOwner"></div></div><br><div class="row2"><div class="field"><label>PM Task</label><input id="pmTask"></div><div class="field"><label>Status</label><select id="pmStatus"><option>Planned</option><option>In Progress</option><option>Completed</option></select></div></div><br><button class="btn" onclick="savePM()">บันทึก PM</button></div><div class="panel"><h2>PM Schedule</h2><div id="pmList"></div></div></section>
+<section id="pm" class="page">
+ <div class="plan-flow-hero">
+  <div><span>STEP 3 • จัดรอบบำรุงรักษา</span><h2>🗓️ PM Planning</h2>
+  <p>นำ Job Plan + Route มาสร้างแผน PM เพื่อรู้ว่า “ทำอะไร • ที่ไหน • เมื่อไร • ใครรับผิดชอบ” จากนั้นค่อยสร้าง Work Order เมื่อต้องนำงานไปดำเนินการ</p></div>
+  <div class="flow-badges"><b>Job Plan</b><i>＋</i><b>Route</b><i>=</i><b>PM</b></div>
+ </div>
+ <div class="panel">
+  <div class="row3">
+   <div class="field"><label>Job Plan</label><select id="pmJobPlan"></select></div>
+   <div class="field"><label>Route</label><select id="pmRoute"></select></div>
+   <div class="field"><label>Due Date</label><input type="date" id="pmDue"></div>
+  </div><br>
+  <div class="row3">
+   <div class="field"><label>ผู้รับผิดชอบ</label><input id="pmOwner"></div>
+   <div class="field"><label>สถานะ</label><select id="pmStatus"><option>Planned</option><option>In Progress</option><option>Completed</option></select></div>
+   <div class="field"><label>หมายเหตุแผน</label><input id="pmTask" placeholder="รายละเอียดเพิ่มเติม"></div>
+  </div><br>
+  <button class="btn btn-green" onclick="savePMv2()">＋ บันทึกแผน PM</button>
+ </div>
+ <div class="panel"><div class="section-title"><h2>PM Schedule</h2><span class="soft-label">Job Plan + Route</span></div><div id="pmList"></div></div>
+</section>
 <section id="labor" class="page"><div class="panel"><h2>Labor Tracking</h2><div class="row3"><div class="field"><label>Work / WO</label><input id="laborWork"></div><div class="field"><label>Start</label><input type="datetime-local" id="laborStart"></div><div class="field"><label>End</label><input type="datetime-local" id="laborEnd"></div></div><br><div class="row2"><div class="field"><label>จำนวนช่าง</label><input type="number" min="1" id="laborTech" value="1"></div><div class="field"><label>Man-hours</label><input id="laborMH" readonly></div></div><br><button class="btn" onclick="calcLabor()">คำนวณ</button> <button class="btn btn-green" onclick="saveLabor()">บันทึก</button></div><div class="panel"><h2>Labor History</h2><div id="laborList"></div></div></section>
 <section id="cost" class="page"><div class="panel"><h2>Maintenance Cost Analysis</h2><div class="row3"><div class="field"><label>งาน / WO</label><input id="costWork"></div><div class="field"><label>Plan Cost (บาท)</label><input type="number" id="planCost"></div><div class="field"><label>Actual Cost (บาท)</label><input type="number" id="actualCost"></div></div><br><button class="btn" onclick="saveCost()">บันทึกต้นทุน</button></div><div class="panel"><h2>Plan vs Actual</h2><div id="costList"></div></div></section>
 <section id="kpi" class="page"><div class="stats"><div class="stat"><small>PM Compliance</small><strong id="kpiPM">0%</strong></div><div class="stat"><small>Wrench Time</small><strong id="kpiWrench">0 h</strong></div><div class="stat"><small>PM Labor Cost</small><strong id="kpiCost">฿0</strong></div><div class="stat"><small>PM Man-hours</small><strong id="kpiMH">0 h</strong></div></div><div class="panel"><h2>KPI & Management Dashboard</h2><p>ค่าด้านบนคำนวณจากข้อมูล PM, Labor และ Cost ที่บันทึกในเครื่องนี้</p></div></section>
@@ -359,7 +438,9 @@ body.dark .manage-question{color:#dbeaf5}body.dark .manage-primary>button,body.d
  <div class="manage-question">วันนี้ต้องการทำอะไร?</div>
  <div class="manage-primary">
    <button onclick="goAdmin('assets')"><i>⚙️</i><div><b>ดูข้อมูลอุปกรณ์</b><small>ค้นหา Asset, Station และตำแหน่ง</small></div><span>→</span></button>
-   <button onclick="goAdmin('pm')"><i>🗓️</i><div><b>วางแผนบำรุงรักษา</b><small>ดูรอบ PM และงานที่ใกล้ถึงกำหนด</small></div><span>→</span></button>
+   <button onclick="goAdmin('jobplans')"><i>🧩</i><div><b>1. สร้าง Job Plan</b><small>กำหนดงานมาตรฐาน เวลา และทรัพยากร</small></div><span>→</span></button>
+   <button onclick="goAdmin('routes')"><i>🛣️</i><div><b>2. จัด Route</b><small>รวมจุดงานตามพื้นที่และลำดับงาน</small></div><span>→</span></button>
+   <button onclick="goAdmin('pm')"><i>🗓️</i><div><b>3. วางแผน PM</b><small>Job Plan + Route + Due Date</small></div><span>→</span></button>
    <button onclick="goAdmin('workorder')"><i>🔧</i><div><b>ติดตามงานซ่อม</b><small>ดู Work Order และสถานะงาน</small></div><span>→</span></button>
    <button onclick="goAdmin('kpi')"><i>📊</i><div><b>ดูภาพรวม</b><small>KPI, กำลังคน และค่าใช้จ่าย</small></div><span>→</span></button>
  </div>
@@ -448,8 +529,8 @@ let stations=JSON.parse(localStorage.getItem("inspectionStations")||"null")||[
 function showPage(id,el){
  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active")); document.getElementById(id).classList.add("active");
  document.querySelectorAll(".menu").forEach(x=>x.classList.remove("active")); if(el)el.classList.add("active");
- const titles={adminTools:"เครื่องมือจัดการ",fieldHome:"เริ่มงานภาคสนาม",dashboard:"แดชบอร์ดงานบำรุงรักษา",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ตรวจภาคสนาม",manual:"คู่มือปฏิบัติงาน",history:"ประวัติการตรวจสอบ",workorder:"Work Order",pm:"PM Planning",labor:"Labor Tracking",cost:"Maintenance Cost Analysis",kpi:"KPI & Management Dashboard",users:"User / Team Management",assets:"Asset Management",functionsPage:"Functions & Performance Standards",failurePage:"Functional Failure",fmeaPage:"FMEA",criticalityPage:"Consequence / Criticality",hiPage:"Health Index",strategyPage:"Maintenance Strategy",settingsPage:"Settings"};
- pageTitle.textContent=titles[id]||id; if(id==="mapPage")setTimeout(initMap,80);
+ const titles={adminTools:"เครื่องมือจัดการ",fieldHome:"เริ่มงานภาคสนาม",dashboard:"แดชบอร์ดงานบำรุงรักษา",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ตรวจภาคสนาม",manual:"คู่มือปฏิบัติงาน",history:"ประวัติการตรวจสอบ",jobplans:"Job Plans",routes:"Routes",workorder:"Work Order",pm:"PM Planning",labor:"Labor Tracking",cost:"Maintenance Cost Analysis",kpi:"KPI & Management Dashboard",users:"User / Team Management",assets:"Asset Management",functionsPage:"Functions & Performance Standards",failurePage:"Functional Failure",fmeaPage:"FMEA",criticalityPage:"Consequence / Criticality",hiPage:"Health Index",strategyPage:"Maintenance Strategy",settingsPage:"Settings"};
+ pageTitle.textContent=titles[id]||id; if(id==="mapPage")setTimeout(initMap,80); if(["jobplans","routes","pm"].includes(id))setTimeout(refreshPlanningWorkflow,20);
 }
 function setLanguage(v){lang=v;localStorage.setItem("inspectionLang",v);thBtn.classList.toggle("active",v==="th");enBtn.classList.toggle("active",v==="en");renderForms();renderManualCards();refresh();renderMapMarkers()}
 function formName(f){return lang==="th"?f.th:f.en}
@@ -607,8 +688,73 @@ function exportRCM(){
 }
 
 
+
+function planningGet(k){return storeGet(k)}
+function saveJobPlan(){
+ const id=jpId.value.trim(),name=jpName.value.trim();
+ if(!id||!name)return toastMsg("กรุณากรอก Job Plan ID และชื่องาน");
+ let a=planningGet("assetJobPlans");
+ if(a.some(x=>x.id===id))return toastMsg("Job Plan ID นี้มีแล้ว");
+ a.push({id,name,type:jpType.value,activity:jpActivity.value.trim(),duration:Number(jpDuration.value||0),crew:Number(jpCrew.value||1),resource:jpResource.value.trim(),created:new Date().toISOString()});
+ localStorage.setItem("assetJobPlans",JSON.stringify(a));
+ jpId.value=jpName.value=jpActivity.value=jpDuration.value=jpResource.value="";jpCrew.value=1;
+ refreshPlanningWorkflow();toastMsg("✓ บันทึก Job Plan แล้ว");
+}
+function routeSelectedStations(){
+ return [...document.querySelectorAll(".routeStationCheck:checked")].map(x=>Number(x.value));
+}
+function updateRouteEstimate(){
+ const ids=routeSelectedStations(),jp=planningGet("assetJobPlans").find(x=>x.id===routeJobPlan.value);
+ const mins=(Number(jp?.duration||0)*ids.length);
+ const e=document.getElementById("routeEstimate");if(e)e.innerHTML=`<b>${ids.length} จุดงาน</b> • เวลางานตาม Job Plan โดยประมาณ <b>${mins||0} นาที</b>${jp?` • ${esc(jp.id)} / ${esc(jp.name)}`:""}`;
+}
+function saveRoute(){
+ const id=routeId.value.trim(),name=routeName.value.trim(),points=routeSelectedStations();
+ if(!id||!name)return toastMsg("กรุณากรอก Route ID และชื่อ Route");
+ if(!routeJobPlan.value)return toastMsg("กรุณาเลือก Job Plan");
+ if(!points.length)return toastMsg("กรุณาเลือกอย่างน้อย 1 จุดงาน");
+ let a=planningGet("assetRoutes");if(a.some(x=>x.id===id))return toastMsg("Route ID นี้มีแล้ว");
+ a.push({id,name,jobPlan:routeJobPlan.value,points,created:new Date().toISOString()});
+ localStorage.setItem("assetRoutes",JSON.stringify(a));routeId.value=routeName.value="";
+ document.querySelectorAll(".routeStationCheck").forEach(x=>x.checked=false);
+ refreshPlanningWorkflow();toastMsg("✓ บันทึก Route แล้ว");
+}
+function savePMv2(){
+ if(!pmJobPlan.value||!pmRoute.value||!pmDue.value)return toastMsg("กรุณาเลือก Job Plan, Route และ Due Date");
+ const jp=planningGet("assetJobPlans").find(x=>x.id===pmJobPlan.value),rt=planningGet("assetRoutes").find(x=>x.id===pmRoute.value);
+ storePush("assetPM",{id:Date.now(),asset:rt?.name||pmRoute.value,jobPlan:pmJobPlan.value,route:pmRoute.value,due:pmDue.value,owner:pmOwner.value,task:pmTask.value,status:pmStatus.value});
+ pmOwner.value=pmTask.value="";refreshPlanningWorkflow();toastMsg("✓ บันทึกแผน PM แล้ว");
+}
+function createWOFromPM(id){
+ const p=planningGet("assetPM").find(x=>x.id===id);if(!p)return;
+ const jp=planningGet("assetJobPlans").find(x=>x.id===p.jobPlan),rt=planningGet("assetRoutes").find(x=>x.id===p.route);
+ const no="WO-"+new Date().getFullYear()+"-"+String(id).slice(-5);
+ let w=planningGet("assetWO");
+ if(w.some(x=>x.sourcePM===id))return toastMsg("PM นี้สร้าง Work Order แล้ว");
+ w.push({id:Date.now(),no,location:rt?.name||p.asset||"",status:"Open",detail:`${jp?.name||p.task||"PM"} • Route ${rt?.id||p.route||"-"}`,sourcePM:id});
+ localStorage.setItem("assetWO",JSON.stringify(w));refreshModules();toastMsg("✓ สร้าง Work Order จาก PM แล้ว");
+}
+function openRouteOnMap(id){
+ const rt=planningGet("assetRoutes").find(x=>x.id===id);if(!rt)return;
+ showPage("mapPage",document.querySelector('[data-page=mapPage]'));
+ setTimeout(()=>{initMap();const pts=stations.filter(s=>rt.points.includes(s.id));if(map&&pts.length){map.fitBounds(pts.map(x=>[x.lat,x.lng]),{padding:[45,45]});}},180);
+}
+function refreshPlanningWorkflow(){
+ const jps=planningGet("assetJobPlans"),routes=planningGet("assetRoutes"),pms=planningGet("assetPM");
+ const jpOpt='<option value="">-- เลือก Job Plan --</option>'+jps.map(x=>`<option value="${escAttr(x.id)}">${esc(x.id)} — ${esc(x.name)}</option>`).join("");
+ ["routeJobPlan","pmJobPlan"].forEach(id=>{const e=document.getElementById(id);if(e){const v=e.value;e.innerHTML=jpOpt;if([...e.options].some(o=>o.value===v))e.value=v;}});
+ const rt=document.getElementById("pmRoute");if(rt){const v=rt.value;rt.innerHTML='<option value="">-- เลือก Route --</option>'+routes.map(x=>`<option value="${escAttr(x.id)}">${esc(x.id)} — ${esc(x.name)}</option>`).join("");if([...rt.options].some(o=>o.value===v))rt.value=v;}
+ const picker=document.getElementById("routeStationPicker");if(picker)picker.innerHTML=stations.map(s=>`<label class="route-point"><input class="routeStationCheck" type="checkbox" value="${s.id}" onchange="updateRouteEstimate()"><span><b>${esc(s.station)}</b><small>${esc(s.location)} • ${esc(s.mea)}</small></span></label>`).join("");
+ if(document.getElementById("jpCount"))jpCount.textContent=jps.length+" รายการ";
+ if(document.getElementById("routeCount"))routeCount.textContent=routes.length+" Routes";
+ const jl=document.getElementById("jpList");if(jl)jl.innerHTML=moduleTable(jps.slice().reverse().map(x=>`<tr><td><span class="pill">${esc(x.id)}</span></td><td>${esc(x.type)}</td><td>${esc(x.name)}</td><td>${esc(x.activity||"-")}</td><td>${x.duration||0} นาที</td><td>${x.crew||1} คน</td></tr>`),["ID","Equipment","Job Plan","Activity","Duration","Crew"]);
+ const rl=document.getElementById("routeList");if(rl)rl.innerHTML=moduleTable(routes.slice().reverse().map(x=>{const jp=jps.find(j=>j.id===x.jobPlan);return `<tr><td><span class="pill">${esc(x.id)}</span></td><td>${esc(x.name)}</td><td>${esc(jp?.name||x.jobPlan)}</td><td>${x.points.length} จุด</td><td><div class="workflow-actions"><button onclick="openRouteOnMap('${escAttr(x.id)}')">🗺️ ดูแผนที่</button></div></td></tr>`}),["Route","Area","Job Plan","Points",""]);
+ const pl=document.getElementById("pmList");if(pl)pl.innerHTML=moduleTable(pms.slice().reverse().map(x=>{const jp=jps.find(j=>j.id===x.jobPlan),r=routes.find(z=>z.id===x.route);return `<tr><td>${esc(jp?.name||x.jobPlan||x.task||"-")}</td><td>${esc(r?.name||x.route||x.asset||"-")}</td><td>${esc(x.due||"-")}</td><td>${esc(x.owner||"-")}</td><td>${esc(x.status)}</td><td><div class="workflow-actions"><button onclick="createWOFromPM(${x.id})">＋ Work Order</button></div></td></tr>`}),["Job Plan","Route","Due","Owner","Status",""]);
+ updateRouteEstimate();
+}
+
 const UX_ACTIONS=[
-["dashboard","📊 Dashboard"],["mapPage","🗺️ Field Map"],["inspection","📋 ตรวจภาคสนาม"],["history","📚 Inspection History"],
+["dashboard","📊 Dashboard"],["mapPage","🗺️ Field Map"],["inspection","📋 ตรวจภาคสนาม"],["history","📚 Inspection History"],["jobplans","🧩 Job Plans"],["routes","🛣️ Routes"],
 ["assets","⚙️ Asset Management"],["functionsPage","ƒ Functions"],["failurePage","⚠️ Functional Failure"],["fmeaPage","▦ FMEA"],["criticalityPage","◆ Criticality"],
 ["hiPage","♥ Health Index"],["strategyPage","🛠️ Maintenance Strategy"],
 ["workorder","📋 Work Order"],["pm","🗓️ PM Planning"],["labor","👷 Labor Tracking"],["cost","💰 Cost Analysis"],["kpi","📈 KPI"],["users","👥 User / Team"],["settingsPage","⚙ Settings"]
@@ -708,6 +854,7 @@ function renderSimpleHome(){
 
 renderForms();renderManualCards();setLanguage(lang);refresh();refreshModules();refreshRCM();
 renderSimpleHome();
+refreshPlanningWorkflow();
 refreshFriendly();
 refreshUX();
 </script>
