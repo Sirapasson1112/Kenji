@@ -285,22 +285,61 @@ body.dark .workflow-step b,body.dark .plan-overview-card b,body.dark .plan-overv
 @media(max-width:1050px){.workflow-nav{grid-template-columns:1fr 1fr}.workflow-step:nth-child(2):after{display:none}.planning-overview{grid-template-columns:1fr 1fr}}
 @media(max-width:650px){.workflow-nav,.planning-overview{grid-template-columns:1fr}.workflow-step:after{display:none}}
 
+
+/* ===== EASY REAL-USER LAYER ===== */
+.easy-sidebar .easy-nav-label{padding:14px 11px 6px;color:#9fd1ed;font-size:9px;font-weight:900;letter-spacing:1.1px;text-transform:uppercase}
+.easy-sidebar .easy-plan-label{margin-top:4px}
+.easy-more-toggle{position:relative}.easy-more-toggle i{margin-left:auto;font-style:normal;opacity:.7}
+.easy-tools{display:none;padding:3px 5px 8px;gap:5px}.easy-tools.open{display:grid}
+.easy-tools button{border:0;background:rgba(255,255,255,.07);color:#eaf7ff;padding:10px 11px;border-radius:9px;text-align:left;cursor:pointer;font-size:10px}
+.easy-tools button:hover{background:rgba(255,255,255,.13)}
+.easy-welcome{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin:4px 0 18px}
+.easy-eyebrow{font-size:9px;font-weight:900;letter-spacing:1.5px;color:#1788c8}.easy-welcome h1{font-size:29px;margin:4px 0 5px;color:#163f5c}.easy-welcome p{margin:0;color:#718999;max-width:650px}.easy-date{background:#fff;border:1px solid #d8e9f3;border-radius:12px;padding:9px 12px;color:#6b8495;font-size:10px}
+.easy-primary-grid{display:grid;grid-template-columns:1.45fr .8fr .8fr;gap:11px;margin-bottom:13px}
+.easy-main-action,.easy-secondary-action{border:1px solid #d8e9f3;border-radius:18px;cursor:pointer;text-align:left;transition:.18s}
+.easy-main-action{min-height:116px;background:linear-gradient(125deg,#168bd0,#58b8e7);color:#fff;padding:20px;display:flex;align-items:center;gap:14px;box-shadow:0 15px 32px rgba(25,132,194,.19)}
+.easy-main-action:hover,.easy-secondary-action:hover{transform:translateY(-2px)}
+.easy-main-icon{width:52px;height:52px;border-radius:15px;background:#ffffff25;display:grid;place-items:center;font-size:26px}.easy-main-action>span:nth-child(2){flex:1}.easy-main-action b,.easy-main-action small{display:block}.easy-main-action b{font-size:17px}.easy-main-action small{font-size:10px;color:#e9f8ff;margin-top:5px}.easy-main-action i{font-style:normal;font-size:23px}
+.easy-secondary-action{background:#fff;padding:17px;display:flex;align-items:center;gap:10px;color:#244d68;box-shadow:0 8px 23px rgba(33,94,130,.07)}.easy-secondary-action>span{font-size:24px}.easy-secondary-action div{flex:1}.easy-secondary-action b,.easy-secondary-action small{display:block}.easy-secondary-action b{font-size:12px}.easy-secondary-action small{font-size:9px;color:#7c92a1;margin-top:4px}.easy-secondary-action i{font-style:normal;color:#1687c7}
+.easy-status-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:13px}.easy-status-strip div{background:rgba(255,255,255,.86);border:1px solid #dcebf3;border-radius:14px;padding:13px 15px;display:flex;align-items:center;justify-content:space-between}.easy-status-strip span{font-size:10px;color:#718999}.easy-status-strip b{font-size:19px;color:#176e9e}
+.easy-home-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}.easy-panel{margin:0!important}.easy-panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.easy-panel-head h2{margin:0 0 3px;font-size:15px}.easy-panel-head small{color:#8195a2;font-size:9px}.easy-panel-head button{border:0;background:#edf8fe;color:#0f7fbd;border-radius:9px;padding:7px 9px;cursor:pointer;font-size:9px}
+.easy-recent-list{display:grid;gap:7px}.easy-recent-item{border:1px solid #e1edf3;border-radius:11px;padding:10px 11px;display:flex;align-items:center;gap:9px}.easy-recent-item>i{font-style:normal;width:31px;height:31px;border-radius:9px;background:#eaf7fd;display:grid;place-items:center}.easy-recent-item div{flex:1}.easy-recent-item b,.easy-recent-item small{display:block}.easy-recent-item b{font-size:10px}.easy-recent-item small{font-size:8px;color:#8396a2;margin-top:3px}
+.easy-empty{text-align:center;padding:25px;color:#8aa0ae;font-size:10px}
+.easy-plan-flow{display:flex;align-items:stretch;gap:6px}.easy-plan-flow>button{flex:1;border:1px solid #dcebf3;background:#fbfdff;border-radius:12px;padding:11px 8px;text-align:left;cursor:pointer;display:flex;gap:7px;align-items:center}.easy-plan-flow>button:hover{background:#eef9ff;border-color:#8acbea}.easy-plan-flow>button i{font-style:normal;width:25px;height:25px;border-radius:8px;background:#e5f5fd;color:#147db6;display:grid;place-items:center;font-weight:900}.easy-plan-flow b,.easy-plan-flow small{display:block}.easy-plan-flow b{font-size:10px}.easy-plan-flow small{font-size:8px;color:#8094a1;margin-top:2px}.easy-plan-flow>span{align-self:center;color:#9db6c4}
+.easy-page-heading{display:flex;gap:12px;align-items:center;margin:3px 0 17px}.easy-page-heading>button{width:40px;height:40px;border:1px solid #d9e9f2;background:#fff;border-radius:11px;color:#167db6;cursor:pointer}.easy-page-heading span{font-size:8px;letter-spacing:1.3px;font-weight:900;color:#1687c7}.easy-page-heading h2{font-size:24px;margin:2px 0}.easy-page-heading p{margin:0;color:#7b909e}
+.easy-three-steps{background:#fff;border:1px solid #dbeaf3;border-radius:16px;padding:13px;display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px}.easy-three-steps div{display:flex;gap:7px;align-items:center}.easy-three-steps i{font-style:normal;width:29px;height:29px;border-radius:9px;background:#edf5f9;color:#6f8999;display:grid;place-items:center;font-weight:900}.easy-three-steps .active i{background:#168bd0;color:#fff}.easy-three-steps b,.easy-three-steps small{display:block}.easy-three-steps b{font-size:10px}.easy-three-steps small{font-size:8px;color:#8a9da9}.easy-three-steps em{font-style:normal;color:#abc0cb}
+.easy-map-start{width:100%;border:0;background:linear-gradient(125deg,#147fbd,#4bb0df);color:#fff;border-radius:18px;padding:22px;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;box-shadow:0 14px 30px rgba(23,126,184,.18)}.easy-map-start>span{font-size:30px}.easy-map-start div{flex:1}.easy-map-start b,.easy-map-start small{display:block}.easy-map-start b{font-size:16px}.easy-map-start small{font-size:9px;color:#e7f7ff;margin-top:4px}.easy-map-start i{font-style:normal;font-size:10px;font-weight:800}
+.easy-alt-start{text-align:center;margin-top:12px;color:#7d929f;font-size:9px}.easy-alt-start button{border:0;background:transparent;color:#0f82c2;font-weight:800;cursor:pointer;margin-left:5px}
+.easy-workflow-bar{display:flex;align-items:center;gap:6px;margin-bottom:12px;background:#fff;border:1px solid #dceaf2;border-radius:14px;padding:8px}.easy-workflow-bar button{flex:1;border:0;background:transparent;border-radius:9px;padding:8px;cursor:pointer;color:#486b80;font-size:10px;font-weight:800}.easy-workflow-bar button:hover{background:#eaf7fd;color:#117cb8}.easy-workflow-bar i{font-style:normal;background:#e7f5fc;color:#117cb8;border-radius:7px;padding:4px 7px;margin-right:4px}.easy-workflow-bar span{color:#a7becb}
+body.dark .easy-secondary-action,body.dark .easy-status-strip div,body.dark .easy-plan-flow>button,body.dark .easy-three-steps,body.dark .easy-workflow-bar,body.dark .easy-date,body.dark .easy-page-heading>button{background:#102838!important;border-color:#26495e!important;color:#dceef8!important}
+@media(max-width:1050px){.easy-primary-grid{grid-template-columns:1fr 1fr}.easy-main-action{grid-column:1/-1}.easy-home-grid{grid-template-columns:1fr}.easy-status-strip{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.easy-primary-grid,.easy-status-strip{grid-template-columns:1fr}.easy-plan-flow,.easy-workflow-bar{flex-direction:column}.easy-plan-flow>span,.easy-workflow-bar>span{display:none}.easy-welcome{flex-direction:column}}
+
 </style>
 </head>
 <body>
-<aside class="sidebar">
- <div class="brand">⚡ MEA Asset Inspection<small>Maintenance Management System</small></div>
- <div class="menu active" data-page="dashboard" onclick="showPage('dashboard',this)"><span>📊</span> <b class="menuText">หน้าหลัก</b></div>
- <div class="menu" data-page="fieldHome" onclick="showPage('fieldHome',this)"><span>🚶</span> <b class="menuText">เริ่มตรวจภาคสนาม</b></div>
- <div class="menu" data-page="inspection" onclick="showPage('inspection',this)"><span>📋</span>
-       <div><b class="menuText">ใบตรวจ</b><small class="menuSub">ใบตรวจ • คู่มือ • บันทึกผล</small></div>
-     </div>
- <div class="menu" data-page="history" onclick="showPage('history',this)"><span>📚</span> <b class="menuText">สรุปผล / ประวัติ</b></div>
- <div class="menu managementMenu" data-page="jobplans" onclick="showPage('jobplans',this)"><span>🧩</span> <b class="menuText">Job Plans</b></div>
- <div class="menu managementMenu" data-page="routes" onclick="showPage('routes',this)"><span>🛣️</span> <b class="menuText">Routes</b></div>
- <div class="menu managementMenu" data-page="pm" onclick="showPage('pm',this)"><span>🗓️</span> <b class="menuText">แผน PM</b></div>
- <div class="menu managementMenu" data-page="workorder" onclick="showPage('workorder',this)"><span>📋</span> <b class="menuText">งานที่ต้องทำ</b></div>
- <div class="menu managementMenu" data-page="settingsPage" onclick="showPage('settingsPage',this)"><span>⚙</span> <b class="menuText">ตั้งค่า</b></div>
+<aside class="sidebar easy-sidebar">
+ <div class="brand">⚡ MEA Asset Inspection<small>Field Maintenance</small></div>
+
+ <div class="easy-nav-label">งานประจำ</div>
+ <div class="menu active" data-page="dashboard" onclick="showPage('dashboard',this)"><span>⌂</span><b class="menuText">หน้าหลัก</b></div>
+ <div class="menu" data-page="fieldHome" onclick="showPage('fieldHome',this)"><span>✓</span><b class="menuText">เริ่มตรวจ</b></div>
+ <div class="menu" data-page="workorder" onclick="showPage('workorder',this)"><span>🔧</span><b class="menuText">งานของฉัน</b></div>
+ <div class="menu" data-page="history" onclick="showPage('history',this)"><span>▤</span><b class="menuText">ผลการตรวจ</b></div>
+
+ <div class="easy-nav-label easy-plan-label">วางแผนงาน</div>
+ <div class="menu" data-page="jobplans" onclick="showPage('jobplans',this)"><span>🧩</span><b class="menuText">Job Plan</b></div>
+ <div class="menu" data-page="routes" onclick="showPage('routes',this)"><span>🛣️</span><b class="menuText">Route</b></div>
+ <div class="menu" data-page="pm" onclick="showPage('pm',this)"><span>🗓️</span><b class="menuText">แผน PM</b></div>
+
+ <div class="sidebar-divider"></div>
+ <div class="menu easy-more-toggle" onclick="toggleEasyTools()"><span>•••</span><b class="menuText">เครื่องมือเพิ่มเติม</b><i id="easyToolsArrow">⌄</i></div>
+ <div id="easyTools" class="easy-tools">
+   <button onclick="easyGo('mapPage')">🗺️ แผนที่ทั้งหมด</button>
+   <button onclick="easyGo('inspection')">📄 แบบฟอร์มทั้งหมด</button>
+   <button onclick="easyGo('managementHub')">📊 วิเคราะห์และบริหาร</button>
+   <button onclick="easyGo('settingsPage')">⚙️ ตั้งค่า</button>
+ </div>
 </aside>
 
 <main class="app">
@@ -310,72 +349,76 @@ body.dark .workflow-step b,body.dark .plan-overview-card b,body.dark .plan-overv
 </header>
 
 <section id="fieldHome" class="page">
- <div class="hero"><div><h2>📋 เริ่มตรวจภาคสนาม</h2><p>ทำตามลำดับนี้ครั้งเดียว ไม่ต้องสลับหลายเมนู</p></div></div>
- <div class="panel">
-  <div class="mini-flow">
-   <div><i>1</i><b>เลือกจุดตรวจ</b><small>แผนที่ / Station</small></div><span>→</span>
-   <div><i>2</i><b>เลือกอุปกรณ์</b><small>ระบบจับคู่ใบตรวจ</small></div><span>→</span>
-   <div><i>3</i><b>กรอกผลตรวจ</b><small>ข้อมูล / รูป / หมายเหตุ</small></div><span>→</span>
-   <div><i>4</i><b>บันทึกผล</b><small>เก็บในประวัติ</small></div>
-  </div>
-  <div style="text-align:center;padding:18px 0 8px"><button class="btn" style="font-size:16px;padding:14px 28px" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เริ่มจากเลือกจุดตรวจ</button><p style="font-size:11px;color:#71889a;margin-top:10px">หากรู้ใบตรวจอยู่แล้ว สามารถ <a href="#" onclick="event.preventDefault();showPage('inspection',document.querySelector('[data-page=inspection]'))">เลือกใบตรวจโดยตรง</a></p></div>
+ <div class="easy-page-heading">
+   <button onclick="showPage('dashboard',document.querySelector('[data-page=dashboard]'))">←</button>
+   <div><span>FIELD INSPECTION</span><h2>เริ่มตรวจภาคสนาม</h2><p>เลือกจุดตรวจแล้วระบบจะพาไปยังแบบฟอร์มที่เกี่ยวข้อง</p></div>
+ </div>
+
+ <div class="easy-three-steps">
+   <div class="active"><i>1</i><span><b>เลือกจุด</b><small>จากแผนที่</small></span></div>
+   <em>→</em>
+   <div><i>2</i><span><b>กรอกผล</b><small>ตามใบตรวจ</small></span></div>
+   <em>→</em>
+   <div><i>3</i><span><b>บันทึก</b><small>เก็บประวัติ</small></span></div>
+ </div>
+
+ <button class="easy-map-start" onclick="showPage('mapPage',null)">
+   <span>🗺️</span><div><b>เริ่มจากแผนที่</b><small>แนะนำ — ค้นหา Station หรือเลือกจุดที่ต้องการตรวจ</small></div><i>เริ่มตรวจ →</i>
+ </button>
+
+ <div class="easy-alt-start">
+   <span>รู้รหัสใบตรวจอยู่แล้ว?</span>
+   <button onclick="showPage('inspection',null)">เลือกแบบฟอร์มโดยตรง</button>
  </div>
 </section>
 <section id="dashboard" class="page active">
-  <div class="home-clean-hero">
-    <div>
-      <span class="home-kicker">MEA ASSET INSPECTION</span>
-      <h1>วันนี้จะทำอะไร?</h1>
-      <p>เลือกงานที่ต้องการได้เลย ไม่ต้องไล่หาเมนู</p>
-    </div>
-    <div class="home-date" id="simpleToday">วันนี้</div>
-  </div>
+ <div class="easy-welcome">
+   <div>
+     <span class="easy-eyebrow">MEA ASSET INSPECTION</span>
+     <h1>วันนี้ต้องการทำอะไร?</h1>
+     <p>เลือกงานหลักได้ทันที ส่วนเครื่องมือวิเคราะห์และตั้งค่าถูกเก็บไว้ใน “เครื่องมือเพิ่มเติม”</p>
+   </div>
+   <div class="easy-date" id="easyToday">วันนี้</div>
+ </div>
 
-  <div class="home-main-actions">
-    <button class="home-main-card primary" onclick="showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))">
-      <span class="home-main-icon">📋</span>
-      <div><b>เริ่มตรวจภาคสนาม</b><small>เลือกจุดตรวจ → กรอกผล → บันทึก</small></div>
-      <i>→</i>
-    </button>
+ <div class="easy-primary-grid">
+   <button class="easy-main-action" onclick="showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))">
+     <span class="easy-main-icon">✓</span>
+     <span><b>เริ่มตรวจภาคสนาม</b><small>เลือกจุด → กรอกใบตรวจ → บันทึกผล</small></span>
+     <i>→</i>
+   </button>
+   <button class="easy-secondary-action" onclick="showPage('workorder',document.querySelector('[data-page=workorder]'))">
+     <span>🔧</span><div><b>งานของฉัน</b><small>ดูงานที่ต้องทำและสถานะล่าสุด</small></div><i>→</i>
+   </button>
+   <button class="easy-secondary-action" onclick="showPage('history',document.querySelector('[data-page=history]'))">
+     <span>▤</span><div><b>ผลการตรวจ</b><small>ค้นหาและดูรายการย้อนหลัง</small></div><i>→</i>
+   </button>
+ </div>
 
-    <button class="home-main-card" onclick="showPage('workorder',document.querySelector('[data-page=workorder]'))">
-      <span class="home-main-icon">🔧</span>
-      <div><b>ดูงานที่ต้องทำ</b><small>Work Order และงานที่ต้องติดตาม</small></div>
-      <i>→</i>
-    </button>
+ <div class="easy-status-strip">
+   <div><span>ผลตรวจทั้งหมด</span><b id="easyInspectionCount">0</b></div>
+   <div><span>งานทั้งหมด</span><b id="easyWOCount">0</b></div>
+   <div><span>งานเสร็จแล้ว</span><b id="easyDoneCount">0</b></div>
+   <div><span>แผน PM</span><b id="easyPMCount">0</b></div>
+ </div>
 
-    <button class="home-main-card" onclick="showPage('history',document.querySelector('[data-page=history]'))">
-      <span class="home-main-icon">📊</span>
-      <div><b>ดูผลการตรวจ</b><small>ประวัติ ผลตรวจ และรายการล่าสุด</small></div>
-      <i>→</i>
-    </button>
-  </div>
+ <div class="easy-home-grid">
+   <div class="panel easy-panel">
+     <div class="easy-panel-head"><div><h2>รายการล่าสุด</h2><small>สิ่งที่เพิ่งบันทึกในเครื่องนี้</small></div><button onclick="showPage('history',document.querySelector('[data-page=history]'))">ดูทั้งหมด</button></div>
+     <div id="easyRecentList" class="easy-recent-list"></div>
+   </div>
 
-  <div class="home-quick-row">
-    <button onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ <span><b>แผนที่</b><small>เลือก Station</small></span></button>
-    <button onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">📝 <span><b>ใบตรวจ</b><small>เลือกแบบโดยตรง</small></span></button>
-    <button onclick="openCommand()">🔎 <span><b>ค้นหา</b><small>Asset / Station</small></span></button>
-    <button onclick="openAdminTools()">⚙️ <span><b>จัดการ</b><small>สำหรับผู้วางแผน</small></span></button>
-  </div>
-
-  <div class="home-clean-grid">
-    <div class="panel home-recent-panel">
-      <div class="home-section-head">
-        <div><h2>งานล่าสุด</h2><small>รายการที่เพิ่งบันทึก</small></div>
-        <button onclick="showPage('history',document.querySelector('[data-page=history]'))">ดูทั้งหมด →</button>
-      </div>
-      <div id="simpleRecent"></div>
-    </div>
-
-    <div class="panel home-summary-panel">
-      <div class="home-section-head"><div><h2>สรุปสั้น ๆ</h2><small>ภาพรวมข้อมูลในเครื่องนี้</small></div></div>
-      <div class="home-summary-list">
-        <div><span>📋 ผลตรวจ</span><b id="homeInspectionCount">0</b></div>
-        <div><span>🔧 Work Order</span><b id="homeWOCount">0</b></div>
-        <div><span>✓ PM เสร็จแล้ว</span><b id="homePMDone">0</b></div>
-      </div>
-    </div>
-  </div>
+   <div class="panel easy-panel">
+     <div class="easy-panel-head"><div><h2>วางแผน PM</h2><small>สำหรับผู้วางแผน / หัวหน้างาน</small></div></div>
+     <div class="easy-plan-flow">
+       <button onclick="showPage('jobplans',document.querySelector('[data-page=jobplans]'))"><i>1</i><span><b>Job Plan</b><small>กำหนดงานมาตรฐาน</small></span></button>
+       <span>→</span>
+       <button onclick="showPage('routes',document.querySelector('[data-page=routes]'))"><i>2</i><span><b>Route</b><small>จัดกลุ่มจุดงาน</small></span></button>
+       <span>→</span>
+       <button onclick="showPage('pm',document.querySelector('[data-page=pm]'))"><i>3</i><span><b>PM</b><small>กำหนดวันและผู้รับผิดชอบ</small></span></button>
+     </div>
+   </div>
+ </div>
 </section>
 
 <section id="mapPage" class="page">
@@ -427,19 +470,12 @@ body.dark .workflow-step b,body.dark .plan-overview-card b,body.dark .plan-overv
 <section id="history" class="page"><div class="panel"><div style="display:flex;justify-content:space-between;gap:10px"><h2>ประวัติการตรวจสอบ</h2><button class="btn btn-green" onclick="exportCSV()">Export CSV</button></div><div style="overflow:auto"><table><thead><tr><th>วันที่</th><th>ใบตรวจ</th><th>Station ID</th><th>MEA No.</th><th>ผู้ตรวจ</th><th>สถานะ</th><th></th></tr></thead><tbody id="historyBody"></tbody></table></div></div></section>
 
 <section id="jobplans" class="page">
- <div class="workflow-nav">
-  <div class="workflow-step" onclick="showPage('jobplans',null)"><span class="ws-no">1</span><b>Job Plan</b><small>สร้างงานมาตรฐานไว้ใช้ซ้ำ</small></div>
-  <div class="workflow-step" onclick="showPage('routes',null)"><span class="ws-no">2</span><b>Route</b><small>จัดกลุ่มจุดงานตามพื้นที่</small></div>
-  <div class="workflow-step" onclick="showPage('pm',null)"><span class="ws-no">3</span><b>PM Plan</b><small>กำหนดรอบและผู้รับผิดชอบ</small></div>
-  <div class="workflow-step" onclick="showPage('workorder',null)"><span class="ws-no">4</span><b>Work Order</b><small>ส่งงานไปดำเนินการจริง</small></div>
- </div>
- <div class="planning-overview">
-  <div class="plan-overview-card hero-mini"><b>ศูนย์วางแผน PM</b><small>เริ่มจากซ้ายไปขวา ระบบจะเชื่อมข้อมูลให้ต่อเนื่อง</small></div>
-  <div class="plan-overview-card"><small>Job Plans</small><strong id="overviewJP">0</strong></div>
-  <div class="plan-overview-card"><small>Routes</small><strong id="overviewRoute">0</strong></div>
-  <div class="plan-overview-card"><small>PM Plans</small><strong id="overviewPM">0</strong></div>
- </div>
- <div class="plan-flow-hero">
+ <div class="easy-workflow-bar">
+      <button onclick="showPage('jobplans',null)"><i>1</i> Job Plan</button><span>→</span>
+      <button onclick="showPage('routes',null)"><i>2</i> Route</button><span>→</span>
+      <button onclick="showPage('pm',null)"><i>3</i> PM</button><span>→</span>
+      <button onclick="showPage('workorder',null)"><i>4</i> Work Order</button>
+    </div><div class="plan-flow-hero">
   <div><span>STEP 1 • เตรียมงานก่อนวาง PM</span><h2>🧩 Job Plans</h2>
   <p>กำหนด “งานมาตรฐาน” ของอุปกรณ์ไว้ก่อน เช่น ประเภทอุปกรณ์ กิจกรรม ระยะเวลา และทรัพยากรที่ต้องใช้ แล้วนำไปใช้ซ้ำในแผน PM / Work Order</p></div>
   <div class="flow-badges"><b>Job Plan</b><i>→</i><b>Route</b><i>→</i><b>PM</b><i>→</i><b>Work Order</b></div>
@@ -463,13 +499,12 @@ body.dark .workflow-step b,body.dark .plan-overview-card b,body.dark .plan-overv
 </section>
 
 <section id="routes" class="page">
- <div class="workflow-nav">
-  <div class="workflow-step" onclick="showPage('jobplans',null)"><span class="ws-no">1</span><b>Job Plan</b><small>สร้างงานมาตรฐานไว้ใช้ซ้ำ</small></div>
-  <div class="workflow-step" onclick="showPage('routes',null)"><span class="ws-no">2</span><b>Route</b><small>จัดกลุ่มจุดงานตามพื้นที่</small></div>
-  <div class="workflow-step" onclick="showPage('pm',null)"><span class="ws-no">3</span><b>PM Plan</b><small>กำหนดรอบและผู้รับผิดชอบ</small></div>
-  <div class="workflow-step" onclick="showPage('workorder',null)"><span class="ws-no">4</span><b>Work Order</b><small>ส่งงานไปดำเนินการจริง</small></div>
- </div>
- <div class="plan-flow-hero">
+ <div class="easy-workflow-bar">
+      <button onclick="showPage('jobplans',null)"><i>1</i> Job Plan</button><span>→</span>
+      <button onclick="showPage('routes',null)"><i>2</i> Route</button><span>→</span>
+      <button onclick="showPage('pm',null)"><i>3</i> PM</button><span>→</span>
+      <button onclick="showPage('workorder',null)"><i>4</i> Work Order</button>
+    </div><div class="plan-flow-hero">
   <div><span>STEP 2 • จัดกลุ่มจุดงาน</span><h2>🛣️ Routes</h2>
   <p>รวมจุดตรวจ/อุปกรณ์ที่อยู่ในพื้นที่เดียวกันเป็น Route เพื่อให้ผู้วางแผนเห็นลำดับจุดงาน ระยะเวลารวม และเปิดดูตำแหน่งบนแผนที่ได้ง่าย</p></div>
   <button class="btn btn-light" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เปิดแผนที่</button>
@@ -489,13 +524,12 @@ body.dark .workflow-step b,body.dark .plan-overview-card b,body.dark .plan-overv
 
 <section id="workorder" class="page"><div class="panel"><h2>Work Order</h2><div class="row3"><div class="field"><label>WO Number</label><input id="woNo"></div><div class="field"><label>Plant / Location</label><input id="woLocation"></div><div class="field"><label>Status</label><select id="woStatus"><option>Open</option><option>In Progress</option><option>Completed</option></select></div></div><br><div class="field"><label>รายละเอียดงาน</label><textarea id="woDetail"></textarea></div><br><button class="btn" onclick="saveWO()">บันทึก Work Order</button></div><div class="panel"><h2>Work Order History</h2><div id="woList"></div></div></section>
 <section id="pm" class="page">
- <div class="workflow-nav">
-  <div class="workflow-step" onclick="showPage('jobplans',null)"><span class="ws-no">1</span><b>Job Plan</b><small>สร้างงานมาตรฐานไว้ใช้ซ้ำ</small></div>
-  <div class="workflow-step" onclick="showPage('routes',null)"><span class="ws-no">2</span><b>Route</b><small>จัดกลุ่มจุดงานตามพื้นที่</small></div>
-  <div class="workflow-step" onclick="showPage('pm',null)"><span class="ws-no">3</span><b>PM Plan</b><small>กำหนดรอบและผู้รับผิดชอบ</small></div>
-  <div class="workflow-step" onclick="showPage('workorder',null)"><span class="ws-no">4</span><b>Work Order</b><small>ส่งงานไปดำเนินการจริง</small></div>
- </div>
- <div class="plan-flow-hero">
+ <div class="easy-workflow-bar">
+      <button onclick="showPage('jobplans',null)"><i>1</i> Job Plan</button><span>→</span>
+      <button onclick="showPage('routes',null)"><i>2</i> Route</button><span>→</span>
+      <button onclick="showPage('pm',null)"><i>3</i> PM</button><span>→</span>
+      <button onclick="showPage('workorder',null)"><i>4</i> Work Order</button>
+    </div><div class="plan-flow-hero">
   <div><span>STEP 3 • จัดรอบบำรุงรักษา</span><h2>🗓️ PM Planning</h2>
   <p>นำ Job Plan + Route มาสร้างแผน PM เพื่อรู้ว่า “ทำอะไร • ที่ไหน • เมื่อไร • ใครรับผิดชอบ” จากนั้นค่อยสร้าง Work Order เมื่อต้องนำงานไปดำเนินการ</p></div>
   <div class="flow-badges"><b>Job Plan</b><i>＋</i><b>Route</b><i>=</i><b>PM</b></div>
@@ -659,8 +693,8 @@ let stations=JSON.parse(localStorage.getItem("inspectionStations")||"null")||[
 function showPage(id,el){
  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active")); document.getElementById(id).classList.add("active");
  document.querySelectorAll(".menu").forEach(x=>x.classList.remove("active")); if(el)el.classList.add("active");
- const titles={adminTools:"เครื่องมือจัดการ",fieldHome:"เริ่มงานภาคสนาม",dashboard:"แดชบอร์ดงานบำรุงรักษา",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ตรวจภาคสนาม",manual:"คู่มือปฏิบัติงาน",history:"ประวัติการตรวจสอบ",jobplans:"Job Plans",routes:"Routes",workorder:"Work Order",pm:"PM Planning",labor:"Labor Tracking",cost:"Maintenance Cost Analysis",kpi:"KPI & Management Dashboard",users:"User / Team Management",assets:"Asset Management",functionsPage:"Functions & Performance Standards",failurePage:"Functional Failure",fmeaPage:"FMEA",criticalityPage:"Consequence / Criticality",hiPage:"Health Index",strategyPage:"Maintenance Strategy",settingsPage:"Settings"};
- pageTitle.textContent=titles[id]||id; if(id==="mapPage")setTimeout(initMap,80); if(["jobplans","routes","pm"].includes(id))setTimeout(refreshPlanningWorkflow,20);
+ const titles={adminTools:"เครื่องมือจัดการ",fieldHome:"เริ่มงานภาคสนาม",dashboard:"แดชบอร์ดงานบำรุงรักษา",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ตรวจภาคสนาม",manual:"คู่มือปฏิบัติงาน",history:"ประวัติการตรวจสอบ",jobplans:"Job Plans",routes:"Routes",workorder:"งานของฉัน",pm:"PM Planning",labor:"Labor Tracking",cost:"Maintenance Cost Analysis",kpi:"KPI & Management Dashboard",users:"User / Team Management",assets:"Asset Management",functionsPage:"Functions & Performance Standards",failurePage:"Functional Failure",fmeaPage:"FMEA",criticalityPage:"Consequence / Criticality",hiPage:"Health Index",strategyPage:"Maintenance Strategy",settingsPage:"Settings"};
+ pageTitle.textContent=titles[id]||id; if(id==="mapPage")setTimeout(initMap,80); if(["jobplans","routes","pm"].includes(id))setTimeout(refreshPlanningWorkflow,20); if(id==="dashboard")setTimeout(renderEasyDashboard,20);
 }
 function setLanguage(v){lang=v;localStorage.setItem("inspectionLang",v);thBtn.classList.toggle("active",v==="th");enBtn.classList.toggle("active",v==="en");renderForms();renderManualCards();refresh();renderMapMarkers()}
 function formName(f){return lang==="th"?f.th:f.en}
@@ -828,7 +862,8 @@ function saveJobPlan(){
  a.push({id,name,type:jpType.value,activity:jpActivity.value.trim(),duration:Number(jpDuration.value||0),crew:Number(jpCrew.value||1),resource:jpResource.value.trim(),created:new Date().toISOString()});
  localStorage.setItem("assetJobPlans",JSON.stringify(a));
  jpId.value=jpName.value=jpActivity.value=jpDuration.value=jpResource.value="";jpCrew.value=1;
- refreshPlanningWorkflow();toastMsg("✓ บันทึก Job Plan แล้ว");
+ refreshPlanningWorkflow();
+renderEasyDashboard();toastMsg("✓ บันทึก Job Plan แล้ว");
 }
 function routeSelectedStations(){
  return [...document.querySelectorAll(".routeStationCheck:checked")].map(x=>Number(x.value));
@@ -884,6 +919,23 @@ function refreshPlanningWorkflow(){
  const rl=document.getElementById("routeList");if(rl)rl.innerHTML=moduleTable(routes.slice().reverse().map(x=>{const jp=jps.find(j=>j.id===x.jobPlan);return `<tr><td><span class="pill">${esc(x.id)}</span></td><td>${esc(x.name)}</td><td>${esc(jp?.name||x.jobPlan)}</td><td>${x.points.length} จุด</td><td><div class="workflow-actions"><button onclick="openRouteOnMap('${escAttr(x.id)}')">🗺️ ดูแผนที่</button></div></td></tr>`}),["Route","Area","Job Plan","Points",""]);
  const pl=document.getElementById("pmList");if(pl)pl.innerHTML=moduleTable(pms.slice().reverse().map(x=>{const jp=jps.find(j=>j.id===x.jobPlan),r=routes.find(z=>z.id===x.route);return `<tr><td>${esc(jp?.name||x.jobPlan||x.task||"-")}</td><td>${esc(r?.name||x.route||x.asset||"-")}</td><td>${esc(x.due||"-")}</td><td>${esc(x.owner||"-")}</td><td>${esc(x.status)}</td><td><div class="workflow-actions"><button onclick="createWOFromPM(${x.id})">＋ Work Order</button></div></td></tr>`}),["Job Plan","Route","Due","Owner","Status",""]);
  updateRouteEstimate();
+}
+
+
+function toggleEasyTools(){
+ const box=document.getElementById("easyTools"),arrow=document.getElementById("easyToolsArrow");
+ if(!box)return;box.classList.toggle("open");if(arrow)arrow.textContent=box.classList.contains("open")?"⌃":"⌄";
+}
+function easyGo(id){showPage(id,null);document.getElementById("easyTools")?.classList.remove("open")}
+function renderEasyDashboard(){
+ const r=storeGet("paperInspectionRecords"),w=storeGet("assetWO"),p=storeGet("assetPM");
+ const done=w.filter(x=>["Completed","เสร็จสิ้น"].includes(x.status)).length;
+ const set=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=val};
+ set("easyInspectionCount",r.length);set("easyWOCount",w.length);set("easyDoneCount",done);set("easyPMCount",p.length);
+ const d=document.getElementById("easyToday");if(d)d.textContent=new Date().toLocaleDateString("th-TH",{day:"numeric",month:"short",year:"numeric"});
+ const list=document.getElementById("easyRecentList");if(!list)return;
+ const items=r.slice().reverse().slice(0,4);
+ list.innerHTML=items.length?items.map(x=>`<div class="easy-recent-item"><i>✓</i><div><b>${esc(x.station||x.formCode||"ผลการตรวจ")}</b><small>${esc(x.formCode||"")} ${x.savedAt?"• "+new Date(x.savedAt).toLocaleString("th-TH"):""}</small></div><span class="status submitted">บันทึกแล้ว</span></div>`).join(""):`<div class="easy-empty">ยังไม่มีผลการตรวจ — กด “เริ่มตรวจภาคสนาม” เพื่อเริ่มงานแรก</div>`;
 }
 
 const UX_ACTIONS=[
