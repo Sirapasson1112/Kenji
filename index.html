@@ -2,4288 +2,2095 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Asset Inspection App</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MEA Asset Inspection</title>
 
 <style>
 :root{
-  --navy:#083b68;
-  --navy2:#052b4d;
-  --blue:#1686d4;
-  --light:#f3f7fb;
-  --border:#dce6ef;
-  --green:#17a673;
-  --red:#e45151;
-  --orange:#f39a27;
-  --text:#183b5c;
-  --muted:#72869a;
+ --navy:#073b68;
+ --blue:#1488d4;
+ --bg:#eef3f7;
+ --green:#198754;
+ --orange:#e99a22;
+ --red:#d9534f;
+ --border:#222;
 }
 *{box-sizing:border-box}
 body{
-  margin:0;
-  font-family:Arial,Tahoma,sans-serif;
-  background:var(--light);
-  color:var(--text);
+ margin:0;
+ font-family:Tahoma,Arial,sans-serif;
+ background:var(--bg);
+ color:#173a59;
 }
-button,input,select,textarea{font-family:inherit}
+button,input,select,textarea{font:inherit}
 
-/* SIDEBAR */
+/* ================= APP ================= */
+
 .sidebar{
-  position:fixed;
-  inset:0 auto 0 0;
-  width:275px;
-  background:linear-gradient(180deg,var(--navy),var(--navy2));
-  color:white;
-  padding:24px 15px;
-  overflow:auto;
-  z-index:100;
+ position:fixed;
+ left:0;top:0;bottom:0;
+ width:260px;
+ background:linear-gradient(#073b68,#042a4b);
+ color:white;
+ padding:22px 14px;
+ overflow:auto;
+ z-index:20;
 }
-.logo{font-size:22px;font-weight:800}
-.logo-sub{font-size:12px;opacity:.7;margin:6px 0 25px}
+.brand{
+ font-size:21px;
+ font-weight:bold;
+ margin:5px 8px 25px;
+}
+.brand small{
+ display:block;
+ font-size:11px;
+ opacity:.65;
+ margin-top:5px;
+}
 .menu{
-  padding:13px 15px;
-  border-radius:9px;
-  margin:5px 0;
-  cursor:pointer;
-  transition:.2s;
+ padding:13px 14px;
+ margin:5px 0;
+ border-radius:9px;
+ cursor:pointer;
 }
-.menu:hover,.menu.active{background:#1384ce}
-.menu span{margin-right:8px}
+.menu:hover,.menu.active{background:#1488d4}
 
-/* MAIN */
-.main{
-  margin-left:275px;
-  padding:25px;
+.app{
+ margin-left:260px;
+ padding:24px;
 }
 .header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  background:white;
-  padding:20px 25px;
-  border-radius:15px;
-  box-shadow:0 3px 15px #0000000d;
-  margin-bottom:22px;
+ background:white;
+ padding:18px 22px;
+ border-radius:14px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ box-shadow:0 3px 15px #0001;
+ margin-bottom:20px;
 }
-.header h1{margin:0;font-size:26px}
-.header p{margin:5px 0 0;color:var(--muted)}
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:20px;
+.header h1{margin:0;font-size:25px}
+.header p{margin:5px 0 0;color:#718599}
+.header-right{display:flex;gap:14px;align-items:center}
+
+.lang{
+ background:#edf2f6;
+ padding:4px;
+ border-radius:9px;
 }
-.user{display:flex;align-items:center;gap:10px}
-.avatar{
-  width:43px;height:43px;
-  border-radius:50%;
-  background:var(--blue);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.lang button{
+ border:0;
+ padding:8px 11px;
+ background:transparent;
+ border-radius:6px;
+ cursor:pointer;
+ font-weight:bold;
+}
+.lang button.active{
+ background:var(--blue);
+ color:white;
 }
 
-/* LANGUAGE */
-.language-switch{
-  display:flex;
-  background:#edf3f8;
-  padding:4px;
-  border-radius:10px;
-}
-.lang-btn{
-  border:0;
-  background:transparent;
-  color:#61768a;
-  padding:8px 12px;
-  border-radius:7px;
-  cursor:pointer;
-  font-weight:bold;
-}
-.lang-btn.active{
-  background:var(--blue);
-  color:white;
-}
-
-/* PAGE */
 .page{display:none}
 .page.active{display:block}
 
-/* STATS */
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
-  margin-bottom:20px;
-}
-.stat{
-  background:white;
-  padding:20px;
-  border-radius:14px;
-  box-shadow:0 3px 12px #0000000c;
-}
-.stat small{color:var(--muted)}
-.stat strong{
-  display:block;
-  font-size:30px;
-  margin-top:8px;
-}
-.green{color:var(--green)}
-.blue{color:var(--blue)}
-.orange{color:var(--orange)}
-.red{color:var(--red)}
-
-/* PANEL */
 .panel{
-  background:white;
-  border-radius:15px;
-  padding:22px;
-  box-shadow:0 3px 15px #0000000c;
-  margin-bottom:20px;
+ background:white;
+ padding:20px;
+ border-radius:14px;
+ box-shadow:0 3px 15px #0000000d;
+ margin-bottom:18px;
 }
 .panel h2{margin-top:0}
-.panel-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
 
-/* CARDS */
-.forms-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
+.stats{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:15px;
+ margin-bottom:18px;
 }
-.form-card{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:18px;
-  transition:.2s;
+.stat{
+ background:white;
+ border-radius:13px;
+ padding:19px;
+ box-shadow:0 3px 12px #0000000c;
 }
-.form-card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 7px 20px #00000012;
+.stat small{color:#718599}
+.stat strong{
+ display:block;
+ font-size:30px;
+ margin-top:7px;
 }
-.form-number{
-  width:42px;height:42px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:11px;
-  background:#e5f3ff;
-  color:var(--blue);
-  font-weight:800;
+.blue{color:var(--blue)}
+.green{color:var(--green)}
+.orange{color:var(--orange)}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:15px;
 }
-.form-card h3{margin:13px 0 7px}
-.description{
-  min-height:42px;
-  font-size:14px;
+.card{
+ background:white;
+ border:1px solid #d9e3eb;
+ border-radius:13px;
+ padding:17px;
+}
+.card h3{margin:12px 0 7px}
+.card p{
+ font-size:13px;
+ color:#60778b;
+ min-height:38px;
+}
+.number{
+ width:42px;height:42px;
+ border-radius:10px;
+ background:#e6f3fd;
+ color:var(--blue);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-weight:bold;
 }
 .code{
-  color:var(--muted);
-  font-size:13px;
-  margin:8px 0 14px;
+ color:#75899b;
+ font-size:12px;
+ margin:8px 0 13px;
 }
 
-/* INPUT */
-.toolbar{
-  display:flex;
-  gap:12px;
-  margin-bottom:20px;
-}
-.search{
-  width:100%;
-  padding:13px;
-  border:1px solid var(--border);
-  border-radius:10px;
-}
-.grid2{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
-}
-.grid3{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
-}
-.field label{
-  display:block;
-  font-size:13px;
-  font-weight:bold;
-  margin-bottom:6px;
-}
-input,select,textarea{
-  width:100%;
-  border:1px solid #ccd8e3;
-  border-radius:8px;
-  padding:11px;
-  font-size:14px;
-  background:white;
-}
-textarea{min-height:95px;resize:vertical}
-
-/* BUTTON */
 .btn{
-  border:0;
-  border-radius:8px;
-  padding:10px 16px;
-  color:white;
-  background:var(--blue);
-  cursor:pointer;
-  font-weight:bold;
+ border:0;
+ border-radius:7px;
+ padding:10px 15px;
+ background:var(--blue);
+ color:white;
+ font-weight:bold;
+ cursor:pointer;
 }
 .btn:hover{opacity:.9}
 .btn-green{background:var(--green)}
 .btn-orange{background:var(--orange)}
-.btn-gray{background:#6f8293}
+.btn-gray{background:#6c7f8f}
 .btn-red{background:var(--red)}
 
-/* TABLE */
-.table-wrap{overflow:auto}
-table{
-  width:100%;
-  border-collapse:collapse;
+.search{
+ width:100%;
+ padding:12px;
+ border:1px solid #ccd7df;
+ border-radius:9px;
+ margin-bottom:17px;
 }
-th{
-  background:#f1f6fa;
-  color:#567086;
-  text-align:left;
+
+table{
+ width:100%;
+ border-collapse:collapse;
 }
 th,td{
-  padding:11px;
-  border-bottom:1px solid #e5edf3;
+ padding:10px;
+ border-bottom:1px solid #dfe7ed;
+ text-align:left;
 }
+th{background:#f2f6f9}
+
+.field label{
+ display:block;
+ font-size:12px;
+ font-weight:bold;
+ margin-bottom:5px;
+}
+.field input,.field select,.field textarea{
+ width:100%;
+ padding:10px;
+ border:1px solid #cbd6df;
+ border-radius:7px;
+}
+.row2{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:12px;
+}
+.row3{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:12px;
+}
+
+/* ================= PAPER MODE ================= */
+
+#paperMode{
+ display:none;
+ position:fixed;
+ inset:0;
+ z-index:500;
+ background:#d9dde0;
+ overflow:auto;
+}
+
+.paper-toolbar{
+ position:sticky;
+ top:0;
+ z-index:30;
+ background:#073b68;
+ color:white;
+ padding:10px 20px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ box-shadow:0 2px 8px #0004;
+}
+.paper-actions{
+ display:flex;
+ gap:7px;
+ flex-wrap:wrap;
+}
+
+.paper-wrap{
+ padding:28px 12px 70px;
+}
+
+.paper{
+ width:210mm;
+ min-height:297mm;
+ margin:0 auto 25px;
+ background:white;
+ color:#111;
+ padding:9mm;
+ box-shadow:0 5px 25px #0003;
+ font-family:Tahoma,Arial,sans-serif;
+}
+
+.paper-header{
+ position:relative;
+ text-align:center;
+ min-height:75px;
+ border:1.5px solid #111;
+ padding:10px 135px 8px 100px;
+}
+.paper-header .mea{
+ font-size:17px;
+ font-weight:bold;
+}
+.paper-header h2{
+ margin:5px 0;
+ font-size:17px;
+ color:#111;
+}
+.paper-code{
+ position:absolute;
+ right:8px;
+ bottom:7px;
+ font-size:11px;
+}
+.paper-logo{
+ position:absolute;
+ left:12px;
+ top:13px;
+ width:62px;
+ height:45px;
+ border:1px solid #111;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:12px;
+ font-weight:bold;
+}
+
+.paper table{
+ color:#111;
+ font-size:11px;
+}
+.paper th,
+.paper td{
+ border:1px solid #111;
+ padding:4px;
+ vertical-align:middle;
+}
+.paper th{
+ background:white;
+ text-align:center;
+ font-weight:bold;
+}
+
+.paper input[type=text],
+.paper input[type=number],
+.paper input[type=date],
+.paper input[type=time],
+.paper select,
+.paper textarea{
+ border:0;
+ border-bottom:1px dotted #555;
+ border-radius:0;
+ background:transparent;
+ width:100%;
+ padding:3px;
+ outline:none;
+ color:#000;
+}
+.paper textarea{
+ border:1px dotted #555;
+ min-height:55px;
+ resize:vertical;
+}
+.paper input:focus,
+.paper textarea:focus,
+.paper select:focus{
+ background:#fffbe8;
+}
+
+.paper-info{
+ width:100%;
+ border-collapse:collapse;
+ margin-top:0;
+}
+.paper-titlebar{
+ text-align:center;
+ font-weight:bold;
+ padding:5px;
+ border:1px solid #111;
+ border-top:0;
+ background:#eee;
+ font-size:12px;
+}
+
+.check{
+ text-align:center;
+}
+.check label{
+ display:inline-flex;
+ align-items:center;
+ gap:2px;
+ margin:0 3px;
+ white-space:nowrap;
+}
+.check input{
+ width:auto!important;
+}
+
+.paper-note{
+ border:1px solid #111;
+ border-top:0;
+ padding:7px;
+ color:#111;
+ font-size:11px;
+}
+.paper-note textarea{
+ margin-top:5px;
+}
+
+.signatures{
+ border:1px solid #111;
+ border-top:0;
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ color:#111;
+ font-size:11px;
+}
+.signature{
+ padding:10px;
+ min-height:70px;
+ text-align:center;
+}
+.signature:first-child{
+ border-right:1px solid #111;
+}
+.signature input{
+ width:70%!important;
+ text-align:center;
+}
+
+.special-box{
+ border:1px solid #111;
+ padding:6px;
+ margin-top:0;
+ color:#111;
+ font-size:11px;
+}
+
+.photo-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+}
+.photo-box{
+ border:1px solid #111;
+ min-height:190px;
+ padding:6px;
+ text-align:center;
+}
+.photo-box img{
+ display:block;
+ max-width:100%;
+ max-height:150px;
+ margin:7px auto;
+}
+
 .status{
-  display:inline-block;
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:bold;
+ display:inline-block;
+ border-radius:20px;
+ padding:4px 9px;
+ font-size:11px;
+ font-weight:bold;
 }
-.draft{background:#fff1ce;color:#9a6700}
-.submitted{background:#dff6eb;color:#12855c}
+.status.draft{background:#fff0c7;color:#956400}
+.status.submitted{background:#dff5e8;color:#15744f}
 
-/* FORM */
-.section-title{
-  margin:25px 0 12px;
-  padding:10px 14px;
-  background:#edf6fd;
-  border-left:4px solid var(--blue);
-  font-weight:bold;
-}
+/* ================= MANUAL/NAV ================= */
 
-/* NAVIGATION */
-.nav-banner{
-  padding:25px;
-  border-radius:16px;
-  background:linear-gradient(135deg,#0d75b8,#083b68);
-  color:white;
-  margin-bottom:20px;
+.navhero{
+ background:linear-gradient(135deg,#1488d4,#073b68);
+ color:white;
+ padding:24px;
+ border-radius:15px;
+ margin-bottom:18px;
 }
-.nav-banner h2{margin:0 0 8px}
-.nav-banner p{margin:0;opacity:.85}
-.coordinate-box{
-  background:#f5f9fc;
-  border:1px solid var(--border);
-  padding:18px;
-  border-radius:12px;
-  margin-top:15px;
-}
+.navhero h2{margin:0 0 7px}
 
-/* MANUAL */
+.manual-step{
+ display:flex;
+ gap:12px;
+ align-items:flex-start;
+}
 .manual-icon{
-  width:55px;
-  height:55px;
-  border-radius:14px;
-  background:#e5f3ff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:26px;
+ width:45px;height:45px;
+ flex:none;
+ background:#e5f3ff;
+ border-radius:10px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:22px;
 }
 
-/* MODAL */
-.modal{
-  display:none;
-  position:fixed;
-  z-index:1000;
+/* ================= PRINT ================= */
+
+@media print{
+ body{background:white}
+ body *{visibility:hidden}
+ #paperMode,
+ #paperMode *{visibility:visible}
+ #paperMode{
+  position:absolute;
+  display:block!important;
   inset:0;
-  background:#0008;
-  padding:30px;
+  background:white;
+  overflow:visible;
+ }
+ .paper-toolbar{display:none!important}
+ .paper-wrap{padding:0}
+ .paper{
+  width:210mm;
+  min-height:297mm;
+  margin:0;
+  padding:8mm;
+  box-shadow:none;
+  page-break-after:always;
+ }
+ .paper:last-child{page-break-after:auto}
+ input,select,textarea{
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+ }
+}
+
+@media(max-width:1000px){
+ .stats,.grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:760px){
+ .sidebar{width:72px;padding:15px 7px}
+ .brand{font-size:0}
+ .brand:after{content:"MEA";font-size:15px}
+ .brand small{display:none}
+ .menu{font-size:0;text-align:center}
+ .menu span{font-size:21px}
+ .app{margin-left:72px;padding:10px}
+ .stats,.grid,.row2,.row3{grid-template-columns:1fr}
+ .header{align-items:flex-start}
+ .paper-wrap{
   overflow:auto;
-}
-.modal-content{
-  max-width:1150px;
-  margin:auto;
-  background:var(--light);
-  border-radius:16px;
-  padding:22px;
-}
-.form-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-}
-.form-header h2{margin:0}
-.close{font-size:30px;cursor:pointer}
-
-/* UPLOAD */
-.upload-box{
-  border:2px dashed #c7d6e3;
-  padding:20px;
-  text-align:center;
-  border-radius:12px;
-  background:#f9fbfd;
-}
-.preview{
-  display:block;
-  max-width:100%;
-  max-height:280px;
-  margin:10px auto 0;
-  border-radius:8px;
-}
-
-/* TOAST */
-.toast{
-  display:none;
-  position:fixed;
-  right:25px;
-  bottom:25px;
-  padding:15px 20px;
-  background:#173d5d;
-  color:white;
-  border-radius:10px;
-  z-index:2000;
-}
-
-/* MOBILE */
-@media(max-width:1100px){
-  .forms-grid{grid-template-columns:repeat(2,1fr)}
-  .stats{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:800px){
-  .sidebar{width:75px;padding:20px 8px}
-  .logo{font-size:0}
-  .logo:after{content:"AI";font-size:20px}
-  .logo-sub{display:none}
-  .menu{font-size:0;text-align:center}
-  .menu span{font-size:22px;margin:0}
-  .main{margin-left:75px;padding:12px}
-  .forms-grid,.grid2,.grid3,.stats{grid-template-columns:1fr}
-  .header{align-items:flex-start}
-  .header-right{flex-direction:column;align-items:flex-end}
+  padding:12px 5px 50px;
+ }
+ .paper{
+  transform-origin:top left;
+  width:210mm;
+ }
 }
 </style>
 </head>
 
 <body>
 
-<!-- ==================================================
-SIDEBAR
-================================================== -->
+<!-- ================= SIDEBAR ================= -->
 
 <aside class="sidebar">
+ <div class="brand">
+  ⚡ MEA Asset Inspection
+  <small>Maintenance Management System</small>
+ </div>
 
-<div class="logo">⚙ Asset Inspection</div>
-<div class="logo-sub">Maintenance Management System</div>
-
-<div class="menu active" data-menu="dashboard"
-onclick="showPage('dashboard',this)">
-<span>📊</span><b class="menu-text">Dashboard</b>
-</div>
-
-<div class="menu" data-menu="inspection"
-onclick="showPage('inspection',this)">
-<span>🔍</span><b class="menu-text">Asset Inspection</b>
-</div>
-
-<div class="menu" data-menu="history"
-onclick="showPage('history',this)">
-<span>📚</span><b class="menu-text">Inspection History</b>
-</div>
-
-<div class="menu" data-menu="workorder"
-onclick="showPage('workorder',this)">
-<span>📋</span><b class="menu-text">Work Order</b>
-</div>
-
-<div class="menu" data-menu="pm"
-onclick="showPage('pm',this)">
-<span>🗓️</span><b class="menu-text">PM Planning</b>
-</div>
-
-<div class="menu" data-menu="navigation"
-onclick="showPage('navigation',this)">
-<span>🧭</span><b class="menu-text">Field Navigation</b>
-</div>
-
-<div class="menu" data-menu="manual"
-onclick="showPage('manual',this)">
-<span>📖</span><b class="menu-text">Manual</b>
-</div>
-
-<div class="menu" data-menu="kpi"
-onclick="showPage('kpi',this)">
-<span>📈</span><b class="menu-text">KPI</b>
-</div>
-
+ <div class="menu active" data-page="dashboard" onclick="showPage('dashboard',this)">
+  <span>📊</span> <b class="menuText">แดชบอร์ด</b>
+ </div>
+ <div class="menu" data-page="inspection" onclick="showPage('inspection',this)">
+  <span>📝</span> <b class="menuText">ใบตรวจภาคสนาม</b>
+ </div>
+ <div class="menu" data-page="navigation" onclick="showPage('navigation',this)">
+  <span>🧭</span> <b class="menuText">การนำทางตรวจภาคสนาม</b>
+ </div>
+ <div class="menu" data-page="history" onclick="showPage('history',this)">
+  <span>📚</span> <b class="menuText">ประวัติการตรวจ</b>
+ </div>
+ <div class="menu" data-page="workorder" onclick="showPage('workorder',this)">
+  <span>📋</span> <b class="menuText">Work Order</b>
+ </div>
+ <div class="menu" data-page="pm" onclick="showPage('pm',this)">
+  <span>🗓️</span> <b class="menuText">PM Planning</b>
+ </div>
+ <div class="menu" data-page="manual" onclick="showPage('manual',this)">
+  <span>📖</span> <b class="menuText">คู่มือ</b>
+ </div>
 </aside>
 
-
-<!-- ==================================================
-MAIN
-================================================== -->
-
-<main class="main">
+<main class="app">
 
 <header class="header">
+ <div>
+  <h1 id="pageTitle">แดชบอร์ดงานบำรุงรักษา</h1>
+  <p id="pageSub">ระบบตรวจสอบอุปกรณ์ภาคสนาม</p>
+ </div>
 
-<div>
-<h1 id="pageTitle">Maintenance Dashboard</h1>
-<p id="subtitle">Asset Inspection & Preventive Maintenance</p>
-</div>
-
-<div class="header-right">
-
-<div class="language-switch">
-
-<button id="btnTH"
-class="lang-btn"
-onclick="changeLanguage('th')">
-🇹🇭 TH
-</button>
-
-<button id="btnEN"
-class="lang-btn"
-onclick="changeLanguage('en')">
-🇬🇧 EN
-</button>
-
-</div>
-
-<div class="user">
-<div class="avatar">A</div>
-<div>
-<b>Admin</b><br>
-<small id="userRole">Maintenance Manager</small>
-</div>
-</div>
-
-</div>
-
+ <div class="header-right">
+  <div class="lang">
+   <button id="thBtn" onclick="setLanguage('th')">🇹🇭 TH</button>
+   <button id="enBtn" onclick="setLanguage('en')">🇬🇧 EN</button>
+  </div>
+  <div><b>Admin</b><br><small id="role">Maintenance Manager</small></div>
+ </div>
 </header>
 
-
-<!-- ==================================================
-DASHBOARD
-================================================== -->
+<!-- ================= DASHBOARD ================= -->
 
 <section id="dashboard" class="page active">
 
-<div class="stats">
+ <div class="stats">
+  <div class="stat">
+   <small id="sTotal">การตรวจทั้งหมด</small>
+   <strong class="blue" id="total">0</strong>
+  </div>
+  <div class="stat">
+   <small id="sSubmitted">ส่งแล้ว</small>
+   <strong class="green" id="submitted">0</strong>
+  </div>
+  <div class="stat">
+   <small id="sDraft">ฉบับร่าง</small>
+   <strong class="orange" id="draft">0</strong>
+  </div>
+  <div class="stat">
+   <small id="sForms">ใบตรวจในระบบ</small>
+   <strong>11</strong>
+  </div>
+ </div>
 
-<div class="stat">
-<small id="statTotal">การตรวจสอบทั้งหมด</small>
-<strong class="blue" id="totalCount">0</strong>
-</div>
-
-<div class="stat">
-<small id="statSubmitted">ส่งแล้ว</small>
-<strong class="green" id="submitCount">0</strong>
-</div>
-
-<div class="stat">
-<small id="statDraft">ฉบับร่าง</small>
-<strong class="orange" id="draftCount">0</strong>
-</div>
-
-<div class="stat">
-<small id="statForms">แบบฟอร์มที่รองรับ</small>
-<strong>11</strong>
-</div>
-
-</div>
-
-<div class="panel">
-
-<h2 id="dashboardHeading">ภาพรวมงานบำรุงรักษา</h2>
-
-<p id="dashboardDesc">
-ภาพรวมข้อมูลจากการตรวจสอบอุปกรณ์และงานบำรุงรักษา
-</p>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-<tr>
-<th id="dashDate">วันที่</th>
-<th id="dashForm">แบบฟอร์ม</th>
-<th>Station ID</th>
-<th>MEA No.</th>
-<th id="dashStatus">สถานะ</th>
-</tr>
-</thead>
-
-<tbody id="recentTable"></tbody>
-
-</table>
-
-</div>
-
-</div>
+ <div class="panel">
+  <h2 id="recentTitle">รายการตรวจล่าสุด</h2>
+  <div style="overflow:auto">
+   <table>
+    <thead>
+     <tr>
+      <th id="hDate">วันที่</th>
+      <th id="hForm">ใบตรวจ</th>
+      <th>Station ID</th>
+      <th>MEA No.</th>
+      <th id="hStatus">สถานะ</th>
+     </tr>
+    </thead>
+    <tbody id="recentBody"></tbody>
+   </table>
+  </div>
+ </div>
 
 </section>
 
-
-<!-- ==================================================
-ASSET INSPECTION
-================================================== -->
+<!-- ================= FORMS ================= -->
 
 <section id="inspection" class="page">
 
-<div class="toolbar">
-
-<input
-id="searchForm"
-class="search"
-placeholder="🔍 ค้นหาแบบฟอร์ม..."
-oninput="filterForms()">
-
-</div>
-
-<div id="formCards" class="forms-grid"></div>
-
-</section>
-
-
-<!-- ==================================================
-HISTORY
-================================================== -->
-
-<section id="history" class="page">
-
-<div class="panel">
-
-<div class="panel-header">
-
-<h2 id="historyHeading">ประวัติการตรวจสอบ</h2>
-
-<button class="btn btn-green"
-onclick="exportCSV()"
-id="exportBtn">
-Export CSV
-</button>
-
-</div>
-
-<br>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-
-<tr>
-<th id="historyDate">วันที่</th>
-<th id="historyForm">แบบฟอร์ม</th>
-<th>Station ID</th>
-<th>MEA No.</th>
-<th id="historyInspector">ผู้ตรวจ</th>
-<th id="historyStatus">สถานะ</th>
-<th></th>
-</tr>
-
-</thead>
-
-<tbody id="historyTable"></tbody>
-
-</table>
-
-</div>
-
-</div>
+ <div class="panel">
+  <h2 id="formsTitle">ใบตรวจภาคสนาม</h2>
+  <p id="formsDesc">
+   เลือกใบตรวจ ระบบจะเปิดเป็นแบบกระดาษ A4 สำหรับกรอกข้อมูล
+  </p>
+  <input class="search" id="formSearch"
+         placeholder="🔍 ค้นหาใบตรวจ..."
+         oninput="filterForms()">
+  <div class="grid" id="formCards"></div>
+ </div>
 
 </section>
 
-
-<!-- ==================================================
-WORK ORDER
-================================================== -->
-
-<section id="workorder" class="page">
-
-<div class="panel">
-
-<h2 id="woHeading">Work Order Management</h2>
-
-<p id="woDesc">
-ข้อบกพร่องที่พบจากการตรวจสามารถนำไปสร้างใบสั่งงานบำรุงรักษาได้
-</p>
-
-<button class="btn" id="woButton"
-onclick="alertWorkOrder()">
-+ Create Work Order
-</button>
-
-</div>
-
-</section>
-
-
-<!-- ==================================================
-PM
-================================================== -->
-
-<section id="pm" class="page">
-
-<div class="panel">
-
-<h2 id="pmHeading">
-Preventive Maintenance Planning
-</h2>
-
-<p id="pmDesc">
-กำหนดรอบ PM, Due Date และผู้รับผิดชอบ
-</p>
-
-</div>
-
-</section>
-
-
-<!-- ==================================================
-FIELD NAVIGATION
-================================================== -->
+<!-- ================= NAVIGATION ================= -->
 
 <section id="navigation" class="page">
 
-<div class="nav-banner">
+ <div class="navhero">
+  <h2 id="navTitle">🧭 การนำทางตรวจภาคสนาม</h2>
+  <div id="navDesc">
+   กรอกข้อมูลสถานีและพิกัด แล้วเลือกใบตรวจที่ต้องการ
+  </div>
+ </div>
 
-<h2 id="navigationHeading">
-🧭 การนำทางตรวจภาคสนาม
-</h2>
+ <div class="panel">
+  <div class="row3">
+   <div class="field">
+    <label>Station ID</label>
+    <input id="navStation">
+   </div>
+   <div class="field">
+    <label>MEA No.</label>
+    <input id="navMea">
+   </div>
+   <div class="field">
+    <label id="navLocationLabel">สถานที่</label>
+    <input id="navLocation">
+   </div>
+   <div class="field">
+    <label>Latitude</label>
+    <input id="navLat" type="number" step="any">
+   </div>
+   <div class="field">
+    <label>Longitude</label>
+    <input id="navLng" type="number" step="any">
+   </div>
+  </div>
 
-<p id="navigationDesc">
-ค้นหาจุดตรวจและเปิดเส้นทางไปยังอุปกรณ์
-</p>
+  <br>
 
-</div>
+  <button class="btn" id="mapBtn" onclick="openMap()">🗺 เปิดเส้นทาง</button>
+  <button class="btn btn-gray" id="clearNavBtn" onclick="clearNav()">ล้าง</button>
+ </div>
 
-
-<div class="panel">
-
-<div class="section-title" id="navLocationTitle">
-ข้อมูลจุดตรวจ
-</div>
-
-<div class="grid3">
-
-<div class="field">
-
-<label>Station ID</label>
-
-<input id="navStation"
-placeholder="ST-001">
-
-</div>
-
-
-<div class="field">
-
-<label>MEA No.</label>
-
-<input id="navMea"
-placeholder="MEA No.">
-
-</div>
-
-
-<div class="field">
-
-<label id="navLocationLabel">
-สถานที่
-</label>
-
-<input id="navLocation"
-placeholder="Location">
-
-</div>
-
-
-<div class="field">
-
-<label>Latitude</label>
-
-<input
-id="navLat"
-type="number"
-step="any"
-placeholder="13.7563">
-
-</div>
-
-
-<div class="field">
-
-<label>Longitude</label>
-
-<input
-id="navLng"
-type="number"
-step="any"
-placeholder="100.5018">
-
-</div>
-
-</div>
-
-
-<div class="coordinate-box">
-
-<b id="coordinateHelpTitle">
-📍 การใช้งานพิกัด
-</b>
-
-<p id="coordinateHelp">
-กรอก Latitude และ Longitude ของจุดตรวจ จากนั้นกดเปิดเส้นทาง
-เพื่อเปิด Google Maps
-</p>
-
-</div>
-
-<br>
-
-<div style="display:flex;gap:10px;flex-wrap:wrap">
-
-<button class="btn"
-onclick="openNavigation()"
-id="openNavigationBtn">
-🗺️ เปิดเส้นทาง
-</button>
-
-<button class="btn btn-gray"
-onclick="clearNavigation()"
-id="clearNavigationBtn">
-ล้างข้อมูล
-</button>
-
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<h2 id="fieldInspectionHeading">
-📍 เริ่มตรวจจากภาคสนาม
-</h2>
-
-<p id="fieldInspectionDesc">
-เลือกประเภทอุปกรณ์ เมื่อกดเริ่มตรวจ ระบบจะนำข้อมูล Station และ GIS ไปใส่ในใบตรวจให้อัตโนมัติ
-</p>
-
-<div id="navigationForms"
-class="forms-grid"></div>
-
-</div>
+ <div class="panel">
+  <h2 id="chooseFieldForm">เลือกใบตรวจ</h2>
+  <div class="grid" id="navForms"></div>
+ </div>
 
 </section>
 
+<!-- ================= HISTORY ================= -->
 
-<!-- ==================================================
-MANUAL
-================================================== -->
+<section id="history" class="page">
+ <div class="panel">
+  <div style="display:flex;justify-content:space-between;gap:10px">
+   <h2 id="historyTitle">ประวัติการตรวจสอบ</h2>
+   <button class="btn btn-green" onclick="exportCSV()">Export CSV</button>
+  </div>
+  <div style="overflow:auto">
+   <table>
+    <thead>
+     <tr>
+      <th id="hhDate">วันที่</th>
+      <th id="hhForm">ใบตรวจ</th>
+      <th>Station ID</th>
+      <th>MEA No.</th>
+      <th id="hhInspector">ผู้ตรวจ</th>
+      <th id="hhStatus">สถานะ</th>
+      <th></th>
+     </tr>
+    </thead>
+    <tbody id="historyBody"></tbody>
+   </table>
+  </div>
+ </div>
+</section>
+
+<!-- ================= WORK ORDER ================= -->
+
+<section id="workorder" class="page">
+ <div class="panel">
+  <h2>Work Order</h2>
+  <p id="woText">
+   รายการที่ตรวจพบความชำรุดสามารถนำมาใช้สร้าง Work Order ได้
+  </p>
+ </div>
+</section>
+
+<!-- ================= PM ================= -->
+
+<section id="pm" class="page">
+ <div class="panel">
+  <h2>Preventive Maintenance Planning</h2>
+  <p id="pmText">
+   สำหรับวางแผนรอบ PM, Due Date และผู้รับผิดชอบ
+  </p>
+ </div>
+</section>
+
+<!-- ================= MANUAL ================= -->
 
 <section id="manual" class="page">
 
-<div class="panel">
-
-<h2 id="manualHeading">
-📖 คู่มือการใช้งาน
-</h2>
-
-<p id="manualDesc">
-คู่มือระบบ Asset Inspection และการตรวจสอบอุปกรณ์
-</p>
-
-<div class="toolbar">
-
-<input
-id="manualSearch"
-class="search"
-placeholder="🔍 ค้นหาคู่มือ..."
-oninput="filterManuals()">
-
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<div class="section-title"
-id="systemManualTitle">
-คู่มือการใช้งานระบบ
-</div>
-
-<div class="forms-grid">
-
-
-<div class="form-card">
-
-<div class="manual-icon">🔍</div>
-
-<h3>Asset Inspection</h3>
-
-<p id="manualInspectionText">
-เลือกแบบตรวจ กรอกผลตรวจ แนบรูป และบันทึกข้อมูล
-</p>
-
-</div>
-
-
-<div class="form-card">
-
-<div class="manual-icon">🧭</div>
-
-<h3>Field Navigation</h3>
-
-<p id="manualNavigationText">
-กรอก Station ID และพิกัด GIS เพื่อเปิดเส้นทางไปยังจุดตรวจ
-</p>
-
-</div>
-
-
-<div class="form-card">
-
-<div class="manual-icon">💾</div>
-
-<h3>Save Draft</h3>
-
-<p id="manualDraftText">
-บันทึกข้อมูลชั่วคราวก่อนการตรวจเสร็จสมบูรณ์
-</p>
-
-</div>
-
-
-<div class="form-card">
-
-<div class="manual-icon">✅</div>
-
-<h3>Submit Inspection</h3>
-
-<p id="manualSubmitText">
-ยืนยันและบันทึกผลการตรวจสอบ
-</p>
-
-</div>
-
-
-<div class="form-card">
-
-<div class="manual-icon">📚</div>
-
-<h3>Inspection History</h3>
-
-<p id="manualHistoryText">
-ตรวจสอบประวัติย้อนหลังและ Export CSV
-</p>
-
-</div>
-
-
-<div class="form-card">
-
-<div class="manual-icon">🌐</div>
-
-<h3>TH / EN</h3>
-
-<p id="manualLanguageText">
-เปลี่ยนภาษาไทยและภาษาอังกฤษได้จากปุ่มด้านบน
-</p>
-
-</div>
-
-
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<div class="section-title"
-id="equipmentManualTitle">
-คู่มือการตรวจสอบอุปกรณ์
-</div>
-
-<div id="manualCards"
-class="forms-grid"></div>
-
-</div>
-
-</section>
-
-
-<!-- ==================================================
-KPI
-================================================== -->
-
-<section id="kpi" class="page">
-
-<div class="stats">
-
-<div class="stat">
-<small id="kpiCompletionLabel">
-Inspection Completion
-</small>
-<strong class="green"
-id="completionKPI">0%</strong>
-</div>
-
-<div class="stat">
-<small id="kpiTotalLabel">
-Total Inspection
-</small>
-<strong class="blue"
-id="kpiTotal">0</strong>
-</div>
-
-<div class="stat">
-<small id="kpiSubmitLabel">
-Submitted
-</small>
-<strong class="green"
-id="kpiSubmit">0</strong>
-</div>
-
-<div class="stat">
-<small id="kpiDraftLabel">
-Draft
-</small>
-<strong class="orange"
-id="kpiDraft">0</strong>
-</div>
-
-</div>
+ <div class="panel">
+  <h2 id="manualTitle">📖 คู่มือการใช้งาน</h2>
+  <div class="grid">
+
+   <div class="card manual-step">
+    <div class="manual-icon">1</div>
+    <div>
+     <b id="m1t">เลือกใบตรวจ</b>
+     <p id="m1d">เลือกอุปกรณ์จากเมนูใบตรวจภาคสนาม</p>
+    </div>
+   </div>
+
+   <div class="card manual-step">
+    <div class="manual-icon">2</div>
+    <div>
+     <b id="m2t">กรอกเหมือนใบกระดาษ</b>
+     <p id="m2d">ติ๊กผลตรวจและกรอกค่าลงในช่องของเอกสารโดยตรง</p>
+    </div>
+   </div>
+
+   <div class="card manual-step">
+    <div class="manual-icon">3</div>
+    <div>
+     <b id="m3t">บันทึกผล</b>
+     <p id="m3d">บันทึกร่างหรือส่งผลตรวจเมื่อทำงานเสร็จ</p>
+    </div>
+   </div>
+
+   <div class="card manual-step">
+    <div class="manual-icon">🧭</div>
+    <div>
+     <b>Field Navigation</b>
+     <p id="m4d">กรอกพิกัดเพื่อเปิดเส้นทางไปยังจุดตรวจ</p>
+    </div>
+   </div>
+
+   <div class="card manual-step">
+    <div class="manual-icon">🖨</div>
+    <div>
+     <b id="m5t">Print / PDF</b>
+     <p id="m5d">ใบตรวจออกแบบตามขนาด A4 และสามารถสั่งพิมพ์ได้</p>
+    </div>
+   </div>
+
+   <div class="card manual-step">
+    <div class="manual-icon">🌐</div>
+    <div>
+     <b>TH / EN</b>
+     <p id="m6d">สลับภาษาได้จากด้านบนของระบบ</p>
+    </div>
+   </div>
+
+  </div>
+
+  <br>
+
+  <h2 id="equipmentManual">คู่มือใบตรวจ 11 แบบ</h2>
+  <input class="search" id="manualSearch"
+         placeholder="🔍 ค้นหาคู่มือ..."
+         oninput="filterManuals()">
+  <div class="grid" id="manualCards"></div>
+ </div>
 
 </section>
 
 </main>
 
-
-<!-- ==================================================
-INSPECTION MODAL
-================================================== -->
-
-<div id="inspectionModal"
-class="modal">
-
-<div class="modal-content">
-
-<div class="form-header">
-
-<div>
-<h2 id="modalTitle"></h2>
-<div id="modalCode"
-class="code"></div>
-</div>
-
-<span class="close"
-onclick="closeModal()">×</span>
-
-</div>
-
-
-<div class="panel">
-
-<div class="section-title"
-id="generalInfoTitle">
-1. ข้อมูลทั่วไป
-</div>
-
-
-<div class="grid3">
-
-<div class="field">
-
-<label id="inspectionDateLabel">
-วันที่ตรวจ
-</label>
-
-<input id="inspectionDate"
-type="date">
-
-</div>
-
-
-<div class="field">
-
-<label>Station ID</label>
-
-<input id="stationId">
-
-</div>
-
-
-<div class="field">
-
-<label>MEA No.</label>
-
-<input id="meaNo">
-
-</div>
-
-
-<div class="field">
-
-<label id="locationLabel">
-สถานที่
-</label>
-
-<input id="location">
-
-</div>
-
-
-<div class="field">
-
-<label>GIS Latitude</label>
-
-<input
-id="lat"
-type="number"
-step="any">
-
-</div>
-
-
-<div class="field">
-
-<label>GIS Longitude</label>
-
-<input
-id="lng"
-type="number"
-step="any">
-
-</div>
-
-
-<div class="field">
-
-<label id="inspectorLabel">
-ผู้ตรวจ
-</label>
-
-<input id="inspector">
-
-</div>
-
-
-<div class="field">
-
-<label id="positionLabel">
-ตำแหน่ง
-</label>
-
-<input id="position">
-
-</div>
-
-
-<div class="field">
-
-<label>Work Order</label>
-
-<input id="workOrder"
-placeholder="WO-xxxx">
-
-</div>
-
-</div>
-
-
-<div id="dynamicForm"></div>
-
-
-<div class="section-title"
-id="recommendationTitle">
-ข้อเสนอแนะ / ข้อมูลเพิ่มเติม
-</div>
-
-<textarea id="remark"></textarea>
-
-
-<div class="section-title"
-id="evidenceTitle">
-หลักฐานการตรวจสอบ
-</div>
-
-<div class="upload-box">
-
-<b id="uploadTitle">
-📷 แนบรูปภาพ
-</b>
-
-<br><br>
-
-<input
-type="file"
-accept="image/*"
-onchange="previewImage(this,'generalPreview')">
-
-<img id="generalPreview"
-class="preview">
-
-</div>
-
-<br>
-
-
-<div style="
-display:flex;
-gap:10px;
-justify-content:flex-end;
-flex-wrap:wrap;
-">
-
-<button class="btn btn-gray"
-onclick="closeModal()"
-id="cancelBtn">
-ยกเลิก
-</button>
-
-<button class="btn btn-orange"
-onclick="saveInspection('Draft')"
-id="draftBtn">
-Save Draft
-</button>
-
-<button class="btn btn-green"
-onclick="saveInspection('Submitted')"
-id="submitBtn">
-✓ Submit Inspection
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div id="toast"
-class="toast"></div>
-
+<!-- =========================================================
+     PAPER FORM MODE
+========================================================= -->
+
+<section id="paperMode">
+
+ <div class="paper-toolbar">
+  <div>
+   <b id="paperToolbarTitle">ใบตรวจภาคสนาม</b>
+   <small id="paperToolbarCode"></small>
+  </div>
+
+  <div class="paper-actions">
+   <button class="btn btn-gray" onclick="closePaper()">← <span id="backText">กลับ</span></button>
+   <button class="btn btn-orange" onclick="savePaper('Draft')">💾 <span id="saveDraftText">บันทึกร่าง</span></button>
+   <button class="btn btn-green" onclick="savePaper('Submitted')">✓ <span id="submitText">ส่งผลตรวจ</span></button>
+   <button class="btn" onclick="window.print()">🖨 <span id="printText">พิมพ์ / PDF</span></button>
+  </div>
+ </div>
+
+ <div class="paper-wrap" id="paperContainer"></div>
+
+</section>
 
 <script>
-
-/* ==================================================
-LANGUAGE
-================================================== */
-
-let currentLanguage =
-localStorage.getItem("assetLanguage") || "th";
-
-
-const T={
-
-th:{
-
-dashboard:"แดชบอร์ด",
-inspection:"ตรวจสอบอุปกรณ์",
-history:"ประวัติการตรวจสอบ",
-workorder:"ใบสั่งงาน",
-pm:"วางแผน PM",
-navigation:"การนำทางตรวจภาคสนาม",
-manual:"คู่มือ",
-kpi:"KPI",
-
-dashboardTitle:"แดชบอร์ดงานบำรุงรักษา",
-inspectionTitle:"ตรวจสอบอุปกรณ์",
-historyTitle:"ประวัติการตรวจสอบ",
-workorderTitle:"จัดการใบสั่งงาน",
-pmTitle:"การบำรุงรักษาเชิงป้องกัน",
-navigationTitle:"การนำทางตรวจภาคสนาม",
-manualTitle:"คู่มือการใช้งาน",
-kpiTitle:"KPI งานบำรุงรักษา",
-
-subtitle:"ระบบตรวจสอบอุปกรณ์และบำรุงรักษาเชิงป้องกัน",
-
-open:"เปิดแบบตรวจ →",
-start:"🔍 เริ่มตรวจ",
-manualOpen:"📖 เปิดคู่มือ",
-
-select:"-- เลือก --",
-normal:"ปกติ",
-damaged:"ชำรุด",
-none:"ไม่มี",
-na:"N/A",
-
-checklist:"2. รายการตรวจสอบบำรุงรักษา",
-no:"ลำดับ",
-item:"รายการตรวจสอบ",
-result:"ผลตรวจ",
-remark:"ข้อบกพร่อง / หมายเหตุ",
-
-submitted:"ส่งแล้ว",
-draft:"ฉบับร่าง",
-
-delete:"ลบ",
-
-noData:"ยังไม่มีข้อมูลการตรวจสอบ",
-
-draftSaved:"บันทึก Draft เรียบร้อย",
-submittedSaved:"ส่งผลการตรวจเรียบร้อย",
-
-confirmDelete:"ต้องการลบข้อมูลนี้หรือไม่?",
-
-electrical:"3. ตรวจวัดกระแสและแรงดันไฟฟ้า",
-
-oil:"2. ทดสอบ Breakdown Voltage น้ำมันหม้อแปลง",
-hotspot:"2. ข้อมูล Hot Spot",
-pd:"2. การตรวจสอบ Partial Discharge"
-
-},
-
-en:{
-
-dashboard:"Dashboard",
-inspection:"Asset Inspection",
-history:"Inspection History",
-workorder:"Work Order",
-pm:"PM Planning",
-navigation:"Field Navigation",
-manual:"Manual",
-kpi:"KPI",
-
-dashboardTitle:"Maintenance Dashboard",
-inspectionTitle:"Asset Inspection",
-historyTitle:"Inspection History",
-workorderTitle:"Work Order Management",
-pmTitle:"Preventive Maintenance",
-navigationTitle:"Field Navigation",
-manualTitle:"User Manual",
-kpiTitle:"Maintenance KPI",
-
-subtitle:"Asset Inspection & Preventive Maintenance",
-
-open:"Open Inspection →",
-start:"🔍 Start Inspection",
-manualOpen:"📖 Open Manual",
-
-select:"-- Select --",
-normal:"Normal",
-damaged:"Damaged",
-none:"None",
-na:"N/A",
-
-checklist:"2. Maintenance Inspection Checklist",
-no:"No.",
-item:"Inspection Item",
-result:"Result",
-remark:"Defect / Remark",
-
-submitted:"Submitted",
-draft:"Draft",
-
-delete:"Delete",
-
-noData:"No inspection data",
-
-draftSaved:"Draft saved successfully",
-submittedSaved:"Inspection submitted successfully",
-
-confirmDelete:"Delete this inspection record?",
-
-electrical:"3. Electrical Measurements",
-
-oil:"2. Transformer Oil Breakdown Voltage Test",
-hotspot:"2. Hot Spot Information",
-pd:"2. Partial Discharge Inspection"
-
-}
-
-};
-
-
-/* ==================================================
-11 INSPECTION FORMS
-================================================== */
+/* =========================================================
+   DATA
+========================================================= */
 
 const forms=[
-
 {
-id:1,
-code:"SF-07-0-015",
-short:"Distribution Transformer",
-th:"แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย",
-en:"Distribution Transformer Maintenance Inspection",
-items:[
-["ตัวถังหม้อแปลง","Transformer Tank"],
-["Drop Fuse","Drop Fuse"],
-["Station Post Type Insulator","Station Post Type Insulator"],
-["สายเข้า-ออก Drop Fuse","Drop Fuse Incoming / Outgoing Cable"],
-["คอนสาย","Crossarm"],
-["กับดักฟ้าผ่า (L/A)","Lightning Arrester (L/A)"],
-["Bushing HV-LV","HV-LV Bushing"],
-["Cover (Bushing / L/A / Termination Kit)","Cover (Bushing / L/A / Termination Kit)"],
-["สายหน้าหม้อแปลง LV","LV Transformer Cable"],
-["อุปกรณ์ป้องกันสัตว์","Animal Protection Device"],
-["LV Ground","LV Ground"],
-["HV Ground","HV Ground"],
-["CT-TLM Meter","CT-TLM Meter"],
-["Low Voltage Capacitor","Low Voltage Capacitor"]
-],
-measurements:true
+ id:1, code:"SF-07-0-015",
+ th:"แบบตรวจสอบบำรุงรักษาหม้อแปลงจำหน่าย",
+ en:"Distribution Transformer Maintenance Inspection",
+ short:"Distribution Transformer",
+ type:"standard",
+ meta:["ยี่ห้อ / Brand","ชนิด / Type","จำนวนเฟส / Phase"],
+ items:[
+  ["Drop Fuse","Drop Fuse"],
+  ["Station Post Type Insulator","Station Post Type Insulator"],
+  ["สายเข้า-ออก Drop Fuse","Drop Fuse Incoming / Outgoing Cable"],
+  ["กับดักฟ้าผ่า (L/A)","Lightning Arrester"],
+  ["Bushing HV-LV","HV-LV Bushing"],
+  ["Cover (Bushing / L/A / Termination Kit)","Cover (Bushing / L/A / Termination Kit)"],
+  ["อุปกรณ์ป้องกันสัตว์","Animal Protection"],
+  ["Low Voltage Capacitor","Low Voltage Capacitor"],
+  ["ตัวถังหม้อแปลง","Transformer Tank"],
+  ["LV Ground","LV Ground"],
+  ["HV Ground","HV Ground"],
+  ["CT-TLM Meter (ถ้ามี)","CT-TLM Meter (if available)"]
+ ],
+ measurement:"transformer"
 },
-
 {
-id:2,
-code:"SF-07-0-016",
-short:"Load Break Switch (LBS)",
-th:"แบบตรวจสอบบำรุงรักษา Load Break Switch",
-en:"Load Break Switch Maintenance Inspection",
-items:[
-["ตัวถัง LBS / สลักล็อกการปลดสับ","LBS Body / Switching Lock"],
-["สถานะก๊าซ SF6","SF6 Gas Condition"],
-["Bushing","Bushing"],
-["กับดักฟ้าผ่า","Lightning Arrester"],
-["VT","VT"],
-["Drop Fuse ลง VT","VT Drop Fuse"],
-["คอนสาย","Crossarm"],
-["สายควบคุม LBS","LBS Control Cable"],
-["อุปกรณ์ป้องกันสัตว์","Animal Protection Device"],
-["ตู้ Control / FRTU / Ground","Control / FRTU / Ground Cabinet"],
-["ไฟสถานะหน้าตู้","Cabinet Status Lamp"],
-["แหล่งจ่ายไฟฟ้าและสายควบคุม","Power Supply & Control Cable"],
-["สภาพ Battery / Capacitor","Battery / Capacitor Condition"],
-["Ground HV","HV Ground"],
-["Ground LV","LV Ground"],
-["ทดสอบ Remote","Remote Operation Test"],
-["ทดสอบ Local","Local Operation Test"],
-["ระบบ ATS","ATS System"]
-]
+ id:2, code:"SF-07-0-016",
+ th:"แบบตรวจสอบบำรุงรักษา Load Break Switch",
+ en:"Load Break Switch Maintenance Inspection",
+ short:"Load Break Switch (LBS)",
+ type:"standard",
+ meta:["VT MEA No.","Switch No.","ตู้ OFDF No.","LBS MEA No.","ยี่ห้อ VT / VT Brand"],
+ items:[
+  ["ตัวถัง LBS / สลักล็อกการปลดสับ","LBS Body / Switching Lock"],
+  ["สถานะก๊าซ SF6","SF6 Gas Condition"],
+  ["Bushing","Bushing"],
+  ["Lightning Arrester","Lightning Arrester"],
+  ["VT","VT"],
+  ["Drop Fuse ลง VT","VT Drop Fuse"],
+  ["คอนสาย","Crossarm"],
+  ["สายควบคุม LBS","LBS Control Cable"],
+  ["อุปกรณ์ป้องกันสัตว์","Animal Protection"],
+  ["ตู้ Control / FRTU / Ground","Control / FRTU / Ground Cabinet"],
+  ["ไฟแสดงสถานะ","Status Indicator"],
+  ["Supply / Control Cable","Supply / Control Cable"],
+  ["Battery / Capacitor","Battery / Capacitor"],
+  ["Ground HV","HV Ground"],
+  ["Ground LV","LV Ground"],
+  ["ทดสอบทาง Local","Local Operation Test"],
+  ["แรงดันไฟฟ้าเลี้ยงอุปกรณ์","Equipment Supply Voltage"],
+  ["ทดสอบระบบ ATS (ถ้ามี)","ATS Test (if available)"]
+ ],
+ extra:"lbs"
 },
-
 {
-id:3,
-code:"SF-07-0-017",
-short:"Sectionalizer",
-th:"แบบตรวจสอบบำรุงรักษา Sectionalizer",
-en:"Sectionalizer Maintenance Inspection",
-items:[
-["ตัวถัง SZ / สลักล็อกการปลดสับ","SZ Body / Switching Lock"],
-["สถานะก๊าซ SF6","SF6 Gas Condition"],
-["Bushing","Bushing"],
-["กับดักฟ้าผ่า","Lightning Arrester"],
-["คอนสาย","Crossarm"],
-["สายควบคุม SZ","SZ Control Cable"],
-["อุปกรณ์ป้องกันสัตว์","Animal Protection Device"],
-["ตู้ Control / Ground","Control / Ground Cabinet"],
-["ไฟสถานะหน้าตู้","Cabinet Status Lamp"],
-["แหล่งจ่ายไฟฟ้าและสายควบคุม","Power Supply & Control Cable"],
-["สภาพ Battery / Capacitor","Battery / Capacitor Condition"],
-["Ground HV","HV Ground"],
-["Ground LV","LV Ground"],
-["ทดสอบ Local","Local Operation Test"]
-]
+ id:3, code:"SF-07-0-017",
+ th:"แบบตรวจสอบบำรุงรักษา Sectionalizer",
+ en:"Sectionalizer Maintenance Inspection",
+ short:"Sectionalizer",
+ type:"standard",
+ meta:["SZ MEA No.","Switch No.","ยี่ห้อ SZ / SZ Brand"],
+ items:[
+  ["ตัวถัง SZ / สลักล็อกการปลดสับ","SZ Body / Switching Lock"],
+  ["สถานะก๊าซ SF6","SF6 Gas Condition"],
+  ["Bushing","Bushing"],
+  ["Lightning Arrester","Lightning Arrester"],
+  ["คอนสาย","Crossarm"],
+  ["สายควบคุม SZ","SZ Control Cable"],
+  ["อุปกรณ์ป้องกันสัตว์","Animal Protection"],
+  ["ตู้ Control / Ground","Control / Ground Cabinet"],
+  ["ไฟแสดงสถานะ","Status Indicator"],
+  ["Supply / Control Cable","Supply / Control Cable"],
+  ["Battery / Capacitor","Battery / Capacitor"],
+  ["Ground HV","HV Ground"],
+  ["Ground LV (ตู้ Control)","LV Ground (Control Cabinet)"],
+  ["ทดสอบทาง Local","Local Operation Test"]
+ ],
+ extra:"switch"
 },
-
 {
-id:4,
-code:"SF-07-0-018",
-short:"Ring Main Unit (RMU)",
-th:"แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",
-en:"Ring Main Unit (RMU) Maintenance Inspection",
-items:[
-["สภาพภายนอก RMU","RMU External Condition"],
-["ประตู","Door"],
-["ฐานตู้","Cabinet Base"],
-["สภาพ RMU / ห้อง","RMU / Room Condition"],
-["ก๊าซ SF6","SF6 Gas"],
-["ตัวแสดงสถานะสวิตช์","Switch Position Indicator"],
-["กุญแจล็อกป้องกันการปลด-สับ","Switching Interlock"],
-["คันสับ","Operating Handle"],
-["ตัวตรวจสอบแรงดัน","Voltage Indicator"],
-["ตัวตรวจสอบการลัดวงจร","Short Circuit Indicator"],
-["แรงดันไฟฟ้าเลี้ยงอุปกรณ์","Auxiliary Supply Voltage"],
-["Battery / UPS","Battery / UPS"],
-["FRTU","FRTU"],
-["อุปกรณ์ควบคุมอื่น ๆ","Other Control Equipment"],
-["ทดสอบปลด-สับด้วยคันสับ","Manual Switching Test"],
-["ทดสอบ LOCAL","LOCAL Switching Test"],
-["ทดสอบ REMOTE","REMOTE Switching Test"],
-["ทดสอบ ATF","ATF Test"]
-]
+ id:4, code:"SF-07-0-018",
+ th:"แบบตรวจสอบบำรุงรักษา Ring Main Unit (RMU)",
+ en:"Ring Main Unit (RMU) Maintenance Inspection",
+ short:"Ring Main Unit (RMU)",
+ type:"standard",
+ meta:["RMU MEA No.","ยี่ห้อ RMU / RMU Brand"],
+ items:[
+  ["สภาพภายนอก RMU","RMU External Condition"],
+  ["ประตู","Door"],
+  ["ฐานตู้ / นั่งร้าน","Cabinet Base"],
+  ["ตู้ครอบ / ห้อง RMU","RMU Enclosure / Room"],
+  ["ก๊าซ SF6","SF6 Gas"],
+  ["ตัวแสดงสถานะสวิตช์","Switch Position Indicator"],
+  ["กุญแจ / Interlock","Key / Interlock"],
+  ["คันสับ","Operating Handle"],
+  ["ตัวตรวจสอบแรงดัน","Voltage Indicator"],
+  ["ตัวตรวจสอบการลัดวงจร","Short Circuit Indicator"],
+  ["แรงดันไฟฟ้าเลี้ยงอุปกรณ์","Equipment Supply Voltage"],
+  ["Battery / UPS","Battery / UPS"],
+  ["FRTU","FRTU"],
+  ["อุปกรณ์ควบคุมอื่น ๆ","Other Control Equipment"],
+  ["ทดสอบการปลด-สับด้วยคันสับ","Manual Switching Test"],
+  ["ทดสอบ Local","Local Switching Test"],
+  ["ทดสอบ Remote","Remote Switching Test"],
+  ["ทดสอบ ATF","ATF Test"]
+ ]
 },
-
 {
-id:5,
-code:"SF-07-0-019",
-short:"Unit Substation",
-th:"แบบตรวจสอบบำรุงรักษา UNIT SUBSTATION",
-en:"Unit Substation Maintenance Inspection",
-items:[
-["สภาพภายนอก","External Condition"],
-["ตู้ครอบ Enclosure","Enclosure"],
-["ฐานตู้ / นั่งร้าน","Cabinet Base"],
-["สภาพ RMU","RMU Condition"],
-["ก๊าซ SF6","SF6 Gas"],
-["ตัวแสดงสถานะสวิตช์","Switch Position Indicator"],
-["หม้อแปลง","Transformer"],
-["ตัวถังหม้อแปลง","Transformer Tank"],
-["Bushing HV-LV","HV-LV Bushing"],
-["สายหน้าหม้อแปลง HV-LV","HV-LV Transformer Cable"],
-["LV Ground","LV Ground"],
-["HV Ground","HV Ground"],
-["CB / Fuse","CB / Fuse"],
-["สายไฟฟ้า","Electrical Cable"],
-["Busbar","Busbar"],
-["เครื่องวัดไฟฟ้า","Electrical Meter"],
-["CT-TLM Meter","CT-TLM Meter"]
-],
-measurements:true
+ id:5, code:"SF-07-0-019",
+ th:"แบบตรวจสอบบำรุงรักษา UNIT SUBSTATION",
+ en:"Unit Substation Maintenance Inspection",
+ short:"Unit Substation",
+ type:"unit",
+ meta:["TR MEA No.","ยี่ห้อ TR / TR Brand","RMU MEA No.","ยี่ห้อ RMU / RMU Brand"],
+ items:[
+  ["สภาพภายนอก","External Condition"],
+  ["ตู้ครอบ Enclosure","Enclosure"],
+  ["ฐานตู้ / นั่งร้าน","Cabinet Base"],
+  ["ประตู","Door"],
+  ["สภาพ RMU","RMU Condition"],
+  ["ก๊าซ SF6","SF6 Gas"],
+  ["ตัวแสดงสถานะสวิตช์","Switch Position Indicator"],
+  ["ระบบปลด-สับ","Switching System"],
+  ["ตัวตรวจสอบการลัดวงจร","Short Circuit Indicator"],
+  ["แรงดันไฟฟ้าเลี้ยงอุปกรณ์","Equipment Supply Voltage"],
+  ["Battery / UPS","Battery / UPS"],
+  ["FRTU","FRTU"],
+  ["ตัวถังหม้อแปลง","Transformer Tank"],
+  ["Bushing HV-LV","HV-LV Bushing"],
+  ["สาย HV-LV","HV-LV Cable"],
+  ["LV Ground","LV Ground"],
+  ["HV Ground","HV Ground"],
+  ["CB / Fuse","CB / Fuse"],
+  ["Busbar","Busbar"],
+  ["Electrical Meter","Electrical Meter"],
+  ["CT-TLM Meter","CT-TLM Meter"]
+ ],
+ measurement:"transformer"
 },
-
 {
-id:6,
-code:"SF-07-0-020",
-short:"Capacitor Bank 12-24 kV",
-th:"แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV",
-en:"12-24 kV Capacitor Bank Maintenance Inspection",
-items:[
-["Drop Fuse","Drop Fuse"],
-["Station Post Type Insulator","Station Post Type Insulator"],
-["สายเข้า-ออก Drop Fuse","Drop Fuse Incoming / Outgoing Cable"],
-["คอนสาย","Crossarm"],
-["อุปกรณ์ป้องกันสัตว์","Animal Protection Device"],
-["กับดักฟ้าผ่า (L/A)","Lightning Arrester"],
-["HV Ground","HV Ground"],
-["Vacuum CB","Vacuum CB"],
-["Supply","Supply"],
-["Fuse Control ภายในตู้","Cabinet Control Fuse"],
-["หลอดไฟแสดงสถานะภายในตู้","Cabinet Status Lamp"],
-["หน้าจอ Digital Control","Digital Control Display"],
-["อุปกรณ์ทั่วไปภายในตู้","General Cabinet Equipment"],
-["ตัวถัง Capacitor","Capacitor Body"],
-["Bushing","Bushing"],
-["Fuse ภายใน","Internal Fuse"]
-],
-capacitor:true
+ id:6, code:"SF-07-0-020",
+ th:"แบบตรวจสอบบำรุงรักษา Capacitor Bank 12-24 kV ในสายป้อน",
+ en:"12-24 kV Feeder Capacitor Bank Maintenance Inspection",
+ short:"Capacitor Bank 12-24 kV",
+ type:"standard",
+ meta:["สายป้อน / Feeder","ชนิด CONTROL / Control Type","ชนิด Switch / Switch Type","ยี่ห้อ / Brand"],
+ items:[
+  ["Drop Fuse","Drop Fuse"],
+  ["Station Post Type Insulator","Station Post Type Insulator"],
+  ["สายเข้า-ออก Drop Fuse","Drop Fuse Incoming / Outgoing Cable"],
+  ["คอนสาย","Crossarm"],
+  ["อุปกรณ์ป้องกันสัตว์","Animal Protection"],
+  ["Lightning Arrester","Lightning Arrester"],
+  ["Cover","Cover"],
+  ["HV Ground","HV Ground"],
+  ["Vacuum CB","Vacuum CB"],
+  ["Supply","Supply"],
+  ["Fuse Control","Control Fuse"],
+  ["Indicator Lamp","Indicator Lamp"],
+  ["Digital Control Display","Digital Control Display"],
+  ["อุปกรณ์ภายในตู้","Cabinet Equipment"],
+  ["Capacitor Cell / Tank","Capacitor Cell / Tank"],
+  ["Bushing","Bushing"],
+  ["Internal Fuse","Internal Fuse"]
+ ],
+ extra:"capacitor"
 },
-
 {
-id:7,
-code:"SF-07-0-021",
-short:"Network Protection",
-th:"แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",
-en:"Network Transformer Protection Equipment Inspection",
-items:[
-["สถานะ MV Switch","MV Switch Status"],
-["สถานะ NP","NP Status"],
-["เบอร์ตู้ / สีตู้","Cabinet Number / Color"],
-["ระบบ Ground N และ G","N & G Grounding System"],
-["อุปกรณ์ป้องกันแรงดันเกิน","Overvoltage Protection Device"],
-["ตัวถัง / รอยต่อหม้อแปลง","Transformer Tank / Joint"],
-["ฝาตู้","Cabinet Cover"],
-["ป้ายแดงห้ามปลด-สับ","Do Not Operate Warning Sign"],
-["ทดสอบปลด MV Switch","MV Switch Opening Test"],
-["ทดสอบสับ MV Switch","MV Switch Closing Test"],
-["อุปกรณ์ภายใน","Internal Equipment"],
-["Relay","Relay"],
-["ตู้อุปกรณ์ส่งข้อมูลระยะไกล","Remote Communication Cabinet"],
-["ไฟเลี้ยง / CB & Fuse","Power Supply / CB & Fuse"],
-["Internet Switch","Internet Switch"]
-]
+ id:7, code:"SF-07-0-021",
+ th:"แบบตรวจสอบบำรุงรักษาเครื่องป้องกันหม้อแปลงวงจรตาข่าย",
+ en:"Network Transformer Protection Equipment Maintenance Inspection",
+ short:"Network Protection",
+ type:"standard",
+ meta:["ACB No.","MEA No.","RELAY No.","FIX ID","เบอร์ตู้ / Cabinet No."],
+ items:[
+  ["สภาพภายนอก","External Condition"],
+  ["Relay / Counter","Relay / Counter"],
+  ["Ground N และ G","N & G Ground"],
+  ["MV.SW CLOSE","MV.SW CLOSE"],
+  ["ป้ายเตือนสีแดง","Red Warning Tag"],
+  ["อุปกรณ์ป้องกันแรงดันเกินด้าน N และ T","N & T Overvoltage Protection"],
+  ["ตัวถัง / รอยต่อหม้อแปลง / น้ำมันรั่ว","Transformer Tank / Joint / Oil Leakage"],
+  ["ฝาตู้ปิดแน่นสนิท","Cabinet Door"],
+  ["ภายในไม่มีน้ำหรือหยดน้ำ","No Water / Condensation"],
+  ["Relay อยู่ในสถานะถูกต้อง","Relay Status"],
+  ["ตู้อุปกรณ์ส่งข้อมูลระยะไกล","Remote Data Cabinet"],
+  ["ไฟเลี้ยง / CB & FUSE","Supply / CB & FUSE"],
+  ["Internet Switch","Internet Switch"]
+ ],
+ extra:"networkProtection"
 },
-
 {
-id:8,
-code:"SF-07-0-022",
-short:"Network Transformer & MV Switch",
-th:"แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",
-en:"Network Transformer & MV Switch Maintenance Inspection",
-items:[
-["สภาพภายนอกสวิตช์แรงกลาง","MV Switch External Condition"],
-["ก๊าซ SF6","SF6 Gas"],
-["หัวต่อสาย / สายไฟฟ้า","Cable Termination / Cable"],
-["ระบบ Ground","Grounding System"],
-["ตัวถังหม้อแปลง","Transformer Tank"],
-["น้ำมันหม้อแปลง","Transformer Oil"],
-["Fuse 12 kV","12 kV Fuse"],
-["สายไฟฟ้าด้านแรงต่ำ","LV Cable"],
-["Capacitor แรงต่ำ","LV Capacitor"]
-],
-measurements:true
+ id:8, code:"SF-07-0-022",
+ th:"แบบตรวจสอบบำรุงรักษาหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง",
+ en:"Network Transformer & Medium Voltage Switch Maintenance Inspection",
+ short:"Network Transformer & MV Switch",
+ type:"network",
+ meta:["TR MEA No.","SW MEA No.","FIX ID"],
+ items:[
+  ["ตัวถัง","Tank / Enclosure"],
+  ["สภาพสวิตช์แรงกลาง","MV Switch Condition"],
+  ["ก๊าซ SF6","SF6 Gas"],
+  ["HV / LV Ground","HV / LV Ground"],
+  ["Cable Terminal / Cable","Cable Terminal / Cable"],
+  ["น้ำมัน ไม่รั่ว อยู่ในระดับกำหนด","Oil Level / Leakage"],
+  ["สายไฟฟ้าด้านแรงต่ำ","LV Cable Condition"],
+  ["Fuse 12 kV","12 kV Fuse"],
+  ["Low Voltage Capacitor","Low Voltage Capacitor"]
+ ]
 },
-
 {
-id:9,
-code:"SF-07-0-023",
-short:"Transformer Oil Test",
-th:"แบบทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย",
-en:"Transformer Oil Testing & Filtering",
-type:"oil"
+ id:9, code:"SF-07-0-023",
+ th:"แบบตรวจสอบบำรุงรักษาทดสอบและกรองน้ำมันหม้อแปลงวงจรตาข่าย",
+ en:"Network Transformer Oil Testing and Filtering Inspection",
+ short:"Transformer Oil Test",
+ type:"oil",
+ meta:["TR MEA No."]
 },
-
 {
-id:10,
-code:"SF-07-0-024",
-short:"Hot Spot",
-th:"รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",
-en:"Hot Spot Inspection Report",
-type:"hotspot"
+ id:10, code:"SF-07-0-024",
+ th:"รายงานผลการตรวจสอบจุดร้อนแดง (Hot Spot)",
+ en:"Hot Spot Inspection Report",
+ short:"Hot Spot",
+ type:"hotspot",
+ meta:["อุปกรณ์ MEA No. / Equipment MEA No.","สายป้อน / Feeder"]
 },
-
 {
-id:11,
-code:"SF-07-0-025",
-short:"Partial Discharge",
-th:"รายงานผลการตรวจสอบ Partial Discharge",
-en:"Partial Discharge Inspection Report",
-type:"pd"
+ id:11, code:"SF-07-0-025",
+ th:"รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge) โดยใช้กล้อง Acoustic Camera",
+ en:"Partial Discharge Inspection Report Using Acoustic Camera",
+ short:"Partial Discharge",
+ type:"pd",
+ meta:["อุปกรณ์ MEA No. / Equipment MEA No.","สายป้อน / Feeder"]
 }
-
 ];
 
-let currentForm=null;
+let lang=localStorage.getItem("inspectionLang")||"th";
+let activeForm=null;
+let fieldSeed=null;
 
+/* =========================================================
+   TRANSLATION
+========================================================= */
 
-/* ==================================================
-NAVIGATION PAGE
-================================================== */
-
-function showPage(id,element){
-
-document.querySelectorAll(".page")
-.forEach(x=>x.classList.remove("active"));
-
-document.getElementById(id)
-.classList.add("active");
-
-document.querySelectorAll(".menu")
-.forEach(x=>x.classList.remove("active"));
-
-if(element) element.classList.add("active");
-
-updatePageTitle(id);
-
-refresh();
-
-}
-
-
-function updatePageTitle(id){
-
-const t=T[currentLanguage];
-
-const titles={
-
-dashboard:t.dashboardTitle,
-inspection:t.inspectionTitle,
-history:t.historyTitle,
-workorder:t.workorderTitle,
-pm:t.pmTitle,
-navigation:t.navigationTitle,
-manual:t.manualTitle,
-kpi:t.kpiTitle
-
+const L={
+ th:{
+  dashboard:"แดชบอร์ด",
+  inspection:"ใบตรวจภาคสนาม",
+  navigation:"การนำทางตรวจภาคสนาม",
+  history:"ประวัติการตรวจ",
+  workorder:"Work Order",
+  pm:"PM Planning",
+  manual:"คู่มือ",
+  dashboardTitle:"แดชบอร์ดงานบำรุงรักษา",
+  inspectionTitle:"ใบตรวจภาคสนาม",
+  navigationTitle:"การนำทางตรวจภาคสนาม",
+  historyTitle:"ประวัติการตรวจสอบ",
+  workorderTitle:"Work Order",
+  pmTitle:"Preventive Maintenance Planning",
+  manualTitle:"คู่มือการใช้งาน",
+  sub:"ระบบตรวจสอบอุปกรณ์ภาคสนาม",
+  open:"เปิดใบตรวจ",
+  start:"เริ่มตรวจ",
+  manualOpen:"เปิดคู่มือ",
+  normal:"ปกติ",
+  damaged:"ชำรุด",
+  none:"ไม่มี",
+  remark:"ข้อบกพร่อง / หมายเหตุ",
+  item:"รายการตรวจสอบบำรุงรักษา",
+  inspector:"ผู้ตรวจ",
+  checker:"ผู้ตรวจสอบ",
+  position:"ตำแหน่ง",
+  date:"วันที่",
+  location:"สถานที่",
+  recommendations:"สิ่งที่ต้องปรับปรุงหรือข้อมูลเพิ่มเติม",
+  corrective:"การปรับปรุงข้อบกพร่อง",
+  draft:"ฉบับร่าง",
+  submitted:"ส่งแล้ว"
+ },
+ en:{
+  dashboard:"Dashboard",
+  inspection:"Field Inspection Forms",
+  navigation:"Field Navigation",
+  history:"Inspection History",
+  workorder:"Work Order",
+  pm:"PM Planning",
+  manual:"Manual",
+  dashboardTitle:"Maintenance Dashboard",
+  inspectionTitle:"Field Inspection Forms",
+  navigationTitle:"Field Navigation",
+  historyTitle:"Inspection History",
+  workorderTitle:"Work Order",
+  pmTitle:"Preventive Maintenance Planning",
+  manualTitle:"User Manual",
+  sub:"Field Asset Inspection System",
+  open:"Open Form",
+  start:"Start Inspection",
+  manualOpen:"Open Manual",
+  normal:"Normal",
+  damaged:"Damaged",
+  none:"None",
+  remark:"Defect / Remark",
+  item:"Maintenance Inspection Item",
+  inspector:"Inspector",
+  checker:"Checker",
+  position:"Position",
+  date:"Date",
+  location:"Location",
+  recommendations:"Recommendations / Additional Information",
+  corrective:"Defect Corrective Action",
+  draft:"Draft",
+  submitted:"Submitted"
+ }
 };
 
-document.getElementById("pageTitle")
-.textContent=titles[id];
+function tr(){return L[lang]}
 
+/* =========================================================
+   APP
+========================================================= */
+
+function showPage(id,el){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+
+ document.querySelectorAll(".menu").forEach(x=>x.classList.remove("active"));
+ if(el) el.classList.add("active");
+
+ document.getElementById("pageTitle").textContent=tr()[id+"Title"]||id;
 }
 
+function setLanguage(v){
+ lang=v;
+ localStorage.setItem("inspectionLang",v);
 
-/* ==================================================
-LANGUAGE
-================================================== */
+ thBtn.classList.toggle("active",v==="th");
+ enBtn.classList.toggle("active",v==="en");
 
-function changeLanguage(lang){
+ document.documentElement.lang=v;
 
-currentLanguage=lang;
+ const map={
+  dashboard:"dashboard",
+  inspection:"inspection",
+  navigation:"navigation",
+  history:"history",
+  workorder:"workorder",
+  pm:"pm",
+  manual:"manual"
+ };
 
-localStorage.setItem(
-"assetLanguage",
-lang
-);
+ document.querySelectorAll(".menu").forEach(x=>{
+  x.querySelector(".menuText").textContent=tr()[map[x.dataset.page]];
+ });
 
-document.documentElement.lang=lang;
+ pageSub.textContent=tr().sub;
+ role.textContent=v==="th"?"ผู้จัดการงานบำรุงรักษา":"Maintenance Manager";
 
-document.getElementById("btnTH")
-.classList.toggle(
-"active",
-lang==="th"
-);
+ sTotal.textContent=v==="th"?"การตรวจทั้งหมด":"Total Inspections";
+ sSubmitted.textContent=tr().submitted;
+ sDraft.textContent=tr().draft;
+ sForms.textContent=v==="th"?"ใบตรวจในระบบ":"Inspection Forms";
 
-document.getElementById("btnEN")
-.classList.toggle(
-"active",
-lang==="en"
-);
+ recentTitle.textContent=v==="th"?"รายการตรวจล่าสุด":"Recent Inspections";
+ hDate.textContent=tr().date;
+ hForm.textContent=v==="th"?"ใบตรวจ":"Form";
+ hStatus.textContent=v==="th"?"สถานะ":"Status";
 
-updateLanguage();
+ formsTitle.textContent=tr().inspection;
+ formsDesc.textContent=v==="th"
+  ?"เลือกใบตรวจ ระบบจะเปิดเป็นแบบกระดาษ A4 สำหรับกรอกข้อมูล"
+  :"Select a form to open an A4-style digital paper inspection sheet.";
 
+ formSearch.placeholder=v==="th"?"🔍 ค้นหาใบตรวจ...":"🔍 Search forms...";
+
+ navTitle.textContent=v==="th"?"🧭 การนำทางตรวจภาคสนาม":"🧭 Field Navigation";
+ navDesc.textContent=v==="th"
+  ?"กรอกข้อมูลสถานีและพิกัด แล้วเลือกใบตรวจที่ต้องการ"
+  :"Enter station information and coordinates, then select an inspection form.";
+ navLocationLabel.textContent=tr().location;
+ mapBtn.textContent=v==="th"?"🗺 เปิดเส้นทาง":"🗺 Open Navigation";
+ clearNavBtn.textContent=v==="th"?"ล้าง":"Clear";
+ chooseFieldForm.textContent=v==="th"?"เลือกใบตรวจ":"Select Inspection Form";
+
+ historyTitle.textContent=tr().historyTitle;
+ hhDate.textContent=tr().date;
+ hhForm.textContent=v==="th"?"ใบตรวจ":"Form";
+ hhInspector.textContent=tr().inspector;
+ hhStatus.textContent=v==="th"?"สถานะ":"Status";
+
+ woText.textContent=v==="th"
+  ?"รายการที่ตรวจพบความชำรุดสามารถนำมาใช้สร้าง Work Order ได้"
+  :"Detected defects can be used to create maintenance work orders.";
+ pmText.textContent=v==="th"
+  ?"สำหรับวางแผนรอบ PM, Due Date และผู้รับผิดชอบ"
+  :"Plan PM intervals, due dates and responsible teams.";
+
+ manualTitle.textContent=v==="th"?"📖 คู่มือการใช้งาน":"📖 User Manual";
+ equipmentManual.textContent=v==="th"?"คู่มือใบตรวจ 11 แบบ":"11 Inspection Form Guides";
+ manualSearch.placeholder=v==="th"?"🔍 ค้นหาคู่มือ...":"🔍 Search manuals...";
+
+ m1t.textContent=v==="th"?"เลือกใบตรวจ":"Select a Form";
+ m1d.textContent=v==="th"?"เลือกอุปกรณ์จากเมนูใบตรวจภาคสนาม":"Choose the equipment inspection form.";
+ m2t.textContent=v==="th"?"กรอกเหมือนใบกระดาษ":"Paper-style Entry";
+ m2d.textContent=v==="th"?"ติ๊กผลตรวจและกรอกค่าลงในช่องของเอกสารโดยตรง":"Enter results directly into the paper-style form.";
+ m3t.textContent=v==="th"?"บันทึกผล":"Save Inspection";
+ m3d.textContent=v==="th"?"บันทึกร่างหรือส่งผลตรวจเมื่อทำงานเสร็จ":"Save a draft or submit the completed inspection.";
+ m4d.textContent=v==="th"?"กรอกพิกัดเพื่อเปิดเส้นทางไปยังจุดตรวจ":"Enter coordinates to navigate to the inspection location.";
+ m5t.textContent="Print / PDF";
+ m5d.textContent=v==="th"?"ใบตรวจออกแบบตามขนาด A4 และสามารถสั่งพิมพ์ได้":"Forms use an A4 layout and can be printed.";
+ m6d.textContent=v==="th"?"สลับภาษาได้จากด้านบนของระบบ":"Switch between Thai and English.";
+
+ const active=document.querySelector(".page.active");
+ if(active) document.getElementById("pageTitle").textContent=tr()[active.id+"Title"]||active.id;
+
+ renderCards();
+ renderNavForms();
+ renderManualCards();
+ refresh();
 }
 
+function formName(f){return lang==="th"?f.th:f.en}
 
-function updateLanguage(){
-
-const th=currentLanguage==="th";
-const t=T[currentLanguage];
-
-document.getElementById("subtitle")
-.textContent=t.subtitle;
-
-document.getElementById("userRole")
-.textContent=
-th
-? "ผู้จัดการงานบำรุงรักษา"
-: "Maintenance Manager";
-
-
-/* MENU */
-
-const menuKeys=[
-"dashboard",
-"inspection",
-"history",
-"workorder",
-"pm",
-"navigation",
-"manual",
-"kpi"
-];
-
-document.querySelectorAll(".menu")
-.forEach(menu=>{
-
-const key=menu.dataset.menu;
-
-const label=
-menu.querySelector(".menu-text");
-
-if(label && menuKeys.includes(key)){
-label.textContent=t[key];
+function renderCards(list=forms){
+ formCards.innerHTML=list.map(f=>`
+ <div class="card">
+  <div class="number">${String(f.id).padStart(2,"0")}</div>
+  <h3>${esc(f.short)}</h3>
+  <p>${esc(formName(f))}</p>
+  <div class="code">${f.code}</div>
+  <button class="btn" onclick="openPaper(${f.id})">📄 ${tr().open}</button>
+ </div>`).join("");
 }
-
-});
-
-
-/* DASHBOARD */
-
-setText(
-"statTotal",
-th ? "การตรวจสอบทั้งหมด" : "Total Inspections"
-);
-
-setText(
-"statSubmitted",
-t.submitted
-);
-
-setText(
-"statDraft",
-t.draft
-);
-
-setText(
-"statForms",
-th ? "แบบฟอร์มที่รองรับ" : "Supported Forms"
-);
-
-setText(
-"dashboardHeading",
-th ? "ภาพรวมงานบำรุงรักษา" : "Maintenance Overview"
-);
-
-setText(
-"dashboardDesc",
-th
-? "ภาพรวมข้อมูลจากการตรวจสอบอุปกรณ์และงานบำรุงรักษา"
-: "Overview of asset inspection and maintenance information"
-);
-
-setText(
-"dashDate",
-th ? "วันที่" : "Date"
-);
-
-setText(
-"dashForm",
-th ? "แบบฟอร์ม" : "Form"
-);
-
-setText(
-"dashStatus",
-th ? "สถานะ" : "Status"
-);
-
-
-/* INSPECTION */
-
-document.getElementById("searchForm").placeholder=
-th
-? "🔍 ค้นหาแบบฟอร์ม เช่น Transformer, RMU, Hot Spot..."
-: "🔍 Search forms e.g. Transformer, RMU, Hot Spot...";
-
-
-/* HISTORY */
-
-setText(
-"historyHeading",
-th ? "ประวัติการตรวจสอบ" : "Inspection History"
-);
-
-setText(
-"historyDate",
-th ? "วันที่" : "Date"
-);
-
-setText(
-"historyForm",
-th ? "แบบฟอร์ม" : "Form"
-);
-
-setText(
-"historyInspector",
-th ? "ผู้ตรวจ" : "Inspector"
-);
-
-setText(
-"historyStatus",
-th ? "สถานะ" : "Status"
-);
-
-
-/* WORK ORDER */
-
-setText(
-"woHeading",
-th ? "จัดการใบสั่งงาน" : "Work Order Management"
-);
-
-setText(
-"woDesc",
-th
-? "ข้อบกพร่องที่พบจากการตรวจสามารถนำไปสร้างใบสั่งงานบำรุงรักษาได้"
-: "Defects found during inspection can be used to create maintenance work orders."
-);
-
-setText(
-"woButton",
-th ? "+ สร้าง Work Order" : "+ Create Work Order"
-);
-
-
-/* PM */
-
-setText(
-"pmHeading",
-th
-? "การวางแผนบำรุงรักษาเชิงป้องกัน"
-: "Preventive Maintenance Planning"
-);
-
-setText(
-"pmDesc",
-th
-? "กำหนดรอบ PM, Due Date และผู้รับผิดชอบ"
-: "Schedule PM, due dates and responsible maintenance teams."
-);
-
-
-/* NAVIGATION */
-
-updateNavigationLanguage();
-
-
-/* MANUAL */
-
-updateManualLanguage();
-
-
-/* KPI */
-
-setText(
-"kpiCompletionLabel",
-th ? "ความสำเร็จของการตรวจ" : "Inspection Completion"
-);
-
-setText(
-"kpiTotalLabel",
-th ? "การตรวจสอบทั้งหมด" : "Total Inspections"
-);
-
-setText(
-"kpiSubmitLabel",
-t.submitted
-);
-
-setText(
-"kpiDraftLabel",
-t.draft
-);
-
-
-/* MODAL */
-
-setText(
-"generalInfoTitle",
-th ? "1. ข้อมูลทั่วไป" : "1. General Information"
-);
-
-setText(
-"inspectionDateLabel",
-th ? "วันที่ตรวจ" : "Inspection Date"
-);
-
-setText(
-"locationLabel",
-th ? "สถานที่" : "Location"
-);
-
-setText(
-"inspectorLabel",
-th ? "ผู้ตรวจ" : "Inspector"
-);
-
-setText(
-"positionLabel",
-th ? "ตำแหน่ง" : "Position"
-);
-
-setText(
-"recommendationTitle",
-th
-? "ข้อเสนอแนะ / ข้อมูลเพิ่มเติม"
-: "Recommendations / Additional Information"
-);
-
-setText(
-"evidenceTitle",
-th ? "หลักฐานการตรวจสอบ" : "Inspection Evidence"
-);
-
-setText(
-"uploadTitle",
-th ? "📷 แนบรูปภาพ" : "📷 Upload Image"
-);
-
-setText(
-"cancelBtn",
-th ? "ยกเลิก" : "Cancel"
-);
-
-setText(
-"draftBtn",
-th ? "บันทึกฉบับร่าง" : "Save Draft"
-);
-
-setText(
-"submitBtn",
-th ? "✓ ส่งผลการตรวจ" : "✓ Submit Inspection"
-);
-
-
-/* CURRENT PAGE TITLE */
-
-const active=
-document.querySelector(".page.active");
-
-if(active){
-updatePageTitle(active.id);
-}
-
-
-/* RENDER */
-
-renderForms();
-renderNavigationForms();
-renderManuals();
-refresh();
-
-
-if(
-currentForm &&
-document.getElementById("inspectionModal")
-.style.display==="block"
-){
-
-updateModalTitle();
-rebuildDynamicForm();
-
-}
-
-}
-
-
-/* ==================================================
-FORM CARDS
-================================================== */
-
-function renderForms(list=forms){
-
-const t=T[currentLanguage];
-
-const box=
-document.getElementById("formCards");
-
-box.innerHTML=
-list.map(f=>`
-
-<div class="form-card">
-
-<div class="form-number">
-${String(f.id).padStart(2,"0")}
-</div>
-
-<h3>${f.short}</h3>
-
-<div class="description">
-${currentLanguage==="th" ? f.th : f.en}
-</div>
-
-<div class="code">
-${f.code}
-</div>
-
-<button
-class="btn"
-onclick="openInspection(${f.id})">
-${t.open}
-</button>
-
-</div>
-
-`).join("");
-
-}
-
 
 function filterForms(){
-
-const q=
-document.getElementById("searchForm")
-.value
-.toLowerCase();
-
-renderForms(
-
-forms.filter(f=>
-
-f.th.toLowerCase().includes(q) ||
-
-f.en.toLowerCase().includes(q) ||
-
-f.short.toLowerCase().includes(q) ||
-
-f.code.toLowerCase().includes(q)
-
-)
-
-);
-
+ const q=formSearch.value.toLowerCase();
+ renderCards(forms.filter(f=>
+  f.code.toLowerCase().includes(q)||
+  f.short.toLowerCase().includes(q)||
+  f.th.toLowerCase().includes(q)||
+  f.en.toLowerCase().includes(q)
+ ));
 }
 
-
-/* ==================================================
-FIELD NAVIGATION
-================================================== */
-
-function renderNavigationForms(){
-
-const box=
-document.getElementById("navigationForms");
-
-if(!box) return;
-
-const t=T[currentLanguage];
-
-box.innerHTML=
-forms.map(f=>`
-
-<div class="form-card">
-
-<div class="form-number">
-${String(f.id).padStart(2,"0")}
-</div>
-
-<h3>${f.short}</h3>
-
-<div class="description">
-${currentLanguage==="th" ? f.th : f.en}
-</div>
-
-<div class="code">
-${f.code}
-</div>
-
-<button
-class="btn btn-green"
-onclick="startFieldInspection(${f.id})">
-${t.start}
-</button>
-
-</div>
-
-`).join("");
-
+function renderNavForms(){
+ navForms.innerHTML=forms.map(f=>`
+ <div class="card">
+  <div class="number">${String(f.id).padStart(2,"0")}</div>
+  <h3>${esc(f.short)}</h3>
+  <p>${esc(formName(f))}</p>
+  <button class="btn btn-green" onclick="startField(${f.id})">🔍 ${tr().start}</button>
+ </div>`).join("");
 }
 
-
-function startFieldInspection(id){
-
-const station=
-document.getElementById("navStation").value;
-
-const mea=
-document.getElementById("navMea").value;
-
-const location=
-document.getElementById("navLocation").value;
-
-const lat=
-document.getElementById("navLat").value;
-
-const lng=
-document.getElementById("navLng").value;
-
-
-openInspection(id);
-
-
-document.getElementById("stationId").value=
-station;
-
-document.getElementById("meaNo").value=
-mea;
-
-document.getElementById("location").value=
-location;
-
-document.getElementById("lat").value=
-lat;
-
-document.getElementById("lng").value=
-lng;
-
+function renderManualCards(list=forms){
+ manualCards.innerHTML=list.map(f=>`
+ <div class="card">
+  <div class="number">${String(f.id).padStart(2,"0")}</div>
+  <h3>${esc(f.short)}</h3>
+  <p>${esc(formName(f))}</p>
+  <div class="code">${f.code}</div>
+  <button class="btn" onclick="openManual(${f.id})">📖 ${tr().manualOpen}</button>
+ </div>`).join("");
 }
-
-
-function openNavigation(){
-
-const lat=
-document.getElementById("navLat")
-.value.trim();
-
-const lng=
-document.getElementById("navLng")
-.value.trim();
-
-
-if(!lat || !lng){
-
-alert(
-currentLanguage==="th"
-? "กรุณาระบุ Latitude และ Longitude"
-: "Please enter Latitude and Longitude."
-);
-
-return;
-
-}
-
-
-const latitude=Number(lat);
-const longitude=Number(lng);
-
-
-if(
-!Number.isFinite(latitude) ||
-!Number.isFinite(longitude) ||
-latitude < -90 ||
-latitude > 90 ||
-longitude < -180 ||
-longitude > 180
-){
-
-alert(
-currentLanguage==="th"
-? "พิกัดไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง"
-: "Invalid coordinates."
-);
-
-return;
-
-}
-
-
-const url=
-"https://www.google.com/maps/dir/?api=1&destination="+
-encodeURIComponent(
-latitude+","+longitude
-);
-
-
-window.open(
-url,
-"_blank",
-"noopener,noreferrer"
-);
-
-}
-
-
-function clearNavigation(){
-
-[
-"navStation",
-"navMea",
-"navLocation",
-"navLat",
-"navLng"
-]
-.forEach(id=>{
-
-document.getElementById(id).value="";
-
-});
-
-}
-
-
-function updateNavigationLanguage(){
-
-const th=currentLanguage==="th";
-
-setText(
-"navigationHeading",
-th
-? "🧭 การนำทางตรวจภาคสนาม"
-: "🧭 Field Inspection Navigation"
-);
-
-setText(
-"navigationDesc",
-th
-? "ค้นหาจุดตรวจและเปิดเส้นทางไปยังอุปกรณ์"
-: "Find an inspection location and navigate to the asset."
-);
-
-setText(
-"navLocationTitle",
-th
-? "ข้อมูลจุดตรวจ"
-: "Inspection Location"
-);
-
-setText(
-"navLocationLabel",
-th
-? "สถานที่"
-: "Location"
-);
-
-setText(
-"coordinateHelpTitle",
-th
-? "📍 การใช้งานพิกัด"
-: "📍 Coordinate Navigation"
-);
-
-setText(
-"coordinateHelp",
-th
-? "กรอก Latitude และ Longitude ของจุดตรวจ จากนั้นกดเปิดเส้นทางเพื่อเปิด Google Maps"
-: "Enter the Latitude and Longitude of the inspection point, then open the route in Google Maps."
-);
-
-setText(
-"openNavigationBtn",
-th
-? "🗺️ เปิดเส้นทาง"
-: "🗺️ Open Navigation"
-);
-
-setText(
-"clearNavigationBtn",
-th
-? "ล้างข้อมูล"
-: "Clear"
-);
-
-setText(
-"fieldInspectionHeading",
-th
-? "📍 เริ่มตรวจจากภาคสนาม"
-: "📍 Start Field Inspection"
-);
-
-setText(
-"fieldInspectionDesc",
-th
-? "เลือกประเภทอุปกรณ์ เมื่อกดเริ่มตรวจ ระบบจะนำข้อมูล Station และ GIS ไปใส่ในใบตรวจให้อัตโนมัติ"
-: "Select an equipment type. Station and GIS information will automatically be transferred to the inspection form."
-);
-
-}
-
-
-/* ==================================================
-MANUAL
-================================================== */
-
-function renderManuals(list=forms){
-
-const box=
-document.getElementById("manualCards");
-
-if(!box) return;
-
-const t=T[currentLanguage];
-
-box.innerHTML=
-list.map(f=>`
-
-<div class="form-card">
-
-<div class="form-number">
-${String(f.id).padStart(2,"0")}
-</div>
-
-<h3>${f.short}</h3>
-
-<div class="description">
-${currentLanguage==="th" ? f.th : f.en}
-</div>
-
-<div class="code">
-${f.code}
-</div>
-
-<button
-class="btn"
-onclick="openManual(${f.id})">
-${t.manualOpen}
-</button>
-
-</div>
-
-`).join("");
-
-}
-
 
 function filterManuals(){
-
-const q=
-document.getElementById("manualSearch")
-.value
-.toLowerCase();
-
-renderManuals(
-
-forms.filter(f=>
-
-f.th.toLowerCase().includes(q) ||
-
-f.en.toLowerCase().includes(q) ||
-
-f.short.toLowerCase().includes(q) ||
-
-f.code.toLowerCase().includes(q)
-
-)
-
-);
-
+ const q=manualSearch.value.toLowerCase();
+ renderManualCards(forms.filter(f=>
+  f.code.toLowerCase().includes(q)||
+  f.short.toLowerCase().includes(q)||
+  f.th.toLowerCase().includes(q)||
+  f.en.toLowerCase().includes(q)
+ ));
 }
 
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
-function updateManualLanguage(){
+function openMap(){
+ const a=Number(navLat.value),b=Number(navLng.value);
 
-const th=currentLanguage==="th";
+ if(!Number.isFinite(a)||!Number.isFinite(b)||a<-90||a>90||b<-180||b>180){
+  alert(lang==="th"?"กรุณากรอกพิกัดให้ถูกต้อง":"Please enter valid coordinates.");
+  return;
+ }
 
-setText(
-"manualHeading",
-th
-? "📖 คู่มือการใช้งาน"
-: "📖 User Manual"
-);
-
-setText(
-"manualDesc",
-th
-? "คู่มือระบบ Asset Inspection และการตรวจสอบอุปกรณ์"
-: "Asset Inspection system and equipment inspection guide."
-);
-
-const search=
-document.getElementById("manualSearch");
-
-if(search){
-
-search.placeholder=
-th
-? "🔍 ค้นหาคู่มือ..."
-: "🔍 Search manuals...";
-
+ window.open(
+  "https://www.google.com/maps/dir/?api=1&destination="+encodeURIComponent(a+","+b),
+  "_blank","noopener,noreferrer"
+ );
 }
 
-setText(
-"systemManualTitle",
-th
-? "คู่มือการใช้งานระบบ"
-: "System User Guide"
-);
-
-setText(
-"equipmentManualTitle",
-th
-? "คู่มือการตรวจสอบอุปกรณ์"
-: "Equipment Inspection Manuals"
-);
-
-setText(
-"manualInspectionText",
-th
-? "เลือกแบบตรวจ กรอกผลตรวจ แนบรูป และบันทึกข้อมูล"
-: "Select an inspection form, enter results, attach photos and save the inspection."
-);
-
-setText(
-"manualNavigationText",
-th
-? "กรอก Station ID และพิกัด GIS เพื่อเปิดเส้นทางไปยังจุดตรวจ"
-: "Enter Station ID and GIS coordinates to navigate to the inspection location."
-);
-
-setText(
-"manualDraftText",
-th
-? "บันทึกข้อมูลชั่วคราวก่อนการตรวจเสร็จสมบูรณ์"
-: "Temporarily save inspection information before completion."
-);
-
-setText(
-"manualSubmitText",
-th
-? "ยืนยันและบันทึกผลการตรวจสอบ"
-: "Confirm and submit the completed inspection."
-);
-
-setText(
-"manualHistoryText",
-th
-? "ตรวจสอบประวัติย้อนหลังและส่งออกข้อมูลเป็น CSV"
-: "Review previous inspections and export data to CSV."
-);
-
-setText(
-"manualLanguageText",
-th
-? "เปลี่ยนภาษาไทยและภาษาอังกฤษได้จากปุ่มด้านบน"
-: "Switch between Thai and English using the buttons at the top."
-);
-
+function clearNav(){
+ ["navStation","navMea","navLocation","navLat","navLng"].forEach(x=>document.getElementById(x).value="");
 }
 
-
-/* ==================================================
-OPEN MANUAL
-================================================== */
-
-function openManual(id){
-
-const form=
-forms.find(f=>f.id===id);
-
-if(!form) return;
-
-const title=
-currentLanguage==="th"
-? form.th
-: form.en;
-
-
-let content="";
-
-
-if(form.items){
-
-content=`
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-
-<tr>
-<th style="width:80px">
-${currentLanguage==="th" ? "ลำดับ" : "No."}
-</th>
-
-<th>
-${currentLanguage==="th" ? "รายการตรวจสอบ" : "Inspection Item"}
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-${form.items.map((item,i)=>`
-
-<tr>
-
-<td>${i+1}</td>
-
-<td>
-${currentLanguage==="th" ? item[0] : item[1]}
-</td>
-
-</tr>
-
-`).join("")}
-
-</tbody>
-
-</table>
-
-</div>
-
-`;
-
+function startField(id){
+ fieldSeed={
+  station:navStation.value,
+  mea:navMea.value,
+  location:navLocation.value,
+  lat:navLat.value,
+  lng:navLng.value
+ };
+ openPaper(id);
 }
 
-else{
+/* =========================================================
+   PAPER BASE
+========================================================= */
 
-content=`
-
-<p>
-${
-currentLanguage==="th"
-? "แบบตรวจนี้เป็นแบบฟอร์มเฉพาะ กรุณาเปิดแบบตรวจเพื่อดูรายละเอียดช่องบันทึกข้อมูล"
-: "This is a specialized inspection form. Open the inspection form to view its fields."
-}
-</p>
-
-`;
-
+function paperHeader(f,pageText=""){
+ return `
+ <div class="paper-header">
+  <div class="paper-logo">MEA</div>
+  <div class="mea">${lang==="th"?"การไฟฟ้านครหลวง":"METROPOLITAN ELECTRICITY AUTHORITY"}</div>
+  <h2>${esc(formName(f))}</h2>
+  <div class="paper-code">${f.code}${pageText?" • "+pageText:""}</div>
+ </div>`;
 }
 
+function generalInfo(f){
+ const meta=(f.meta||[]).map((x,i)=>`
+ <tr>
+  <td style="width:20%"><b>${esc(x)}</b></td>
+  <td><input type="text" data-field="meta${i}"></td>
+  ${i===0?`
+  <td><b>${tr().date}</b></td>
+  <td><input type="date" data-field="date"></td>`:
+  `<td></td><td></td>`}
+ </tr>`).join("");
 
-const win=window.open("","_blank");
-
-if(!win) return;
-
-
-win.document.write(`
-
-<!DOCTYPE html>
-
-<html lang="${currentLanguage}">
-
-<head>
-
-<meta charset="UTF-8">
-
-<title>${title}</title>
-
-<style>
-
-body{
-font-family:Arial,Tahoma,sans-serif;
-background:#f3f7fb;
-color:#183b5c;
-margin:0;
-padding:30px;
+ return `
+ <table class="paper-info">
+  <tr>
+   <td><b>Station ID</b></td>
+   <td><input type="text" data-field="station" value="${escAttr(fieldSeed?.station||"")}"></td>
+   <td><b>MEA No.</b></td>
+   <td><input type="text" data-field="mea" value="${escAttr(fieldSeed?.mea||"")}"></td>
+  </tr>
+  <tr>
+   <td><b>${tr().location}</b></td>
+   <td colspan="3"><input type="text" data-field="location" value="${escAttr(fieldSeed?.location||"")}"></td>
+  </tr>
+  <tr>
+   <td><b>GIS Lat.</b></td>
+   <td><input type="text" data-field="lat" value="${escAttr(fieldSeed?.lat||"")}"></td>
+   <td><b>Long.</b></td>
+   <td><input type="text" data-field="lng" value="${escAttr(fieldSeed?.lng||"")}"></td>
+  </tr>
+  ${meta}
+ </table>`;
 }
 
-.container{
-max-width:900px;
-margin:auto;
-background:white;
-padding:30px;
-border-radius:16px;
-box-shadow:0 5px 20px #0001;
+function checklist(f){
+ return `
+ <div class="paper-titlebar">${tr().item}</div>
+ <table>
+  <thead>
+   <tr>
+    <th style="width:35px">${lang==="th"?"ลำดับ":"No."}</th>
+    <th>${tr().item}</th>
+    <th style="width:65px">${tr().normal}</th>
+    <th style="width:65px">${tr().damaged}</th>
+    <th style="width:65px">${tr().none}</th>
+    <th style="width:150px">${tr().remark}</th>
+   </tr>
+  </thead>
+  <tbody>
+   ${(f.items||[]).map((x,i)=>`
+   <tr class="paper-check-row">
+    <td style="text-align:center">${i+1}</td>
+    <td data-th="${escAttr(x[0])}" data-en="${escAttr(x[1])}">${esc(lang==="th"?x[0]:x[1])}</td>
+    <td class="check"><input type="radio" name="r${f.id}_${i}" value="normal"></td>
+    <td class="check"><input type="radio" name="r${f.id}_${i}" value="damaged"></td>
+    <td class="check"><input type="radio" name="r${f.id}_${i}" value="none"></td>
+    <td><input type="text" class="checkRemark"></td>
+   </tr>`).join("")}
+  </tbody>
+ </table>`;
 }
 
-h1{
-margin-bottom:5px;
+function measurementTable(){
+ return `
+ <div class="paper-titlebar">
+  ${lang==="th"?"ตรวจสอบวัดกระแสและแรงดันไฟฟ้า":"Electrical Current and Voltage Measurements"}
+ </div>
+ <table>
+  <tr>
+   ${["V1-N","V2-N","V3-N","V1-2","V1-3","V2-3"].map(x=>`<th>${x}</th>`).join("")}
+  </tr>
+  <tr>
+   ${["V1-N","V2-N","V3-N","V1-2","V1-3","V2-3"].map(x=>`<td><input type="number" step="any" data-measure="${x}"> V</td>`).join("")}
+  </tr>
+  <tr>
+   ${["IN","I1","I2","I3"].map(x=>`<th>${x}</th>`).join("")}
+   <th colspan="2">${lang==="th"?"ผลรวมกระแสหน้าหม้อแปลงฯ":"Total Transformer Current"}</th>
+  </tr>
+  <tr>
+   ${["IN","I1","I2","I3"].map(x=>`<td><input type="number" step="any" data-measure="${x}"> A</td>`).join("")}
+   <td colspan="2"><input type="number" step="any" data-measure="TotalCurrent"> A</td>
+  </tr>
+ </table>`;
 }
 
-.code{
-color:#71879b;
-margin-bottom:25px;
+function notesAndSignature(){
+ return `
+ <div class="paper-note">
+  <b>${tr().recommendations} :</b>
+  <textarea data-field="remark"></textarea>
+  <b>${tr().corrective} :</b>
+  <textarea data-field="corrective"></textarea>
+ </div>
+ <div class="signatures">
+  <div class="signature">
+   ${tr().inspector}<br><br>
+   <input type="text" data-field="inspector"><br>
+   ${tr().position} <input type="text" data-field="inspectorPosition">
+  </div>
+  <div class="signature">
+   ${tr().checker}<br><br>
+   <input type="text" data-field="checker"><br>
+   ${tr().position} <input type="text" data-field="checkerPosition">
+  </div>
+ </div>`;
 }
 
-.notice{
-background:#edf6fd;
-border-left:4px solid #1686d4;
-padding:15px;
-margin:20px 0;
+/* =========================================================
+   SPECIAL SECTIONS
+========================================================= */
+
+function switchSection(type){
+ if(type==="lbs"){
+  return `
+  <div class="paper-titlebar">${lang==="th"?"ข้อมูลสถานะ / การทดสอบ":"Status / Operation Test"}</div>
+  <table>
+   <tr>
+    <td><b>${lang==="th"?"สถานะสวิตช์":"Switch Status"}</b></td>
+    <td class="check">☐ ${lang==="th"?"ปลด":"OPEN"} &nbsp; ☐ ${lang==="th"?"สับ":"CLOSE"}</td>
+    <td><b>SCADA / EMS / DMS</b></td>
+    <td class="check">☐ Online &nbsp; ☐ Offline</td>
+   </tr>
+   <tr>
+    <td><b>Local Test</b></td><td><input data-field="localTest"></td>
+    <td><b>ATS Test</b></td><td><input data-field="atsTest"></td>
+   </tr>
+  </table>`;
+ }
+
+ if(type==="switch"){
+  return `
+  <div class="paper-titlebar">${lang==="th"?"สถานะสวิตช์":"Switch Status"}</div>
+  <table><tr>
+   <td class="check">☐ OPEN &nbsp;&nbsp; ☐ CLOSE</td>
+   <td><b>Local Test</b></td><td><input data-field="localTest"></td>
+  </tr></table>`;
+ }
+
+ if(type==="capacitor"){
+  return `
+  <div class="paper-titlebar">Capacitor Control / Measurement</div>
+  <table>
+   <tr>
+    <th>Cap OFF</th><th>Cap ON</th><th>Capacitance</th>
+   </tr>
+   <tr>
+    <td><input type="time" data-measure="CapOff"></td>
+    <td><input type="time" data-measure="CapOn"></td>
+    <td><input type="number" step="any" data-measure="Capacitance"></td>
+   </tr>
+  </table>`;
+ }
+
+ if(type==="networkProtection"){
+  return `
+  <div class="paper-titlebar">${lang==="th"?"การทดสอบการปลด-สับ":"Switching Operation Test"}</div>
+  <table>
+   <tr><th>${lang==="th"?"รายการ":"Test"}</th><th>NP</th><th>${lang==="th"?"ผล":"Result"}</th></tr>
+   <tr><td>${lang==="th"?"ปลด MV.SW. ครั้งที่ 1":"Open MV.SW. Test 1"}</td><td>NP OPEN</td><td><input data-field="np1"></td></tr>
+   <tr><td>${lang==="th"?"สับ MV.SW. ครั้งที่ 1":"Close MV.SW. Test 1"}</td><td>NP CLOSE</td><td><input data-field="np2"></td></tr>
+   <tr><td>${lang==="th"?"ปลด MV.SW. ครั้งที่ 2":"Open MV.SW. Test 2"}</td><td>NP OPEN</td><td><input data-field="np3"></td></tr>
+  </table>`;
+ }
+
+ return "";
 }
 
-table{
-width:100%;
-border-collapse:collapse;
+/* =========================================================
+   PAPER TYPES
+========================================================= */
+
+function standardPaper(f){
+ return `
+ <article class="paper">
+  ${paperHeader(f)}
+  ${generalInfo(f)}
+  ${checklist(f)}
+  ${switchSection(f.extra)}
+  ${f.measurement?measurementTable():""}
+  ${notesAndSignature()}
+  <div style="font-size:9px;text-align:right;margin-top:5px">
+   ${lang==="th"?"ปรับปรุงครั้งที่ 0":"Revision 0"} • ${f.code}
+  </div>
+ </article>`;
 }
 
-th,td{
-padding:12px;
-border-bottom:1px solid #e2e9ef;
-text-align:left;
+function unitPaper(f){
+ const firstItems={...f,items:f.items.slice(0,17)};
+ const secondItems={...f,items:f.items.slice(17)};
+
+ return `
+ <article class="paper">
+  ${paperHeader(f,lang==="th"?"หน้า 1 ของ 2":"Page 1 of 2")}
+  ${generalInfo(f)}
+  ${checklist(firstItems)}
+  ${switchSection("switch")}
+  ${notesAndSignature()}
+ </article>
+
+ <article class="paper">
+  ${paperHeader(f,lang==="th"?"หน้า 2 ของ 2":"Page 2 of 2")}
+  ${checklist(secondItems)}
+  ${measurementTable()}
+  <div class="paper-titlebar">Hot Spot / Thermal Camera</div>
+  <table>
+   <tr>
+    <th>${lang==="th"?"จุดตรวจ":"Point"}</th>
+    <th>${lang==="th"?"อุณหภูมิ":"Temperature"} °C</th>
+    <th>${tr().remark}</th>
+   </tr>
+   ${[1,2,3].map(i=>`
+   <tr><td><input data-field="thermalPoint${i}"></td>
+   <td><input type="number" data-field="thermalTemp${i}"></td>
+   <td><input data-field="thermalRemark${i}"></td></tr>`).join("")}
+  </table>
+  ${notesAndSignature()}
+ </article>`;
 }
 
-th{
-background:#edf6fd;
+function networkPaper(f){
+ return `
+ <article class="paper">
+  ${paperHeader(f)}
+  ${generalInfo(f)}
+  ${checklist(f)}
+
+  <div class="paper-titlebar">${lang==="th"?"ผลการวัดแรงดันด้านแรงต่ำ":"Low Voltage Measurements"}</div>
+  <table>
+   <tr><th>V1-N</th><th>V2-N</th><th>V3-N</th><th>V1-2</th><th>V1-3</th><th>V2-3</th></tr>
+   <tr>
+    ${["V1-N","V2-N","V3-N","V1-2","V1-3","V2-3"].map(x=>`<td><input type="number" data-measure="${x}"></td>`).join("")}
+   </tr>
+   <tr>
+    <td colspan="3">${lang==="th"?"ช่วงอ้างอิง L-N 214–237 V":"Reference L-N 214–237 V"}</td>
+    <td colspan="3">${lang==="th"?"ช่วงอ้างอิง L-L 371–410 V":"Reference L-L 371–410 V"}</td>
+   </tr>
+  </table>
+
+  <div class="paper-titlebar">${lang==="th"?"ผลการวัดกระแส":"Current Measurements"}</div>
+  <table>
+   <tr><th>IPh1 (A)</th><th>IPh2 (A)</th><th>IPh3 (A)</th><th>In (A)</th></tr>
+   <tr>${["IPh1","IPh2","IPh3","In"].map(x=>`<td><input type="number" data-measure="${x}"></td>`).join("")}</tr>
+  </table>
+
+  <div class="paper-titlebar">12 kV / Capacitor Measurement</div>
+  <table>
+   <tr><th>IR (A)</th><th>IY (A)</th><th>IB (A)</th><th>75 kVAR</th><th>50 kVAR</th><th>25 kVAR</th></tr>
+   <tr>${["IR","IY","IB","75kVAR","50kVAR","25kVAR"].map(x=>`<td><input type="number" data-measure="${x}"></td>`).join("")}</tr>
+  </table>
+
+  <div class="paper-titlebar">${lang==="th"?"อุณหภูมิ":"Temperature"}</div>
+  <table>
+   <tr>
+    <td><b>${lang==="th"?"อุณหภูมิสูงสุด":"Maximum Temperature"}</b></td>
+    <td><input type="number" data-measure="MaxTemp"> °C</td>
+    <td><b>${lang==="th"?"อุณหภูมิจริง":"Actual Temperature"}</b></td>
+    <td><input type="number" data-measure="ActualTemp"> °C</td>
+   </tr>
+  </table>
+
+  ${notesAndSignature()}
+ </article>`;
 }
 
-</style>
-
-</head>
-
-<body>
-
-<div class="container">
-
-<h1>${title}</h1>
-
-<div class="code">
-${form.code}
-</div>
-
-<div class="notice">
-
-${
-currentLanguage==="th"
-? "คู่มือนี้แสดงรายการตรวจสอบที่กำหนดไว้ในระบบสำหรับอุปกรณ์ประเภทนี้"
-: "This guide shows the inspection items configured in the system for this equipment type."
+function oilRound(n,title){
+ return `
+ <div class="paper-titlebar">${title}</div>
+ <table class="oilRound" data-round="${n}">
+  <tr>
+   <th>${lang==="th"?"ครั้งที่":"Test"}</th>
+   ${[1,2,3,4,5].map(x=>`<th>${x}</th>`).join("")}
+   <th>${lang==="th"?"ค่าเฉลี่ย":"Average"}</th>
+  </tr>
+  <tr>
+   <td>Breakdown Voltage (kV)</td>
+   ${[1,2,3,4,5].map(x=>`<td><input type="number" step="0.01" class="oil${n}" oninput="oilAvg(${n})"></td>`).join("")}
+   <td><input id="oilAvg${n}" readonly></td>
+  </tr>
+ </table>`;
 }
 
-</div>
+function oilPaper(f){
+ return `
+ <article class="paper">
+  ${paperHeader(f)}
+  ${generalInfo(f)}
 
-${content}
+  <div class="special-box">
+   <b>${lang==="th"?"ขั้นตอนการกรองน้ำมัน":"Oil Filtering Procedure"}</b><br>
+   ${lang==="th"
+    ?"ทดสอบครั้งแรก หากค่าครั้งที่ 1 ต่ำกว่า 26 kV ให้ดำเนินการกรองน้ำมัน หากมากกว่า 26 kV ให้ทดสอบครบ 5 ครั้งและหาค่าเฉลี่ย"
+    :"For the initial test, if test 1 is below 26 kV, filter the oil. If above 26 kV, complete five tests and calculate the average."}
+  </div>
 
-</div>
+  ${oilRound(1,lang==="th"?"ทดสอบก่อนกรองน้ำมัน":"Initial Oil Test")}
 
-</body>
+  <div class="paper-note">
+   <b>${lang==="th"?"กรองน้ำมันครั้งที่ 1 / รายละเอียด":"Oil Filtering No. 1 / Details"}</b>
+   <textarea data-field="filter1"></textarea>
+  </div>
 
-</html>
+  ${oilRound(2,lang==="th"?"ทดสอบหลังกรองน้ำมันครั้งที่ 1":"Test After Oil Filtering No. 1")}
 
-`);
+  <div class="paper-note">
+   <b>${lang==="th"?"กรองน้ำมันครั้งที่ 2 / รายละเอียด":"Oil Filtering No. 2 / Details"}</b>
+   <textarea data-field="filter2"></textarea>
+  </div>
 
-win.document.close();
+  ${oilRound(3,lang==="th"?"ทดสอบหลังกรองน้ำมันครั้งที่ 2":"Test After Oil Filtering No. 2")}
 
+  <div class="special-box">
+   ${lang==="th"
+    ?"หากทดสอบครบ 5 ครั้งแล้วยังต่ำกว่า 26 kV ให้หาแนวทางแก้ไขต่อไป"
+    :"If the five-test result remains below 26 kV, determine further corrective action."}
+  </div>
+
+  ${notesAndSignature()}
+ </article>`;
 }
 
+function hotspotPaper(f){
+ return `
+ <article class="paper">
+  ${paperHeader(f)}
+  ${generalInfo(f)}
 
-/* ==================================================
-OPEN INSPECTION
-================================================== */
+  <div class="paper-titlebar">1. ${lang==="th"?"ข้อมูลภาพถ่าย":"Photo Information"}</div>
 
-function openInspection(id){
+  <table>
+   <tr>
+    <td><b>${lang==="th"?"ชื่อภาพ":"Photo Name"}</b></td>
+    <td><input data-field="photoName"></td>
+    <td><b>${lang==="th"?"วันที่ตรวจ":"Inspection Date"}</b></td>
+    <td><input type="date" data-field="inspectionDate"></td>
+   </tr>
+  </table>
 
-currentForm=
-forms.find(f=>f.id===id);
+  <div class="photo-grid">
+   <div class="photo-box">
+    <b>${lang==="th"?"ภาพถ่ายจริง":"Normal Photo"}</b>
+    <input type="file" accept="image/*" onchange="paperPhoto(this,'hotPhoto1')">
+    <img id="hotPhoto1">
+   </div>
+   <div class="photo-box">
+    <b>${lang==="th"?"ภาพถ่ายความร้อน":"Thermal Image"}</b>
+    <input type="file" accept="image/*" onchange="paperPhoto(this,'hotPhoto2')">
+    <img id="hotPhoto2">
+   </div>
+  </div>
 
-clearInspectionFields();
+  <div class="paper-titlebar">2. ${lang==="th"?"ข้อมูลการตรวจวัด":"Measurement"}</div>
 
-document.getElementById("inspectionDate")
-.value=
-new Date()
-.toISOString()
-.split("T")[0];
+  <table>
+   <tr>
+    <th>${lang==="th"?"อุณหภูมิสูงสุดที่จุดวัด":"Maximum Temperature"} (°C)</th>
+    <th>${lang==="th"?"อุณหภูมิเปรียบเทียบ":"Reference Temperature"} (°C)</th>
+    <th>Delta T (°C)</th>
+   </tr>
+   <tr>
+    <td><input id="hotMax" type="number" step="0.1" oninput="hotDelta()"></td>
+    <td><input id="hotRef" type="number" step="0.1" oninput="hotDelta()"></td>
+    <td><input id="hotDelta" readonly></td>
+   </tr>
+  </table>
 
-updateModalTitle();
+  <table>
+   <tr>
+    <th>${lang==="th"?"ลำดับความสำคัญ":"Priority"}</th>
+    <th>Delta T</th>
+    <th>${lang==="th"?"ข้อเสนอแนะการดำเนินการ":"Recommended Action"}</th>
+   </tr>
+   <tr><td>1</td><td>0–10°C</td><td>${lang==="th"?"อุปกรณ์ปกติ":"Normal equipment"}</td></tr>
+   <tr><td>2</td><td>&gt;10–20°C</td><td>${lang==="th"?"แก้ไขในการบำรุงรักษาครั้งต่อไป":"Correct at next maintenance"}</td></tr>
+   <tr><td>3</td><td>&gt;20–40°C</td><td>${lang==="th"?"ควรแก้ไขภายใน 1 เดือน":"Correct within one month"}</td></tr>
+   <tr><td>4</td><td>&gt;40°C</td><td>${lang==="th"?"ควรได้รับการแก้ไขเร่งด่วน":"Urgent corrective action"}</td></tr>
+  </table>
 
-rebuildDynamicForm();
+  <div class="paper-titlebar">3. ${lang==="th"?"การส่งต่อดำเนินการแก้ไข":"Corrective Action Forwarding"}</div>
+  <table>
+   <tr><td>${lang==="th"?"ส่งต่อให้กลุ่มงาน":"Forward to Work Group"}</td><td><input data-field="forwardGroup"></td></tr>
+   <tr><td>${lang==="th"?"โปรดดำเนินการแก้ไข":"Corrective Action"}</td><td><input data-field="action"></td></tr>
+  </table>
 
-document.getElementById("inspectionModal")
-.style.display="block";
-
+  ${notesAndSignature()}
+ </article>`;
 }
 
+function pdPaper(f){
+ return `
+ <article class="paper">
+  ${paperHeader(f)}
+  ${generalInfo(f)}
 
-function updateModalTitle(){
+  <div class="paper-titlebar">1. ${lang==="th"?"ข้อมูลภาพถ่าย":"Photo Information"}</div>
 
-document.getElementById("modalTitle")
-.textContent=
-currentLanguage==="th"
-? currentForm.th
-: currentForm.en;
+  <table>
+   <tr>
+    <td><b>${lang==="th"?"จุดที่ผิดปกติ":"Abnormal Point"}</b></td>
+    <td><input data-field="abnormalPoint"></td>
+    <td><b>${lang==="th"?"ระดับความเข้มเสียงที่ตรวจวัดได้":"Measured Sound Level"}</b></td>
+    <td><input type="number" step="0.1" data-field="db"> dB</td>
+   </tr>
+   <tr>
+    <td><b>${lang==="th"?"ระดับความรุนแรง":"Severity"}</b></td>
+    <td colspan="3" class="check">
+     <label><input type="radio" name="severity" value="veryHigh"> ${lang==="th"?"สูงมาก":"Very High"}</label>
+     <label><input type="radio" name="severity" value="high"> ${lang==="th"?"สูง":"High"}</label>
+     <label><input type="radio" name="severity" value="medium"> ${lang==="th"?"ปานกลาง":"Medium"}</label>
+     <label><input type="radio" name="severity" value="low"> ${lang==="th"?"ต่ำ":"Low"}</label>
+    </td>
+   </tr>
+  </table>
 
-document.getElementById("modalCode")
-.textContent=
-currentForm.code;
+  <div style="font-size:10px;margin:5px 0">
+   * ${lang==="th"
+    ?"ระดับความรุนแรงเป็นการประเมินจาก Software ของ NL CLOUD"
+    :"Severity is assessed using NL CLOUD software."}
+  </div>
 
+  <div class="photo-grid">
+   <div class="photo-box">
+    <b>${lang==="th"?"ภาพถ่ายจากกล้องปกติ":"Normal Camera Photo"}</b>
+    <input type="file" accept="image/*" onchange="paperPhoto(this,'pdPhoto1')">
+    <img id="pdPhoto1">
+   </div>
+   <div class="photo-box">
+    <b>${lang==="th"?"ภาพถ่ายจาก Acoustic Camera":"Acoustic Camera Photo"}</b>
+    <input type="file" accept="image/*" onchange="paperPhoto(this,'pdPhoto2')">
+    <img id="pdPhoto2">
+   </div>
+  </div>
+
+  <div class="paper-titlebar">2. ${lang==="th"?"การส่งต่อดำเนินการแก้ไข":"Corrective Action Forwarding"}</div>
+  <table>
+   <tr>
+    <td>${lang==="th"?"ส่งต่อให้กลุ่มงาน":"Forward to Work Group"}</td>
+    <td><input data-field="forwardGroup"></td>
+   </tr>
+   <tr>
+    <td>${lang==="th"?"โปรดดำเนินการแก้ไข":"Corrective Action"}</td>
+    <td><input data-field="correctiveAction"></td>
+    <td>${tr().date}</td>
+    <td><input type="date" data-field="actionDate"></td>
+   </tr>
+  </table>
+
+  <div class="paper-titlebar">3. ${lang==="th"?"การดำเนินการปรับปรุง":"Improvement Action"}</div>
+  <table>
+   <tr>
+    <td>${lang==="th"?"ดำเนินการแก้ไขเมื่อวันที่":"Corrected on"}</td>
+    <td><input type="date" data-field="correctedDate"></td>
+    <td>${tr().position}</td>
+    <td><input data-field="correctedPosition"></td>
+   </tr>
+   <tr>
+    <td>${lang==="th"?"ทราบ":"Acknowledged by"}</td>
+    <td><input data-field="acknowledged"></td>
+    <td>${tr().date}</td>
+    <td><input type="date" data-field="ackDate"></td>
+   </tr>
+  </table>
+
+  ${notesAndSignature()}
+ </article>`;
 }
 
+/* =========================================================
+   OPEN PAPER
+========================================================= */
 
-function rebuildDynamicForm(){
+function openPaper(id){
+ activeForm=forms.find(x=>x.id===id);
+ if(!activeForm)return;
 
-const dynamic=
-document.getElementById("dynamicForm");
+ paperToolbarTitle.textContent=formName(activeForm);
+ paperToolbarCode.textContent=" • "+activeForm.code;
 
-if(currentForm.type==="oil"){
+ backText.textContent=lang==="th"?"กลับ":"Back";
+ saveDraftText.textContent=lang==="th"?"บันทึกร่าง":"Save Draft";
+ submitText.textContent=lang==="th"?"ส่งผลตรวจ":"Submit";
+ printText.textContent=lang==="th"?"พิมพ์ / PDF":"Print / PDF";
 
-dynamic.innerHTML=oilForm();
+ let html="";
 
+ switch(activeForm.type){
+  case "unit": html=unitPaper(activeForm);break;
+  case "network": html=networkPaper(activeForm);break;
+  case "oil": html=oilPaper(activeForm);break;
+  case "hotspot": html=hotspotPaper(activeForm);break;
+  case "pd": html=pdPaper(activeForm);break;
+  default: html=standardPaper(activeForm);
+ }
+
+ paperContainer.innerHTML=html;
+
+ const date=paperContainer.querySelector('[data-field="date"]');
+ if(date&&!date.value)date.value=new Date().toISOString().slice(0,10);
+
+ paperMode.style.display="block";
+ document.body.style.overflow="hidden";
 }
 
-else if(currentForm.type==="hotspot"){
-
-dynamic.innerHTML=hotSpotForm();
-
+function closePaper(){
+ paperMode.style.display="none";
+ document.body.style.overflow="";
+ activeForm=null;
+ fieldSeed=null;
 }
 
-else if(currentForm.type==="pd"){
+/* =========================================================
+   CALCULATIONS / PHOTOS
+========================================================= */
 
-dynamic.innerHTML=partialDischargeForm();
+function oilAvg(n){
+ const vals=[...document.querySelectorAll(".oil"+n)]
+  .map(x=>parseFloat(x.value))
+  .filter(Number.isFinite);
 
+ document.getElementById("oilAvg"+n).value=
+  vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2):"";
 }
 
-else{
-
-dynamic.innerHTML=
-standardForm(currentForm);
-
+function hotDelta(){
+ const a=parseFloat(hotMax.value),b=parseFloat(hotRef.value);
+ hotDelta.value=Number.isFinite(a)&&Number.isFinite(b)?(a-b).toFixed(1):"";
 }
 
+function paperPhoto(input,id){
+ if(!input.files?.[0])return;
+ const r=new FileReader();
+ r.onload=e=>document.getElementById(id).src=e.target.result;
+ r.readAsDataURL(input.files[0]);
 }
 
+/* =========================================================
+   SAVE
+========================================================= */
 
-/* ==================================================
-STANDARD FORM
-================================================== */
+function savePaper(status){
+ if(!activeForm)return;
 
-function standardForm(form){
+ const fields={};
+ paperContainer.querySelectorAll("[data-field]").forEach(x=>{
+  fields[x.dataset.field]=x.value;
+ });
 
-const t=T[currentLanguage];
+ const measurements={};
+ paperContainer.querySelectorAll("[data-measure]").forEach(x=>{
+  measurements[x.dataset.measure]=x.value;
+ });
 
-let html=`
+ const checklist=[];
+ paperContainer.querySelectorAll(".paper-check-row").forEach(row=>{
+  const item=row.children[1];
+  checklist.push({
+   th:item.dataset.th||item.textContent.trim(),
+   en:item.dataset.en||item.textContent.trim(),
+   result:row.querySelector('input[type="radio"]:checked')?.value||"",
+   remark:row.querySelector(".checkRemark")?.value||""
+  });
+ });
 
-<div class="section-title">
-${t.checklist}
-</div>
+ const severity=paperContainer.querySelector('input[name="severity"]:checked')?.value||"";
 
-<div class="table-wrap">
+ const oil=[1,2,3].map(n=>({
+  values:[...paperContainer.querySelectorAll(".oil"+n)].map(x=>x.value),
+  average:document.getElementById("oilAvg"+n)?.value||""
+ }));
 
-<table>
+ const data=getRecords();
 
-<thead>
+ data.push({
+  id:Date.now(),
+  formId:activeForm.id,
+  code:activeForm.code,
+  formTH:activeForm.th,
+  formEN:activeForm.en,
+  status,
+  timestamp:new Date().toISOString(),
+  fields,
+  measurements,
+  checklist,
+  severity,
+  oil
+ });
 
-<tr>
+ localStorage.setItem("paperInspectionRecords",JSON.stringify(data));
 
-<th style="width:60px">
-${t.no}
-</th>
+ alert(status==="Draft"
+  ?(lang==="th"?"บันทึกฉบับร่างแล้ว":"Draft saved.")
+  :(lang==="th"?"ส่งผลตรวจเรียบร้อย":"Inspection submitted."));
 
-<th>
-${t.item}
-</th>
-
-<th style="width:160px">
-${t.result}
-</th>
-
-<th>
-${t.remark}
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-`;
-
-
-form.items.forEach((item,i)=>{
-
-const label=
-currentLanguage==="th"
-? item[0]
-: item[1];
-
-html+=`
-
-<tr class="check-row">
-
-<td>${i+1}</td>
-
-<td class="item-label"
-data-th="${escapeHtml(item[0])}"
-data-en="${escapeHtml(item[1])}">
-${label}
-</td>
-
-<td>
-
-<select class="result">
-
-<option value="">
-${t.select}
-</option>
-
-<option value="normal">
-${t.normal}
-</option>
-
-<option value="damaged">
-${t.damaged}
-</option>
-
-<option value="none">
-${t.none}
-</option>
-
-<option value="na">
-${t.na}
-</option>
-
-</select>
-
-</td>
-
-<td>
-<input class="defect">
-</td>
-
-</tr>
-
-`;
-
-});
-
-
-html+=`
-
-</tbody>
-</table>
-</div>
-
-`;
-
-
-if(form.measurements){
-
-html+=electricalMeasurements();
-
+ closePaper();
+ refresh();
 }
-
-
-if(form.capacitor){
-
-html+=capacitorMeasurements();
-
-}
-
-
-return html;
-
-}
-
-
-/* ==================================================
-ELECTRICAL
-================================================== */
-
-function electricalMeasurements(){
-
-return `
-
-<div class="section-title">
-${T[currentLanguage].electrical}
-</div>
-
-<div class="grid3">
-
-${measurement("V1-N","V1-N (V)")}
-${measurement("V2-N","V2-N (V)")}
-${measurement("V3-N","V3-N (V)")}
-
-${measurement("V1-2","V1-2 (V)")}
-${measurement("V1-3","V1-3 (V)")}
-${measurement("V2-3","V2-3 (V)")}
-
-${measurement("IN","IN (A)")}
-${measurement("I1","I1 (A)")}
-${measurement("I2","I2 (A)")}
-${measurement("I3","I3 (A)")}
-
-</div>
-
-`;
-
-}
-
-
-function measurement(name,label){
-
-return `
-
-<div class="field">
-
-<label>${label}</label>
-
-<input
-type="number"
-step="any"
-class="measurement"
-data-name="${name}">
-
-</div>
-
-`;
-
-}
-
-
-/* ==================================================
-CAPACITOR
-================================================== */
-
-function capacitorMeasurements(){
-
-return `
-
-<div class="section-title">
-3. Capacitor Measurement
-</div>
-
-<div class="grid3">
-
-<div class="field">
-<label>Cap Off</label>
-<input type="time"
-class="measurement"
-data-name="Cap Off">
-</div>
-
-<div class="field">
-<label>Cap On</label>
-<input type="time"
-class="measurement"
-data-name="Cap On">
-</div>
-
-<div class="field">
-<label>Capacitance</label>
-<input type="number"
-step="any"
-class="measurement"
-data-name="Capacitance">
-</div>
-
-</div>
-
-`;
-
-}
-
-
-/* ==================================================
-OIL
-================================================== */
-
-function oilForm(){
-
-const th=currentLanguage==="th";
-
-return `
-
-<div class="section-title">
-${T[currentLanguage].oil}
-</div>
-
-<p>
-${
-th
-? "กรอกผลการทดสอบ Breakdown Voltage จำนวน 5 ครั้ง"
-: "Enter five Breakdown Voltage test results."
-}
-</p>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-${th ? "ครั้งที่" : "Test No."}
-</th>
-
-<th>
-Breakdown Voltage (kV)
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-${[1,2,3,4,5].map(i=>`
-
-<tr>
-
-<td>${i}</td>
-
-<td>
-
-<input
-type="number"
-step="0.01"
-class="oilValue"
-oninput="calculateOilAverage()">
-
-</td>
-
-</tr>
-
-`).join("")}
-
-</tbody>
-
-</table>
-
-</div>
-
-<br>
-
-<div class="grid2">
-
-<div class="field">
-
-<label>
-${th ? "ค่าเฉลี่ย Breakdown Voltage" : "Average Breakdown Voltage"}
-</label>
-
-<input id="oilAverage" readonly>
-
-</div>
-
-
-<div class="field">
-
-<label>
-${th ? "ผลประเมิน" : "Evaluation"}
-</label>
-
-<input id="oilResult" readonly>
-
-</div>
-
-</div>
-
-
-<div class="section-title">
-
-${th
-? "3. การกรองน้ำมัน"
-: "3. Oil Filtering"}
-
-</div>
-
-
-<textarea
-id="oilFiltering"
-placeholder="${
-th
-? "ขั้นตอน / ผลหลังการกรองน้ำมัน"
-: "Filtering procedure / result"
-}">
-</textarea>
-
-`;
-
-}
-
-
-function calculateOilAverage(){
-
-const values=
-[...document.querySelectorAll(".oilValue")]
-.map(x=>parseFloat(x.value))
-.filter(x=>!isNaN(x));
-
-
-if(!values.length){
-
-document.getElementById("oilAverage")
-.value="";
-
-document.getElementById("oilResult")
-.value="";
-
-return;
-
-}
-
-
-const avg=
-values.reduce((a,b)=>a+b,0)/
-values.length;
-
-
-document.getElementById("oilAverage")
-.value=
-avg.toFixed(2)+" kV";
-
-
-document.getElementById("oilResult")
-.value=
-avg>=26
-
-? (
-currentLanguage==="th"
-? "ผ่านเกณฑ์"
-: "Passed"
-)
-
-: (
-currentLanguage==="th"
-? "ต่ำกว่า 26 kV / ตรวจสอบการกรองน้ำมัน"
-: "Below 26 kV / Check oil filtering"
-);
-
-}
-
-
-/* ==================================================
-HOT SPOT
-================================================== */
-
-function hotSpotForm(){
-
-const th=currentLanguage==="th";
-
-return `
-
-<div class="section-title">
-${T[currentLanguage].hotspot}
-</div>
-
-<div class="grid3">
-
-<div class="field">
-
-<label>
-${th ? "อุปกรณ์" : "Equipment"}
-</label>
-
-<input id="hotEquipment">
-
-</div>
-
-
-<div class="field">
-
-<label>
-${th
-? "อุณหภูมิสูงสุดที่จุดวัด (°C)"
-: "Maximum Temperature (°C)"}
-</label>
-
-<input
-id="hotMax"
-type="number"
-step="0.1"
-oninput="calculateDelta()">
-
-</div>
-
-
-<div class="field">
-
-<label>
-${th
-? "อุณหภูมิเปรียบเทียบ (°C)"
-: "Reference Temperature (°C)"}
-</label>
-
-<input
-id="hotReference"
-type="number"
-step="0.1"
-oninput="calculateDelta()">
-
-</div>
-
-
-<div class="field">
-
-<label>Delta T (°C)</label>
-
-<input
-id="deltaT"
-readonly>
-
-</div>
-
-
-<div class="field">
-
-<label>
-${th
-? "ระดับความสำคัญ"
-: "Priority"}
-</label>
-
-<select id="hotPriority">
-
-<option value="">
-${T[currentLanguage].select}
-</option>
-
-<option value="normal">
-${th ? "อุปกรณ์ปกติ" : "Normal Equipment"}
-</option>
-
-<option value="next">
-${th
-? "แก้ไขในการบำรุงรักษาครั้งต่อไป"
-: "Correct at Next Maintenance"}
-</option>
-
-<option value="month">
-${th
-? "ควรแก้ไขภายใน 1 เดือน"
-: "Correct Within 1 Month"}
-</option>
-
-<option value="urgent">
-${th
-? "ควรได้รับการแก้ไขเร่งด่วน"
-: "Urgent Corrective Action"}
-</option>
-
-</select>
-
-</div>
-
-</div>
-
-
-<div class="section-title">
-
-${th
-? "3. ข้อมูลภาพถ่าย"
-: "3. Photo Information"}
-
-</div>
-
-
-<div class="grid2">
-
-<div class="upload-box">
-
-<b>
-${th ? "ภาพถ่ายจริง" : "Normal Photo"}
-</b>
-
-<br><br>
-
-<input
-type="file"
-accept="image/*"
-onchange="previewImage(this,'hotNormal')">
-
-<img id="hotNormal"
-class="preview">
-
-</div>
-
-
-<div class="upload-box">
-
-<b>
-${th ? "ภาพถ่ายความร้อน" : "Thermal Image"}
-</b>
-
-<br><br>
-
-<input
-type="file"
-accept="image/*"
-onchange="previewImage(this,'hotThermal')">
-
-<img id="hotThermal"
-class="preview">
-
-</div>
-
-</div>
-
-`;
-
-}
-
-
-function calculateDelta(){
-
-const max=
-parseFloat(
-document.getElementById("hotMax")?.value
-);
-
-const ref=
-parseFloat(
-document.getElementById("hotReference")?.value
-);
-
-if(
-!isNaN(max) &&
-!isNaN(ref)
-){
-
-document.getElementById("deltaT")
-.value=
-(max-ref).toFixed(1);
-
-}
-
-}
-
-
-/* ==================================================
-PARTIAL DISCHARGE
-================================================== */
-
-function partialDischargeForm(){
-
-const th=currentLanguage==="th";
-
-return `
-
-<div class="section-title">
-${T[currentLanguage].pd}
-</div>
-
-<div class="grid3">
-
-<div class="field">
-
-<label>
-${th ? "อุปกรณ์" : "Equipment"}
-</label>
-
-<input id="pdEquipment">
-
-</div>
-
-
-<div class="field">
-
-<label>
-${th ? "จุดที่ผิดปกติ" : "Abnormal Point"}
-</label>
-
-<input id="pdPoint">
-
-</div>
-
-
-<div class="field">
-
-<label>
-${th
-? "ระดับความเข้มเสียง (dB)"
-: "Sound Level (dB)"}
-</label>
-
-<input
-id="pdDb"
-type="number"
-step="0.1">
-
-</div>
-
-
-<div class="field">
-
-<label>
-${th
-? "ระดับความรุนแรง"
-: "Severity"}
-</label>
-
-<select id="pdSeverity">
-
-<option value="">
-${T[currentLanguage].select}
-</option>
-
-<option value="veryHigh">
-${th ? "สูงมาก" : "Very High"}
-</option>
-
-<option value="high">
-${th ? "สูง" : "High"}
-</option>
-
-<option value="medium">
-${th ? "ปานกลาง" : "Medium"}
-</option>
-
-<option value="low">
-${th ? "ต่ำ" : "Low"}
-</option>
-
-</select>
-
-</div>
-
-</div>
-
-
-<div class="section-title">
-
-${th
-? "3. ข้อมูลภาพถ่าย"
-: "3. Photo Information"}
-
-</div>
-
-
-<div class="grid2">
-
-<div class="upload-box">
-
-<b>
-📷 ${th
-? "ภาพถ่ายจากกล้องปกติ"
-: "Normal Camera Image"}
-</b>
-
-<br><br>
-
-<input
-type="file"
-accept="image/*"
-onchange="previewImage(this,'normalCamera')">
-
-<img
-id="normalCamera"
-class="preview">
-
-</div>
-
-
-<div class="upload-box">
-
-<b>
-🎙️ ${th
-? "ภาพถ่ายจาก Acoustic Camera"
-: "Acoustic Camera Image"}
-</b>
-
-<br><br>
-
-<input
-type="file"
-accept="image/*"
-onchange="previewImage(this,'acousticCamera')">
-
-<img
-id="acousticCamera"
-class="preview">
-
-</div>
-
-</div>
-
-
-<div class="section-title">
-
-${th
-? "4. การส่งต่อดำเนินการแก้ไข"
-: "4. Corrective Action Forwarding"}
-
-</div>
-
-
-<div class="grid3">
-
-<div class="field">
-
-<label>
-${th
-? "ส่งต่อให้กลุ่มงาน"
-: "Forward to Work Group"}
-</label>
-
-<input id="pdForward">
-
-</div>
-
-
-<div class="field">
-
-<label>
-${th
-? "โปรดดำเนินการแก้ไข"
-: "Required Corrective Action"}
-</label>
-
-<input id="pdAction">
-
-</div>
-
-
-<div class="field">
-
-<label>
-${th ? "วันที่" : "Date"}
-</label>
-
-<input
-id="pdActionDate"
-type="date">
-
-</div>
-
-</div>
-
-
-<div class="section-title">
-
-${th
-? "5. การดำเนินการปรับปรุง"
-: "5. Improvement Action"}
-
-</div>
-
-
-<textarea
-id="pdImprovement"
-placeholder="${
-th
-? "รายละเอียดการดำเนินการแก้ไข"
-: "Corrective / improvement details"
-}">
-</textarea>
-
-`;
-
-}
-
-
-/* ==================================================
-IMAGE
-================================================== */
-
-function previewImage(input,id){
-
-if(!input.files ||
-!input.files[0]) return;
-
-const reader=
-new FileReader();
-
-reader.onload=e=>{
-
-document.getElementById(id)
-.src=e.target.result;
-
-};
-
-reader.readAsDataURL(
-input.files[0]
-);
-
-}
-
-
-/* ==================================================
-SAVE INSPECTION
-================================================== */
-
-function saveInspection(status){
-
-if(!currentForm) return;
-
-
-const record={
-
-id:Date.now(),
-
-formId:currentForm.id,
-code:currentForm.code,
-
-formTH:currentForm.th,
-formEN:currentForm.en,
-
-date:value("inspectionDate"),
-
-station:value("stationId"),
-mea:value("meaNo"),
-
-location:value("location"),
-
-lat:value("lat"),
-lng:value("lng"),
-
-inspector:value("inspector"),
-position:value("position"),
-
-workOrder:value("workOrder"),
-
-remark:value("remark"),
-
-status:status,
-
-timestamp:
-new Date().toISOString(),
-
-checklist:[],
-
-measurements:{}
-
-};
-
-
-/* CHECKLIST */
-
-document.querySelectorAll(".check-row")
-.forEach(row=>{
-
-const item=
-row.querySelector(".item-label");
-
-record.checklist.push({
-
-itemTH:item?.dataset.th || "",
-
-itemEN:item?.dataset.en || "",
-
-result:
-row.querySelector(".result")
-?.value || "",
-
-defect:
-row.querySelector(".defect")
-?.value || ""
-
-});
-
-});
-
-
-/* MEASUREMENT */
-
-document.querySelectorAll(".measurement")
-.forEach(x=>{
-
-record.measurements[
-x.dataset.name
-]=x.value;
-
-});
-
-
-/* OIL */
-
-if(currentForm.type==="oil"){
-
-record.oil={
-
-values:
-[...document.querySelectorAll(".oilValue")]
-.map(x=>x.value),
-
-average:value("oilAverage"),
-
-result:value("oilResult"),
-
-filtering:value("oilFiltering")
-
-};
-
-}
-
-
-/* HOT SPOT */
-
-if(currentForm.type==="hotspot"){
-
-record.hotspot={
-
-equipment:value("hotEquipment"),
-
-maximumTemperature:value("hotMax"),
-
-referenceTemperature:
-value("hotReference"),
-
-deltaT:value("deltaT"),
-
-priority:value("hotPriority")
-
-};
-
-}
-
-
-/* PD */
-
-if(currentForm.type==="pd"){
-
-record.partialDischarge={
-
-equipment:value("pdEquipment"),
-
-abnormalPoint:value("pdPoint"),
-
-db:value("pdDb"),
-
-severity:value("pdSeverity"),
-
-forwardGroup:value("pdForward"),
-
-correctiveAction:value("pdAction"),
-
-actionDate:value("pdActionDate"),
-
-improvement:value("pdImprovement")
-
-};
-
-}
-
-
-const records=getRecords();
-
-records.push(record);
-
-localStorage.setItem(
-"assetInspectionRecords",
-JSON.stringify(records)
-);
-
-
-closeModal();
-
-refresh();
-
-
-toast(
-
-status==="Draft"
-
-? T[currentLanguage].draftSaved
-
-: T[currentLanguage].submittedSaved
-
-);
-
-}
-
-
-/* ==================================================
-STORAGE
-================================================== */
 
 function getRecords(){
-
-try{
-
-return JSON.parse(
-localStorage.getItem(
-"assetInspectionRecords"
-)
-) || [];
-
+ try{return JSON.parse(localStorage.getItem("paperInspectionRecords"))||[]}
+ catch{return[]}
 }
-
-catch{
-
-return [];
-
-}
-
-}
-
-
-/* ==================================================
-REFRESH DASHBOARD
-================================================== */
 
 function refresh(){
+ const d=getRecords();
+ total.textContent=d.length;
+ submitted.textContent=d.filter(x=>x.status==="Submitted").length;
+ draft.textContent=d.filter(x=>x.status==="Draft").length;
 
-const data=getRecords();
+ const recent=d.slice(-5).reverse();
 
-const t=T[currentLanguage];
+ recentBody.innerHTML=recent.length?recent.map(x=>`
+ <tr>
+  <td>${esc(x.fields?.date||x.fields?.inspectionDate||"-")}</td>
+  <td>${esc(lang==="th"?x.formTH:x.formEN)}<br><small>${x.code}</small></td>
+  <td>${esc(x.fields?.station||"-")}</td>
+  <td>${esc(x.fields?.mea||"-")}</td>
+  <td><span class="status ${x.status.toLowerCase()}">${x.status==="Submitted"?tr().submitted:tr().draft}</span></td>
+ </tr>`).join(""):`<tr><td colspan="5" style="text-align:center">-</td></tr>`;
 
-const submitted=
-data.filter(
-x=>x.status==="Submitted"
-).length;
-
-const drafts=
-data.filter(
-x=>x.status==="Draft"
-).length;
-
-
-document.getElementById("totalCount")
-.textContent=data.length;
-
-document.getElementById("submitCount")
-.textContent=submitted;
-
-document.getElementById("draftCount")
-.textContent=drafts;
-
-
-document.getElementById("kpiTotal")
-.textContent=data.length;
-
-document.getElementById("kpiSubmit")
-.textContent=submitted;
-
-document.getElementById("kpiDraft")
-.textContent=drafts;
-
-
-document.getElementById("completionKPI")
-.textContent=
-
-data.length
-
-? Math.round(
-submitted/data.length*100
-)+"%"
-
-: "0%";
-
-
-/* RECENT */
-
-const recent=
-data.slice(-5).reverse();
-
-
-document.getElementById("recentTable")
-.innerHTML=
-
-recent.length
-
-? recent.map(x=>`
-
-<tr>
-
-<td>
-${safe(x.date)||"-"}
-</td>
-
-<td>
-
-<b>
-
-${safe(
-currentLanguage==="th"
-? x.formTH
-: x.formEN
-)}
-
-</b>
-
-<br>
-
-<small>
-${safe(x.code)}
-</small>
-
-</td>
-
-<td>
-${safe(x.station)||"-"}
-</td>
-
-<td>
-${safe(x.mea)||"-"}
-</td>
-
-<td>
-
-<span class="status ${
-x.status==="Submitted"
-? "submitted"
-: "draft"
-}">
-
-${
-x.status==="Submitted"
-? t.submitted
-: t.draft
+ historyBody.innerHTML=d.length?d.slice().reverse().map(x=>`
+ <tr>
+  <td>${esc(x.fields?.date||x.fields?.inspectionDate||"-")}</td>
+  <td>${esc(lang==="th"?x.formTH:x.formEN)}<br><small>${x.code}</small></td>
+  <td>${esc(x.fields?.station||"-")}</td>
+  <td>${esc(x.fields?.mea||"-")}</td>
+  <td>${esc(x.fields?.inspector||"-")}</td>
+  <td><span class="status ${x.status.toLowerCase()}">${x.status==="Submitted"?tr().submitted:tr().draft}</span></td>
+  <td><button class="btn btn-red" onclick="removeRecord(${x.id})">${lang==="th"?"ลบ":"Delete"}</button></td>
+ </tr>`).join(""):`<tr><td colspan="7" style="text-align:center">-</td></tr>`;
 }
 
-</span>
-
-</td>
-
-</tr>
-
-`).join("")
-
-:`
-
-<tr>
-
-<td colspan="5"
-style="
-text-align:center;
-color:#888;
-">
-
-${t.noData}
-
-</td>
-
-</tr>
-
-`;
-
-
-/* HISTORY */
-
-document.getElementById("historyTable")
-.innerHTML=
-
-data.length
-
-? data.slice().reverse().map(x=>`
-
-<tr>
-
-<td>
-${safe(x.date)||"-"}
-</td>
-
-<td>
-
-${safe(
-currentLanguage==="th"
-? x.formTH
-: x.formEN
-)}
-
-<br>
-
-<small>
-${safe(x.code)}
-</small>
-
-</td>
-
-<td>
-${safe(x.station)||"-"}
-</td>
-
-<td>
-${safe(x.mea)||"-"}
-</td>
-
-<td>
-${safe(x.inspector)||"-"}
-</td>
-
-<td>
-
-<span class="status ${
-x.status==="Submitted"
-? "submitted"
-: "draft"
-}">
-
-${
-x.status==="Submitted"
-? t.submitted
-: t.draft
+function removeRecord(id){
+ if(!confirm(lang==="th"?"ลบรายการนี้หรือไม่?":"Delete this record?"))return;
+ localStorage.setItem(
+  "paperInspectionRecords",
+  JSON.stringify(getRecords().filter(x=>x.id!==id))
+ );
+ refresh();
 }
 
-</span>
-
-</td>
-
-<td>
-
-<button
-class="btn btn-red"
-onclick="deleteRecord(${x.id})">
-
-${t.delete}
-
-</button>
-
-</td>
-
-</tr>
-
-`).join("")
-
-:`
-
-<tr>
-
-<td colspan="7"
-style="
-text-align:center;
-color:#888;
-">
-
-${t.noData}
-
-</td>
-
-</tr>
-
-`;
-
-}
-
-
-/* ==================================================
-DELETE
-================================================== */
-
-function deleteRecord(id){
-
-if(
-!confirm(
-T[currentLanguage]
-.confirmDelete
-)
-) return;
-
-
-let data=getRecords();
-
-data=
-data.filter(
-x=>x.id!==id
-);
-
-
-localStorage.setItem(
-"assetInspectionRecords",
-JSON.stringify(data)
-);
-
-
-refresh();
-
-toast(
-currentLanguage==="th"
-? "ลบข้อมูลแล้ว"
-: "Record deleted"
-);
-
-}
-
-
-/* ==================================================
-CSV
-================================================== */
+/* =========================================================
+   CSV
+========================================================= */
 
 function exportCSV(){
+ const d=getRecords();
+ if(!d.length){
+  alert(lang==="th"?"ยังไม่มีข้อมูล":"No data.");
+  return;
+ }
 
-const data=getRecords();
+ const rows=[[
+  "Date","Form Code","Form TH","Form EN","Station ID",
+  "MEA No.","Location","Latitude","Longitude","Inspector","Status"
+ ]];
 
-if(!data.length){
+ d.forEach(x=>rows.push([
+  x.fields?.date||x.fields?.inspectionDate||"",
+  x.code,x.formTH,x.formEN,
+  x.fields?.station||"",
+  x.fields?.mea||"",
+  x.fields?.location||"",
+  x.fields?.lat||"",
+  x.fields?.lng||"",
+  x.fields?.inspector||"",
+  x.status
+ ]));
 
-alert(
-currentLanguage==="th"
-? "ยังไม่มีข้อมูล"
-: "No inspection data"
-);
-
-return;
-
+ const csv="\uFEFF"+rows.map(r=>r.map(x=>`"${String(x??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+ const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="MEA_Asset_Inspection.csv";
+ a.click();
+ URL.revokeObjectURL(url);
 }
 
+/* =========================================================
+   MANUAL
+========================================================= */
 
-const rows=[
+function openManual(id){
+ const f=forms.find(x=>x.id===id);
+ if(!f)return;
 
-[
-"Date",
-"Form Code",
-"Form TH",
-"Form EN",
-"Station ID",
-"MEA No.",
-"Location",
-"Latitude",
-"Longitude",
-"Inspector",
-"Position",
-"Work Order",
-"Status",
-"Remark"
-]
+ const w=window.open("","_blank");
+ if(!w)return;
 
-];
+ const items=f.items||[];
 
-
-data.forEach(x=>{
-
-rows.push([
-
-x.date,
-x.code,
-x.formTH,
-x.formEN,
-x.station,
-x.mea,
-x.location,
-x.lat,
-x.lng,
-x.inspector,
-x.position,
-x.workOrder,
-x.status,
-x.remark
-
-]);
-
-});
-
-
-const csv=
-"\uFEFF"+
-rows.map(row=>
-
-row.map(v=>
-`"${String(v ?? "")
-.replace(/"/g,'""')}"`
-).join(",")
-
-).join("\n");
-
-
-const blob=
-new Blob(
-[csv],
-{
-type:
-"text/csv;charset=utf-8;"
-}
-);
-
-
-const url=
-URL.createObjectURL(blob);
-
-
-const a=
-document.createElement("a");
-
-a.href=url;
-
-a.download=
-"Asset_Inspection_Data.csv";
-
-a.click();
-
-URL.revokeObjectURL(url);
-
+ w.document.write(`
+ <!doctype html>
+ <html lang="${lang}">
+ <head>
+ <meta charset="UTF-8">
+ <title>${esc(formName(f))}</title>
+ <style>
+ body{font-family:Tahoma,Arial;background:#eef3f7;margin:0;padding:30px;color:#173a59}
+ main{max-width:850px;margin:auto;background:white;padding:30px;border-radius:15px}
+ h1{margin-bottom:5px}
+ small{color:#718599}
+ table{width:100%;border-collapse:collapse;margin-top:20px}
+ th,td{border:1px solid #ccd7df;padding:10px;text-align:left}
+ th{background:#edf5fa}
+ .note{background:#edf6fd;border-left:4px solid #1488d4;padding:14px;margin-top:20px}
+ </style>
+ </head>
+ <body><main>
+ <h1>${esc(formName(f))}</h1>
+ <small>${f.code}</small>
+ <div class="note">
+ ${lang==="th"
+ ?"คู่มือนี้แสดงรายการหลักของใบตรวจในระบบ โดยหน้ากรอกจริงถูกจัดรูปแบบเป็นเอกสารกระดาษ A4"
+ :"This guide lists the main inspection items. The working form uses an A4 paper-style layout."}
+ </div>
+ ${items.length?`
+ <table>
+ <tr><th>#</th><th>${tr().item}</th></tr>
+ ${items.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(lang==="th"?x[0]:x[1])}</td></tr>`).join("")}
+ </table>`:
+ `<p>${lang==="th"?"ใบนี้เป็นแบบตรวจเฉพาะ กรุณาเปิดใบตรวจเพื่อดูโครงสร้างเต็ม":"This is a specialized form. Open the form to see its full structure."}</p>`}
+ </main></body></html>`);
+ w.document.close();
 }
 
+/* =========================================================
+   HELPERS
+========================================================= */
 
-/* ==================================================
-WORK ORDER
-================================================== */
-
-function alertWorkOrder(){
-
-alert(
-
-currentLanguage==="th"
-
-? "ส่วน Work Order สามารถเชื่อมกับรายการที่พบว่าชำรุดจากใบตรวจได้"
-
-: "Work Orders can be linked to defects found during inspections."
-
-);
-
+function esc(v){
+ return String(v??"")
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
 }
+function escAttr(v){return esc(v)}
 
+/* =========================================================
+   START
+========================================================= */
 
-/* ==================================================
-HELPERS
-================================================== */
-
-function value(id){
-
-return document
-.getElementById(id)
-?.value || "";
-
-}
-
-
-function setText(id,text){
-
-const el=
-document.getElementById(id);
-
-if(el){
-el.textContent=text;
-}
-
-}
-
-
-function clearInspectionFields(){
-
-[
-"stationId",
-"meaNo",
-"location",
-"lat",
-"lng",
-"inspector",
-"position",
-"workOrder",
-"remark"
-]
-.forEach(id=>{
-
-const el=
-document.getElementById(id);
-
-if(el){
-el.value="";
-}
-
-});
-
-
-const image=
-document.getElementById(
-"generalPreview"
-);
-
-if(image){
-image.src="";
-}
-
-}
-
-
-function closeModal(){
-
-document.getElementById(
-"inspectionModal"
-).style.display="none";
-
-}
-
-
-function toast(message){
-
-const element=
-document.getElementById("toast");
-
-element.textContent=
-message;
-
-element.style.display=
-"block";
-
-setTimeout(()=>{
-
-element.style.display=
-"none";
-
-},2500);
-
-}
-
-
-function safe(value){
-
-return String(value ?? "")
-
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
-
-}
-
-
-function escapeHtml(value){
-
-return safe(value);
-
-}
-
-
-/* ==================================================
-CLICK OUTSIDE MODAL
-================================================== */
-
-window.addEventListener(
-"click",
-function(e){
-
-const modal=
-document.getElementById(
-"inspectionModal"
-);
-
-if(e.target===modal){
-
-closeModal();
-
-}
-
-});
-
-
-/* ==================================================
-INITIALIZE
-================================================== */
-
-renderForms();
-
-renderNavigationForms();
-
-renderManuals();
-
+renderCards();
+renderNavForms();
+renderManualCards();
+setLanguage(lang);
 refresh();
-
-changeLanguage(
-currentLanguage
-);
-
 </script>
-
 </body>
 </html>
