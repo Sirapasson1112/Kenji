@@ -270,6 +270,132 @@ body.dark .home-main-card,body.dark .home-quick-row button,body.dark #quickHelp{
 }
 body.dark h1,body.dark h2,body.dark h3,body.dark .manage-question,body.dark .home-summary-list b{color:#e4efed!important}
 body.dark input,body.dark select,body.dark textarea,body.dark #globalSearch{background:#1b2d31!important;border-color:#355159!important;color:#e5efee!important}
+
+/* ===== SOFT BLUE THEME OVERRIDE ===== */
+:root{
+ --calm-bg:#f3f8fc;
+ --calm-surface:#ffffff;
+ --calm-primary:#3b82b8;
+ --calm-primary-dark:#285f8c;
+ --calm-secondary:#6f9fbd;
+ --calm-accent:#91bdd8;
+ --calm-soft:#eaf4fb;
+ --calm-soft-blue:#edf5fb;
+ --calm-text:#24445d;
+ --calm-muted:#71899a;
+ --calm-line:#dbe8f1;
+ --calm-shadow:0 10px 28px rgba(48,105,145,.09);
+}
+body{
+ background:
+  radial-gradient(circle at 86% 0,rgba(113,174,214,.16),transparent 28%),
+  radial-gradient(circle at 16% 100%,rgba(145,189,216,.11),transparent 25%),
+  #f3f8fc!important;
+ color:#24445d!important;
+}
+.sidebar{
+ background:linear-gradient(180deg,#174f78 0%,#123f62 58%,#0e354f 100%)!important;
+}
+.menu.active{
+ background:rgba(92,174,226,.22)!important;
+ box-shadow:inset 3px 0 0 #8fd0f5!important;
+}
+.header,.panel,.card,.stat,.manage-box,.manage-primary>button{
+ border-color:#dbe8f1!important;
+ box-shadow:0 10px 28px rgba(48,105,145,.08)!important;
+}
+h1,h2,h3,.manage-question{color:#24445d!important}
+.btn{
+ background:#3b82b8!important;
+ box-shadow:0 5px 14px rgba(59,130,184,.18)!important;
+}
+.btn:hover{background:#285f8c!important}
+.btn-light{
+ background:#eaf4fb!important;
+ color:#285f8c!important;
+ border-color:#d5e8f4!important;
+}
+.manage-hero,.field-hub-head,.welcome-simple{
+ background:linear-gradient(120deg,#2f73a6 0%,#438fc2 55%,#68a9cf 100%)!important;
+ box-shadow:0 14px 32px rgba(47,115,166,.18)!important;
+}
+.manage-hero h2,.manage-hero p,.field-hub-head h2,.field-hub-head p,
+.welcome-simple h1,.welcome-simple p{color:#fff!important}
+.manage-primary i,.home-main-icon,.job-icon{
+ background:#eaf4fb!important;
+}
+.manage-primary>button:hover,.admin-tool-grid button:hover,.home-main-card:hover{
+ border-color:#82b9d9!important;
+}
+.manage-box-head button,.soft-label{
+ background:#eaf4fb!important;
+ color:#285f8c!important;
+}
+.manage-box-content>button{
+ background:#f8fbfe!important;
+ border-color:#e0ebf3!important;
+}
+.manage-tip,.help-strip,.guide-box{
+ background:#edf6fc!important;
+ border-color:#d7e9f5!important;
+ color:#58778c!important;
+}
+.home-main-card.primary{
+ background:linear-gradient(125deg,#347fb5,#5a9fc9)!important;
+}
+.home-quick-row button:hover{
+ background:#f2f8fc!important;
+ border-color:#8bbbd8!important;
+}
+.home-summary-list b{color:#285f8c!important}
+.field-tab.active{
+ background:#3b82b8!important;
+ border-color:#3b82b8!important;
+}
+.step-no,.ux-step.active i{background:#3b82b8!important}
+table th{
+ background:#edf5fa!important;
+ color:#315c78!important;
+}
+table td,table th{border-color:#e0eaf1!important}
+a,.link-btn,.home-section-head button{color:#347fb5!important}
+.help-fab{
+ background:linear-gradient(135deg,#347fb5,#69a9cf)!important;
+ box-shadow:0 10px 26px rgba(52,127,181,.28)!important;
+}
+#quickHelp .qh-head{
+ background:linear-gradient(120deg,#245f8a,#438fc2)!important;
+}
+.qh-option:hover{background:#edf6fc!important}
+.map-preview-simple{background:#edf6fc!important}
+.admin-shortcut{
+ background:#f3f8fc!important;
+ border-color:#d8e7f1!important;
+}
+.status.submitted,.badge-online{
+ background:#e8f4fb!important;
+ color:#31749f!important;
+}
+.progress-line{background:#e5eef4!important}
+.progress-line i{
+ background:linear-gradient(90deg,#438fc2,#83b9d8)!important;
+}
+body.dark{
+ --calm-text:#deebf4;
+ --calm-muted:#9eb6c7;
+ background:#142532!important;
+}
+body.dark .header,body.dark .panel,body.dark .card,body.dark .stat,
+body.dark .manage-box,body.dark .manage-primary>button,
+body.dark .home-main-card,body.dark .home-quick-row button,body.dark #quickHelp{
+ background:#1b3242!important;
+ border-color:#2e5066!important;
+ color:#deebf4!important;
+}
+body.dark h1,body.dark h2,body.dark h3,
+body.dark .manage-question,body.dark .home-summary-list b{
+ color:#e4f0f7!important;
+}
 </style>
 </head>
 <body>
