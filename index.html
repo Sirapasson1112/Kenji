@@ -10,268 +10,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
-:root{--navy:#073b68;--blue:#1488d4;--bg:#eef3f7;--green:#198754;--orange:#e99a22;--red:#d9534f;--ink:#173a59}
-*{box-sizing:border-box} body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-button,input,select,textarea{font:inherit}.sidebar{position:fixed;inset:0 auto 0 0;width:260px;background:linear-gradient(#073b68,#042a4b);color:#fff;padding:22px 14px;overflow:auto;z-index:1000}
-.brand{font-size:20px;font-weight:700;margin:4px 8px 24px}.brand small{display:block;font-size:11px;opacity:.7;margin-top:5px}
-.menu{padding:13px 14px;margin:5px 0;border-radius:9px;cursor:pointer}.menu:hover,.menu.active{background:#1488d4}
-.app{margin-left:260px;padding:24px}.header{background:#fff;padding:18px 22px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;box-shadow:0 3px 15px #0001;margin-bottom:20px}
-.header h1{margin:0;font-size:24px}.header p{margin:5px 0 0;color:#718599}.header-right{display:flex;gap:14px;align-items:center}
-.lang{background:#edf2f6;padding:4px;border-radius:9px}.lang button{border:0;padding:8px 11px;background:transparent;border-radius:6px;cursor:pointer;font-weight:700}.lang button.active{background:var(--blue);color:#fff}
-.page{display:none}.page.active{display:block}.panel{background:#fff;padding:20px;border-radius:14px;box-shadow:0 3px 15px #0000000d;margin-bottom:18px}.panel h2{margin-top:0}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:18px}.stat{background:#fff;border-radius:13px;padding:19px;box-shadow:0 3px 12px #0000000c}.stat small{color:#718599}.stat strong{display:block;font-size:30px;margin-top:7px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{background:#fff;border:1px solid #d9e3eb;border-radius:13px;padding:17px}.card h3{margin:12px 0 7px}.card p{font-size:13px;color:#60778b;min-height:38px}.number{width:42px;height:42px;border-radius:10px;background:#e6f3fd;color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:700}.code{color:#75899b;font-size:12px;margin:8px 0 13px}
-.btn{border:0;border-radius:7px;padding:10px 15px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer}.btn:hover{opacity:.9}.btn-green{background:var(--green)}.btn-orange{background:var(--orange)}.btn-gray{background:#6c7f8f}.btn-red{background:var(--red)}.btn-light{background:#e8f2f9;color:#073b68}
-.search{width:100%;padding:12px;border:1px solid #ccd7df;border-radius:9px;margin-bottom:17px}table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px solid #dfe7ed;text-align:left}th{background:#f2f6f9}
-.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;padding:10px;border:1px solid #cbd6df;border-radius:7px}.row2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.status{display:inline-block;border-radius:20px;padding:4px 9px;font-size:11px;font-weight:700}.status.draft{background:#fff0c7;color:#956400}.status.submitted{background:#dff5e8;color:#15744f}
-
-/* MAP */
-.map-layout{display:grid;grid-template-columns:330px 1fr;gap:15px}.map-side{background:#fff;border-radius:14px;padding:15px;max-height:72vh;overflow:auto}.map-side h2{margin:0 0 8px}.map-tools{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.station-list{display:grid;gap:8px}.station-item{border:1px solid #d9e3eb;border-radius:10px;padding:10px;cursor:pointer}.station-item:hover{background:#f3f9fd}.station-item b{display:block}.station-item small{color:#6f8496}#map{height:72vh;min-height:520px;border-radius:14px;box-shadow:0 3px 15px #0001}.leaflet-popup-content{min-width:230px}.popup-title{font-weight:700;font-size:15px;margin-bottom:5px}.popup-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.popup-actions button{border:0;border-radius:5px;padding:7px 9px;color:#fff;cursor:pointer;background:#1488d4}.popup-actions button:nth-child(2){background:#198754}.gps-pill{background:#e6f3fd;padding:7px 10px;border-radius:20px;font-size:12px;display:inline-block}
-
-/* MANUAL */
-.manual-top{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.manual-view{display:none}.manual-view.active{display:block}.manual-doc{border:1px solid #d9e3eb;border-radius:12px;overflow:hidden}.manual-head{background:#073b68;color:#fff;padding:18px}.manual-head h2{margin:0 0 5px}.manual-body{padding:18px}.manual-section{border-left:4px solid #1488d4;background:#f7fbfe;padding:14px;margin:12px 0}.manual-section h3{margin:0 0 8px}.manual-section li{margin:6px 0;line-height:1.5}.manual-warning{background:#fff7df;border-left-color:#e99a22}.manual-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
-
-/* PAPER */
-#paperMode,#manualOverlay{display:none;position:fixed;inset:0;z-index:3000;background:#d9dde0;overflow:auto}.paper-toolbar,.overlay-toolbar{position:sticky;top:0;z-index:30;background:#073b68;color:#fff;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 2px 8px #0004}.paper-actions{display:flex;gap:7px;flex-wrap:wrap}.paper-wrap{padding:28px 12px 70px}.paper{width:210mm;min-height:297mm;margin:0 auto 25px;background:#fff;color:#111;padding:9mm;box-shadow:0 5px 25px #0003;font-family:Tahoma,Arial,sans-serif}.paper-header{position:relative;text-align:center;min-height:75px;border:1.5px solid #111;padding:10px 135px 8px 100px}.paper-header .mea{font-size:17px;font-weight:700}.paper-header h2{margin:5px 0;font-size:17px;color:#111}.paper-code{position:absolute;right:8px;bottom:7px;font-size:11px}.paper-logo{position:absolute;left:12px;top:13px;width:62px;height:45px;border:1px solid #111;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}.paper table{color:#111;font-size:11px}.paper th,.paper td{border:1px solid #111;padding:4px;vertical-align:middle}.paper th{background:#fff;text-align:center}.paper input[type=text],.paper input[type=number],.paper input[type=date],.paper input[type=time],.paper select,.paper textarea{border:0;border-bottom:1px dotted #555;border-radius:0;background:transparent;width:100%;padding:3px;outline:none;color:#000}.paper textarea{border:1px dotted #555;min-height:55px;resize:vertical}.paper input:focus,.paper textarea:focus{background:#fffbe8}.paper-titlebar{text-align:center;font-weight:700;padding:5px;border:1px solid #111;border-top:0;background:#eee;font-size:12px}.check{text-align:center}.paper-note{border:1px solid #111;border-top:0;padding:7px;color:#111;font-size:11px}.signatures{border:1px solid #111;border-top:0;display:grid;grid-template-columns:1fr 1fr;color:#111;font-size:11px}.signature{padding:10px;min-height:70px;text-align:center}.signature:first-child{border-right:1px solid #111}.special-box{border:1px solid #111;padding:7px;color:#111;font-size:11px}.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.photo-box{border:1px solid #111;min-height:190px;padding:6px;text-align:center}.photo-box img{display:block;max-width:100%;max-height:150px;margin:7px auto}.paper-maplink{font-size:10px;padding:4px 0}.overlay-content{max-width:1000px;margin:25px auto;background:#fff;border-radius:14px;padding:22px}
-
-@media print{body *{visibility:hidden}#paperMode,#paperMode *{visibility:visible}#paperMode{position:absolute;display:block!important;inset:0;background:#fff;overflow:visible}.paper-toolbar{display:none!important}.paper-wrap{padding:0}.paper{width:210mm;min-height:297mm;margin:0;padding:8mm;box-shadow:none;page-break-after:always}.paper:last-child{page-break-after:auto}}
-@media(max-width:1000px){.stats,.grid{grid-template-columns:repeat(2,1fr)}.map-layout{grid-template-columns:1fr}.map-side{max-height:none}#map{height:65vh}}
-@media(max-width:760px){.sidebar{width:72px;padding:15px 7px}.brand{font-size:0}.brand:after{content:"MEA";font-size:15px}.brand small{display:none}.menu{font-size:0;text-align:center}.menu span{font-size:21px}.app{margin-left:72px;padding:10px}.stats,.grid,.row2,.row3{grid-template-columns:1fr}.header{align-items:flex-start}.paper-wrap{overflow:auto;padding:12px 5px 50px}.paper{width:210mm}.paper-toolbar{align-items:flex-start;flex-direction:column}}
-
-/* ===== WOW UX LAYER ===== */
-:root{--surface:#fff;--surface2:#f7fafc;--line:#dce6ee;--shadow:0 12px 35px rgba(5,45,78,.10)}
-body{background:radial-gradient(circle at 85% 0,#dff2ff 0,transparent 25%),var(--bg)}
-.sidebar{box-shadow:10px 0 35px #00294720}.brand{letter-spacing:.2px}.menu{transition:.18s ease;display:flex;align-items:center;gap:9px}.menu:hover{transform:translateX(3px)}
-.header{position:sticky;top:12px;z-index:900;backdrop-filter:blur(14px);background:#fffffff2;border:1px solid #fff;box-shadow:var(--shadow)}
-.panel,.stat,.card{transition:.2s ease;border:1px solid #ffffff80}.card:hover,.stat:hover{transform:translateY(-3px);box-shadow:0 14px 35px #073b6818}
-.btn{transition:.16s ease;box-shadow:0 4px 12px #1488d425}.btn:active{transform:scale(.97)}
-#globalSearch{width:min(420px,35vw);padding:10px 14px 10px 38px;border:1px solid #d4e0e8;border-radius:12px;background:#f7fafc}
-.search-wrap{position:relative}.search-wrap:before{content:"⌕";position:absolute;left:13px;top:5px;font-size:23px;color:#7990a2}
-.quickbar{display:flex;gap:10px;overflow:auto;padding:2px 2px 15px}.quick{min-width:155px;border:1px solid #dce7ee;background:#fff;border-radius:13px;padding:12px;text-align:left;cursor:pointer;box-shadow:0 5px 16px #073b680c}.quick:hover{border-color:#1488d4}.quick b{display:block;margin-top:5px}.quick small{color:#73889a}
-.hero{background:linear-gradient(120deg,#073b68,#0b72b7 62%,#14a2df);color:#fff;border-radius:18px;padding:23px;margin-bottom:17px;display:flex;justify-content:space-between;gap:20px;align-items:center;box-shadow:0 16px 40px #073b6830}.hero h2{margin:0 0 7px;font-size:25px}.hero p{margin:0;opacity:.83}.hero .hero-actions{display:flex;gap:8px;flex-wrap:wrap}.hero .btn-light{background:#fff;color:#073b68}
-.progress-card{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px}.ring{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#20a46b var(--pct,0%),#e6edf2 0);position:relative}.ring:after{content:"";position:absolute;width:46px;height:46px;background:#fff;border-radius:50%}.ring b{z-index:2;font-size:12px}.progress-line{height:8px;background:#e7eef3;border-radius:20px;overflow:hidden}.progress-line i{display:block;height:100%;background:linear-gradient(90deg,#1488d4,#20a46b);border-radius:20px}
-.fab{position:fixed;right:25px;bottom:25px;width:58px;height:58px;border:0;border-radius:50%;background:#1488d4;color:#fff;font-size:28px;box-shadow:0 10px 28px #075b914f;z-index:2200;cursor:pointer}
-.command{display:none;position:fixed;inset:0;background:#001a2c80;backdrop-filter:blur(5px);z-index:6000;padding:12vh 15px}.command-box{max-width:720px;margin:auto;background:#fff;border-radius:17px;box-shadow:0 25px 70px #001a2c66;overflow:hidden}.command-box input{width:100%;padding:19px;border:0;border-bottom:1px solid #e2e8ed;font-size:17px;outline:none}.cmd-results{max-height:55vh;overflow:auto;padding:8px}.cmd-item{padding:12px;border-radius:10px;cursor:pointer;display:flex;justify-content:space-between}.cmd-item:hover{background:#eef7fd}.cmd-item small{color:#8294a3}
-.toast{position:fixed;right:25px;top:90px;background:#123d5c;color:#fff;padding:13px 18px;border-radius:10px;z-index:7000;box-shadow:0 12px 35px #0003;opacity:0;transform:translateY(-8px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:none}
-.empty{text-align:center;padding:35px;color:#7890a2}.empty b{display:block;color:#274b68;margin:7px}
-.badge-online{padding:5px 9px;border-radius:20px;font-size:11px;background:#dff5e8;color:#16714e}.badge-online.off{background:#ffe5e2;color:#a43d33}
-body.dark{--bg:#071826;--ink:#dbeaf5;--surface:#0d2333;background:#071826;color:#dbeaf5}body.dark .header,body.dark .panel,body.dark .stat,body.dark .card,body.dark .map-side,body.dark .quick{background:#0d2333;color:#dbeaf5;border-color:#17384e}body.dark th{background:#102b3e}body.dark td,body.dark th{border-color:#1c3a4d}body.dark .header p,body.dark .card p,body.dark .quick small{color:#8fa9bb}body.dark input,body.dark select,body.dark textarea,body.dark #globalSearch{background:#0a1d2b;color:#e8f4fb;border-color:#264458}body.dark .command-box{background:#0d2333}body.dark .cmd-item:hover{background:#15354b}body.dark .ring:after{background:#0d2333}
-@media(max-width:900px){#globalSearch{display:none}.hero{align-items:flex-start;flex-direction:column}.quick{scroll-snap-type:x mandatory}.quick>*{scroll-snap-align:start}}
-
-.advancedMenu{display:none!important}body.advanced-on .advancedMenu{display:flex!important}
-.ux-stepper{display:flex;align-items:center;justify-content:center;gap:14px;margin:4px 0 22px;flex-wrap:wrap}.ux-step{display:flex;align-items:center;gap:7px;color:#708699}.ux-step i{font-style:normal;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#e8eff4;font-weight:700}.ux-step.active{color:#0878bd;font-weight:700}.ux-step.active i{background:#1488d4;color:#fff}.guide-box{display:flex;gap:14px;align-items:center;background:#eef8ff;border:1px solid #cfe9fa;padding:13px 15px;border-radius:11px;margin-bottom:18px}.guide-box b{white-space:nowrap}.guided-form .field{background:#fafcfd;border:1px solid #e2eaf0;padding:14px;border-radius:12px}.guided-form .field small{display:block;margin-top:7px;color:#748a9a}.guided-form .field a{color:#1488d4;font-weight:700}.step-no{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#1488d4;color:#fff;margin-right:3px}.form-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:17px;padding-top:15px;border-top:1px solid #e1e8ed}.form-footer span{font-size:12px;color:#778b9a}
-.field-flow{display:flex;align-items:stretch;gap:9px;margin-bottom:18px}.flow-card{flex:1;background:#fff;border:1px solid #dbe6ed;border-radius:15px;padding:17px;text-align:left;display:flex;gap:13px;cursor:pointer;box-shadow:0 7px 20px #073b680c;transition:.18s}.flow-card:hover{transform:translateY(-3px);border-color:#1488d4}.flow-card>span{width:30px;height:30px;min-width:30px;border-radius:50%;display:grid;place-items:center;background:#1488d4;color:#fff;font-weight:700}.flow-card div{font-size:23px}.flow-card b,.flow-card small{display:block;font-size:14px;margin-top:5px}.flow-card small{font-size:11px;color:#71889a;font-weight:400}.flow-arrow{display:grid;place-items:center;font-size:23px;color:#8ba1b1}
-body.dark .guided-form .field,body.dark .flow-card{background:#0d2333;border-color:#1d3d52}body.dark .guide-box{background:#102d41;border-color:#24506b}
-@media(max-width:900px){.field-flow{display:grid;grid-template-columns:1fr}.flow-arrow{transform:rotate(90deg);height:18px}.form-footer{align-items:flex-start;flex-direction:column}}
-
-.menuSub{display:block;font-size:9px;font-weight:500;opacity:.62;margin-top:2px}
-.field-hub-head{display:flex;justify-content:space-between;align-items:center;gap:16px;background:linear-gradient(120deg,#073b68,#0a79bd);color:#fff;padding:22px 24px;border-radius:17px;margin-bottom:14px;box-shadow:0 14px 34px #073b6827}
-.field-hub-head h2{font-size:25px;margin:5px 0}.field-hub-head p{margin:0;opacity:.82}.eyebrow{font-size:10px;font-weight:800;letter-spacing:1.4px;opacity:.7}
-.field-tabs{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:15px}.field-tab{border:1px solid #d8e4ec;background:#fff;border-radius:13px;padding:14px 18px;text-align:left;font-size:15px;font-weight:800;color:#173f5d;cursor:pointer;transition:.18s}.field-tab small{display:block;font-size:10px;font-weight:500;color:#748b9d;margin-top:4px}.field-tab.active{background:#1488d4;color:#fff;border-color:#1488d4;box-shadow:0 7px 20px #1488d430}.field-tab.active small{color:#dff3ff}.field-tab-body{display:none}.field-tab-body.active{display:block}
-.mini-flow{display:flex;align-items:center;justify-content:center;gap:13px;background:#fff;border:1px solid #dce6ed;border-radius:13px;padding:12px 16px;margin-bottom:14px}.mini-flow>div{display:flex;align-items:center;gap:7px}.mini-flow i{font-style:normal;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#e3f3fd;color:#087bc1;font-weight:800}.mini-flow b{font-size:12px}.mini-flow small{font-size:10px;color:#7a8f9f}.mini-flow span{color:#a5b5c1}
-.manual-intro{display:flex;justify-content:space-between;align-items:center;gap:15px}.manual-intro .search{max-width:430px}.legacy-manual-page{display:none!important}
-.manual-mini-card{position:relative}.manual-mini-card .manual-code{display:inline-block;background:#e7f4fc;color:#0879bd;padding:4px 8px;border-radius:7px;font-size:10px;font-weight:800;margin-bottom:8px}.manual-mini-card h3{margin:3px 0 7px}.manual-mini-card p{font-size:11px;color:#72899b;min-height:32px}
-body.dark .field-tab,body.dark .mini-flow{background:#0d2333;border-color:#1c3d52;color:#dbeaf5}body.dark .field-tab small{color:#8fa8ba}body.dark .field-tab.active{background:#1488d4}
-@media(max-width:800px){.field-tabs{grid-template-columns:1fr}.field-hub-head,.manual-intro{align-items:flex-start;flex-direction:column}.mini-flow{align-items:flex-start;flex-direction:column}.mini-flow>span{transform:rotate(90deg);align-self:center}.manual-intro .search{max-width:none;width:100%}}
-
-/* ===== SIMPLE UX V2 ===== */
-.simple-section-label{font-size:10px;opacity:.55;margin:16px 12px 6px;letter-spacing:.7px}
-.managementMenu{display:none!important}body.manage-open .managementMenu{display:flex!important}
-.manage-toggle{margin:10px 12px;width:calc(100% - 24px);border:1px solid #ffffff25;background:#ffffff10;color:#fff;border-radius:10px;padding:9px;cursor:pointer;text-align:left;font-weight:700}
-.simple-home{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:18px}
-.job-card{border:0;background:#fff;border-radius:18px;padding:22px;text-align:left;cursor:pointer;box-shadow:0 8px 28px #073b6810;transition:.18s;display:flex;gap:15px;align-items:flex-start}
-.job-card:hover{transform:translateY(-3px);box-shadow:0 14px 35px #073b681c}
-.job-icon{width:50px;height:50px;min-width:50px;border-radius:14px;background:#e8f5fd;display:grid;place-items:center;font-size:25px}
-.job-card h3{margin:0 0 5px;font-size:17px}.job-card p{margin:0;color:#708698;font-size:12px;line-height:1.55}
-.job-card.primary{background:linear-gradient(125deg,#0879bd,#1599dc);color:#fff}.job-card.primary .job-icon{background:#ffffff25}.job-card.primary p{color:#e3f5ff}
-.simple-status{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.simple-status .stat{padding:16px}.simple-status .number{font-size:25px}
-.help-strip{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#eef8ff;border:1px solid #d3eafa;border-radius:13px;padding:13px 16px;margin-bottom:16px}.help-strip p{margin:0;font-size:12px}
-body.dark .job-card{background:#0d2333;color:#dbeaf5}.managementMenu .menuSub{display:none}
-@media(max-width:800px){.simple-home{grid-template-columns:1fr}.simple-status{grid-template-columns:1fr}}
-
-/* ===== ULTRA SIMPLE HOME ===== */
-.welcome-simple{display:flex;justify-content:space-between;align-items:center;padding:6px 2px 18px}.welcome-simple small{font-weight:800;letter-spacing:1px;color:#1488d4}.welcome-simple h1{font-size:31px;margin:5px 0 1px}.welcome-simple p{margin:0;color:#6f8596}.today-chip{background:#fff;border:1px solid #dce6ed;border-radius:12px;padding:10px 14px;font-size:12px;color:#577185}
-.simple-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:17px}.action-big{border:1px solid #dce7ee;border-radius:17px;padding:18px;text-align:left;background:#fff;cursor:pointer;display:flex;gap:12px;align-items:center;min-height:112px;transition:.18s;box-shadow:0 7px 20px #073b6809}.action-big:hover{transform:translateY(-3px);box-shadow:0 13px 30px #073b6817}.action-big>span{font-size:30px}.action-big div{flex:1}.action-big b,.action-big small{display:block}.action-big b{font-size:15px;color:#143d5c}.action-big small{font-size:10px;color:#748a9b;margin-top:5px;line-height:1.45}.action-big i{font-style:normal;width:27px;height:27px;border-radius:50%;display:grid;place-items:center;color:#fff}.action-big.blue{background:#eff8ff}.action-big.blue i{background:#1488d4}.action-big.green{background:#f0fbf6}.action-big.green i{background:#20a46b}.action-big.purple{background:#f6f3ff}.action-big.purple i{background:#7558d8}.action-big.gray{background:#f7f9fb}.action-big.gray i{background:#758b9b}
-.home-two{display:grid;grid-template-columns:1fr 1fr;gap:15px}.panel-title-row{display:flex;justify-content:space-between;align-items:center}.panel-title-row h2{margin:0 0 3px}.panel-title-row small{color:#8294a3}.link-btn{border:0;background:transparent;color:#1488d4;font-weight:700;cursor:pointer}.map-preview-simple{min-height:210px;border-radius:14px;background:linear-gradient(135deg,#eef7fc,#e3f0f8);display:grid;place-items:center;align-content:center;gap:7px;text-align:center;margin-top:12px}.map-preview-simple>div{font-size:42px}.map-preview-simple small{color:#728899}.admin-shortcut{margin-top:15px;display:flex;justify-content:space-between;align-items:center;background:#f7fafc;border:1px dashed #cddce6;padding:12px 15px;border-radius:12px;color:#607789;font-size:12px}
-.admin-tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.admin-tool-grid button{border:1px solid #dce6ed;background:#fff;border-radius:15px;padding:20px;text-align:left;font-size:27px;cursor:pointer;transition:.18s}.admin-tool-grid button:hover{transform:translateY(-2px);border-color:#1488d4}.admin-tool-grid b,.admin-tool-grid small{display:block;font-size:14px;margin-top:9px}.admin-tool-grid small{font-size:10px;color:#7b8f9e;margin-top:4px}
-body.dark .action-big,body.dark .admin-tool-grid button,body.dark .today-chip{background:#0d2333;border-color:#1e4056}body.dark .action-big b{color:#dbeaf5}body.dark .admin-shortcut{background:#0a1d2b;border-color:#25465a}
-@media(max-width:1000px){.simple-actions{grid-template-columns:1fr 1fr}.admin-tool-grid{grid-template-columns:1fr 1fr}}@media(max-width:700px){.simple-actions,.home-two,.admin-tool-grid{grid-template-columns:1fr}}
-
-/* ===== PREMIUM / WOW FINISH ===== */
-:root{--brand:#0879bd;--brand2:#12a2df;--navy:#073b68;--success:#20a46b;--warn:#f1a43c;--danger:#d95c5c}
-body{background:
- radial-gradient(circle at 78% -8%,rgba(18,162,223,.16),transparent 28%),
- radial-gradient(circle at 25% 100%,rgba(32,164,107,.08),transparent 24%),
- #edf5fa}
-.main{max-width:1700px}
-.sidebar{background:linear-gradient(180deg,#063e69 0%,#053453 55%,#042b46 100%);border-right:1px solid #ffffff14}
-.brand{padding-bottom:17px;border-bottom:1px solid #ffffff18}.brand:before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:#46d995;box-shadow:0 0 0 5px #46d99520;margin-right:8px}
-.header{border-radius:18px!important;box-shadow:0 14px 38px rgba(4,45,76,.10)!important}
-.page{animation:pageIn .22s ease}@keyframes pageIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
-.welcome-simple{background:linear-gradient(120deg,#063d68 0%,#087dc0 58%,#12a2df 100%);border-radius:22px;padding:25px 27px;color:#fff;margin-bottom:16px;box-shadow:0 20px 45px #075e9135;position:relative;overflow:hidden}
-.welcome-simple:after{content:"";position:absolute;width:240px;height:240px;border:45px solid #ffffff0c;border-radius:50%;right:-70px;top:-105px}.welcome-simple small,.welcome-simple p{color:#d9f2ff}.welcome-simple h1{font-size:34px}.today-chip{background:#ffffff20!important;border:1px solid #ffffff35!important;color:#fff!important;backdrop-filter:blur(8px)}
-.action-big{position:relative;overflow:hidden;min-height:126px}.action-big:after{content:"";position:absolute;width:75px;height:75px;border-radius:50%;right:-30px;bottom:-35px;background:#fff6}.action-big>span{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;background:#fff;box-shadow:0 5px 18px #073b6810}
-.panel{border-radius:18px!important}.panel-title-row{padding-bottom:10px;border-bottom:1px solid #edf1f4}
-.map-preview-simple{background:
- linear-gradient(#ffffff30,#ffffff30),
- repeating-linear-gradient(35deg,#dcebf3 0 1px,transparent 1px 34px),
- repeating-linear-gradient(125deg,#dcebf3 0 1px,transparent 1px 34px),
- #edf7fc!important}
-.admin-shortcut{background:linear-gradient(90deg,#f8fbfd,#eef7fc)!important}
-.admin-tool-grid button{box-shadow:0 8px 22px #073b680b}.admin-tool-grid button:hover{box-shadow:0 14px 30px #073b6818}
-.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}.section-title h2{margin:0}.soft-label{font-size:10px;padding:5px 8px;background:#edf7fd;color:#0879bd;border-radius:20px;font-weight:800}
-.empty-state-premium{text-align:center;padding:28px;border:1px dashed #cedce5;border-radius:13px;background:#fafcfd}.empty-state-premium .emoji{font-size:34px}.empty-state-premium b{display:block;margin:7px 0}.empty-state-premium small{color:#7a909f}
-.notification-dot{position:relative}.notification-dot:after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:#ef5c5c;right:8px;top:7px;border:2px solid #fff}
-#quickHelp{position:fixed;right:24px;bottom:94px;width:330px;background:#fff;border:1px solid #dbe6ed;border-radius:17px;box-shadow:0 18px 55px #00294335;z-index:5500;display:none;overflow:hidden}
-#quickHelp .qh-head{padding:14px 16px;background:linear-gradient(120deg,#073b68,#087ec1);color:#fff;display:flex;justify-content:space-between;align-items:center}
-#quickHelp .qh-body{padding:14px}.qh-option{width:100%;border:0;background:#f5f9fc;border-radius:10px;padding:11px;text-align:left;margin:4px 0;cursor:pointer}.qh-option:hover{background:#e9f5fc}
-.help-fab{position:fixed;right:25px;bottom:25px;width:58px;height:58px;border-radius:50%;border:0;background:linear-gradient(135deg,#0879bd,#12a2df);color:#fff;font-size:24px;box-shadow:0 12px 30px #0879bd55;z-index:5400;cursor:pointer}
-.fab{display:none!important}
-body.dark .welcome-simple{background:linear-gradient(120deg,#082f4d,#075a88)}body.dark .admin-shortcut{background:#0b2130!important}body.dark #quickHelp{background:#0d2333;border-color:#23445a}body.dark .qh-option{background:#102c40;color:#dbeaf5}
-@media(max-width:700px){#quickHelp{left:12px;right:12px;bottom:85px;width:auto}.welcome-simple{padding:21px}.welcome-simple h1{font-size:27px}}
-
-/* ===== CLEAN HOME ===== */
-.home-clean-hero{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:10px 2px 20px}
-.home-kicker{font-size:10px;font-weight:900;letter-spacing:1.4px;color:#1488d4}
-.home-clean-hero h1{margin:4px 0;font-size:31px;color:#143d5c}
-.home-clean-hero p{margin:0;color:#718797}
-.home-date{padding:9px 13px;border:1px solid #dce6ed;background:#fff;border-radius:11px;font-size:12px;color:#60798b}
-.home-main-actions{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:13px;margin-bottom:13px}
-.home-main-card{border:1px solid #dce6ed;background:#fff;border-radius:17px;padding:20px;text-align:left;display:flex;align-items:center;gap:13px;cursor:pointer;box-shadow:0 7px 22px #073b680b;transition:.18s}
-.home-main-card:hover{transform:translateY(-2px);border-color:#1488d4}
-.home-main-card.primary{background:linear-gradient(125deg,#0879bd,#1499d8);border-color:transparent;color:#fff}
-.home-main-icon{width:50px;height:50px;min-width:50px;border-radius:14px;background:#edf7fd;display:grid;place-items:center;font-size:25px}
-.home-main-card.primary .home-main-icon{background:#ffffff22}
-.home-main-card div{flex:1}.home-main-card b,.home-main-card small{display:block}
-.home-main-card b{font-size:15px}.home-main-card small{font-size:10px;margin-top:5px;color:#748b9c;line-height:1.4}
-.home-main-card.primary small{color:#dff4ff}.home-main-card i{font-style:normal;font-size:20px}
-.home-quick-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px}
-.home-quick-row button{border:1px solid #dce6ed;background:#fff;border-radius:13px;padding:12px 14px;text-align:left;display:flex;gap:10px;align-items:center;cursor:pointer;font-size:19px}
-.home-quick-row button:hover{border-color:#1488d4;background:#f7fcff}
-.home-quick-row b,.home-quick-row small{display:block;font-size:12px}.home-quick-row small{font-size:9px;color:#7a8f9f;margin-top:2px}
-.home-clean-grid{display:grid;grid-template-columns:1.5fr .8fr;gap:14px}
-.home-section-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid #e8eef2}
-.home-section-head h2{margin:0 0 3px;font-size:17px}.home-section-head small{color:#8295a3}.home-section-head button{border:0;background:transparent;color:#1488d4;font-weight:800;cursor:pointer}
-.home-summary-list{padding-top:5px}.home-summary-list>div{display:flex;justify-content:space-between;align-items:center;padding:14px 3px;border-bottom:1px solid #edf1f4}.home-summary-list>div:last-child{border:0}.home-summary-list span{font-size:12px;color:#5f7789}.home-summary-list b{font-size:21px;color:#143d5c}
-body.dark .home-clean-hero h1,body.dark .home-summary-list b{color:#dbeaf5}
-body.dark .home-date,body.dark .home-main-card,body.dark .home-quick-row button{background:#0d2333;border-color:#1f4055;color:#dbeaf5}
-body.dark .home-main-card.primary{background:linear-gradient(125deg,#075b8a,#0879bd)}
-@media(max-width:1000px){.home-main-actions{grid-template-columns:1fr}.home-quick-row{grid-template-columns:1fr 1fr}.home-clean-grid{grid-template-columns:1fr}}
-@media(max-width:600px){.home-quick-row{grid-template-columns:1fr}.home-clean-hero{align-items:flex-start;flex-direction:column}.home-clean-hero h1{font-size:27px}}
-
-/* ===== TASK-BASED MANAGEMENT ===== */
-.manage-hero{display:flex;justify-content:space-between;align-items:center;gap:18px;background:linear-gradient(120deg,#073b68,#087fc2);color:#fff;border-radius:19px;padding:22px 24px;margin-bottom:18px;box-shadow:0 14px 34px #073b6825}.manage-hero span{font-size:10px;letter-spacing:1px;opacity:.72;font-weight:800}.manage-hero h2{margin:4px 0;font-size:25px}.manage-hero p{margin:0;opacity:.82}.manage-question{font-size:19px;font-weight:800;color:#173f5d;margin:0 0 12px}
-.manage-primary{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px}.manage-primary>button{border:1px solid #dce6ed;background:#fff;border-radius:16px;padding:18px;text-align:left;display:flex;align-items:center;gap:13px;cursor:pointer;box-shadow:0 7px 20px #073b6809;transition:.18s}.manage-primary>button:hover{transform:translateY(-2px);border-color:#1488d4}.manage-primary i{font-style:normal;width:47px;height:47px;border-radius:13px;background:#eaf6fd;display:grid;place-items:center;font-size:23px}.manage-primary div{flex:1}.manage-primary b,.manage-primary small{display:block}.manage-primary b{font-size:14px;color:#153e5d}.manage-primary small{font-size:10px;color:#778d9d;margin-top:4px}.manage-primary>button>span{color:#1488d4;font-size:19px}
-.manage-secondary{display:grid;grid-template-columns:1fr 1fr;gap:12px}.manage-box{background:#fff;border:1px solid #dce6ed;border-radius:15px;overflow:hidden}.manage-box-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px}.manage-box-head b,.manage-box-head small{display:block}.manage-box-head b{font-size:13px}.manage-box-head small{font-size:9px;color:#8093a1;margin-top:4px}.manage-box-head button{border:0;background:#edf7fd;color:#0879bd;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:800;cursor:pointer}.manage-box-content{display:none;padding:0 10px 10px}.manage-box-content.open{display:grid;grid-template-columns:1fr 1fr;gap:8px}.manage-box-content>button{border:1px solid #e2e9ee;background:#fafcfd;border-radius:10px;padding:10px;text-align:left;display:flex;gap:8px;align-items:center;cursor:pointer}.manage-box-content>button:hover{border-color:#1488d4}.manage-box-content b,.manage-box-content small{display:block;font-size:10px}.manage-box-content small{font-size:8px;color:#8093a1;margin-top:2px}
-.manage-tip{margin-top:13px;background:#eef8ff;border:1px solid #d5ebf9;border-radius:11px;padding:11px 13px;font-size:11px;color:#567286}
-body.dark .manage-question{color:#dbeaf5}body.dark .manage-primary>button,body.dark .manage-box{background:#0d2333;border-color:#1d3d52}body.dark .manage-primary b{color:#dbeaf5}body.dark .manage-box-content>button{background:#102b3e;border-color:#214359;color:#dbeaf5}body.dark .manage-tip{background:#102b3e;border-color:#214359;color:#a8c0d0}
-@media(max-width:800px){.manage-primary,.manage-secondary{grid-template-columns:1fr}.manage-hero{align-items:flex-start;flex-direction:column}.manage-box-content.open{grid-template-columns:1fr}}
-
-/* ===== CALM EYE-FRIENDLY THEME ===== */
-:root{
- --calm-bg:#f4f8f7;
- --calm-surface:#ffffff;
- --calm-primary:#3f7f83;
- --calm-primary-dark:#315f64;
- --calm-secondary:#6f91a3;
- --calm-accent:#8fb8ad;
- --calm-soft:#e8f2ef;
- --calm-soft-blue:#edf3f6;
- --calm-text:#29434a;
- --calm-muted:#71868b;
- --calm-line:#dce8e5;
- --calm-shadow:0 10px 28px rgba(49,95,100,.09);
-}
-body{
- background:
-  radial-gradient(circle at 85% 0,rgba(143,184,173,.15),transparent 26%),
-  radial-gradient(circle at 20% 100%,rgba(111,145,163,.09),transparent 25%),
-  var(--calm-bg)!important;
- color:var(--calm-text);
-}
-.sidebar{
- background:linear-gradient(180deg,#315f64 0%,#294f56 58%,#24454d 100%)!important;
- box-shadow:8px 0 30px rgba(36,69,77,.10)!important;
-}
-.brand{color:#f7fbfa}.menu{color:#e8f3f1!important}.menu:hover{background:#ffffff12!important}
-.menu.active{background:#ffffff1b!important;color:#fff!important;box-shadow:inset 3px 0 0 #a9d2c6}
-.header,.panel,.card,.stat,.manage-box,.manage-primary>button{
- background:rgba(255,255,255,.94)!important;
- border-color:var(--calm-line)!important;
- box-shadow:var(--calm-shadow)!important;
-}
-.header{backdrop-filter:blur(16px)}
-h1,h2,h3,.manage-question{color:var(--calm-text)!important}
-.header p,.card p,.manage-primary small,.manage-box-head small{color:var(--calm-muted)!important}
-.btn{
- background:var(--calm-primary)!important;
- color:#fff!important;
- border-color:transparent!important;
- box-shadow:0 5px 14px rgba(63,127,131,.18)!important;
-}
-.btn:hover{background:var(--calm-primary-dark)!important}
-.btn-light{
- background:var(--calm-soft)!important;
- color:var(--calm-primary-dark)!important;
- border:1px solid #d4e6e1!important;
- box-shadow:none!important;
-}
-input,select,textarea,#globalSearch{
- background:#fbfdfc!important;
- border-color:#d5e3e0!important;
- color:var(--calm-text)!important;
-}
-input:focus,select:focus,textarea:focus{outline:none!important;border-color:#7aa9a2!important;box-shadow:0 0 0 3px rgba(143,184,173,.15)}
-.manage-hero,.field-hub-head,.welcome-simple{
- background:linear-gradient(120deg,#3f7f83 0%,#568f91 55%,#729fa0 100%)!important;
- box-shadow:0 14px 32px rgba(63,127,131,.18)!important;
-}
-.manage-hero h2,.manage-hero p,.field-hub-head h2,.field-hub-head p,.welcome-simple h1,.welcome-simple p{color:#fff!important}
-.manage-primary i{background:var(--calm-soft)!important}
-.manage-primary>button:hover,.admin-tool-grid button:hover,.home-main-card:hover{border-color:#7faea6!important}
-.manage-box-head button,.soft-label{background:var(--calm-soft)!important;color:var(--calm-primary-dark)!important}
-.manage-box-content>button{background:#f8fbfa!important;border-color:#e0ebe8!important}
-.manage-tip,.help-strip{background:#edf6f3!important;border-color:#d6e8e3!important;color:#56726f!important}
-.home-main-card.primary{
- background:linear-gradient(125deg,#3f7f83,#619395)!important;
-}
-.home-main-card.primary .home-main-icon{background:#ffffff25!important}
-.home-main-icon,.job-icon{background:var(--calm-soft)!important}
-.home-quick-row button:hover{background:#f2f8f6!important;border-color:#8eb8b0!important}
-.home-date,.today-chip{background:#fff!important;border-color:var(--calm-line)!important;color:var(--calm-muted)!important}
-.home-summary-list b{color:var(--calm-primary-dark)!important}
-.status.submitted,.badge-online{background:#e4f2eb!important;color:#39745f!important}
-.status.draft{background:#f3efe2!important;color:#8b7443!important}
-.progress-line{background:#e6eeec!important}.progress-line i{background:linear-gradient(90deg,#5c9294,#8fb8ad)!important}
-.ring{background:conic-gradient(#6f9e91 var(--pct,0%),#e6eeec 0)!important}
-.field-tab.active{background:var(--calm-primary)!important;border-color:var(--calm-primary)!important}
-.step-no,.ux-step.active i{background:var(--calm-primary)!important}
-.guide-box{background:#edf6f3!important;border-color:#d7e8e3!important}
-table th{background:#edf4f3!important;color:#34575d!important}
-table td,table th{border-color:#e0e9e7!important}
-a,.link-btn,.home-section-head button{color:#4c8588!important}
-.help-fab{
- background:linear-gradient(135deg,#4f8588,#7aa7a0)!important;
- box-shadow:0 10px 26px rgba(63,127,131,.28)!important;
-}
-#quickHelp .qh-head{background:linear-gradient(120deg,#315f64,#4f8588)!important}
-.qh-option:hover{background:#edf6f3!important}
-.map-preview-simple{background:#edf5f3!important}
-.admin-shortcut{background:#f2f7f6!important;border-color:#d7e5e2!important}
-body.dark{
- --calm-text:#dbe9e7;
- --calm-muted:#99b0ae;
- background:#17272b!important;
-}
-body.dark .header,body.dark .panel,body.dark .card,body.dark .stat,body.dark .manage-box,body.dark .manage-primary>button,
-body.dark .home-main-card,body.dark .home-quick-row button,body.dark #quickHelp{
- background:#203438!important;border-color:#315057!important;color:#dbe9e7!important;
-}
-body.dark h1,body.dark h2,body.dark h3,body.dark .manage-question,body.dark .home-summary-list b{color:#e4efed!important}
-body.dark input,body.dark select,body.dark textarea,body.dark #globalSearch{background:#1b2d31!important;border-color:#355159!important;color:#e5efee!important}
-
-/* ===== SOFT BLUE THEME OVERRIDE ===== */
+/* ===== CALM SOFT BLUE THEME ===== */
 :root{
  --calm-bg:#f3f8fc;
  --calm-surface:#ffffff;
@@ -286,116 +25,190 @@ body.dark input,body.dark select,body.dark textarea,body.dark #globalSearch{back
  --calm-line:#dbe8f1;
  --calm-shadow:0 10px 28px rgba(48,105,145,.09);
 }
-body{
- background:
-  radial-gradient(circle at 86% 0,rgba(113,174,214,.16),transparent 28%),
-  radial-gradient(circle at 16% 100%,rgba(145,189,216,.11),transparent 25%),
-  #f3f8fc!important;
- color:#24445d!important;
-}
-.sidebar{
- background:linear-gradient(180deg,#174f78 0%,#123f62 58%,#0e354f 100%)!important;
-}
-.menu.active{
- background:rgba(92,174,226,.22)!important;
- box-shadow:inset 3px 0 0 #8fd0f5!important;
-}
-.header,.panel,.card,.stat,.manage-box,.manage-primary>button{
- border-color:#dbe8f1!important;
- box-shadow:0 10px 28px rgba(48,105,145,.08)!important;
-}
-h1,h2,h3,.manage-question{color:#24445d!important}
-.btn{
- background:#3b82b8!important;
- box-shadow:0 5px 14px rgba(59,130,184,.18)!important;
-}
-.btn:hover{background:#285f8c!important}
-.btn-light{
- background:#eaf4fb!important;
- color:#285f8c!important;
- border-color:#d5e8f4!important;
-}
-.manage-hero,.field-hub-head,.welcome-simple{
- background:linear-gradient(120deg,#2f73a6 0%,#438fc2 55%,#68a9cf 100%)!important;
- box-shadow:0 14px 32px rgba(47,115,166,.18)!important;
-}
-.manage-hero h2,.manage-hero p,.field-hub-head h2,.field-hub-head p,
-.welcome-simple h1,.welcome-simple p{color:#fff!important}
-.manage-primary i,.home-main-icon,.job-icon{
- background:#eaf4fb!important;
-}
-.manage-primary>button:hover,.admin-tool-grid button:hover,.home-main-card:hover{
- border-color:#82b9d9!important;
-}
-.manage-box-head button,.soft-label{
- background:#eaf4fb!important;
- color:#285f8c!important;
-}
-.manage-box-content>button{
- background:#f8fbfe!important;
- border-color:#e0ebf3!important;
-}
-.manage-tip,.help-strip,.guide-box{
- background:#edf6fc!important;
- border-color:#d7e9f5!important;
- color:#58778c!important;
-}
-.home-main-card.primary{
- background:linear-gradient(125deg,#347fb5,#5a9fc9)!important;
-}
-.home-quick-row button:hover{
- background:#f2f8fc!important;
- border-color:#8bbbd8!important;
-}
-.home-summary-list b{color:#285f8c!important}
-.field-tab.active{
- background:#3b82b8!important;
- border-color:#3b82b8!important;
-}
-.step-no,.ux-step.active i{background:#3b82b8!important}
-table th{
- background:#edf5fa!important;
- color:#315c78!important;
-}
-table td,table th{border-color:#e0eaf1!important}
-a,.link-btn,.home-section-head button{color:#347fb5!important}
-.help-fab{
- background:linear-gradient(135deg,#347fb5,#69a9cf)!important;
- box-shadow:0 10px 26px rgba(52,127,181,.28)!important;
-}
-#quickHelp .qh-head{
- background:linear-gradient(120deg,#245f8a,#438fc2)!important;
-}
-.qh-option:hover{background:#edf6fc!important}
-.map-preview-simple{background:#edf6fc!important}
-.admin-shortcut{
- background:#f3f8fc!important;
- border-color:#d8e7f1!important;
-}
-.status.submitted,.badge-online{
- background:#e8f4fb!important;
- color:#31749f!important;
-}
-.progress-line{background:#e5eef4!important}
-.progress-line i{
- background:linear-gradient(90deg,#438fc2,#83b9d8)!important;
-}
+
+*{box-sizing:border-box} 
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:radial-gradient(circle at 86% 0,rgba(113,174,214,.16),transparent 28%),radial-gradient(circle at 16% 100%,rgba(145,189,216,.11),transparent 25%),var(--calm-bg);color:var(--calm-text)}
+
+button,input,select,textarea{font:inherit}
+
+.sidebar{position:fixed;inset:0 auto 0 0;width:260px;background:linear-gradient(180deg,#174f78 0%,#123f62 58%,#0e354f 100%);color:#fff;padding:22px 14px;overflow:auto;z-index:1000;box-shadow:8px 0 30px rgba(36,69,77,.10)}
+.brand{font-size:20px;font-weight:700;margin:4px 8px 24px;letter-spacing:.2px;padding-bottom:17px;border-bottom:1px solid #ffffff18}
+.brand small{display:block;font-size:11px;opacity:.7;margin-top:5px}
+.menu{padding:13px 14px;margin:5px 0;border-radius:9px;cursor:pointer;transition:.18s ease;display:flex;align-items:center;gap:9px;color:#e8f3f1}
+.menu:hover{background:#ffffff12}
+.menu.active{background:rgba(92,174,226,.22);box-shadow:inset 3px 0 0 #8fd0f5;color:#fff}
+
+.app{margin-left:260px;padding:24px;max-width:1700px}
+.header{background:rgba(255,255,255,.94);padding:18px 22px;border-radius:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;box-shadow:var(--calm-shadow);margin-bottom:20px;backdrop-filter:blur(16px);border:1px solid var(--calm-line);position:sticky;top:12px;z-index:900}
+.header h1{margin:0;font-size:24px;color:var(--calm-text)}
+.header p{margin:5px 0 0;color:var(--calm-muted)}
+.header-right{display:flex;gap:14px;align-items:center}
+.lang{background:#edf2f6;padding:4px;border-radius:9px}.lang button{border:0;padding:8px 11px;background:transparent;border-radius:6px;cursor:pointer;font-weight:700}.lang button.active{background:var(--calm-primary);color:#fff}
+
+.page{display:none}.page.active{display:block;animation:pageIn .22s ease}
+@keyframes pageIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+.panel{background:rgba(255,255,255,.94);padding:20px;border-radius:18px;box-shadow:var(--calm-shadow);margin-bottom:18px;border:1px solid var(--calm-line);transition:.2s ease}
+.panel h2{margin-top:0;color:var(--calm-text)}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:18px}
+.stat{background:rgba(255,255,255,.94);border-radius:13px;padding:19px;box-shadow:var(--calm-shadow);border:1px solid var(--calm-line);transition:.2s ease}
+.stat small{color:var(--calm-muted)}.stat strong{display:block;font-size:30px;margin-top:7px;color:var(--calm-text)}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.card{background:rgba(255,255,255,.94);border:1px solid var(--calm-line);border-radius:13px;padding:17px;transition:.2s ease;box-shadow:var(--calm-shadow)}
+.card:hover{transform:translateY(-3px)}
+.card h3{margin:12px 0 7px;color:var(--calm-text)}.card p{font-size:13px;color:var(--calm-muted);min-height:38px}
+
+.number{width:42px;height:42px;border-radius:10px;background:var(--calm-soft);color:var(--calm-primary);display:flex;align-items:center;justify-content:center;font-weight:700}
+.code{color:var(--calm-muted);font-size:12px;margin:8px 0 13px}
+
+.btn{border:0;border-radius:7px;padding:10px 15px;background:var(--calm-primary);color:#fff;font-weight:700;cursor:pointer;transition:.16s ease;box-shadow:0 5px 14px rgba(59,130,184,.18)}
+.btn:hover{background:var(--calm-primary-dark);opacity:.95}.btn:active{transform:scale(.97)}
+.btn-green{background:#20a46b}.btn-orange{background:#e99a22}.btn-gray{background:#6c7f8f}.btn-red{background:#d9534f}
+.btn-light{background:var(--calm-soft);color:var(--calm-primary-dark);border:1px solid #d5e8f4;box-shadow:none}
+
+.search{width:100%;padding:12px;border:1px solid var(--calm-line);border-radius:9px;margin-bottom:17px;background:#fbfdfc;color:var(--calm-text)}
+table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px solid #e0eaf1;text-align:left}th{background:#edf5fa;color:#315c78}
+
+.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px;color:var(--calm-text)}
+.field input,.field select,.field textarea{width:100%;padding:10px;border:1px solid #d5e3e0;border-radius:7px;background:#fbfdfc;color:var(--calm-text)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--calm-primary);box-shadow:0 0 0 3px rgba(59,130,184,.15)}
+
+.row2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.status{display:inline-block;border-radius:20px;padding:4px 9px;font-size:11px;font-weight:700}
+.status.draft{background:#f3efe2;color:#8b7443}.status.submitted{background:#e8f4fb;color:#31749f}
+
+/* MAP */
+.map-layout{display:grid;grid-template-columns:330px 1fr;gap:15px}
+.map-side{background:rgba(255,255,255,.94);border-radius:14px;padding:15px;max-height:72vh;overflow:auto;border:1px solid var(--calm-line)}
+.map-side h2{margin:0 0 8px;color:var(--calm-text)}.map-tools{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
+.station-list{display:grid;gap:8px}.station-item{border:1px solid var(--calm-line);border-radius:10px;padding:10px;cursor:pointer}
+.station-item:hover{background:#edf5fb}.station-item b{display:block;color:var(--calm-text)}.station-item small{color:var(--calm-muted)}
+#map{height:72vh;min-height:520px;border-radius:14px;box-shadow:var(--calm-shadow)}
+.leaflet-popup-content{min-width:230px}
+.popup-title{font-weight:700;font-size:15px;margin-bottom:5px;color:var(--calm-text)}
+.popup-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.popup-actions button{border:0;border-radius:5px;padding:7px 9px;color:#fff;cursor:pointer;background:var(--calm-primary)}
+.popup-actions button:nth-child(2){background:#20a46b}
+.gps-pill{background:var(--calm-soft);padding:7px 10px;border-radius:20px;font-size:12px;display:inline-block;color:var(--calm-primary-dark)}
+
+/* PAPER & MANUAL */
+#paperMode,#manualOverlay{display:none;position:fixed;inset:0;z-index:3000;background:#d9dde0;overflow:auto}
+.paper-toolbar,.overlay-toolbar{position:sticky;top:0;z-index:30;background:#174f78;color:#fff;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 2px 8px #0004}
+.paper-actions{display:flex;gap:7px;flex-wrap:wrap}
+.paper-wrap{padding:28px 12px 70px}
+.paper{width:210mm;min-height:297mm;margin:0 auto 25px;background:#fff;color:#111;padding:9mm;box-shadow:0 5px 25px #0003;font-family:Tahoma,Arial,sans-serif}
+.paper-header{position:relative;text-align:center;min-height:75px;border:1.5px solid #111;padding:10px 135px 8px 100px}
+.paper-header .mea{font-size:17px;font-weight:700}.paper-header h2{margin:5px 0;font-size:17px;color:#111}
+.paper-code{position:absolute;right:8px;bottom:7px;font-size:11px}
+.paper-logo{position:absolute;left:12px;top:13px;width:62px;height:45px;border:1px solid #111;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.paper table{color:#111;font-size:11px}.paper th,.paper td{border:1px solid #111;padding:4px;vertical-align:middle}.paper th{background:#fff;text-align:center}
+.paper input[type=text],.paper input[type=number],.paper input[type=date],.paper input[type=time],.paper select,.paper textarea{border:0;border-bottom:1px dotted #555;border-radius:0;background:transparent;width:100%;padding:3px;outline:none;color:#000}
+.paper textarea{border:1px dotted #555;min-height:55px;resize:vertical}
+.paper-titlebar{text-align:center;font-weight:700;padding:5px;border:1px solid #111;border-top:0;background:#eee;font-size:12px}
+.check{text-align:center}.paper-note{border:1px solid #111;border-top:0;padding:7px;color:#111;font-size:11px}
+.signatures{border:1px solid #111;border-top:0;display:grid;grid-template-columns:1fr 1fr;color:#111;font-size:11px}
+.signature{padding:10px;min-height:70px;text-align:center}.signature:first-child{border-right:1px solid #111}
+.special-box{border:1px solid #111;padding:7px;color:#111;font-size:11px}
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.photo-box{border:1px solid #111;min-height:190px;padding:6px;text-align:center}
+.photo-box img{display:block;max-width:100%;max-height:150px;margin:7px auto}
+.paper-maplink{font-size:10px;padding:4px 0}
+.overlay-content{max-width:1000px;margin:25px auto;background:#fff;border-radius:14px;padding:22px}
+
+/* HOME CLEAN DESIGN */
+.home-clean-hero{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:10px 2px 20px}
+.home-kicker{font-size:10px;font-weight:900;letter-spacing:1.4px;color:var(--calm-primary)}
+.home-clean-hero h1{margin:4px 0;font-size:31px;color:var(--calm-text)}
+.home-clean-hero p{margin:0;color:var(--calm-muted)}
+.home-date{padding:9px 13px;border:1px solid var(--calm-line);background:#fff;border-radius:11px;font-size:12px;color:var(--calm-muted)}
+
+.home-main-actions{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:13px;margin-bottom:13px}
+.home-main-card{border:1px solid var(--calm-line);background:#fff;border-radius:17px;padding:20px;text-align:left;display:flex;align-items:center;gap:13px;cursor:pointer;box-shadow:var(--calm-shadow);transition:.18s}
+.home-main-card:hover{transform:translateY(-2px);border-color:var(--calm-primary)}
+.home-main-card.primary{background:linear-gradient(125deg,#347fb5,#5a9fc9);border-color:transparent;color:#fff}
+.home-main-icon{width:50px;height:50px;min-width:50px;border-radius:14px;background:var(--calm-soft);display:grid;place-items:center;font-size:25px}
+.home-main-card.primary .home-main-icon{background:#ffffff25}
+.home-main-card div{flex:1}.home-main-card b,.home-main-card small{display:block}
+.home-main-card b{font-size:15px}.home-main-card small{font-size:10px;margin-top:5px;color:var(--calm-muted);line-height:1.4}
+.home-main-card.primary small{color:#eaf4fb}
+.home-quick-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:15px}
+.home-quick-row button{border:1px solid var(--calm-line);background:#fff;border-radius:13px;padding:12px 14px;text-align:left;display:flex;gap:10px;align-items:center;cursor:pointer;font-size:19px;color:var(--calm-text)}
+.home-quick-row button:hover{border-color:var(--calm-primary);background:#f2f8fc}
+.home-quick-row b,.home-quick-row small{display:block;font-size:12px}.home-quick-row small{font-size:9px;color:var(--calm-muted);margin-top:2px}
+
+.home-clean-grid{display:grid;grid-template-columns:1.5fr .8fr;gap:14px}
+.home-section-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--calm-line)}
+.home-section-head h2{margin:0 0 3px;font-size:17px;color:var(--calm-text)}.home-section-head small{color:var(--calm-muted)}.home-section-head button{border:0;background:transparent;color:var(--calm-primary);font-weight:800;cursor:pointer}
+.home-summary-list{padding-top:5px}
+.home-summary-list>div{display:flex;justify-content:space-between;align-items:center;padding:14px 3px;border-bottom:1px solid #e0eaf1}
+.home-summary-list>div:last-child{border:0}
+.home-summary-list span{font-size:12px;color:var(--calm-muted)}
+.home-summary-list b{font-size:21px;color:var(--calm-primary-dark)}
+
+/* EXTRAS / HUB */
+.field-hub-head{display:flex;justify-content:space-between;align-items:center;gap:16px;background:linear-gradient(120deg,#2f73a6 0%,#438fc2 55%,#68a9cf 100%);color:#fff;padding:22px 24px;border-radius:17px;margin-bottom:14px;box-shadow:0 14px 32px rgba(47,115,166,.18)}
+.field-hub-head h2{font-size:25px;margin:5px 0;color:#fff}.field-hub-head p{margin:0;opacity:.82}.eyebrow{font-size:10px;font-weight:800;letter-spacing:1.4px;opacity:.7}
+.field-tabs{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:15px}
+.field-tab{border:1px solid var(--calm-line);background:#fff;border-radius:13px;padding:14px 18px;text-align:left;font-size:15px;font-weight:800;color:var(--calm-text);cursor:pointer;transition:.18s}
+.field-tab small{display:block;font-size:10px;font-weight:500;color:var(--calm-muted);margin-top:4px}
+.field-tab.active{background:var(--calm-primary);color:#fff;border-color:var(--calm-primary);box-shadow:0 7px 20px rgba(59,130,184,.2)}
+.field-tab.active small{color:#eaf4fb}
+.field-tab-body{display:none}.field-tab-body.active{display:block}
+
+.mini-flow{display:flex;align-items:center;justify-content:center;gap:13px;background:#fff;border:1px solid var(--calm-line);border-radius:13px;padding:12px 16px;margin-bottom:14px}
+.mini-flow>div{display:flex;align-items:center;gap:7px}
+.mini-flow i{font-style:normal;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:var(--calm-soft);color:var(--calm-primary-dark);font-weight:800}
+.mini-flow b{font-size:12px;color:var(--calm-text)}.mini-flow small{font-size:10px;color:var(--calm-muted)}.mini-flow span{color:var(--calm-muted)}
+
+/* FLOATING WIDGETS */
+.fab{position:fixed;right:25px;bottom:25px;width:58px;height:58px;border:0;border-radius:50%;background:var(--calm-primary);color:#fff;font-size:28px;box-shadow:0 10px 28px rgba(48,105,145,.3);z-index:2200;cursor:pointer;display:none}
+.help-fab{position:fixed;right:25px;bottom:25px;width:58px;height:58px;border-radius:50%;border:0;background:linear-gradient(135deg,#347fb5,#69a9cf);color:#fff;font-size:24px;box-shadow:0 10px 26px rgba(52,127,181,.28);z-index:5400;cursor:pointer}
+#quickHelp{position:fixed;right:24px;bottom:94px;width:330px;background:#fff;border:1px solid var(--calm-line);border-radius:17px;box-shadow:0 18px 55px rgba(0,41,67,.2);z-index:5500;display:none;overflow:hidden}
+#quickHelp .qh-head{padding:14px 16px;background:linear-gradient(120deg,#245f8a,#438fc2);color:#fff;display:flex;justify-content:space-between;align-items:center}
+#quickHelp .qh-body{padding:14px}
+.qh-option{width:100%;border:0;background:#f5f9fc;border-radius:10px;padding:11px;text-align:left;margin:4px 0;cursor:pointer;color:var(--calm-text)}
+.qh-option:hover{background:#edf6fc}
+
+.command{display:none;position:fixed;inset:0;background:rgba(0,26,44,.5);backdrop-filter:blur(5px);z-index:6000;padding:12vh 15px}
+.command-box{max-width:720px;margin:auto;background:#fff;border-radius:17px;box-shadow:0 25px 70px rgba(0,26,44,.4);overflow:hidden}
+.command-box input{width:100%;padding:19px;border:0;border-bottom:1px solid #e2e8ed;font-size:17px;outline:none;background:#fff;color:var(--calm-text)}
+.cmd-results{max-height:55vh;overflow:auto;padding:8px}
+.cmd-item{padding:12px;border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;color:var(--calm-text)}
+.cmd-item:hover{background:#edf6fc}.cmd-item small{color:var(--calm-muted)}
+
+.toast{position:fixed;right:25px;top:90px;background:#123d5c;color:#fff;padding:13px 18px;border-radius:10px;z-index:7000;box-shadow:0 12px 35px rgba(0,0,0,.2);opacity:0;transform:translateY(-8px);pointer-events:none;transition:.2s}
+.toast.show{opacity:1;transform:none}
+.empty{text-align:center;padding:35px;color:var(--calm-muted)}.empty b{display:block;color:var(--calm-text);margin:7px}
+.badge-online{padding:5px 9px;border-radius:20px;font-size:11px;background:#e8f4fb;color:#31749f}
+.badge-online.off{background:#ffe5e2;color:#a43d33}
+
+/* DARK MODE */
 body.dark{
  --calm-text:#deebf4;
  --calm-muted:#9eb6c7;
  background:#142532!important;
+ color:#deebf4!important;
 }
-body.dark .header,body.dark .panel,body.dark .card,body.dark .stat,
-body.dark .manage-box,body.dark .manage-primary>button,
-body.dark .home-main-card,body.dark .home-quick-row button,body.dark #quickHelp{
+body.dark .header,body.dark .panel,body.dark .card,body.dark .stat,body.dark .map-side,body.dark .home-main-card,body.dark .home-quick-row button,body.dark #quickHelp,body.dark .command-box{
  background:#1b3242!important;
  border-color:#2e5066!important;
  color:#deebf4!important;
 }
-body.dark h1,body.dark h2,body.dark h3,
-body.dark .manage-question,body.dark .home-summary-list b{
- color:#e4f0f7!important;
+body.dark h1,body.dark h2,body.dark h3,body.dark .header h1,body.dark .panel h2,body.dark .card h3{color:#e4f0f7!important}
+body.dark th{background:#233d50!important;color:#deebf4!important}
+body.dark td,body.dark th{border-color:#2e5066!important}
+body.dark input,body.dark select,body.dark textarea,body.dark #globalSearch,.command-box input{
+ background:#1b3242!important;
+ color:#e5efee!important;
+ border-color:#2e5066!important;
 }
+body.dark .cmd-item:hover{background:#25445a!important}
+
+@media(max-width:1000px){.home-main-actions{grid-template-columns:1fr}.home-quick-row{grid-template-columns:1fr 1fr}.home-clean-grid{grid-template-columns:1fr}}
+@media(max-width:760px){.sidebar{width:72px;padding:15px 7px}.brand{font-size:0}.brand:after{content:"MEA";font-size:15px}.brand small{display:none}.menu{font-size:0;text-align:center}.menu span{font-size:21px}.app{margin-left:72px;padding:10px}.stats,.grid,.row2,.row3{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -404,21 +217,27 @@ body.dark .manage-question,body.dark .home-summary-list b{
  <div class="menu active" data-page="dashboard" onclick="showPage('dashboard',this)"><span>📊</span> <b class="menuText">หน้าหลัก</b></div>
  <div class="menu" data-page="fieldHome" onclick="showPage('fieldHome',this)"><span>🚶</span> <b class="menuText">เริ่มตรวจภาคสนาม</b></div>
  <div class="menu" data-page="inspection" onclick="showPage('inspection',this)"><span>📋</span>
-       <div><b class="menuText">ใบตรวจ</b><small class="menuSub">ใบตรวจ • คู่มือ • บันทึกผล</small></div>
+       <div><b class="menuText">ใบตรวจ</b><small class="menuSub" style="display:block;font-size:9px;opacity:.6">ใบตรวจ • คู่มือ • บันทึก</small></div>
      </div>
  <div class="menu" data-page="history" onclick="showPage('history',this)"><span>📚</span> <b class="menuText">สรุปผล / ประวัติ</b></div>
- <div class="menu managementMenu" data-page="workorder" onclick="showPage('workorder',this)"><span>📋</span> <b class="menuText">งานที่ต้องทำ</b></div>
- <div class="menu managementMenu" data-page="settingsPage" onclick="showPage('settingsPage',this)"><span>⚙</span> <b class="menuText">ตั้งค่า</b></div>
+ <div class="menu" data-page="workorder" onclick="showPage('workorder',this)"><span>🔧</span> <b class="menuText">งานที่ต้องทำ</b></div>
+ <div class="menu" data-page="settingsPage" onclick="showPage('settingsPage',this)"><span>⚙</span> <b class="menuText">ตั้งค่า</b></div>
 </aside>
 
 <main class="app">
 <header class="header">
  <div><h1 id="pageTitle">แดชบอร์ดงานบำรุงรักษา</h1><p id="pageSub">ระบบตรวจสอบอุปกรณ์ภาคสนาม</p></div>
- <div class="header-right"><div class="search-wrap"><input id="globalSearch" placeholder="ค้นหาเมนู, Asset, Station...  (Ctrl+K)" onclick="openCommand()" readonly></div><span id="onlineBadge" class="badge-online">● Online</span><button class="btn btn-light" onclick="toggleDark()" title="Dark mode">◐</button><div class="lang"><button id="thBtn" onclick="setLanguage('th')">🇹🇭 TH</button><button id="enBtn" onclick="setLanguage('en')">🇬🇧 EN</button></div><div><b>Admin</b><br><small>Maintenance Manager</small></div></div>
+ <div class="header-right">
+  <div style="position:relative"><input id="globalSearch" placeholder="ค้นหาเมนู, Asset, Station...  (Ctrl+K)" onclick="openCommand()" readonly style="width:min(320px,25vw);padding:10px 14px;border:1px solid var(--calm-line);border-radius:12px;cursor:pointer"></div>
+  <span id="onlineBadge" class="badge-online">● Online</span>
+  <button class="btn btn-light" onclick="toggleDark()" title="Dark mode">◐</button>
+  <div class="lang"><button id="thBtn" class="active" onclick="setLanguage('th')">🇹🇭 TH</button><button id="enBtn" onclick="setLanguage('en')">🇬🇧 EN</button></div>
+  <div><b>Admin</b><br><small>Manager</small></div>
+ </div>
 </header>
 
 <section id="fieldHome" class="page">
- <div class="hero"><div><h2>📋 เริ่มตรวจภาคสนาม</h2><p>ทำตามลำดับนี้ครั้งเดียว ไม่ต้องสลับหลายเมนู</p></div></div>
+ <div class="field-hub-head"><div><h2>📋 เริ่มตรวจภาคสนาม</h2><p>ทำตามลำดับนี้ครั้งเดียว ไม่ต้องสลับหลายเมนู</p></div></div>
  <div class="panel">
   <div class="mini-flow">
    <div><i>1</i><b>เลือกจุดตรวจ</b><small>แผนที่ / Station</small></div><span>→</span>
@@ -426,9 +245,13 @@ body.dark .manage-question,body.dark .home-summary-list b{
    <div><i>3</i><b>กรอกผลตรวจ</b><small>ข้อมูล / รูป / หมายเหตุ</small></div><span>→</span>
    <div><i>4</i><b>บันทึกผล</b><small>เก็บในประวัติ</small></div>
   </div>
-  <div style="text-align:center;padding:18px 0 8px"><button class="btn" style="font-size:16px;padding:14px 28px" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เริ่มจากเลือกจุดตรวจ</button><p style="font-size:11px;color:#71889a;margin-top:10px">หากรู้ใบตรวจอยู่แล้ว สามารถ <a href="#" onclick="event.preventDefault();showPage('inspection',document.querySelector('[data-page=inspection]'))">เลือกใบตรวจโดยตรง</a></p></div>
+  <div style="text-align:center;padding:18px 0 8px">
+   <button class="btn" style="font-size:16px;padding:14px 28px" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เริ่มจากเลือกจุดตรวจ</button>
+   <p style="font-size:11px;color:var(--calm-muted);margin-top:10px">หากรู้ใบตรวจอยู่แล้ว สามารถ <a href="#" onclick="event.preventDefault();showPage('inspection',document.querySelector('[data-page=inspection]'))">เลือกใบตรวจโดยตรง</a></p>
+  </div>
  </div>
 </section>
+
 <section id="dashboard" class="page active">
   <div class="home-clean-hero">
     <div>
@@ -463,7 +286,7 @@ body.dark .manage-question,body.dark .home-summary-list b{
     <button onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ <span><b>แผนที่</b><small>เลือก Station</small></span></button>
     <button onclick="showPage('inspection',document.querySelector('[data-page=inspection]'))">📝 <span><b>ใบตรวจ</b><small>เลือกแบบโดยตรง</small></span></button>
     <button onclick="openCommand()">🔎 <span><b>ค้นหา</b><small>Asset / Station</small></span></button>
-    <button onclick="openAdminTools()">⚙️ <span><b>จัดการ</b><small>สำหรับผู้วางแผน</small></span></button>
+    <button onclick="showPage('settingsPage',document.querySelector('[data-page=settingsPage]'))">⚙️ <span><b>ตั้งค่า</b><small>ระบบและข้อมูล</small></span></button>
   </div>
 
   <div class="home-clean-grid">
@@ -490,7 +313,7 @@ body.dark .manage-question,body.dark .home-summary-list b{
  <div class="map-layout">
   <div class="map-side">
    <h2>🗺️ Field Inspection Map</h2>
-   <p style="font-size:13px;color:#667d90">เลือกหมุดอุปกรณ์เพื่อดูคู่มือ เริ่มตรวจ หรือนำทางไปยังจุดตรวจ</p>
+   <p style="font-size:13px;color:var(--calm-muted)">เลือกหมุดอุปกรณ์เพื่อดูคู่มือ เริ่มตรวจ หรือนำทางไปยังจุดตรวจ</p>
    <input class="search" id="mapSearch" placeholder="ค้นหา Station / MEA / อุปกรณ์..." oninput="renderStationList()">
    <div class="map-tools">
     <button class="btn" onclick="locateMe()">📍 ตำแหน่งฉัน</button>
@@ -498,7 +321,7 @@ body.dark .manage-question,body.dark .home-summary-list b{
     <button class="btn btn-light" onclick="addStationPrompt()">＋ เพิ่มจุด</button>
    </div>
    <div id="gpsStatus" class="gps-pill">GPS: ยังไม่ได้ระบุตำแหน่ง</div>
-   <hr style="border:0;border-top:1px solid #e0e8ee;margin:13px 0">
+   <hr style="border:0;border-top:1px solid var(--calm-line);margin:13px 0">
    <div class="station-list" id="stationList"></div>
   </div>
   <div id="map"></div>
@@ -510,118 +333,57 @@ body.dark .manage-question,body.dark .home-summary-list b{
   <div>
    <span class="eyebrow">FIELD WORK</span>
    <h2>📋 ตรวจภาคสนาม</h2>
-   <p>จุดเดียวสำหรับเลือกใบตรวจ ดูคู่มือที่เกี่ยวข้อง บันทึกผล และส่งข้อมูล</p>
+   <p>จุดเดียวสำหรับเลือกใบตรวจ ดูคู่มือที่เกี่ยวข้อง และบันทึกผล</p>
   </div>
   <button class="btn btn-light" onclick="showPage('mapPage',document.querySelector('[data-page=mapPage]'))">🗺️ เลือกจากแผนที่</button>
  </div>
-
- <div class="field-tabs single-field-tab">
-  <button id="tabFormBtn" class="field-tab active" onclick="switchFieldTab('forms')">📝 เลือกใบตรวจ <small>เริ่มตรวจ • บันทึกผล • เปิดคู่มือจากอุปกรณ์ที่เลือก</small></button>
- </div>
-
- <div id="fieldFormsTab" class="field-tab-body active">
-  <div class="mini-flow">
-   <div><i>1</i><b>เลือกอุปกรณ์</b><small>เลือกใบตรวจตามประเภท Asset</small></div>
-   <span>→</span><div><i>2</i><b>กรอกผลตรวจ</b><small>ค่า • รูปภาพ • หมายเหตุ</small></div>
-   <span>→</span><div><i>3</i><b>บันทึก / ส่งผล</b><small>เก็บประวัติไว้ในระบบ</small></div>
-  </div>
-  <div class="panel"><h2>ใบตรวจภาคสนาม 11 แบบ</h2><p>เปิดเป็นแบบกระดาษ A4 สำหรับกรอกข้อมูลและพิมพ์/PDF</p><input class="search" id="formSearch" placeholder="ค้นหาใบตรวจ..." oninput="filterForms()"><div class="grid" id="formCards"></div></div>
- </div>
-
- </section>
-
-<section id="manual" class="page legacy-manual-page"><div class="panel"><h2>📖 คู่มือปฏิบัติงาน</h2><p>คู่มือ SW-OH เชื่อมกับใบตรวจแต่ละประเภท กดดูขั้นตอนก่อนปฏิบัติงาน ขั้นตอนปฏิบัติงาน และหลังปฏิบัติงาน</p><input class="search" id="manualSearch" placeholder="ค้นหาคู่มือ..." oninput="renderManualCards()"><div class="grid" id="manualCards"></div></div></section>
-
-<section id="history" class="page"><div class="panel"><div style="display:flex;justify-content:space-between;gap:10px"><h2>ประวัติการตรวจสอบ</h2><button class="btn btn-green" onclick="exportCSV()">Export CSV</button></div><div style="overflow:auto"><table><thead><tr><th>วันที่</th><th>ใบตรวจ</th><th>Station ID</th><th>MEA No.</th><th>ผู้ตรวจ</th><th>สถานะ</th><th></th></tr></thead><tbody id="historyBody"></tbody></table></div></div></section>
-<section id="workorder" class="page"><div class="panel"><h2>Work Order</h2><div class="row3"><div class="field"><label>WO Number</label><input id="woNo"></div><div class="field"><label>Plant / Location</label><input id="woLocation"></div><div class="field"><label>Status</label><select id="woStatus"><option>Open</option><option>In Progress</option><option>Completed</option></select></div></div><br><div class="field"><label>รายละเอียดงาน</label><textarea id="woDetail"></textarea></div><br><button class="btn" onclick="saveWO()">บันทึก Work Order</button></div><div class="panel"><h2>Work Order History</h2><div id="woList"></div></div></section>
-<section id="pm" class="page"><div class="panel"><h2>Preventive Maintenance Planning</h2><div class="row3"><div class="field"><label>Station / Asset</label><input id="pmAsset"></div><div class="field"><label>Due Date</label><input type="date" id="pmDue"></div><div class="field"><label>ผู้รับผิดชอบ</label><input id="pmOwner"></div></div><br><div class="row2"><div class="field"><label>PM Task</label><input id="pmTask"></div><div class="field"><label>Status</label><select id="pmStatus"><option>Planned</option><option>In Progress</option><option>Completed</option></select></div></div><br><button class="btn" onclick="savePM()">บันทึก PM</button></div><div class="panel"><h2>PM Schedule</h2><div id="pmList"></div></div></section>
-<section id="labor" class="page"><div class="panel"><h2>Labor Tracking</h2><div class="row3"><div class="field"><label>Work / WO</label><input id="laborWork"></div><div class="field"><label>Start</label><input type="datetime-local" id="laborStart"></div><div class="field"><label>End</label><input type="datetime-local" id="laborEnd"></div></div><br><div class="row2"><div class="field"><label>จำนวนช่าง</label><input type="number" min="1" id="laborTech" value="1"></div><div class="field"><label>Man-hours</label><input id="laborMH" readonly></div></div><br><button class="btn" onclick="calcLabor()">คำนวณ</button> <button class="btn btn-green" onclick="saveLabor()">บันทึก</button></div><div class="panel"><h2>Labor History</h2><div id="laborList"></div></div></section>
-<section id="cost" class="page"><div class="panel"><h2>Maintenance Cost Analysis</h2><div class="row3"><div class="field"><label>งาน / WO</label><input id="costWork"></div><div class="field"><label>Plan Cost (บาท)</label><input type="number" id="planCost"></div><div class="field"><label>Actual Cost (บาท)</label><input type="number" id="actualCost"></div></div><br><button class="btn" onclick="saveCost()">บันทึกต้นทุน</button></div><div class="panel"><h2>Plan vs Actual</h2><div id="costList"></div></div></section>
-<section id="kpi" class="page"><div class="stats"><div class="stat"><small>PM Compliance</small><strong id="kpiPM">0%</strong></div><div class="stat"><small>Wrench Time</small><strong id="kpiWrench">0 h</strong></div><div class="stat"><small>PM Labor Cost</small><strong id="kpiCost">฿0</strong></div><div class="stat"><small>PM Man-hours</small><strong id="kpiMH">0 h</strong></div></div><div class="panel"><h2>KPI & Management Dashboard</h2><p>ค่าด้านบนคำนวณจากข้อมูล PM, Labor และ Cost ที่บันทึกในเครื่องนี้</p></div></section>
-<section id="users" class="page"><div class="panel"><h2>User / Team Management</h2><div class="row3"><div class="field"><label>ชื่อ</label><input id="userName"></div><div class="field"><label>Role</label><select id="userRole"><option>Admin</option><option>Field Inspector</option></select></div><div class="field"><label>ทีม</label><input id="userTeam"></div></div><br><button class="btn" onclick="saveUser()">เพิ่มผู้ใช้งาน</button></div><div class="panel"><h2>ทีมงาน</h2><div id="userList"></div></div></section>
-
-<section id="assets" class="page">
- <div class="panel"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><div><h2>Asset Management</h2><p>ทะเบียนอุปกรณ์สำหรับเชื่อมต่อ RCM → Inspection → PM</p></div><button class="btn" onclick="openAssetModal()">＋ New Asset</button></div>
- <input class="search" id="assetSearch" placeholder="ค้นหา Asset ID / Name / Location..." oninput="renderAssets()">
- <div id="assetTable"></div></div>
-</section>
-<section id="functionsPage" class="page">
- <div class="panel" style="background:linear-gradient(120deg,#f7fbff,#eef8ff)">
-  <div style="display:flex;justify-content:space-between;gap:20px;align-items:flex-start;flex-wrap:wrap">
-   <div><div class="status submitted">ENGINEERING MODE</div><h2 style="margin:10px 0 6px">กำหนดหน้าที่ของอุปกรณ์</h2>
-   <p style="margin:0;max-width:760px">หน้านี้ใช้ตอนวิเคราะห์ RCM เท่านั้น — ไม่ใช่หน้าที่ผู้ตรวจภาคสนามต้องกรอกทุกครั้ง<br>ตอบง่าย ๆ 2 คำถาม: <b>“อุปกรณ์นี้มีหน้าที่อะไร?”</b> และ <b>“ต้องทำงานได้ดีแค่ไหน?”</b></p></div>
-   <button class="btn btn-light" onclick="showPage('assets',document.querySelector('[data-page=assets]'))">← กลับทะเบียน Asset</button>
-  </div>
- </div>
  <div class="panel">
-  <div class="ux-stepper"><div class="ux-step active"><i>1</i><span>เลือกอุปกรณ์</span></div><b>→</b><div class="ux-step"><i>2</i><span>ระบุหน้าที่</span></div><b>→</b><div class="ux-step"><i>3</i><span>ระบุเกณฑ์</span></div><b>→</b><div class="ux-step"><i>✓</i><span>บันทึก</span></div></div>
-  <div class="guide-box"><b>💡 ตัวอย่าง</b><span>หม้อแปลง → “จ่ายพลังงานไฟฟ้าให้ระบบด้านแรงต่ำ” → ระบุเกณฑ์สมรรถนะตามมาตรฐาน/ข้อกำหนดของหน่วยงาน</span></div>
-  <div class="row3 guided-form">
-   <div class="field"><label><span class="step-no">1</span> เลือก Asset ที่ต้องการวิเคราะห์</label><select id="fnAsset"><option value="">-- เลือกอุปกรณ์ --</option></select><small>ยังไม่มี Asset? <a href="#" onclick="event.preventDefault();openAssetModal()">+ เพิ่ม Asset ใหม่</a></small></div>
-   <div class="field"><label><span class="step-no">2</span> อุปกรณ์นี้มีหน้าที่อะไร?</label><input id="fnName" placeholder="เช่น จ่ายพลังงานไฟฟ้าให้ระบบด้านแรงต่ำ"><small>เขียนเป็นหน้าที่หลักของอุปกรณ์แบบสั้น ๆ</small></div>
-   <div class="field"><label><span class="step-no">3</span> ต้องทำงานได้ดีแค่ไหน?</label><input id="fnStandard" placeholder="ระบุเกณฑ์/ค่ามาตรฐานของหน่วยงาน"><small>ใช้ค่าจากมาตรฐานหรือข้อกำหนดที่ได้รับอนุมัติ</small></div>
+  <h2>ใบตรวจภาคสนาม 11 แบบ</h2>
+  <p>เปิดเป็นแบบกระดาษ A4 สำหรับกรอกข้อมูลและพิมพ์/PDF</p>
+  <input class="search" id="formSearch" placeholder="ค้นหาใบตรวจ..." oninput="filterForms()">
+  <div class="grid" id="formCards"></div>
+ </div>
+</section>
+
+<section id="history" class="page">
+ <div class="panel">
+  <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:15px">
+   <h2>ประวัติการตรวจสอบ</h2>
+   <button class="btn btn-green" onclick="exportCSV()">Export CSV</button>
   </div>
-  <div class="form-footer"><span id="fnHint">กรอกข้อมูลครบ 3 ช่อง แล้วกดบันทึก</span><button class="btn btn-green" onclick="saveFunctionFriendly()">✓ บันทึกหน้าที่ของอุปกรณ์</button></div>
+  <div style="overflow:auto">
+   <table><thead><tr><th>วันที่</th><th>ใบตรวจ</th><th>Station ID</th><th>MEA No.</th><th>ผู้ตรวจ</th><th>สถานะ</th><th></th></tr></thead><tbody id="historyBody"></tbody></table>
+  </div>
  </div>
- <div class="panel"><div style="display:flex;justify-content:space-between;align-items:center"><div><h2 style="margin-bottom:4px">หน้าที่ที่บันทึกไว้</h2><small>ข้อมูลนี้จะถูกใช้ต่อใน Functional Failure และ FMEA</small></div><span id="fnCount" class="status draft">0 รายการ</span></div><div id="fnTable" style="margin-top:14px"></div></div>
 </section>
-<section id="failurePage" class="page"><div class="panel"><h2>RCM Step 3 — Functional Failure</h2><div class="row3"><div class="field"><label>Asset</label><select id="ffAsset"></select></div><div class="field"><label>Functional Failure</label><input id="ffName"></div><div class="field"><label>Effect / Consequence</label><input id="ffEffect"></div></div><br><button class="btn" onclick="saveRCM('rcmFailures',{asset:ffAsset.value,name:ffName.value,effect:ffEffect.value});ffName.value=ffEffect.value=''">บันทึก Failure</button></div><div class="panel"><div id="ffTable"></div></div></section>
-<section id="fmeaPage" class="page"><div class="panel"><h2>RCM Step 4 — FMEA</h2><div class="row3"><div class="field"><label>Asset</label><select id="fmAsset"></select></div><div class="field"><label>Failure Mode</label><input id="fmMode"></div><div class="field"><label>Failure Effect</label><input id="fmEffect"></div></div><br><div class="row3"><div class="field"><label>Severity (S)</label><input type="number" min="1" max="10" id="fmS"></div><div class="field"><label>Occurrence (O)</label><input type="number" min="1" max="10" id="fmO"></div><div class="field"><label>Detection (D)</label><input type="number" min="1" max="10" id="fmD"></div></div><br><button class="btn" onclick="saveFMEA()">คำนวณ RPN และบันทึก</button></div><div class="panel"><div id="fmeaTable"></div></div></section>
-<section id="criticalityPage" class="page"><div class="panel"><h2>RCM Step 5 — Consequence / Criticality</h2><div class="row3"><div class="field"><label>Asset</label><select id="crAsset"></select></div><div class="field"><label>Consequence</label><select id="crCon"><option>Safety / Environment</option><option>Operational</option><option>Non-operational</option><option>Hidden Failure</option></select></div><div class="field"><label>Criticality</label><select id="crLevel"><option>High</option><option>Medium</option><option>Low</option></select></div></div><br><button class="btn" onclick="saveRCM('rcmCriticality',{asset:crAsset.value,consequence:crCon.value,level:crLevel.value})">บันทึก Criticality</button></div><div class="panel"><div id="crTable"></div></div></section>
-<section id="hiPage" class="page"><div class="panel"><h2>RCM Step 6 — Health Index</h2><p>บันทึกคะแนนสภาพอุปกรณ์จากผลตรวจ/ข้อมูลสภาพ เพื่อใช้ประกอบการเลือกกลยุทธ์บำรุงรักษา</p><div class="row3"><div class="field"><label>Asset</label><select id="hiAsset"></select></div><div class="field"><label>Health Index (0–100)</label><input type="number" min="0" max="100" id="hiScore"></div><div class="field"><label>Condition</label><select id="hiCondition"><option>Good</option><option>Fair</option><option>Poor</option><option>Critical</option></select></div></div><br><div class="field"><label>Evidence / Note</label><textarea id="hiNote"></textarea></div><br><button class="btn" onclick="saveRCM('rcmHI',{asset:hiAsset.value,score:Number(hiScore.value||0),condition:hiCondition.value,note:hiNote.value});hiScore.value=hiNote.value=''">บันทึก Health Index</button></div><div class="panel"><div id="hiTable"></div></div></section>
-<section id="strategyPage" class="page"><div class="panel"><h2>RCM Step 7 — Maintenance Strategy</h2><div class="row3"><div class="field"><label>Asset</label><select id="stAsset"></select></div><div class="field"><label>Strategy</label><select id="stType"><option>Condition Based Maintenance</option><option>Time Based Maintenance</option><option>Failure Finding</option><option>Run to Failure</option><option>Redesign / Modification</option></select></div><div class="field"><label>Reason</label><input id="stReason"></div></div><br><button class="btn" onclick="saveRCM('rcmStrategies',{asset:stAsset.value,type:stType.value,reason:stReason.value});stReason.value=''">บันทึก Strategy</button></div><div class="panel"><div id="stTable"></div></div><div class="panel" style="margin-top:12px"><b>ขั้นตอนถัดไป</b><p>เมื่อเลือกแนวทางแล้ว ให้สร้างงานและรอบบำรุงรักษาในหน้า “แผนบำรุงรักษา” เพียงหน้าเดียว</p><button class="btn" onclick="showPage('pm',document.querySelector('[data-page=pm]'))">ไปแผนบำรุงรักษา →</button></div></section>
 
-
-
-
-<section id="settingsPage" class="page"><div class="panel"><h2>Settings</h2><div class="row2"><div class="field"><label>Organization</label><input id="setOrg" value="Asset Inspection"></div><div class="field"><label>Default Inspector</label><input id="setInspector"></div></div><br><button class="btn" onclick="localStorage.setItem('assetSettings',JSON.stringify({org:setOrg.value,inspector:setInspector.value}));alert('บันทึกแล้ว')">บันทึก Settings</button></div><div class="panel"><h2>Local Data</h2><p>เวอร์ชัน HTML เดียวนี้จัดเก็บข้อมูลใน Browser ด้วย localStorage</p></div></section>
-<section id="adminTools" class="page">
- <div class="manage-hero">
-   <div>
-     <span>สำหรับผู้วางแผน / วิศวกร</span>
-     <h2>จัดการงานบำรุงรักษา</h2>
-     <p>ไม่ต้องจำชื่อระบบ — เลือกจากสิ่งที่ต้องการทำ</p>
-   </div>
-   <button class="btn btn-light" onclick="showPage('dashboard',document.querySelector('[data-page=dashboard]'))">← กลับหน้าหลัก</button>
+<section id="workorder" class="page">
+ <div class="panel">
+  <h2>Work Order</h2>
+  <div class="row3">
+   <div class="field"><label>WO Number</label><input id="woNo"></div>
+   <div class="field"><label>Plant / Location</label><input id="woLocation"></div>
+   <div class="field"><label>Status</label><select id="woStatus"><option>Open</option><option>In Progress</option><option>Completed</option></select></div>
+  </div><br>
+  <div class="field"><label>รายละเอียดงาน</label><textarea id="woDetail"></textarea></div><br>
+  <button class="btn" onclick="saveWO()">บันทึก Work Order</button>
  </div>
-
- <div class="manage-question">วันนี้ต้องการทำอะไร?</div>
- <div class="manage-primary">
-   <button onclick="goAdmin('assets')"><i>⚙️</i><div><b>ดูข้อมูลอุปกรณ์</b><small>ค้นหา Asset, Station และตำแหน่ง</small></div><span>→</span></button>
-   <button onclick="goAdmin('pm')"><i>🗓️</i><div><b>วางแผนบำรุงรักษา</b><small>ดูรอบ PM และงานที่ใกล้ถึงกำหนด</small></div><span>→</span></button>
-   <button onclick="goAdmin('workorder')"><i>🔧</i><div><b>ติดตามงานซ่อม</b><small>ดู Work Order และสถานะงาน</small></div><span>→</span></button>
-   <button onclick="goAdmin('kpi')"><i>📊</i><div><b>ดูภาพรวม</b><small>KPI, กำลังคน และค่าใช้จ่าย</small></div><span>→</span></button>
- </div>
-
- <div class="manage-secondary">
-   <div class="manage-box">
-     <div class="manage-box-head"><div><b>🔬 วิเคราะห์อุปกรณ์</b><small>ใช้เมื่อจำเป็นต้องวิเคราะห์เชิงวิศวกรรม</small></div><button onclick="toggleManageBox('engineeringBox',this)">เปิดดู ▾</button></div>
-     <div id="engineeringBox" class="manage-box-content">
-       <button onclick="goAdmin('hiPage')"><span>♥</span><div><b>สภาพอุปกรณ์</b><small>Health Index</small></div></button>
-       <button onclick="goAdmin('fmeaPage')"><span>⚠️</span><div><b>วิเคราะห์ความเสี่ยง</b><small>FMEA + Criticality</small></div></button>
-       <button onclick="goAdmin('strategyPage')"><span>🛠️</span><div><b>เลือกแนวทางบำรุงรักษา</b><small>Maintenance Strategy</small></div></button>
-     </div>
-   </div>
-
-   <div class="manage-box">
-     <div class="manage-box-head"><div><b>⚙️ ตั้งค่าและข้อมูลเพิ่มเติม</b><small>ไม่ใช่งานที่ต้องใช้ทุกวัน</small></div><button onclick="toggleManageBox('supportBox',this)">เปิดดู ▾</button></div>
-     <div id="supportBox" class="manage-box-content">
-       <button onclick="goAdmin('labor')"><span>👷</span><div><b>เวลาและกำลังคน</b><small>Labor / Man-hours</small></div></button>
-       <button onclick="goAdmin('cost')"><span>💰</span><div><b>ค่าใช้จ่าย</b><small>Plan vs Actual</small></div></button>
-       <button onclick="goAdmin('users')"><span>👥</span><div><b>ทีมงาน</b><small>User / Role</small></div></button>
-       <button onclick="goAdmin('settingsPage')"><span>⚙</span><div><b>ตั้งค่าระบบ</b><small>System Settings</small></div></button>
-     </div>
-   </div>
- </div>
-
- <div class="manage-tip">💡 <b>สำหรับงานทั่วไป</b> ใช้ 4 ปุ่มด้านบนก็เพียงพอ ส่วนเมนูวิเคราะห์และตั้งค่าจะถูกซ่อนไว้จนกว่าจะต้องใช้</div>
+ <div class="panel"><h2>Work Order History</h2><div id="woList"></div></div>
 </section>
+
+<section id="settingsPage" class="page">
+ <div class="panel">
+  <h2>Settings</h2>
+  <div class="row2">
+   <div class="field"><label>Organization</label><input id="setOrg" value="Asset Inspection"></div>
+   <div class="field"><label>Default Inspector</label><input id="setInspector"></div>
+  </div><br>
+  <button class="btn" onclick="localStorage.setItem('assetSettings',JSON.stringify({org:setOrg.value,inspector:setInspector.value}));alert('บันทึกแล้ว')">บันทึก Settings</button>
+ </div>
+</section>
+
 </main>
 
-<div id="assetModal" style="display:none;position:fixed;inset:0;background:#0008;z-index:5000;padding:30px;overflow:auto"><div class="panel" style="max-width:720px;margin:auto"><div style="display:flex;justify-content:space-between"><h2>New Asset</h2><button class="btn btn-gray" onclick="assetModal.style.display='none'">✕</button></div><div class="row2"><div class="field"><label>Asset ID</label><input id="aId"></div><div class="field"><label>Asset Name</label><input id="aName"></div><div class="field"><label>Asset Type</label><select id="aType"><option>Distribution Transformer</option><option>Load Break Switch</option><option>Sectionalizer</option><option>RMU</option><option>Unit Substation</option><option>Capacitor Bank</option><option>Network Transformer</option><option>Other</option></select></div><div class="field"><label>Location</label><input id="aLocation"></div><div class="field"><label>Latitude</label><input type="number" step="any" id="aLat"></div><div class="field"><label>Longitude</label><input type="number" step="any" id="aLng"></div></div><br><button class="btn btn-green" onclick="saveAsset()">Save Asset</button></div></div>
-<button class="fab" onclick="openCommand()" title="Quick actions">＋</button>
-<div id="command" class="command" onclick="if(event.target===this)closeCommand()"><div class="command-box"><input id="cmdSearch" placeholder="ค้นหาเมนู / Asset / Station / ใบตรวจ..." oninput="renderCommand()"><div class="cmd-results" id="cmdResults"></div></div></div>
-<div id="toast" class="toast">บันทึกแล้ว</div>
 <button class="help-fab" onclick="toggleQuickHelp()" title="ช่วยเหลือ">?</button>
 <div id="quickHelp">
  <div class="qh-head"><b>✨ ให้ช่วยอะไร?</b><button onclick="toggleQuickHelp()" style="border:0;background:transparent;color:#fff;cursor:pointer">✕</button></div>
@@ -629,12 +391,27 @@ body.dark .manage-question,body.dark .home-summary-list b{
   <button class="qh-option" onclick="toggleQuickHelp();showPage('fieldHome',document.querySelector('[data-page=fieldHome]'))">📋 เริ่มตรวจภาคสนาม</button>
   <button class="qh-option" onclick="toggleQuickHelp();openCommand()">🔎 ค้นหา Station / Asset</button>
   <button class="qh-option" onclick="toggleQuickHelp();showPage('history',document.querySelector('[data-page=history]'))">📚 ดูผลตรวจย้อนหลัง</button>
-  <button class="qh-option" onclick="toggleQuickHelp();openAdminTools()">⚙️ เครื่องมือสำหรับผู้วางแผน</button>
  </div>
 </div>
-<section id="paperMode"><div class="paper-toolbar"><div><b id="paperToolbarTitle"></b> <small id="paperToolbarCode"></small></div><div class="paper-actions"><button class="btn btn-gray" onclick="closePaper()">← กลับ</button><button class="btn btn-light" onclick="manualForActive()">📖 คู่มือ</button><button class="btn btn-orange" onclick="savePaper('Draft')">💾 บันทึกร่าง</button><button class="btn btn-green" onclick="savePaper('Submitted')">✓ ส่งผลตรวจ</button><button class="btn" onclick="window.print()">🖨 พิมพ์/PDF</button></div></div><div class="paper-wrap" id="paperContainer"></div></section>
 
-<section id="manualOverlay"><div class="overlay-toolbar"><b id="manualOverlayTitle">คู่มือ</b><button class="btn btn-gray" onclick="closeManual()">✕ ปิด</button></div><div class="overlay-content" id="manualContent"></div></section>
+<div id="command" class="command" onclick="if(event.target===this)closeCommand()">
+ <div class="command-box"><input id="cmdSearch" placeholder="ค้นหาเมนู / Asset / Station / ใบตรวจ..." oninput="renderCommand()"><div class="cmd-results" id="cmdResults"></div></div>
+</div>
+
+<div id="toast" class="toast">บันทึกแล้ว</div>
+
+<section id="paperMode">
+ <div class="paper-toolbar">
+  <div><b id="paperToolbarTitle"></b> <small id="paperToolbarCode"></small></div>
+  <div class="paper-actions">
+   <button class="btn btn-gray" onclick="closePaper()">← กลับ</button>
+   <button class="btn btn-orange" onclick="savePaper('Draft')">💾 บันทึกร่าง</button>
+   <button class="btn btn-green" onclick="savePaper('Submitted')">✓ ส่งผลตรวจ</button>
+   <button class="btn" onclick="window.print()">🖨 พิมพ์/PDF</button>
+  </div>
+ </div>
+ <div class="paper-wrap" id="paperContainer"></div>
+</section>
 
 <script>
 const forms=[
@@ -651,21 +428,6 @@ const forms=[
 {id:11,code:"SF-07-0-025",sw:"SW-OH-3-085",th:"รายงานผลการตรวจสอบการคายประจุไฟฟ้าบางส่วน (Partial Discharge) โดยใช้กล้อง Acoustic Camera",en:"Partial Discharge Inspection Report Using Acoustic Camera",short:"Partial Discharge",type:"pd",meta:["Equipment MEA No.","Feeder"]}
 ];
 
-/* เนื้อหาคู่มือเป็นสรุปสำหรับหน้าจอจากเอกสาร SW ที่ผู้ใช้อัปโหลด ไม่แทนเอกสารควบคุมฉบับเต็ม */
-const manuals={
-1:{before:["ตรวจสอบรายละเอียดงานและแผนที่ที่จะปฏิบัติงาน","วางแผนงานและการเดินทาง","ตรวจสอบสถานที่/สภาพแวดล้อม","ตรวจสอบ PPE และความแข็งแรงของบันได","ตรวจสอบ Clamp On Meter","ทำ KYT ก่อนปฏิบัติงาน"],work:["ตรวจสอบข้อมูลทั่วไปของหม้อแปลง","ตรวจ Drop Fuse และ Station Post Type Insulator","ตรวจสายเข้า-ออก Drop Fuse และคอนสาย","ตรวจอุปกรณ์ป้องกันสัตว์และ Low Voltage Capacitor","ตรวจ Lightning Arrester ตัวถังหม้อแปลง Bushing และ Cover","ตรวจสาย LV, LV Ground และ HV Ground","บันทึกค่าตรวจวัดตามแบบตรวจ"],after:["เก็บเครื่องมือและอุปกรณ์ให้เรียบร้อย","ตรวจสอบและทำความสะอาดพื้นที่ปฏิบัติงาน"]},
-2:{before:["ตรวจสอบรายละเอียดงาน/แผนที่และวางแผนการเดินทาง","ตรวจสถานที่และสภาพแวดล้อม","ตรวจ PPE บันได และ Clamp On Meter","ทำ KYT ก่อนปฏิบัติงาน"],work:["ตรวจข้อมูลทั่วไปของ Load Break Switch","ตรวจตัวถัง LBS และสลักล็อก","ตรวจสถานะก๊าซ SF6 และ Bushing","ตรวจ Lightning Arrester, VT และ Drop Fuse ลง VT","ตรวจคอนสาย สายควบคุม และอุปกรณ์ป้องกันสัตว์","ตรวจตู้ Control/FRTU/Ground และอุปกรณ์จ่ายไฟ","ทดสอบการทำงานตามรายการในแบบตรวจ"],after:["เก็บเครื่องมือและอุปกรณ์","ตรวจความเรียบร้อยของพื้นที่"]},
-3:{before:["ตรวจรายละเอียดงานและแผนที่","วางแผนงาน/การเดินทาง","ตรวจ PPE บันได และ Clamp On Meter","ทำ KYT ก่อนเริ่มงาน"],work:["ตรวจข้อมูลทั่วไปของ Sectionalizer","ตรวจตัวถัง SZ และสลักล็อก","ตรวจ SF6 และ Bushing","ตรวจ Lightning Arrester และคอนสาย","ตรวจสายควบคุมและอุปกรณ์ป้องกันสัตว์","ตรวจตู้ Control/Ground และอุปกรณ์ประกอบ","ทดสอบการทำงานตามแบบตรวจ"],after:["เก็บเครื่องมือและอุปกรณ์","ทำความสะอาดพื้นที่"]},
-4:{before:["ตรวจรายละเอียดงานและแผนที่","วางแผนงานและการเดินทาง","ตรวจสถานที่และสภาพแวดล้อม","ตรวจ PPE/บันได/Clamp On Meter","ทำ KYT"],work:["ตรวจข้อมูลทั่วไปของ Ring Main Unit","ตรวจตู้ครอบ RMU ภายนอก ประตู และฐานตู้","ตรวจสภาพ RMU/ห้อง","ตรวจ SF6 และตัวแสดงสถานะสวิตช์","ตรวจ Interlock คันสับ Voltage Indicator และ Short Circuit Indicator","ตรวจระบบควบคุมและแหล่งจ่าย","ทดสอบการปลด-สับตามแบบตรวจ"],after:["เก็บเครื่องมือและอุปกรณ์","ตรวจความเรียบร้อยของพื้นที่"]},
-5:{before:["ตรวจรายละเอียดงานและแผนที่","กรณีทดสอบ ATF ที่อาจกระทบผู้ใช้ไฟ ให้ดำเนินการตามแผนงานที่กำหนด","วางแผนการเดินทางและตรวจสภาพแวดล้อม","ตั้งป้ายเตือน/กั้นพื้นที่","ตรวจ PPE บันได Clamp On Meter และทำ KYT"],work:["ตรวจข้อมูลทั่วไปของ Unit Substation","ตรวจตู้ครอบ RMU ประตู และฐานตู้/นั่งร้าน","ตรวจ RMU, SF6, Switch Indicator, Interlock และอุปกรณ์ควบคุม","ตรวจหม้อแปลง Bushing สาย HV-LV และ Ground","บันทึกกระแส/แรงดันจาก TLM หรือ Meter Panel ตามกรณี","หาก RMU ยังไม่ได้ปลด-สับในวงรอบ ให้ทดสอบ Remote / Local / คันสับตามกรณี"],after:["เก็บเครื่องมือและอุปกรณ์","ตรวจและทำความสะอาดพื้นที่"]},
-6:{before:["ตรวจรายละเอียดงานและแผนที่","วางแผนงาน/การเดินทาง","ตรวจสถานที่และกั้นพื้นที่","ตรวจ PPE บันได Clamp On Meter และเครื่องวัด Capacitance","ทำ KYT"],work:["ตรวจข้อมูลทั่วไปของ Capacitor Bank","ตรวจอุปกรณ์ตามรายการในแบบตรวจ","กรณีต้องดำเนินการ Switching ให้ปฏิบัติตามขั้นตอนและการประสานงานในเอกสารควบคุม","วัดค่าคาปาซิแตนซ์ของ Capacitor แต่ละตัวและเปรียบเทียบกับ Nameplate","บันทึกผลลงแบบตรวจ"],after:["เก็บเครื่องมือและอุปกรณ์","ตรวจและทำความสะอาดพื้นที่","ใช้ Field Check List ตามข้อกำหนดของเอกสาร"]},
-7:{before:["ตรวจรายละเอียดงานและแผนที่","วางแผนงาน/การเดินทาง","ตรวจสถานที่และสภาพแวดล้อม","ตรวจ PPE และทำ KYT"],work:["ตรวจข้อมูลทั่วไปของเครื่องป้องกันหม้อแปลงวงจรตาข่าย","ตรวจ ACB, Relay/Counter และสถานะอุปกรณ์","ตรวจ Ground และสภาพตู้","ตรวจ Overvoltage Protection และหม้อแปลง","ตรวจ Remote Data Equipment, Supply, CB/FUSE และ Internet Switch","ทดสอบสถานะ/การทำงานตามแบบตรวจ"],after:["คืนระบบ/สถานะตามขั้นตอนที่กำหนด","เก็บเครื่องมือและตรวจพื้นที่"]},
-8:{before:["ตรวจรายละเอียดงานและแผนที่","วางแผนงานและการเดินทาง","ตรวจสถานที่/สภาพแวดล้อมและกั้นพื้นที่","ตรวจ PPE บันได Clamp On Meter","ทำ KYT"],work:["ตรวจข้อมูลทั่วไปของหม้อแปลงวงจรตาข่ายและสวิตช์แรงกลาง","ตรวจ MV Switch, SF6, Ground และ Cable Terminal","ตรวจตัวถังหม้อแปลง ระดับน้ำมัน และการรั่วซึม","ตรวจสาย LV, Fuse 12 kV และ LV Capacitor","วัดและบันทึกกระแส แรงดัน และอุณหภูมิตามแบบตรวจ"],after:["เก็บเครื่องมือและอุปกรณ์","ตรวจความเรียบร้อยของพื้นที่"]},
-9:{before:["ตรวจรายละเอียดงาน แผนที่ และสภาพแวดล้อม","เตรียมอุปกรณ์ทดสอบ/ภาชนะตามเอกสารควบคุม","ทำ KYT และปฏิบัติตามมาตรการความปลอดภัย"],work:["เก็บตัวอย่างน้ำมันในปริมาณเหมาะสมและเตรียมเครื่องทดสอบตามเอกสาร","ทดสอบ Breakdown Voltage","หากผลครั้งแรกต่ำกว่า 26 kV ให้ดำเนินการตามขั้นตอนกรองน้ำมันในเอกสาร","หากผลครั้งแรกสูงกว่า 26 kV ให้ทดสอบครบ 5 ครั้งและหาค่าเฉลี่ย","หลังกรองให้ทดสอบใหม่และบันทึกผลแต่ละรอบ","ดำเนินการคืนระบบตามขั้นตอนในเอกสารควบคุม"],after:["เก็บเครื่องมือและอุปกรณ์","ตรวจความเรียบร้อยของพื้นที่และบันทึกผล"]},
-10:{before:["ตรวจรายละเอียดงานและแผนที่","วางแผนงาน/การเดินทาง","ตรวจสถานที่และสภาพแวดล้อม"],work:["เปิดกล้อง Thermovision และเปิดฝาเลนส์","ตั้ง Parameter ให้เหมาะสม เช่น Distance, Ambient Temperature, Reflect Temperature และ Relative Humidity","เล็งกล้องและปรับโฟกัส","เลือก Range ที่ถูกต้อง","ปรับ Level และ Span ให้เหมาะสม","หาจุด Hot Spot","บันทึกอุณหภูมิของจุดร้อนและจุดอ้างอิง","คำนวณ/บันทึก Delta-T และจัดลำดับความสำคัญตามแบบรายงาน"],after:["ปิดและจัดเก็บกล้องตามขั้นตอน","บันทึกข้อมูลการใช้งานตามที่กำหนด"]},
-11:{before:["ตรวจสอบรายละเอียดงานและแผนที่ที่จะปฏิบัติงาน","วางแผนงานและการเดินทาง","ตรวจสอบสถานที่และสภาพแวดล้อม"],work:["เปิดกล้อง Acoustic Camera","เปิดฝาเลนส์","ตั้ง Parameter ให้ถูกต้อง เช่น ความถี่และ Distance","เล็งกล้องไปยังวัตถุและปรับโฟกัส","หาจุด Partial Discharge","บันทึกค่าความเข้มเสียงที่เกิด PD ลงในแบบรายงาน","วิเคราะห์ผล จัดลำดับความสำคัญ และหาสาเหตุเพื่อปรับปรุงแก้ไข"],after:["ปิดกล้อง ปิดฝาเลนส์ ทำความสะอาดและเก็บกล้อง","บันทึกข้อมูลการใช้งานลงทะเบียนการใช้กล้อง Acoustic"]}
-};
-
 let lang=localStorage.getItem("inspectionLang")||"th", activeForm=null, fieldSeed=null, map=null, userMarker=null;
 let stationMarkers=[];
 let stations=JSON.parse(localStorage.getItem("inspectionStations")||"null")||[
@@ -676,18 +438,19 @@ let stations=JSON.parse(localStorage.getItem("inspectionStations")||"null")||[
 
 function showPage(id,el){
  document.querySelectorAll(".page").forEach(x=>x.classList.remove("active")); document.getElementById(id).classList.add("active");
- document.querySelectorAll(".menu").forEach(x=>x.classList.remove("active")); if(el)el.classList.add("active");
- const titles={adminTools:"เครื่องมือจัดการ",fieldHome:"เริ่มงานภาคสนาม",dashboard:"แดชบอร์ดงานบำรุงรักษา",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ตรวจภาคสนาม",manual:"คู่มือปฏิบัติงาน",history:"ประวัติการตรวจสอบ",workorder:"Work Order",pm:"PM Planning",labor:"Labor Tracking",cost:"Maintenance Cost Analysis",kpi:"KPI & Management Dashboard",users:"User / Team Management",assets:"Asset Management",functionsPage:"Functions & Performance Standards",failurePage:"Functional Failure",fmeaPage:"FMEA",criticalityPage:"Consequence / Criticality",hiPage:"Health Index",strategyPage:"Maintenance Strategy",settingsPage:"Settings"};
- pageTitle.textContent=titles[id]||id; if(id==="mapPage")setTimeout(initMap,80);
+ document.querySelectorAll(".sidebar .menu").forEach(x=>x.classList.remove("active")); if(el)el.classList.add("active");
+ const titles={dashboard:"แดชบอร์ดงานบำรุงรักษา",fieldHome:"เริ่มงานภาคสนาม",mapPage:"แผนที่ตรวจภาคสนาม",inspection:"ตรวจภาคสนาม",history:"ประวัติการตรวจสอบ",workorder:"Work Order",settingsPage:"Settings"};
+ document.getElementById("pageTitle").textContent=titles[id]||id; 
+ if(id==="mapPage")setTimeout(initMap,80);
 }
-function setLanguage(v){lang=v;localStorage.setItem("inspectionLang",v);thBtn.classList.toggle("active",v==="th");enBtn.classList.toggle("active",v==="en");renderForms();renderManualCards();refresh();renderMapMarkers()}
+function setLanguage(v){lang=v;localStorage.setItem("inspectionLang",v);thBtn.classList.toggle("active",v==="th");enBtn.classList.toggle("active",v==="en");renderForms();refresh();renderMapMarkers()}
 function formName(f){return lang==="th"?f.th:f.en}
-function renderForms(list=forms){formCards.innerHTML=list.map(f=>`<div class="card"><div class="number">${String(f.id).padStart(2,"0")}</div><h3>${esc(f.short)}</h3><p>${esc(formName(f))}</p><div class="code">${f.code} • ${f.sw}</div><button class="btn" onclick="openPaper(${f.id})">📄 เปิดใบตรวจ</button> <button class="btn btn-light" onclick="openManual(${f.id})">📖 คู่มือ</button></div>`).join("")}
+function renderForms(list=forms){formCards.innerHTML=list.map(f=>`<div class="card"><div class="number">${String(f.id).padStart(2,"0")}</div><h3>${esc(f.short)}</h3><p>${esc(formName(f))}</p><div class="code">${f.code} • ${f.sw}</div><button class="btn" onclick="openPaper(${f.id})">📄 เปิดใบตรวจ</button></div>`).join("")}
 function filterForms(){let q=formSearch.value.toLowerCase();renderForms(forms.filter(f=>(f.code+" "+f.sw+" "+f.short+" "+f.th+" "+f.en).toLowerCase().includes(q)))}
 
 /* MAP */
 function initMap(){
- if(!window.L){alert("ไม่สามารถโหลดระบบแผนที่ได้ กรุณาตรวจสอบอินเทอร์เน็ต");return}
+ if(!window.L)return;
  if(!map){
   map=L.map("map").setView([13.75,100.53],13);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"&copy; OpenStreetMap contributors"}).addTo(map);
@@ -699,7 +462,7 @@ function renderMapMarkers(){
  stations.forEach(s=>{
   const f=forms.find(x=>x.id===s.formId); if(!f)return;
   const m=L.marker([s.lat,s.lng]).addTo(map);
-  m.bindPopup(`<div class="popup-title">${esc(s.station)}</div><b>${esc(f.short)}</b><br>MEA: ${esc(s.mea)}<br>${esc(s.location)}<br><small>${s.lat.toFixed(6)}, ${s.lng.toFixed(6)}</small><div class="popup-actions"><button onclick="openManual(${f.id})">📖 คู่มือ</button><button onclick="startFromStation(${s.id})">📝 เริ่มตรวจ</button><button onclick="navigateStation(${s.id})">🧭 นำทาง</button></div>`);
+  m.bindPopup(`<div class="popup-title">${esc(s.station)}</div><b>${esc(f.short)}</b><br>MEA: ${esc(s.mea)}<br>${esc(s.location)}<div class="popup-actions"><button onclick="startFromStation(${s.id})">📝 เริ่มตรวจ</button></div>`);
   stationMarkers.push(m);
  });
 }
@@ -711,234 +474,102 @@ function renderStationList(){
 function focusStation(id){let i=stations.findIndex(x=>x.id===id);if(i<0)return;map.setView([stations[i].lat,stations[i].lng],17);stationMarkers[i]?.openPopup()}
 function fitAllStations(){if(!map||!stations.length)return;map.fitBounds(L.latLngBounds(stations.map(s=>[s.lat,s.lng])),{padding:[30,30]})}
 function locateMe(){
- if(!navigator.geolocation){gpsStatus.textContent="GPS: Browser ไม่รองรับ";return}
- gpsStatus.textContent="GPS: กำลังค้นหาตำแหน่ง...";
+ if(!navigator.geolocation)return;
  navigator.geolocation.getCurrentPosition(p=>{
   const a=p.coords.latitude,b=p.coords.longitude;
-  gpsStatus.textContent=`GPS: ${a.toFixed(6)}, ${b.toFixed(6)} ±${Math.round(p.coords.accuracy)} m`;
   if(userMarker)map.removeLayer(userMarker);
-  userMarker=L.marker([a,b]).addTo(map).bindPopup("📍 ตำแหน่งปัจจุบันของผู้ตรวจ").openPopup();
+  userMarker=L.marker([a,b]).addTo(map).bindPopup("📍 ตำแหน่งปัจจุบัน").openPopup();
   map.setView([a,b],17);
- },e=>{gpsStatus.textContent="GPS: ไม่สามารถระบุตำแหน่งได้ — "+e.message},{enableHighAccuracy:true,timeout:12000,maximumAge:30000});
+ });
 }
-function navigateStation(id){let s=stations.find(x=>x.id===id);if(s)window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(s.lat+","+s.lng)}`,"_blank","noopener,noreferrer")}
 function startFromStation(id){let s=stations.find(x=>x.id===id);if(!s)return;fieldSeed={station:s.station,mea:s.mea,location:s.location,lat:s.lat,lng:s.lng};openPaper(s.formId)}
 function addStationPrompt(){
  let station=prompt("Station ID");if(!station)return;let mea=prompt("MEA No.")||"";let location=prompt("สถานที่ / Location")||"";
- let formId=Number(prompt("ประเภทใบตรวจ 1-11","1"));if(!forms.some(f=>f.id===formId))return alert("Form ID ไม่ถูกต้อง");
- let lat=Number(prompt("Latitude"));let lng=Number(prompt("Longitude"));if(!Number.isFinite(lat)||!Number.isFinite(lng))return alert("พิกัดไม่ถูกต้อง");
+ let formId=Number(prompt("ประเภทใบตรวจ 1-11","1"));if(!forms.some(f=>f.id===formId))return;
+ let lat=Number(prompt("Latitude")),lng=Number(prompt("Longitude"));
  stations.push({id:Date.now(),station,mea,location,formId,lat,lng});localStorage.setItem("inspectionStations",JSON.stringify(stations));renderMapMarkers();renderStationList();fitAllStations();
 }
-
-/* MANUAL */
-function renderManualCards(){
- let q=(manualSearch?.value||"").toLowerCase();
- manualCards.innerHTML=forms.filter(f=>(f.sw+" "+f.short+" "+f.th+" "+f.en).toLowerCase().includes(q)).map(f=>`<div class="card"><div class="number">${String(f.id).padStart(2,"0")}</div><h3>${esc(f.short)}</h3><p>${esc(formName(f))}</p><div class="code">${f.sw} ↔ ${f.code}</div><button class="btn" onclick="openManual(${f.id})">📖 เปิดคู่มือ</button><button class="btn btn-green" onclick="openPaper(${f.id})">📝 เริ่มตรวจ</button></div>`).join("");
-}
-function openManual(id){
- let f=forms.find(x=>x.id===id),m=manuals[id];if(!f||!m)return;
- manualOverlayTitle.textContent=`${f.sw} — ${f.short}`;
- const sec=(title,arr,cls="")=>`<div class="manual-section ${cls}"><h3>${title}</h3><ol>${arr.map(x=>`<li>${esc(x)}</li>`).join("")}</ol></div>`;
- manualContent.innerHTML=`<div class="manual-doc"><div class="manual-head"><h2>${esc(formName(f))}</h2><div>คู่มือ ${f.sw} • ใบตรวจ ${f.code}</div></div><div class="manual-body"><div class="manual-section manual-warning"><b>หมายเหตุ:</b> หน้านี้เป็นสรุปช่วยปฏิบัติงานจากเอกสารที่อัปโหลด ไม่แทนเอกสารควบคุมฉบับเต็ม ให้ยึดเอกสาร SW-OH และข้อกำหนดความปลอดภัยของหน่วยงานเป็นหลัก</div>${sec("ก่อนปฏิบัติงาน",m.before)}${sec("ขั้นตอนการปฏิบัติงาน",m.work)}${sec("หลังปฏิบัติงาน",m.after)}<div class="manual-actions"><button class="btn btn-green" onclick="closeManual();openPaper(${id})">📝 เปิดใบตรวจ ${f.code}</button><button class="btn btn-gray" onclick="closeManual()">ปิด</button></div></div></div>`;
- manualOverlay.style.display="block";document.body.style.overflow="hidden";
-}
-function closeManual(){manualOverlay.style.display="none";if(paperMode.style.display!=="block")document.body.style.overflow=""}
-function manualForActive(){if(activeForm)openManual(activeForm.id)}
 
 /* PAPER */
 function paperHeader(f,page=""){return `<div class="paper-header"><div class="paper-logo">MEA</div><div class="mea">การไฟฟ้านครหลวง</div><h2>${esc(formName(f))}</h2><div class="paper-code">${f.code}${page?" • "+page:""}</div></div>`}
 function generalInfo(f){
  let meta=(f.meta||[]).map((x,i)=>`<tr><td><b>${esc(x)}</b></td><td><input data-field="meta${i}" type="text"></td><td></td><td></td></tr>`).join("");
- return `<table><tr><td><b>Station ID</b></td><td><input data-field="station" value="${escAttr(fieldSeed?.station||"")}"></td><td><b>MEA No.</b></td><td><input data-field="mea" value="${escAttr(fieldSeed?.mea||"")}"></td></tr><tr><td><b>สถานที่</b></td><td colspan="3"><input data-field="location" value="${escAttr(fieldSeed?.location||"")}"></td></tr><tr><td><b>GIS Lat.</b></td><td><input data-field="lat" value="${escAttr(fieldSeed?.lat||"")}"></td><td><b>Long.</b></td><td><input data-field="lng" value="${escAttr(fieldSeed?.lng||"")}"></td></tr><tr><td><b>วันที่ตรวจ</b></td><td><input type="date" data-field="date"></td><td><b>เวลา</b></td><td><input type="time" data-field="time"></td></tr>${meta}</table><div class="paper-maplink">📍 พิกัดจาก Field Map สามารถส่งเข้ามายังใบตรวจนี้โดยอัตโนมัติเมื่อเริ่มตรวจจากหมุด</div>`;
+ return `<table><tr><td><b>Station ID</b></td><td><input data-field="station" value="${escAttr(fieldSeed?.station||"")}"></td><td><b>MEA No.</b></td><td><input data-field="mea" value="${escAttr(fieldSeed?.mea||"")}"></td></tr><tr><td><b>สถานที่</b></td><td colspan="3"><input data-field="location" value="${escAttr(fieldSeed?.location||"")}"></td></tr><tr><td><b>วันที่ตรวจ</b></td><td><input type="date" data-field="date"></td><td><b>เวลา</b></td><td><input type="time" data-field="time"></td></tr>${meta}</table>`;
 }
 function checklist(f,items=f.items||[]){return `<div class="paper-titlebar">รายการตรวจสอบบำรุงรักษา</div><table><thead><tr><th style="width:35px">ที่</th><th>รายการ</th><th style="width:60px">ปกติ</th><th style="width:60px">ชำรุด</th><th style="width:60px">N/A</th><th style="width:150px">หมายเหตุ</th></tr></thead><tbody>${items.map((x,i)=>`<tr class="paper-check-row"><td style="text-align:center">${i+1}</td><td data-item="${escAttr(x)}">${esc(x)}</td><td class="check"><input type="radio" name="r${f.id}_${i}" value="normal"></td><td class="check"><input type="radio" name="r${f.id}_${i}" value="damaged"></td><td class="check"><input type="radio" name="r${f.id}_${i}" value="na"></td><td><input class="checkRemark"></td></tr>`).join("")}</tbody></table>`}
-function measurements(){return `<div class="paper-titlebar">ผลการตรวจวัดกระแสและแรงดันไฟฟ้า</div><table><tr>${["V1-N","V2-N","V3-N","V1-2","V1-3","V2-3"].map(x=>`<th>${x}</th>`).join("")}</tr><tr>${["V1-N","V2-N","V3-N","V1-2","V1-3","V2-3"].map(x=>`<td><input type="number" data-measure="${x}"> V</td>`).join("")}</tr><tr>${["IN","I1","I2","I3"].map(x=>`<th>${x}</th>`).join("")}<th colspan="2">หมายเหตุ</th></tr><tr>${["IN","I1","I2","I3"].map(x=>`<td><input type="number" data-measure="${x}"> A</td>`).join("")}<td colspan="2"><input data-measure="currentRemark"></td></tr></table>`}
-function signatures(){return `<div class="paper-note"><b>ข้อบกพร่อง / ข้อเสนอแนะ</b><textarea data-field="remark"></textarea><b>การดำเนินการแก้ไข</b><textarea data-field="corrective"></textarea></div><div class="signatures"><div class="signature">ผู้ตรวจ<br><br><input data-field="inspector"><br>ตำแหน่ง <input data-field="inspectorPosition"></div><div class="signature">ผู้ตรวจสอบ<br><br><input data-field="checker"><br>ตำแหน่ง <input data-field="checkerPosition"></div></div>`}
+function measurements(){return `<div class="paper-titlebar">ผลการตรวจวัดกระแสและแรงดันไฟฟ้า</div><table><tr>${["V1-N","V2-N","V3-N","V1-2","V1-3","V2-3"].map(x=>`<th>${x}</th>`).join("")}</tr><tr>${["V1-N","V2-N","V3-N","V1-2","V1-3","V2-3"].map(x=>`<td><input type="number" data-measure="${x}"> V</td>`).join("")}</tr></table>`}
+function signatures(){return `<div class="paper-note"><b>ข้อบกพร่อง / ข้อเสนอแนะ</b><textarea data-field="remark"></textarea></div><div class="signatures"><div class="signature">ผู้ตรวจ<br><br><input data-field="inspector"></div><div class="signature">ผู้ตรวจสอบ<br><br><input data-field="checker"></div></div>`}
 function standardPaper(f){return `<article class="paper">${paperHeader(f)}${generalInfo(f)}${checklist(f)}${f.measurement?measurements():""}${signatures()}</article>`}
-function unitPaper(f){return `<article class="paper">${paperHeader(f,"หน้า 1/2")}${generalInfo(f)}${checklist(f,f.items.slice(0,17))}${signatures()}</article><article class="paper">${paperHeader(f,"หน้า 2/2")}${checklist(f,f.items.slice(17))}${measurements()}<div class="paper-titlebar">Hot Spot / Thermal Camera</div><table><tr><th>จุดตรวจ</th><th>Temperature °C</th><th>หมายเหตุ</th></tr>${[1,2,3].map(i=>`<tr><td><input data-field="thermalPoint${i}"></td><td><input type="number" data-field="thermalTemp${i}"></td><td><input data-field="thermalRemark${i}"></td></tr>`).join("")}</table>${signatures()}</article>`}
-function capacitorPaper(f){return `<article class="paper">${paperHeader(f)}${generalInfo(f)}${checklist(f)}<div class="paper-titlebar">Capacitor Measurement</div><table><tr><th>Cap OFF</th><th>Cap ON</th><th>Capacitance / Nameplate</th></tr><tr><td><input type="time" data-measure="CapOff"></td><td><input type="time" data-measure="CapOn"></td><td><input data-measure="Capacitance"></td></tr></table>${signatures()}</article>`}
-function networkPaper(f){return `<article class="paper">${paperHeader(f)}${generalInfo(f)}${checklist(f)}<div class="paper-titlebar">Voltage / Current / Temperature</div><table><tr>${["V1-N","V2-N","V3-N","V1-2","V1-3","V2-3"].map(x=>`<th>${x}</th>`).join("")}</tr><tr>${["V1-N","V2-N","V3-N","V1-2","V1-3","V2-3"].map(x=>`<td><input type="number" data-measure="${x}"></td>`).join("")}</tr><tr><th>IPh1</th><th>IPh2</th><th>IPh3</th><th>In</th><th>Max Temp</th><th>Actual Temp</th></tr><tr>${["IPh1","IPh2","IPh3","In","MaxTemp","ActualTemp"].map(x=>`<td><input type="number" data-measure="${x}"></td>`).join("")}</tr></table>${signatures()}</article>`}
-function oilRound(n,title){return `<div class="paper-titlebar">${title}</div><table><tr><th>Breakdown Voltage</th>${[1,2,3,4,5].map(x=>`<th>ครั้งที่ ${x}</th>`).join("")}<th>เฉลี่ย</th></tr><tr><td>kV</td>${[1,2,3,4,5].map(()=>`<td><input type="number" step=".01" class="oil${n}" oninput="oilAvg(${n})"></td>`).join("")}<td><input id="oilAvg${n}" readonly></td></tr></table>`}
-function oilPaper(f){return `<article class="paper">${paperHeader(f)}${generalInfo(f)}<div class="special-box"><b>เกณฑ์ในเอกสาร:</b> ผลทดสอบครั้งแรกต่ำกว่า 26 kV ให้ดำเนินการตามขั้นตอนกรองน้ำมัน; หากสูงกว่า 26 kV ให้ทดสอบครบ 5 ครั้งและหาค่าเฉลี่ย</div>${oilRound(1,"ก่อนกรองน้ำมัน")}<div class="paper-note">รายละเอียดการกรองครั้งที่ 1<textarea data-field="filter1"></textarea></div>${oilRound(2,"หลังกรองครั้งที่ 1")}<div class="paper-note">รายละเอียดการกรองครั้งที่ 2<textarea data-field="filter2"></textarea></div>${oilRound(3,"หลังกรองครั้งที่ 2")}${signatures()}</article>`}
-function hotspotPaper(f){return `<article class="paper">${paperHeader(f)}${generalInfo(f)}<div class="photo-grid"><div class="photo-box"><b>ภาพถ่ายจริง</b><input type="file" accept="image/*" onchange="paperPhoto(this,'hot1')"><img id="hot1"></div><div class="photo-box"><b>Thermal Image</b><input type="file" accept="image/*" onchange="paperPhoto(this,'hot2')"><img id="hot2"></div></div><div class="paper-titlebar">Hot Spot Measurement</div><table><tr><th>Max Temp °C</th><th>Reference Temp °C</th><th>Delta T °C</th><th>Priority</th></tr><tr><td><input id="hotMax" type="number" step=".1" oninput="hotCalc()"></td><td><input id="hotRef" type="number" step=".1" oninput="hotCalc()"></td><td><input id="hotDelta" readonly></td><td><input id="hotPriority" readonly></td></tr></table><table><tr><th>Delta T</th><th>แนวทาง</th></tr><tr><td>0–10°C</td><td>ปกติ</td></tr><tr><td>&gt;10–20°C</td><td>ดำเนินการในงานบำรุงรักษาครั้งต่อไป</td></tr><tr><td>&gt;20–40°C</td><td>ดำเนินการภายใน 1 เดือน</td></tr><tr><td>&gt;40°C</td><td>เร่งด่วน</td></tr></table>${signatures()}</article>`}
-function pdPaper(f){return `<article class="paper">${paperHeader(f)}${generalInfo(f)}<table><tr><td><b>จุดที่ผิดปกติ</b></td><td><input data-field="abnormalPoint"></td><td><b>Sound Level</b></td><td><input type="number" data-field="db"> dB</td></tr><tr><td><b>Severity</b></td><td colspan="3" class="check"><label><input type="radio" name="severity" value="veryHigh"> สูงมาก</label> <label><input type="radio" name="severity" value="high"> สูง</label> <label><input type="radio" name="severity" value="medium"> ปานกลาง</label> <label><input type="radio" name="severity" value="low"> ต่ำ</label></td></tr></table><div class="photo-grid"><div class="photo-box"><b>Normal Camera</b><input type="file" accept="image/*" onchange="paperPhoto(this,'pd1')"><img id="pd1"></div><div class="photo-box"><b>Acoustic Camera</b><input type="file" accept="image/*" onchange="paperPhoto(this,'pd2')"><img id="pd2"></div></div><div class="paper-titlebar">การส่งต่อและปรับปรุงแก้ไข</div><table><tr><td>ส่งต่อกลุ่มงาน</td><td><input data-field="forwardGroup"></td><td>วันที่</td><td><input type="date" data-field="actionDate"></td></tr><tr><td>การแก้ไข</td><td colspan="3"><input data-field="correctiveAction"></td></tr></table>${signatures()}</article>`}
-function openPaper(id){activeForm=forms.find(x=>x.id===id);if(!activeForm)return;paperToolbarTitle.textContent=formName(activeForm);paperToolbarCode.textContent=` • ${activeForm.code} • คู่มือ ${activeForm.sw}`;let h=activeForm.type==="unit"?unitPaper(activeForm):activeForm.type==="capacitor"?capacitorPaper(activeForm):activeForm.type==="network"?networkPaper(activeForm):activeForm.type==="oil"?oilPaper(activeForm):activeForm.type==="hotspot"?hotspotPaper(activeForm):activeForm.type==="pd"?pdPaper(activeForm):standardPaper(activeForm);paperContainer.innerHTML=h;let d=paperContainer.querySelector('[data-field="date"]');if(d)d.value=new Date().toISOString().slice(0,10);paperMode.style.display="block";document.body.style.overflow="hidden"}
-function closePaper(){paperMode.style.display="none";document.body.style.overflow="";activeForm=null;fieldSeed=null}
-function oilAvg(n){let a=[...document.querySelectorAll(".oil"+n)].map(x=>parseFloat(x.value)).filter(Number.isFinite);document.getElementById("oilAvg"+n).value=a.length?(a.reduce((x,y)=>x+y,0)/a.length).toFixed(2):""}
-function hotCalc(){let a=parseFloat(hotMax.value),b=parseFloat(hotRef.value);if(!Number.isFinite(a)||!Number.isFinite(b)){hotDelta.value=hotPriority.value="";return}let d=a-b;hotDelta.value=d.toFixed(1);hotPriority.value=d<=10?"Normal":d<=20?"Next Maintenance":d<=40?"Within 1 Month":"Urgent"}
-function paperPhoto(input,id){if(!input.files?.[0])return;let r=new FileReader();r.onload=e=>document.getElementById(id).src=e.target.result;r.readAsDataURL(input.files[0])}
+function unitPaper(f){return `<article class="paper">${paperHeader(f,"หน้า 1/2")}${generalInfo(f)}${checklist(f,f.items.slice(0,17))}${signatures()}</article><article class="paper">${paperHeader(f,"หน้า 2/2")}${checklist(f,f.items.slice(17))}${measurements()}${signatures()}</article>`}
 
-/* SAVE/HISTORY */
+function openPaper(id){
+ activeForm=forms.find(x=>x.id===id);if(!activeForm)return;
+ paperToolbarTitle.textContent=formName(activeForm);
+ paperToolbarCode.textContent=` • ${activeForm.code}`;
+ paperContainer.innerHTML=activeForm.type==="unit"?unitPaper(activeForm):standardPaper(activeForm);
+ let d=paperContainer.querySelector('[data-field="date"]');if(d)d.value=new Date().toISOString().slice(0,10);
+ paperMode.style.display="block";document.body.style.overflow="hidden";
+}
+function closePaper(){paperMode.style.display="none";document.body.style.overflow="";activeForm=null;fieldSeed=null}
+
 function getRecords(){try{return JSON.parse(localStorage.getItem("paperInspectionRecords"))||[]}catch{return[]}}
 function savePaper(status){
- if(!activeForm)return;let fields={},measurements={};paperContainer.querySelectorAll("[data-field]").forEach(x=>fields[x.dataset.field]=x.value);paperContainer.querySelectorAll("[data-measure]").forEach(x=>measurements[x.dataset.measure]=x.value);
- let checklist=[];paperContainer.querySelectorAll(".paper-check-row").forEach(r=>checklist.push({item:r.children[1].dataset.item,result:r.querySelector('input[type=radio]:checked')?.value||"",remark:r.querySelector(".checkRemark")?.value||""}));
- let d=getRecords();d.push({id:Date.now(),formId:activeForm.id,code:activeForm.code,sw:activeForm.sw,formTH:activeForm.th,formEN:activeForm.en,status,timestamp:new Date().toISOString(),fields,measurements,checklist});localStorage.setItem("paperInspectionRecords",JSON.stringify(d));alert(status==="Draft"?"บันทึกร่างแล้ว":"ส่งผลตรวจแล้ว");closePaper();refresh();
+ if(!activeForm)return;let fields={},measurements={};
+ paperContainer.querySelectorAll("[data-field]").forEach(x=>fields[x.dataset.field]=x.value);
+ let d=getRecords();d.push({id:Date.now(),code:activeForm.code,formTH:activeForm.th,formEN:activeForm.en,status,timestamp:new Date().toISOString(),fields});
+ localStorage.setItem("paperInspectionRecords",JSON.stringify(d));
+ alert(status==="Draft"?"บันทึกร่างแล้ว":"ส่งผลตรวจแล้ว");closePaper();refresh();
 }
-function refresh(){let d=getRecords();total.textContent=d.length;submitted.textContent=d.filter(x=>x.status==="Submitted").length;draft.textContent=d.filter(x=>x.status==="Draft").length;let row=x=>`<tr><td>${esc(x.fields?.date||"-")}</td><td>${esc(lang==="th"?x.formTH:x.formEN)}<br><small>${x.code}</small></td><td>${esc(x.fields?.station||"-")}</td><td>${esc(x.fields?.mea||"-")}</td><td><span class="status ${x.status.toLowerCase()}">${x.status}</span></td></tr>`;recentBody.innerHTML=d.slice(-5).reverse().map(row).join("")||`<tr><td colspan="5">ยังไม่มีข้อมูล</td></tr>`;historyBody.innerHTML=d.slice().reverse().map(x=>`<tr><td>${esc(x.fields?.date||"-")}</td><td>${esc(lang==="th"?x.formTH:x.formEN)}<br><small>${x.code} • ${x.sw}</small></td><td>${esc(x.fields?.station||"-")}</td><td>${esc(x.fields?.mea||"-")}</td><td>${esc(x.fields?.inspector||"-")}</td><td><span class="status ${x.status.toLowerCase()}">${x.status}</span></td><td><button class="btn btn-red" onclick="removeRecord(${x.id})">ลบ</button></td></tr>`).join("")||`<tr><td colspan="7">ยังไม่มีข้อมูล</td></tr>`}
+function refresh(){
+ let d=getRecords();
+ historyBody.innerHTML=d.slice().reverse().map(x=>`<tr><td>${esc(x.fields?.date||"-")}</td><td>${esc(lang==="th"?x.formTH:x.formEN)}<br><small>${x.code}</small></td><td>${esc(x.fields?.station||"-")}</td><td>${esc(x.fields?.mea||"-")}</td><td>${esc(x.fields?.inspector||"-")}</td><td><span class="status ${x.status.toLowerCase()}">${x.status}</span></td><td><button class="btn btn-red" onclick="removeRecord(${x.id})">ลบ</button></td></tr>`).join("")||`<tr><td colspan="7">ยังไม่มีข้อมูล</td></tr>`;
+ renderSimpleHome();
+}
 function removeRecord(id){if(confirm("ลบรายการนี้หรือไม่?")){localStorage.setItem("paperInspectionRecords",JSON.stringify(getRecords().filter(x=>x.id!==id)));refresh()}}
-function exportCSV(){let d=getRecords();if(!d.length)return alert("ยังไม่มีข้อมูล");let rows=[["Date","Form","Manual","Station","MEA","Location","Lat","Lng","Inspector","Status"]];d.forEach(x=>rows.push([x.fields?.date||"",x.code,x.sw,x.fields?.station||"",x.fields?.mea||"",x.fields?.location||"",x.fields?.lat||"",x.fields?.lng||"",x.fields?.inspector||"",x.status]));let csv="\uFEFF"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");let b=new Blob([csv],{type:"text/csv;charset=utf-8"}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="MEA_Asset_Inspection.csv";a.click();URL.revokeObjectURL(u)}
-function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}function escAttr(v){return esc(v)}
-
+function exportCSV(){
+ let d=getRecords();if(!d.length)return alert("ยังไม่มีข้อมูล");
+ let rows=[["Date","Form","Station","MEA","Inspector","Status"]];
+ d.forEach(x=>rows.push([x.fields?.date||"",x.code,x.fields?.station||"",x.fields?.mea||"",x.fields?.inspector||"",x.status]));
+ let csv="\uFEFF"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+ let b=new Blob([csv],{type:"text/csv;charset=utf-8"}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="MEA_Inspection.csv";a.click();
+}
 
 function storeGet(k){try{return JSON.parse(localStorage.getItem(k))||[]}catch(e){return[]}}
-function storePush(k,v){let a=storeGet(k);a.push(v);localStorage.setItem(k,JSON.stringify(a));refreshModules()}
-function saveWO(){if(!woNo.value.trim())return alert("กรุณาระบุ WO Number");storePush("assetWO",{id:Date.now(),no:woNo.value,location:woLocation.value,status:woStatus.value,detail:woDetail.value});woNo.value=woLocation.value=woDetail.value=""}
-function savePM(){if(!pmAsset.value.trim())return alert("กรุณาระบุ Asset");storePush("assetPM",{id:Date.now(),asset:pmAsset.value,due:pmDue.value,owner:pmOwner.value,task:pmTask.value,status:pmStatus.value});pmAsset.value=pmOwner.value=pmTask.value=""}
-function calcLabor(){let a=new Date(laborStart.value),b=new Date(laborEnd.value),n=Number(laborTech.value||1);let h=(b-a)/36e5;laborMH.value=Number.isFinite(h)&&h>=0?(h*n).toFixed(2):"";return Number(laborMH.value||0)}
-function saveLabor(){let mh=calcLabor();if(!laborWork.value.trim()||!mh)return alert("กรอกข้อมูลงานและเวลาให้ครบ");storePush("assetLabor",{id:Date.now(),work:laborWork.value,start:laborStart.value,end:laborEnd.value,tech:Number(laborTech.value),mh});laborWork.value=laborStart.value=laborEnd.value="";laborMH.value=""}
-function saveCost(){if(!costWork.value.trim())return alert("กรุณาระบุงาน");storePush("assetCost",{id:Date.now(),work:costWork.value,plan:Number(planCost.value||0),actual:Number(actualCost.value||0)});costWork.value=planCost.value=actualCost.value=""}
-function saveUser(){if(!userName.value.trim())return alert("กรุณาระบุชื่อ");storePush("assetUsers",{id:Date.now(),name:userName.value,role:userRole.value,team:userTeam.value});userName.value=userTeam.value=""}
-function moduleTable(rows,headers){return `<div style="overflow:auto"><table><thead><tr>${headers.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>${rows.join("")||`<tr><td colspan="${headers.length}">ยังไม่มีข้อมูล</td></tr>`}</tbody></table></div>`}
-function refreshModules(){
- let w=storeGet("assetWO");woList.innerHTML=moduleTable(w.slice().reverse().map(x=>`<tr><td>${esc(x.no)}</td><td>${esc(x.location)}</td><td>${esc(x.status)}</td><td>${esc(x.detail)}</td></tr>`),["WO","Location","Status","Detail"]);
- let p=storeGet("assetPM");pmList.innerHTML=moduleTable(p.slice().reverse().map(x=>`<tr><td>${esc(x.asset)}</td><td>${esc(x.task)}</td><td>${esc(x.due)}</td><td>${esc(x.owner)}</td><td>${esc(x.status)}</td></tr>`),["Asset","Task","Due","Owner","Status"]);
- let l=storeGet("assetLabor");laborList.innerHTML=moduleTable(l.slice().reverse().map(x=>`<tr><td>${esc(x.work)}</td><td>${esc(x.start)}</td><td>${esc(x.end)}</td><td>${x.tech}</td><td>${x.mh}</td></tr>`),["Work","Start","End","Technicians","Man-hours"]);
- let c=storeGet("assetCost");costList.innerHTML=moduleTable(c.slice().reverse().map(x=>`<tr><td>${esc(x.work)}</td><td>${x.plan.toLocaleString()}</td><td>${x.actual.toLocaleString()}</td><td>${(x.actual-x.plan).toLocaleString()}</td></tr>`),["Work","Plan","Actual","Variance"]);
- let u=storeGet("assetUsers");userList.innerHTML=moduleTable(u.slice().reverse().map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.role)}</td><td>${esc(x.team)}</td></tr>`),["Name","Role","Team"]);
- let done=p.filter(x=>x.status==="Completed").length;kpiPM.textContent=(p.length?done/p.length*100:0).toFixed(0)+"%";
- let mh=l.reduce((s,x)=>s+Number(x.mh||0),0);kpiMH.textContent=mh.toFixed(1)+" h";kpiWrench.textContent=mh.toFixed(1)+" h";
- kpiCost.textContent="฿"+c.reduce((s,x)=>s+Number(x.actual||0),0).toLocaleString();
-}
+function saveWO(){if(!woNo.value.trim())return alert("กรุณาระบุ WO Number");let w=storeGet("assetWO");w.push({id:Date.now(),no:woNo.value,location:woLocation.value,status:woStatus.value,detail:woDetail.value});localStorage.setItem("assetWO",JSON.stringify(w));woNo.value=woLocation.value=woDetail.value="";refreshWO();alert("บันทึก WO แล้ว")}
+function refreshWO(){let w=storeGet("assetWO");woList.innerHTML=`<table><thead><tr><th>WO</th><th>Location</th><th>Status</th><th>Detail</th></tr></thead><tbody>${w.slice().reverse().map(x=>`<tr><td>${esc(x.no)}</td><td>${esc(x.location)}</td><td>${esc(x.status)}</td><td>${esc(x.detail)}</td></tr>`).join("")||'<tr><td colspan="4">ยังไม่มีข้อมูล</td></tr>'}</tbody></table>`}
 
-
-function openAssetModal(){assetModal.style.display="block"}
-function saveAsset(){
- if(!aId.value.trim()||!aName.value.trim())return alert("กรุณากรอก Asset ID และ Asset Name");
- let a=storeGet("rcmAssets");a.push({id:aId.value.trim(),name:aName.value.trim(),type:aType.value,location:aLocation.value,lat:aLat.value,lng:aLng.value});localStorage.setItem("rcmAssets",JSON.stringify(a));
- aId.value=aName.value=aLocation.value=aLat.value=aLng.value="";assetModal.style.display="none";refreshRCM();
-}
-function saveRCM(key,obj){if(!obj.asset)return alert("กรุณาเลือก Asset");obj.id=Date.now();storePush(key,obj);refreshRCM()}
-function saveFMEA(){let s=Number(fmS.value),o=Number(fmO.value),d=Number(fmD.value);if(!fmAsset.value||!fmMode.value)return alert("กรอก Asset และ Failure Mode");saveRCM("rcmFMEA",{asset:fmAsset.value,mode:fmMode.value,effect:fmEffect.value,s,o,d,rpn:s*o*d});fmMode.value=fmEffect.value=fmS.value=fmO.value=fmD.value=""}
-function rcmTbl(data,heads,keys){return moduleTable(data.slice().reverse().map(x=>`<tr>${keys.map(k=>`<td>${esc(x[k]??"")}</td>`).join("")}</tr>`),heads)}
-function refreshRCM(){
- let a=storeGet("rcmAssets"),opts='<option value="">-- Select Asset --</option>'+a.map(x=>`<option value="${escAttr(x.id)}">${esc(x.id)} — ${esc(x.name)}</option>`).join("");
- ["fnAsset","ffAsset","fmAsset","crAsset","hiAsset","stAsset","tkAsset","plAsset"].forEach(id=>{let e=document.getElementById(id);if(e)e.innerHTML=opts});
- if(document.getElementById("assetTable"))assetTable.innerHTML=rcmTbl(a,["Asset ID","Name","Type","Location","Lat","Lng"],["id","name","type","location","lat","lng"]);
- let fn=storeGet("rcmFunctions");fnTable.innerHTML=rcmTbl(fn,["Asset","Function","Performance Standard"],["asset","name","standard"]);
- let ff=storeGet("rcmFailures");ffTable.innerHTML=rcmTbl(ff,["Asset","Functional Failure","Effect"],["asset","name","effect"]);
- let fm=storeGet("rcmFMEA");fmeaTable.innerHTML=rcmTbl(fm,["Asset","Failure Mode","Effect","S","O","D","RPN"],["asset","mode","effect","s","o","d","rpn"]);
- let cr=storeGet("rcmCriticality");crTable.innerHTML=rcmTbl(cr,["Asset","Consequence","Criticality"],["asset","consequence","level"]);
- let hi=storeGet("rcmHI");hiTable.innerHTML=rcmTbl(hi,["Asset","HI","Condition","Evidence"],["asset","score","condition","note"]);
- let st=storeGet("rcmStrategies");stTable.innerHTML=rcmTbl(st,["Asset","Strategy","Reason"],["asset","type","reason"]);
- let tk=storeGet("rcmTasks");tkTable.innerHTML=rcmTbl(tk,["Asset","Task","Frequency"],["asset","name","frequency"]);
- let pl=storeGet("rcmPlans");plTable.innerHTML=rcmTbl(pl,["Asset","Plan","Date","Owner"],["asset","job","date","owner"]);
- let rec=getRecords();monitorTable.innerHTML=moduleTable(rec.slice().reverse().map(x=>`<tr><td>${esc(x.fields?.date||"")}</td><td>${esc(x.fields?.station||"")}</td><td>${esc(x.code)}</td><td>${esc(x.status)}</td></tr>`),["Date","Station","Inspection Form","Status"]);
-}
-function renderAssets(){let q=(assetSearch?.value||"").toLowerCase(),a=storeGet("rcmAssets").filter(x=>(x.id+" "+x.name+" "+x.type+" "+x.location).toLowerCase().includes(q));assetTable.innerHTML=rcmTbl(a,["Asset ID","Name","Type","Location","Lat","Lng"],["id","name","type","location","lat","lng"])}
-function exportRCM(){
- let rows=[["Dataset","Asset","Field 1","Field 2","Field 3","Field 4"]];
- storeGet("rcmAssets").forEach(x=>rows.push(["Asset",x.id,x.name,x.type,x.location,(x.lat||"")+" "+(x.lng||"")]));
- storeGet("rcmFMEA").forEach(x=>rows.push(["FMEA",x.asset,x.mode,x.effect,"RPN",x.rpn]));
- storeGet("rcmHI").forEach(x=>rows.push(["Health Index",x.asset,x.score,x.condition,x.note,""]));
- storeGet("rcmStrategies").forEach(x=>rows.push(["Strategy",x.asset,x.type,x.reason,"",""]));
- let csv="\uFEFF"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n"),b=new Blob([csv],{type:"text/csv;charset=utf-8"}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="MEA_RCM_Data.csv";a.click();URL.revokeObjectURL(u)
-}
-
-
-const UX_ACTIONS=[
-["dashboard","📊 Dashboard"],["mapPage","🗺️ Field Map"],["inspection","📋 ตรวจภาคสนาม"],["history","📚 Inspection History"],
-["assets","⚙️ Asset Management"],["functionsPage","ƒ Functions"],["failurePage","⚠️ Functional Failure"],["fmeaPage","▦ FMEA"],["criticalityPage","◆ Criticality"],
-["hiPage","♥ Health Index"],["strategyPage","🛠️ Maintenance Strategy"],
-["workorder","📋 Work Order"],["pm","🗓️ PM Planning"],["labor","👷 Labor Tracking"],["cost","💰 Cost Analysis"],["kpi","📈 KPI"],["users","👥 User / Team"],["settingsPage","⚙ Settings"]
-];
+const UX_ACTIONS=[["dashboard","📊 Dashboard"],["mapPage","🗺️ Field Map"],["inspection","📋 ตรวจภาคสนาม"],["history","📚 History"],["workorder","📋 Work Order"]];
 function openCommand(){command.style.display="block";cmdSearch.value="";renderCommand();setTimeout(()=>cmdSearch.focus(),50)}
 function closeCommand(){command.style.display="none"}
 function goUX(id){closeCommand();showPage(id,document.querySelector(`[data-page="${id}"]`))}
 function renderCommand(){
- let q=cmdSearch.value.toLowerCase(),items=UX_ACTIONS.filter(x=>x[1].toLowerCase().includes(q)).map(x=>`<div class="cmd-item" onclick="goUX('${x[0]}')"><b>${x[1]}</b><small>เปิดเมนู →</small></div>`);
- let assets=storeGet("rcmAssets").filter(x=>(x.id+" "+x.name+" "+x.location).toLowerCase().includes(q)).slice(0,5).map(x=>`<div class="cmd-item" onclick="goUX('assets')"><b>⚙️ ${esc(x.id)} — ${esc(x.name)}</b><small>${esc(x.location)}</small></div>`);
- let sts=stations.filter(x=>(x.station+" "+x.mea+" "+x.location).toLowerCase().includes(q)).slice(0,5).map(x=>`<div class="cmd-item" onclick="closeCommand();showPage('mapPage',document.querySelector('[data-page=mapPage]'));setTimeout(()=>focusStation(${x.id}),250)"><b>📍 ${esc(x.station)}</b><small>${esc(x.location)}</small></div>`);
- cmdResults.innerHTML=[...items,...assets,...sts].join("")||'<div class="empty">⌕<b>ไม่พบข้อมูล</b>ลองค้นหาด้วย Asset ID, Station หรือชื่อเมนู</div>';
+ let q=cmdSearch.value.toLowerCase();
+ cmdResults.innerHTML=UX_ACTIONS.filter(x=>x[1].toLowerCase().includes(q)).map(x=>`<div class="cmd-item" onclick="goUX('${x[0]}')"><b>${x[1]}</b><small>เปิดเมนู →</small></div>`).join("")||'<div class="empty">⌕<b>ไม่พบข้อมูล</b></div>';
 }
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openCommand()}if(e.key==="Escape")closeCommand()});
-function toastMsg(t){toast.textContent=t;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),1800)}
+
 function toggleDark(){document.body.classList.toggle("dark");localStorage.setItem("assetDark",document.body.classList.contains("dark")?"1":"0")}
 if(localStorage.getItem("assetDark")==="1")document.body.classList.add("dark");
-function netState(){let on=navigator.onLine;onlineBadge.textContent=on?"● Online":"● Offline / Local";onlineBadge.classList.toggle("off",!on)}
-addEventListener("online",netState);addEventListener("offline",netState);netState();
-function refreshUX(){
- let p=storeGet("assetPM"),done=p.filter(x=>x.status==="Completed").length,pct=p.length?Math.round(done/p.length*100):0;
- pmRing.style.setProperty("--pct",pct+"%");pmRingText.textContent=pct+"%";pmProgress.style.width=pct+"%";pmProgressText.textContent=p.length?`${done} จาก ${p.length} งาน PM เสร็จแล้ว`:"ยังไม่มีแผน PM";
-}
-const _refreshModules=refreshModules;refreshModules=function(){_refreshModules();refreshUX()}
 
-
-function toggleManagement(){
- document.body.classList.toggle("manage-open");
- const on=document.body.classList.contains("manage-open");
- const b=document.getElementById("manageToggle");if(b)b.textContent=on?"✕ ซ่อนงานวางแผน / จัดการ":"⚙ งานวางแผน / จัดการ";
- localStorage.setItem("manageOpen",on?"1":"0");
-}
-if(localStorage.getItem("manageOpen")==="1")document.body.classList.add("manage-open");
-
-function toggleAdvanced(){
- document.body.classList.toggle("advanced-on");
- const on=document.body.classList.contains("advanced-on");
- advancedToggle.textContent=on?"✕ ซ่อนเครื่องมือวิศวกรรม":"⚙ แสดงเครื่องมือวิศวกรรม";
- localStorage.setItem("advancedMode",on?"1":"0");
- toastMsg(on?"เปิด Engineering Mode แล้ว":"กลับสู่โหมดใช้งานทั่วไปแล้ว");
-}
-
-function saveFunctionFriendly(){
- if(!fnAsset.value)return toastMsg("กรุณาเลือก Asset ก่อน");
- if(!fnName.value.trim())return toastMsg("กรุณาระบุหน้าที่ของอุปกรณ์");
- if(!fnStandard.value.trim())return toastMsg("กรุณาระบุ Performance Standard");
- saveRCM("rcmFunctions",{asset:fnAsset.value,name:fnName.value.trim(),standard:fnStandard.value.trim()});
- fnName.value=fnStandard.value="";toastMsg("✓ บันทึกหน้าที่ของอุปกรณ์แล้ว");refreshFriendly();
-}
-function refreshFriendly(){
- let n=storeGet("rcmFunctions").length;if(document.getElementById("fnCount"))fnCount.textContent=n+" รายการ";
- let b=document.getElementById("advancedToggle");if(b)b.textContent=document.body.classList.contains("advanced-on")?"✕ ซ่อนเครื่องมือวิศวกรรม":"⚙ แสดงเครื่องมือวิศวกรรม";
-}
-
-
-function switchFieldTab(tab){
- const forms=document.getElementById("fieldFormsTab");
- if(forms) forms.classList.add("active");
-}
-function openFieldManuals(){
- showPage("inspection",document.querySelector('[data-page="inspection"]'));
- toastMsg("เลือกอุปกรณ์หรือใบตรวจก่อน แล้วเปิดคู่มือที่จับคู่ไว้");
-}
-function renderUnifiedManuals(){
- const g=document.getElementById("unifiedManualGrid"); if(!g)return;
- const q=(document.getElementById("manualSearchUnified")?.value||"").toLowerCase();
- const list=MANUALS.filter(m=>(m.code+" "+m.title+" "+m.form).toLowerCase().includes(q));
- g.innerHTML=list.map(m=>`<div class="card manual-mini-card">
-   <span class="manual-code">${esc(m.code)}</span>
-   <h3>${esc(m.title)}</h3>
-   <p>จับคู่กับใบตรวจ ${esc(m.form)}</p>
-   <button class="btn btn-light" onclick="openManual('${escAttr(m.code)}')">เปิดรายละเอียดคู่มือ</button>
- </div>`).join("")||'<div class="empty"><b>ไม่พบคู่มือ</b>ลองค้นหาด้วยรหัส SW-OH หรือชื่ออุปกรณ์</div>';
-}
-function filterUnifiedManuals(){renderUnifiedManuals()}
-
-
-function toggleManageBox(id,btn){
- const el=document.getElementById(id);const on=el.classList.toggle("open");
- btn.textContent=on?"ซ่อน ▴":"เปิดดู ▾";
-}
-function openAdminTools(){showPage("adminTools",null)}
-function goAdmin(id){showPage(id,null)}
 function toggleQuickHelp(){const q=document.getElementById("quickHelp");q.style.display=q.style.display==="block"?"none":"block"}
+
 function renderHomeCounts(){
- const r=getRecords(),w=storeGet("assetWO"),p=storeGet("assetPM");
- const a=document.getElementById("homeInspectionCount"),b=document.getElementById("homeWOCount"),c=document.getElementById("homePMDone");
- if(a)a.textContent=r.length;if(b)b.textContent=w.length;if(c)c.textContent=p.filter(x=>x.status==="Completed").length;
+ const r=getRecords(),w=storeGet("assetWO");
+ document.getElementById("homeInspectionCount").textContent=r.length;
+ document.getElementById("homeWOCount").textContent=w.length;
+ document.getElementById("homePMDone").textContent=w.filter(x=>x.status==="Completed").length;
 }
 function renderSimpleHome(){
  renderHomeCounts();
- const d=document.getElementById("simpleToday");if(d)d.textContent=new Date().toLocaleDateString("th-TH",{weekday:"short",day:"numeric",month:"short"});
+ document.getElementById("simpleToday").textContent=new Date().toLocaleDateString("th-TH",{weekday:"short",day:"numeric",month:"short"});
  const box=document.getElementById("simpleRecent");if(!box)return;
  const r=getRecords().slice().reverse().slice(0,5);
- box.innerHTML=r.length?r.map(x=>`<div style="display:flex;justify-content:space-between;gap:10px;padding:11px 3px;border-bottom:1px solid #e5edf2"><div><b>${esc(x.fields?.station||x.code)}</b><br><small style="color:#7c91a0">${esc(x.code)} • ${esc(x.fields?.date||"")}</small></div><span class="status ${x.status==="Submitted"?"submitted":"draft"}">${esc(x.status)}</span></div>`).join(""):'<div class="empty"><b>ยังไม่มีงานล่าสุด</b>เริ่มตรวจภาคสนามเพื่อสร้างรายการแรก</div>';
+ box.innerHTML=r.length?r.map(x=>`<div style="display:flex;justify-content:space-between;gap:10px;padding:11px 3px;border-bottom:1px solid #e5edf2"><div><b>${esc(x.fields?.station||x.code)}</b><br><small style="color:var(--calm-muted)">${esc(x.code)} • ${esc(x.fields?.date||"")}</small></div><span class="status ${x.status==="Submitted"?"submitted":"draft"}">${esc(x.status)}</span></div>`).join(""):'<div class="empty"><b>ยังไม่มีงานล่าสุด</b>เริ่มตรวจภาคสนามเพื่อสร้างรายการแรก</div>';
 }
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+function escAttr(v){return esc(v)}
 
-renderForms();renderManualCards();setLanguage(lang);refresh();refreshModules();refreshRCM();
-renderSimpleHome();
-refreshFriendly();
-refreshUX();
+renderForms();setLanguage(lang);refresh();refreshWO();renderSimpleHome();
 </script>
 </body>
 </html>
