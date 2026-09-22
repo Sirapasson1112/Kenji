@@ -159,244 +159,109 @@ body.dark .home-date,body.dark .home-main-card,body.dark .home-quick-row button{
 body.dark .home-main-card.primary{background:linear-gradient(125deg,#075b8a,#0879bd)}
 @media(max-width:1000px){.home-main-actions{grid-template-columns:1fr}.home-quick-row{grid-template-columns:1fr 1fr}.home-clean-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.home-quick-row{grid-template-columns:1fr}.home-clean-hero{align-items:flex-start;flex-direction:column}.home-clean-hero h1{font-size:27px}}
+</style>
 
-/* ===== TASK-BASED MANAGEMENT ===== */
-.manage-hero{display:flex;justify-content:space-between;align-items:center;gap:18px;background:linear-gradient(120deg,#073b68,#087fc2);color:#fff;border-radius:19px;padding:22px 24px;margin-bottom:18px;box-shadow:0 14px 34px #073b6825}.manage-hero span{font-size:10px;letter-spacing:1px;opacity:.72;font-weight:800}.manage-hero h2{margin:4px 0;font-size:25px}.manage-hero p{margin:0;opacity:.82}.manage-question{font-size:19px;font-weight:800;color:#173f5d;margin:0 0 12px}
-.manage-primary{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px}.manage-primary>button{border:1px solid #dce6ed;background:#fff;border-radius:16px;padding:18px;text-align:left;display:flex;align-items:center;gap:13px;cursor:pointer;box-shadow:0 7px 20px #073b6809;transition:.18s}.manage-primary>button:hover{transform:translateY(-2px);border-color:#1488d4}.manage-primary i{font-style:normal;width:47px;height:47px;border-radius:13px;background:#eaf6fd;display:grid;place-items:center;font-size:23px}.manage-primary div{flex:1}.manage-primary b,.manage-primary small{display:block}.manage-primary b{font-size:14px;color:#153e5d}.manage-primary small{font-size:10px;color:#778d9d;margin-top:4px}.manage-primary>button>span{color:#1488d4;font-size:19px}
-.manage-secondary{display:grid;grid-template-columns:1fr 1fr;gap:12px}.manage-box{background:#fff;border:1px solid #dce6ed;border-radius:15px;overflow:hidden}.manage-box-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px}.manage-box-head b,.manage-box-head small{display:block}.manage-box-head b{font-size:13px}.manage-box-head small{font-size:9px;color:#8093a1;margin-top:4px}.manage-box-head button{border:0;background:#edf7fd;color:#0879bd;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:800;cursor:pointer}.manage-box-content{display:none;padding:0 10px 10px}.manage-box-content.open{display:grid;grid-template-columns:1fr 1fr;gap:8px}.manage-box-content>button{border:1px solid #e2e9ee;background:#fafcfd;border-radius:10px;padding:10px;text-align:left;display:flex;gap:8px;align-items:center;cursor:pointer}.manage-box-content>button:hover{border-color:#1488d4}.manage-box-content b,.manage-box-content small{display:block;font-size:10px}.manage-box-content small{font-size:8px;color:#8093a1;margin-top:2px}
-.manage-tip{margin-top:13px;background:#eef8ff;border:1px solid #d5ebf9;border-radius:11px;padding:11px 13px;font-size:11px;color:#567286}
-body.dark .manage-question{color:#dbeaf5}body.dark .manage-primary>button,body.dark .manage-box{background:#0d2333;border-color:#1d3d52}body.dark .manage-primary b{color:#dbeaf5}body.dark .manage-box-content>button{background:#102b3e;border-color:#214359;color:#dbeaf5}body.dark .manage-tip{background:#102b3e;border-color:#214359;color:#a8c0d0}
-@media(max-width:800px){.manage-primary,.manage-secondary{grid-template-columns:1fr}.manage-hero{align-items:flex-start;flex-direction:column}.manage-box-content.open{grid-template-columns:1fr}}
-
-/* ===== CALM EYE-FRIENDLY THEME ===== */
+<style id="turquoise-theme">
+/* ===== TURQUOISE THEME — based on user's color reference ===== */
 :root{
- --calm-bg:#f4f8f7;
- --calm-surface:#ffffff;
- --calm-primary:#3f7f83;
- --calm-primary-dark:#315f64;
- --calm-secondary:#6f91a3;
- --calm-accent:#8fb8ad;
- --calm-soft:#e8f2ef;
- --calm-soft-blue:#edf3f6;
- --calm-text:#29434a;
- --calm-muted:#71868b;
- --calm-line:#dce8e5;
- --calm-shadow:0 10px 28px rgba(49,95,100,.09);
+  --turquoise:#27C2CC;
+  --turquoise-hover:#20AEB8;
+  --turquoise-light:#E8FAFB;
+  --turquoise-soft:#D7F5F7;
+  --brand:#27C2CC;
+  --brand2:#35D0D4;
+  --blue:#27C2CC;
 }
-body{
- background:
-  radial-gradient(circle at 85% 0,rgba(143,184,173,.15),transparent 26%),
-  radial-gradient(circle at 20% 100%,rgba(111,145,163,.09),transparent 25%),
-  var(--calm-bg)!important;
- color:var(--calm-text);
-}
-.sidebar{
- background:linear-gradient(180deg,#315f64 0%,#294f56 58%,#24454d 100%)!important;
- box-shadow:8px 0 30px rgba(36,69,77,.10)!important;
-}
-.brand{color:#f7fbfa}.menu{color:#e8f3f1!important}.menu:hover{background:#ffffff12!important}
-.menu.active{background:#ffffff1b!important;color:#fff!important;box-shadow:inset 3px 0 0 #a9d2c6}
-.header,.panel,.card,.stat,.manage-box,.manage-primary>button{
- background:rgba(255,255,255,.94)!important;
- border-color:var(--calm-line)!important;
- box-shadow:var(--calm-shadow)!important;
-}
-.header{backdrop-filter:blur(16px)}
-h1,h2,h3,.manage-question{color:var(--calm-text)!important}
-.header p,.card p,.manage-primary small,.manage-box-head small{color:var(--calm-muted)!important}
-.btn{
- background:var(--calm-primary)!important;
- color:#fff!important;
- border-color:transparent!important;
- box-shadow:0 5px 14px rgba(63,127,131,.18)!important;
-}
-.btn:hover{background:var(--calm-primary-dark)!important}
-.btn-light{
- background:var(--calm-soft)!important;
- color:var(--calm-primary-dark)!important;
- border:1px solid #d4e6e1!important;
- box-shadow:none!important;
-}
-input,select,textarea,#globalSearch{
- background:#fbfdfc!important;
- border-color:#d5e3e0!important;
- color:var(--calm-text)!important;
-}
-input:focus,select:focus,textarea:focus{outline:none!important;border-color:#7aa9a2!important;box-shadow:0 0 0 3px rgba(143,184,173,.15)}
-.manage-hero,.field-hub-head,.welcome-simple{
- background:linear-gradient(120deg,#3f7f83 0%,#568f91 55%,#729fa0 100%)!important;
- box-shadow:0 14px 32px rgba(63,127,131,.18)!important;
-}
-.manage-hero h2,.manage-hero p,.field-hub-head h2,.field-hub-head p,.welcome-simple h1,.welcome-simple p{color:#fff!important}
-.manage-primary i{background:var(--calm-soft)!important}
-.manage-primary>button:hover,.admin-tool-grid button:hover,.home-main-card:hover{border-color:#7faea6!important}
-.manage-box-head button,.soft-label{background:var(--calm-soft)!important;color:var(--calm-primary-dark)!important}
-.manage-box-content>button{background:#f8fbfa!important;border-color:#e0ebe8!important}
-.manage-tip,.help-strip{background:#edf6f3!important;border-color:#d6e8e3!important;color:#56726f!important}
-.home-main-card.primary{
- background:linear-gradient(125deg,#3f7f83,#619395)!important;
-}
-.home-main-card.primary .home-main-icon{background:#ffffff25!important}
-.home-main-icon,.job-icon{background:var(--calm-soft)!important}
-.home-quick-row button:hover{background:#f2f8f6!important;border-color:#8eb8b0!important}
-.home-date,.today-chip{background:#fff!important;border-color:var(--calm-line)!important;color:var(--calm-muted)!important}
-.home-summary-list b{color:var(--calm-primary-dark)!important}
-.status.submitted,.badge-online{background:#e4f2eb!important;color:#39745f!important}
-.status.draft{background:#f3efe2!important;color:#8b7443!important}
-.progress-line{background:#e6eeec!important}.progress-line i{background:linear-gradient(90deg,#5c9294,#8fb8ad)!important}
-.ring{background:conic-gradient(#6f9e91 var(--pct,0%),#e6eeec 0)!important}
-.field-tab.active{background:var(--calm-primary)!important;border-color:var(--calm-primary)!important}
-.step-no,.ux-step.active i{background:var(--calm-primary)!important}
-.guide-box{background:#edf6f3!important;border-color:#d7e8e3!important}
-table th{background:#edf4f3!important;color:#34575d!important}
-table td,table th{border-color:#e0e9e7!important}
-a,.link-btn,.home-section-head button{color:#4c8588!important}
-.help-fab{
- background:linear-gradient(135deg,#4f8588,#7aa7a0)!important;
- box-shadow:0 10px 26px rgba(63,127,131,.28)!important;
-}
-#quickHelp .qh-head{background:linear-gradient(120deg,#315f64,#4f8588)!important}
-.qh-option:hover{background:#edf6f3!important}
-.map-preview-simple{background:#edf5f3!important}
-.admin-shortcut{background:#f2f7f6!important;border-color:#d7e5e2!important}
-body.dark{
- --calm-text:#dbe9e7;
- --calm-muted:#99b0ae;
- background:#17272b!important;
-}
-body.dark .header,body.dark .panel,body.dark .card,body.dark .stat,body.dark .manage-box,body.dark .manage-primary>button,
-body.dark .home-main-card,body.dark .home-quick-row button,body.dark #quickHelp{
- background:#203438!important;border-color:#315057!important;color:#dbe9e7!important;
-}
-body.dark h1,body.dark h2,body.dark h3,body.dark .manage-question,body.dark .home-summary-list b{color:#e4efed!important}
-body.dark input,body.dark select,body.dark textarea,body.dark #globalSearch{background:#1b2d31!important;border-color:#355159!important;color:#e5efee!important}
 
-/* ===== SOFT BLUE THEME OVERRIDE ===== */
-:root{
- --calm-bg:#f3f8fc;
- --calm-surface:#ffffff;
- --calm-primary:#3b82b8;
- --calm-primary-dark:#285f8c;
- --calm-secondary:#6f9fbd;
- --calm-accent:#91bdd8;
- --calm-soft:#eaf4fb;
- --calm-soft-blue:#edf5fb;
- --calm-text:#24445d;
- --calm-muted:#71899a;
- --calm-line:#dbe8f1;
- --calm-shadow:0 10px 28px rgba(48,105,145,.09);
+/* Main interactive accents */
+.btn:not(.btn-green):not(.btn-orange):not(.btn-gray):not(.btn-red):not(.btn-light),
+.menu:hover,.menu.active,
+.lang button.active,
+.field-tab.active,
+.step-no,
+.flow-card>span,
+.ux-step.active i{
+  background:#27C2CC !important;
 }
-body{
- background:
-  radial-gradient(circle at 86% 0,rgba(113,174,214,.16),transparent 28%),
-  radial-gradient(circle at 16% 100%,rgba(145,189,216,.11),transparent 25%),
-  #f3f8fc!important;
- color:#24445d!important;
+.btn:not(.btn-green):not(.btn-orange):not(.btn-gray):not(.btn-red):not(.btn-light):hover{
+  background:#20AEB8 !important;
+  opacity:1;
 }
-.sidebar{
- background:linear-gradient(180deg,#174f78 0%,#123f62 58%,#0e354f 100%)!important;
-}
-.menu.active{
- background:rgba(92,174,226,.22)!important;
- box-shadow:inset 3px 0 0 #8fd0f5!important;
-}
-.header,.panel,.card,.stat,.manage-box,.manage-primary>button{
- border-color:#dbe8f1!important;
- box-shadow:0 10px 28px rgba(48,105,145,.08)!important;
-}
-h1,h2,h3,.manage-question{color:#24445d!important}
-.btn{
- background:#3b82b8!important;
- box-shadow:0 5px 14px rgba(59,130,184,.18)!important;
-}
-.btn:hover{background:#285f8c!important}
 .btn-light{
- background:#eaf4fb!important;
- color:#285f8c!important;
- border-color:#d5e8f4!important;
+  background:#E8FAFB !important;
+  color:#128B94 !important;
 }
-.manage-hero,.field-hub-head,.welcome-simple{
- background:linear-gradient(120deg,#2f73a6 0%,#438fc2 55%,#68a9cf 100%)!important;
- box-shadow:0 14px 32px rgba(47,115,166,.18)!important;
+.btn-light:hover{background:#D7F5F7 !important}
+
+/* Links, labels, outlines */
+.home-kicker,.link-btn,.home-section-head button,
+.guided-form .field a,.ux-step.active{
+  color:#20AEB8 !important;
 }
-.manage-hero h2,.manage-hero p,.field-hub-head h2,.field-hub-head p,
-.welcome-simple h1,.welcome-simple p{color:#fff!important}
-.manage-primary i,.home-main-icon,.job-icon{
- background:#eaf4fb!important;
+.quick:hover,.flow-card:hover,.home-main-card:hover,
+.home-quick-row button:hover,.admin-tool-grid button:hover{
+  border-color:#27C2CC !important;
 }
-.manage-primary>button:hover,.admin-tool-grid button:hover,.home-main-card:hover{
- border-color:#82b9d9!important;
+
+/* Main turquoise cards / headers */
+.home-main-card.primary,
+.job-card.primary{
+  background:linear-gradient(125deg,#27C2CC,#35D0D4) !important;
 }
-.manage-box-head button,.soft-label{
- background:#eaf4fb!important;
- color:#285f8c!important;
+.welcome-simple,
+.hero,
+.field-hub-head{
+  background:linear-gradient(125deg,#20AEB8 0%,#27C2CC 58%,#35D0D4 100%) !important;
 }
-.manage-box-content>button{
- background:#f8fbfe!important;
- border-color:#e0ebf3!important;
-}
-.manage-tip,.help-strip,.guide-box{
- background:#edf6fc!important;
- border-color:#d7e9f5!important;
- color:#58778c!important;
-}
-.home-main-card.primary{
- background:linear-gradient(125deg,#347fb5,#5a9fc9)!important;
-}
-.home-quick-row button:hover{
- background:#f2f8fc!important;
- border-color:#8bbbd8!important;
-}
-.home-summary-list b{color:#285f8c!important}
-.field-tab.active{
- background:#3b82b8!important;
- border-color:#3b82b8!important;
-}
-.step-no,.ux-step.active i{background:#3b82b8!important}
-table th{
- background:#edf5fa!important;
- color:#315c78!important;
-}
-table td,table th{border-color:#e0eaf1!important}
-a,.link-btn,.home-section-head button{color:#347fb5!important}
 .help-fab{
- background:linear-gradient(135deg,#347fb5,#69a9cf)!important;
- box-shadow:0 10px 26px rgba(52,127,181,.28)!important;
+  background:linear-gradient(135deg,#27C2CC,#35D0D4) !important;
+  box-shadow:0 12px 30px rgba(39,194,204,.35) !important;
 }
 #quickHelp .qh-head{
- background:linear-gradient(120deg,#245f8a,#438fc2)!important;
+  background:linear-gradient(120deg,#20AEB8,#27C2CC) !important;
 }
-.qh-option:hover{background:#edf6fc!important}
-.map-preview-simple{background:#edf6fc!important}
-.admin-shortcut{
- background:#f3f8fc!important;
- border-color:#d8e7f1!important;
+
+/* Small accents */
+.number{
+  background:#E8FAFB !important;
+  color:#159DA6 !important;
 }
-.status.submitted,.badge-online{
- background:#e8f4fb!important;
- color:#31749f!important;
+.manual-section{border-left-color:#27C2CC !important}
+.manual-mini-card .manual-code,.soft-label{
+  background:#E8FAFB !important;
+  color:#159DA6 !important;
 }
-.progress-line{background:#e5eef4!important}
+.mini-flow i{
+  background:#E8FAFB !important;
+  color:#159DA6 !important;
+}
 .progress-line i{
- background:linear-gradient(90deg,#438fc2,#83b9d8)!important;
+  background:linear-gradient(90deg,#27C2CC,#20A46B) !important;
 }
-body.dark{
- --calm-text:#deebf4;
- --calm-muted:#9eb6c7;
- background:#142532!important;
+.fab{background:#27C2CC !important}
+.popup-actions button:first-child{background:#27C2CC !important}
+.field-tab.active{border-color:#27C2CC !important;box-shadow:0 7px 20px rgba(39,194,204,.25) !important}
+
+/* Button shadow similar to supplied reference */
+.btn{
+  box-shadow:0 5px 13px rgba(39,194,204,.24);
 }
-body.dark .header,body.dark .panel,body.dark .card,body.dark .stat,
-body.dark .manage-box,body.dark .manage-primary>button,
-body.dark .home-main-card,body.dark .home-quick-row button,body.dark #quickHelp{
- background:#1b3242!important;
- border-color:#2e5066!important;
- color:#deebf4!important;
+.home-main-card.primary{
+  box-shadow:0 10px 24px rgba(39,194,204,.22);
 }
-body.dark h1,body.dark h2,body.dark h3,
-body.dark .manage-question,body.dark .home-summary-list b{
- color:#e4f0f7!important;
+
+/* Keep sidebar dark for contrast, use turquoise only for selected menu */
+.sidebar{
+  background:linear-gradient(180deg,#063E69 0%,#053453 55%,#042B46 100%) !important;
+}
+
+/* Dark mode */
+body.dark .field-tab.active,
+body.dark .home-main-card.primary{
+  background:linear-gradient(125deg,#20AEB8,#27C2CC) !important;
 }
 </style>
+
 </head>
 <body>
 <aside class="sidebar">
@@ -576,45 +441,25 @@ body.dark .manage-question,body.dark .home-summary-list b{
 
 <section id="settingsPage" class="page"><div class="panel"><h2>Settings</h2><div class="row2"><div class="field"><label>Organization</label><input id="setOrg" value="Asset Inspection"></div><div class="field"><label>Default Inspector</label><input id="setInspector"></div></div><br><button class="btn" onclick="localStorage.setItem('assetSettings',JSON.stringify({org:setOrg.value,inspector:setInspector.value}));alert('บันทึกแล้ว')">บันทึก Settings</button></div><div class="panel"><h2>Local Data</h2><p>เวอร์ชัน HTML เดียวนี้จัดเก็บข้อมูลใน Browser ด้วย localStorage</p></div></section>
 <section id="adminTools" class="page">
- <div class="manage-hero">
-   <div>
-     <span>สำหรับผู้วางแผน / วิศวกร</span>
-     <h2>จัดการงานบำรุงรักษา</h2>
-     <p>ไม่ต้องจำชื่อระบบ — เลือกจากสิ่งที่ต้องการทำ</p>
-   </div>
-   <button class="btn btn-light" onclick="showPage('dashboard',document.querySelector('[data-page=dashboard]'))">← กลับหน้าหลัก</button>
+ <div class="field-hub-head"><div><span class="eyebrow">MANAGEMENT WORKSPACE</span><h2>⚙️ ศูนย์จัดการงานบำรุงรักษา</h2><p>เครื่องมือขั้นสูงถูกรวมไว้ที่นี่ เพื่อให้หน้าของผู้ตรวจภาคสนามเรียบง่าย</p></div><button class="btn btn-light" onclick="showPage('dashboard',document.querySelector('[data-page=dashboard]'))">← หน้าหลัก</button></div>
+ <div class="section-title"><h2>วางแผนและติดตามงาน</h2><span class="soft-label">PLANNING</span></div>
+ <div class="admin-tool-grid">
+  <button onclick="goAdmin('assets')">⚙️<b>ทะเบียนอุปกรณ์</b><small>Asset / Station / Location</small></button>
+  <button onclick="goAdmin('pm')">🗓️<b>แผนบำรุงรักษา</b><small>กำหนดรอบและ Due Date</small></button>
+  <button onclick="goAdmin('workorder')">🔧<b>Work Order</b><small>ติดตามงานที่ต้องดำเนินการ</small></button>
+  <button onclick="goAdmin('labor')">👷<b>กำลังคน</b><small>เวลาและ Man-hours</small></button>
+  <button onclick="goAdmin('cost')">💰<b>ค่าใช้จ่าย</b><small>Plan เทียบ Actual</small></button>
+  <button onclick="goAdmin('kpi')">📈<b>สรุป KPI</b><small>ภาพรวมสำหรับผู้บริหาร</small></button>
  </div>
-
- <div class="manage-question">วันนี้ต้องการทำอะไร?</div>
- <div class="manage-primary">
-   <button onclick="goAdmin('assets')"><i>⚙️</i><div><b>ดูข้อมูลอุปกรณ์</b><small>ค้นหา Asset, Station และตำแหน่ง</small></div><span>→</span></button>
-   <button onclick="goAdmin('pm')"><i>🗓️</i><div><b>วางแผนบำรุงรักษา</b><small>ดูรอบ PM และงานที่ใกล้ถึงกำหนด</small></div><span>→</span></button>
-   <button onclick="goAdmin('workorder')"><i>🔧</i><div><b>ติดตามงานซ่อม</b><small>ดู Work Order และสถานะงาน</small></div><span>→</span></button>
-   <button onclick="goAdmin('kpi')"><i>📊</i><div><b>ดูภาพรวม</b><small>KPI, กำลังคน และค่าใช้จ่าย</small></div><span>→</span></button>
+ <div class="section-title" style="margin-top:22px"><h2>วิเคราะห์สภาพและ RCM</h2><span class="soft-label">ENGINEERING</span></div>
+ <div class="admin-tool-grid">
+  <button onclick="goAdmin('hiPage')">♥<b>Health Index</b><small>ติดตามสภาพอุปกรณ์</small></button>
+  <button onclick="goAdmin('fmeaPage')">▦<b>FMEA</b><small>Failure Mode / RPN</small></button>
+  <button onclick="goAdmin('criticalityPage')">◆<b>Criticality</b><small>จัดระดับผลกระทบ</small></button>
+  <button onclick="goAdmin('strategyPage')">🛠️<b>Maintenance Strategy</b><small>เลือกแนวทางบำรุงรักษา</small></button>
+  <button onclick="goAdmin('users')">👥<b>ทีมงาน</b><small>ผู้ใช้และบทบาท</small></button>
+  <button onclick="goAdmin('settingsPage')">⚙<b>ตั้งค่าระบบ</b><small>ค่าพื้นฐานของระบบ</small></button>
  </div>
-
- <div class="manage-secondary">
-   <div class="manage-box">
-     <div class="manage-box-head"><div><b>🔬 วิเคราะห์อุปกรณ์</b><small>ใช้เมื่อจำเป็นต้องวิเคราะห์เชิงวิศวกรรม</small></div><button onclick="toggleManageBox('engineeringBox',this)">เปิดดู ▾</button></div>
-     <div id="engineeringBox" class="manage-box-content">
-       <button onclick="goAdmin('hiPage')"><span>♥</span><div><b>สภาพอุปกรณ์</b><small>Health Index</small></div></button>
-       <button onclick="goAdmin('fmeaPage')"><span>⚠️</span><div><b>วิเคราะห์ความเสี่ยง</b><small>FMEA + Criticality</small></div></button>
-       <button onclick="goAdmin('strategyPage')"><span>🛠️</span><div><b>เลือกแนวทางบำรุงรักษา</b><small>Maintenance Strategy</small></div></button>
-     </div>
-   </div>
-
-   <div class="manage-box">
-     <div class="manage-box-head"><div><b>⚙️ ตั้งค่าและข้อมูลเพิ่มเติม</b><small>ไม่ใช่งานที่ต้องใช้ทุกวัน</small></div><button onclick="toggleManageBox('supportBox',this)">เปิดดู ▾</button></div>
-     <div id="supportBox" class="manage-box-content">
-       <button onclick="goAdmin('labor')"><span>👷</span><div><b>เวลาและกำลังคน</b><small>Labor / Man-hours</small></div></button>
-       <button onclick="goAdmin('cost')"><span>💰</span><div><b>ค่าใช้จ่าย</b><small>Plan vs Actual</small></div></button>
-       <button onclick="goAdmin('users')"><span>👥</span><div><b>ทีมงาน</b><small>User / Role</small></div></button>
-       <button onclick="goAdmin('settingsPage')"><span>⚙</span><div><b>ตั้งค่าระบบ</b><small>System Settings</small></div></button>
-     </div>
-   </div>
- </div>
-
- <div class="manage-tip">💡 <b>สำหรับงานทั่วไป</b> ใช้ 4 ปุ่มด้านบนก็เพียงพอ ส่วนเมนูวิเคราะห์และตั้งค่าจะถูกซ่อนไว้จนกว่าจะต้องใช้</div>
 </section>
 </main>
 
@@ -915,10 +760,6 @@ function renderUnifiedManuals(){
 function filterUnifiedManuals(){renderUnifiedManuals()}
 
 
-function toggleManageBox(id,btn){
- const el=document.getElementById(id);const on=el.classList.toggle("open");
- btn.textContent=on?"ซ่อน ▴":"เปิดดู ▾";
-}
 function openAdminTools(){showPage("adminTools",null)}
 function goAdmin(id){showPage(id,null)}
 function toggleQuickHelp(){const q=document.getElementById("quickHelp");q.style.display=q.style.display==="block"?"none":"block"}
