@@ -160,6 +160,108 @@ body.dark .home-main-card.primary{background:linear-gradient(125deg,#075b8a,#087
 @media(max-width:1000px){.home-main-actions{grid-template-columns:1fr}.home-quick-row{grid-template-columns:1fr 1fr}.home-clean-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.home-quick-row{grid-template-columns:1fr}.home-clean-hero{align-items:flex-start;flex-direction:column}.home-clean-hero h1{font-size:27px}}
 </style>
+
+<style id="turquoise-theme">
+/* ===== TURQUOISE THEME — based on user's color reference ===== */
+:root{
+  --turquoise:#27C2CC;
+  --turquoise-hover:#20AEB8;
+  --turquoise-light:#E8FAFB;
+  --turquoise-soft:#D7F5F7;
+  --brand:#27C2CC;
+  --brand2:#35D0D4;
+  --blue:#27C2CC;
+}
+
+/* Main interactive accents */
+.btn:not(.btn-green):not(.btn-orange):not(.btn-gray):not(.btn-red):not(.btn-light),
+.menu:hover,.menu.active,
+.lang button.active,
+.field-tab.active,
+.step-no,
+.flow-card>span,
+.ux-step.active i{
+  background:#27C2CC !important;
+}
+.btn:not(.btn-green):not(.btn-orange):not(.btn-gray):not(.btn-red):not(.btn-light):hover{
+  background:#20AEB8 !important;
+  opacity:1;
+}
+.btn-light{
+  background:#E8FAFB !important;
+  color:#128B94 !important;
+}
+.btn-light:hover{background:#D7F5F7 !important}
+
+/* Links, labels, outlines */
+.home-kicker,.link-btn,.home-section-head button,
+.guided-form .field a,.ux-step.active{
+  color:#20AEB8 !important;
+}
+.quick:hover,.flow-card:hover,.home-main-card:hover,
+.home-quick-row button:hover,.admin-tool-grid button:hover{
+  border-color:#27C2CC !important;
+}
+
+/* Main turquoise cards / headers */
+.home-main-card.primary,
+.job-card.primary{
+  background:linear-gradient(125deg,#27C2CC,#35D0D4) !important;
+}
+.welcome-simple,
+.hero,
+.field-hub-head{
+  background:linear-gradient(125deg,#20AEB8 0%,#27C2CC 58%,#35D0D4 100%) !important;
+}
+.help-fab{
+  background:linear-gradient(135deg,#27C2CC,#35D0D4) !important;
+  box-shadow:0 12px 30px rgba(39,194,204,.35) !important;
+}
+#quickHelp .qh-head{
+  background:linear-gradient(120deg,#20AEB8,#27C2CC) !important;
+}
+
+/* Small accents */
+.number{
+  background:#E8FAFB !important;
+  color:#159DA6 !important;
+}
+.manual-section{border-left-color:#27C2CC !important}
+.manual-mini-card .manual-code,.soft-label{
+  background:#E8FAFB !important;
+  color:#159DA6 !important;
+}
+.mini-flow i{
+  background:#E8FAFB !important;
+  color:#159DA6 !important;
+}
+.progress-line i{
+  background:linear-gradient(90deg,#27C2CC,#20A46B) !important;
+}
+.fab{background:#27C2CC !important}
+.popup-actions button:first-child{background:#27C2CC !important}
+.field-tab.active{border-color:#27C2CC !important;box-shadow:0 7px 20px rgba(39,194,204,.25) !important}
+
+/* Button shadow similar to supplied reference */
+.btn{
+  box-shadow:0 5px 13px rgba(39,194,204,.24);
+}
+.home-main-card.primary{
+  box-shadow:0 10px 24px rgba(39,194,204,.22);
+}
+
+/* Keep sidebar dark for contrast, use turquoise only for selected menu */
+.sidebar{
+  background:linear-gradient(180deg,#063E69 0%,#053453 55%,#042B46 100%) !important;
+}
+
+/* Dark mode */
+body.dark .field-tab.active,
+body.dark .home-main-card.primary{
+  background:linear-gradient(125deg,#20AEB8,#27C2CC) !important;
+}
+</style>
+
 </head>
 <body>
 <aside class="sidebar">
