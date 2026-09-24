@@ -858,10 +858,10 @@ window.runTopSearch = function(query){
   showToast(`ค้นหา "${q}" — เลือกเมนูด้านซ้ายเพื่อดูรายการที่เกี่ยวข้อง`);
 };
 
-/* ===================== IMPORT / EXPORT (CSV for tables, JSON for inspection forms) ===================== */
+/* ===================== IMPORT / EXPORT (real .xlsx via SheetJS, CSV as a fallback) ===================== */
 // Resolves the platform's "downloads" runtime capability once and reuses it; on a surface
-// that doesn't grant it (or hasn't loaded window.claude at all), every export call degrades
-// to a clear message instead of silently doing nothing.
+// that doesn't grant it (or hasn't loaded window.claude at all), export falls back to a
+// plain browser download instead of silently doing nothing.
 let downloadsCapPromise = null;
 function getDownloadsCap(){
   if (downloadsCapPromise) return downloadsCapPromise;
@@ -873,7 +873,9 @@ function getDownloadsCap(){
   })();
   return downloadsCapPromise;
 }
-async function saveFile(filename, data){
+// data may be a plain string (CSV/JSON) or an ArrayBuffer/Uint8Array (.xlsx bytes).
+async function saveFile(filename, data, mime){
+  mime = mime || "text/plain;charset=utf-8";
   const cap = await getDownloadsCap();
   if (cap){
     try {
@@ -887,9 +889,10 @@ async function saveFile(filename, data){
   // Outside Claude's own artifact viewer (hosted on GitHub Pages, opened as a local
   // file, etc.) there is no "downloads" capability — but a completely ordinary
   // Blob + <a download> works fine there, since none of the artifact sandbox's
-  // restrictions apply to a normally-hosted page.
+  // restrictions apply to a normally-hosted page. The explicit mime type matters:
+  // without it, some browsers preview the bytes as plain text instead of saving a file.
   try {
-    const blob = new Blob([data], { type: "text/plain;charset=utf-8" });
+    const blob = new Blob([data], { type: mime });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url; a.download = filename;
@@ -904,16 +907,40 @@ async function saveFile(filename, data){
   }
 }
 
+const XLSX_MIME = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+let xlsxLibPromise = null;
+function loadScriptOnce(src){
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = src; s.onload = resolve; s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+// SheetJS (the "xlsx" library) is what actually writes a real, binary .xlsx file —
+// this is what makes an exported table open as a proper formatted spreadsheet instead
+// of raw comma-separated text.
+function getXLSXLib(){
+  if (typeof XLSX !== "undefined") return Promise.resolve(true);
+  if (xlsxLibPromise) return xlsxLibPromise;
+  xlsxLibPromise = loadScriptOnce("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js")
+    .then(() => true)
+    .catch(() => loadScriptOnce("https://cdn.jsdelivr.net/npm/[email protected]/dist/xlsx.full.min.js").then(() => true).catch(() => false));
+  return xlsxLibPromise;
+}
+function tableToAOA(rows, columns){
+  const keys = columns.map(c => c.key).concat("status");
+  const headers = columns.map(c => tCol(c.label)).concat(LANG === "en" ? "Status" : "สถานะ");
+  const aoa = [headers];
+  rows.forEach(r => aoa.push(keys.map(k => k === "status" ? tStatus(r[k]) : (r[k] ?? ""))));
+  return aoa;
+}
 function csvEscape(v){
   const s = String(v ?? "");
   return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
 }
-function toCSV(rows, columns){
-  const keys = columns.map(c => c.key).concat("status");
-  const headers = columns.map(c => c.label).concat("สถานะ");
-  const lines = [headers.map(csvEscape).join(",")];
-  rows.forEach(r => lines.push(keys.map(k => csvEscape(r[k])).join(",")));
-  return lines.join("\r\n");
+function aoaToCSV(aoa){
+  // A UTF-8 BOM so Excel reads Thai text correctly instead of showing mojibake.
+  return "\uFEFF" + aoa.map(row => row.map(csvEscape).join(",")).join("\r\n");
 }
 // Small RFC4180-ish parser: handles quoted fields, escaped quotes, and CRLF/LF.
 function parseCSV(text){
@@ -939,42 +966,62 @@ function parseCSV(text){
 
 window.exportTableCSV = async function(tableId){
   const st = TableState[tableId]; if (!st) return;
-  const ok = await saveFile(tableId + "-export.csv", toCSV(st.data, st.config.columns));
-  if (ok) showToast(`ส่งออก ${st.data.length} รายการเป็น CSV เรียบร้อยแล้ว`);
+  const aoa = tableToAOA(st.data, st.config.columns);
+  const gotLib = await getXLSXLib();
+  if (gotLib && typeof XLSX !== "undefined"){
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws["!cols"] = aoa[0].map((_, i) => ({ wch: Math.max(10, ...aoa.map(r => String(r[i] ?? "").length)) + 2 }));
+    XLSX.utils.book_append_sheet(wb, ws, tableId.slice(0, 31) || "Sheet1");
+    const bytes = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const ok = await saveFile(tableId + "-export.xlsx", bytes, XLSX_MIME);
+    if (ok) showToast(`ส่งออก ${st.data.length} รายการเป็นไฟล์ Excel (.xlsx) เรียบร้อยแล้ว`);
+    return;
+  }
+  // Couldn't load the spreadsheet library (e.g. offline) — fall back to CSV rather than fail outright.
+  const ok = await saveFile(tableId + "-export.csv", aoaToCSV(aoa), "text/csv;charset=utf-8");
+  if (ok) showToast(`ไม่สามารถโหลดตัวสร้างไฟล์ Excel ได้ จึงส่งออกเป็น CSV แทน (${st.data.length} รายการ)`);
 };
 window.importTableCSV = function(tableId){
   const st = TableState[tableId]; if (!st) return;
   const input = document.createElement("input");
-  input.type = "file"; input.accept = ".csv,text/csv";
-  input.onchange = () => {
+  input.type = "file"; input.accept = ".csv,text/csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  input.onchange = async () => {
     const file = input.files[0]; if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const rows = parseCSV(String(reader.result || ""));
-      if (rows.length < 2){ showToast("ไฟล์ CSV นี้ไม่มีข้อมูล"); return; }
-      const keys = st.config.columns.map(c => c.key).concat("status");
-      const defaultStatus = statusOptionsFor(tableId)[0];
-      let added = 0;
-      rows.slice(1).forEach((cells, idx) => {
-        if (!cells.some(c => c !== "")) return;
-        const row = { id: tableId + "-imp-" + Date.now() + "-" + idx };
-        keys.forEach((k, i) => { row[k] = cells[i] !== undefined ? cells[i] : ""; });
-        if (!row.status) row.status = defaultStatus;
-        st.data.unshift(row);
-        added++;
-      });
-      st.page = 1;
-      renderTable(tableId);
-      showToast(added ? `นำเข้าข้อมูล ${added} รายการเรียบร้อยแล้ว` : "ไม่พบแถวข้อมูลที่นำเข้าได้");
-    };
-    reader.readAsText(file, "utf-8");
+    const isExcel = /\.xlsx$/i.test(file.name);
+    let rows;
+    if (isExcel){
+      const gotLib = await getXLSXLib();
+      if (!gotLib || typeof XLSX === "undefined"){ showToast("ไม่สามารถโหลดตัวอ่านไฟล์ Excel ได้ ลองใช้ไฟล์ .csv แทน"); return; }
+      const buf = await file.arrayBuffer();
+      const wb = XLSX.read(buf, { type: "array" });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      rows = XLSX.utils.sheet_to_json(ws, { header: 1, raw: false, defval: "" }).map(r => r.map(v => String(v ?? "")));
+    } else {
+      rows = parseCSV(await file.text());
+    }
+    if (rows.length < 2){ showToast("ไฟล์นี้ไม่มีข้อมูล"); return; }
+    const keys = st.config.columns.map(c => c.key).concat("status");
+    const defaultStatus = statusOptionsFor(tableId)[0];
+    let added = 0;
+    rows.slice(1).forEach((cells, idx) => {
+      if (!cells.some(c => c !== "")) return;
+      const row = { id: tableId + "-imp-" + Date.now() + "-" + idx };
+      keys.forEach((k, i) => { row[k] = cells[i] !== undefined ? cells[i] : ""; });
+      if (!row.status) row.status = defaultStatus;
+      st.data.unshift(row);
+      added++;
+    });
+    st.page = 1;
+    renderTable(tableId);
+    showToast(added ? `นำเข้าข้อมูล ${added} รายการเรียบร้อยแล้ว` : "ไม่พบแถวข้อมูลที่นำเข้าได้");
   };
   input.click();
 };
 
 window.exportInspectionForm = async function(code){
   const data = paperInputs().map(el => el.type === "radio" ? (el.checked ? 1 : 0) : el.value);
-  const ok = await saveFile("inspection-" + code + ".json", JSON.stringify({ code, data }, null, 2));
+  const ok = await saveFile("inspection-" + code + ".json", JSON.stringify({ code, data }, null, 2), "application/json;charset=utf-8");
   if (ok) showToast("ส่งออกแบบตรวจสอบเป็นไฟล์เรียบร้อยแล้ว");
 };
 window.importInspectionForm = function(code){
@@ -1562,8 +1609,8 @@ function assetPage(cfg){
   <div class="page-head">
     <div><h1>${cfg.title}</h1><p>${cfg.sub}</p></div>
     <div class="head-actions">
-      <button class="btn admin-only" onclick="importTableCSV('${cfg.tableId}')">${ic('upload')} นำเข้า CSV</button>
-      <button class="btn" onclick="exportTableCSV('${cfg.tableId}')">${ic('download')} ส่งออก CSV</button>
+      <button class="btn admin-only" onclick="importTableCSV('${cfg.tableId}')">${ic('upload')} นำเข้าไฟล์</button>
+      <button class="btn" onclick="exportTableCSV('${cfg.tableId}')">${ic('download')} ส่งออก Excel</button>
       <button class="btn primary admin-only" onclick="openAddAssetModal('${cfg.tableId}')">${ic('plus')} ${cfg.addLabel}</button>
     </div>
   </div>
@@ -1671,8 +1718,8 @@ const pageWorkOrder = `
 <div class="page-head">
   <div><h1>ใบงาน (Work Order)</h1><p>รายการใบงานบำรุงรักษาทั้งหมด</p></div>
   <div class="head-actions">
-    <button class="btn admin-only" onclick="importTableCSV('workorder')">${ic('upload')} นำเข้า CSV</button>
-    <button class="btn" onclick="exportTableCSV('workorder')">${ic('download')} ส่งออก CSV</button>
+    <button class="btn admin-only" onclick="importTableCSV('workorder')">${ic('upload')} นำเข้าไฟล์</button>
+    <button class="btn" onclick="exportTableCSV('workorder')">${ic('download')} ส่งออก Excel</button>
     <button class="btn primary admin-only" onclick="openAddAssetModal('workorder')">${ic('plus')} สร้างใบงาน</button>
   </div>
 </div>
@@ -2417,8 +2464,8 @@ const pageGuide = `
       <li>ไอคอน 👁 <b>ดู</b> เปิดรายละเอียด และมีปุ่ม "ใบงานที่เกี่ยวข้อง" เชื่อมไปดูใบงานของอุปกรณ์ตัวนั้น</li>
       <li>ไอคอน ✏️ <b>แก้ไข</b> เปิดฟอร์มแก้ไขข้อมูลแถวนั้น</li>
       <li>ปุ่ม "+ เพิ่ม..." มุมขวาบน เพิ่มรายการใหม่เข้าตาราง</li>
-      <li>ปุ่ม <b>ส่งออก CSV</b> บันทึกข้อมูลทั้งหมดในตารางเป็นไฟล์ CSV เปิดใน Excel ได้ทันที</li>
-      <li>ปุ่ม <b>นำเข้า CSV</b> เลือกไฟล์ CSV (แถวแรกเป็นหัวตาราง) เพื่อเพิ่มหลายรายการเข้าตารางในครั้งเดียว</li>
+      <li>ปุ่ม <b>ส่งออก Excel</b> บันทึกข้อมูลทั้งหมดในตารางเป็นไฟล์ .xlsx เปิดด้วย Excel ได้ทันที (ถ้าไม่สามารถสร้างไฟล์ Excel ได้ ระบบจะส่งออกเป็น .csv แทนโดยอัตโนมัติ)</li>
+      <li>ปุ่ม <b>นำเข้าไฟล์</b> เลือกไฟล์ .xlsx หรือ .csv (แถวแรกเป็นหัวตาราง) เพื่อเพิ่มหลายรายการเข้าตารางในครั้งเดียว</li>
     </ul>
   </div>
 
@@ -2429,7 +2476,7 @@ const pageGuide = `
       <li>แถบชิปด้านบน (ทั้งหมด / รอดำเนินการ / กำลังดำเนินการ / เสร็จสิ้น / เกินกำหนด / ยกเลิก) กรองใบงานตามสถานะ</li>
       <li>กดชื่ออุปกรณ์ในตาราง (ตัวหนังสือสีน้ำเงิน) เพื่อกระโดดไปหน้าอุปกรณ์นั้นทันที</li>
       <li>"+ สร้างใบงาน" เพิ่มใบงานใหม่เข้าระบบ</li>
-      <li>ปุ่ม <b>ส่งออก CSV</b> / <b>นำเข้า CSV</b> ใช้บันทึกหรือเพิ่มใบงานเป็นชุดจากไฟล์ได้เช่นเดียวกับหน้าอุปกรณ์</li>
+      <li>ปุ่ม <b>ส่งออก Excel</b> / <b>นำเข้าไฟล์</b> ใช้บันทึกหรือเพิ่มใบงานเป็นชุดจากไฟล์ได้เช่นเดียวกับหน้าอุปกรณ์</li>
     </ul>
   </div>
 
