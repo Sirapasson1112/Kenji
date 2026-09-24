@@ -1163,12 +1163,31 @@ function fieldFormHtml(tableId, values){
   return `<div class="insp-header-grid">${fields}<div class="insp-field"><label>สถานะ</label><select id="tf-status" class="select-sm" style="width:100%;">${opts}</select></div></div>`;
 }
 
+// Which asset tables have a matching inspection-form template (index into INSPECTION_FORMS).
+const ASSET_INSPECTION_LINK = { transformer: 0, lbs: 1, substation: 4 };
 window.viewAssetRow = function(tableId, rowId){
   const st = TableState[tableId]; const row = st.data.find(r => r.id === rowId); if (!row) return;
   const rowsHtml = st.config.columns.map(c => `<div class="mini-stat-row"><span class="lbl">${c.label}</span><span class="val">${row[c.key]}</span></div>`).join("")
     + `<div class="mini-stat-row"><span class="lbl">สถานะ</span><span class="val">${statusBadge(row.status)}</span></div>`;
-  const relatedBtn = TableState["workorder"] ? `<button class="btn" onclick="showRelatedWorkOrders('${tableId}','${row.code}')">${ic('clipboard')} ใบงานที่เกี่ยวข้อง</button>` : "";
-  openModal(`รายละเอียด — ${row.code || row.id}`, `<div class="mini-stat-list">${rowsHtml}</div>`, `${relatedBtn}<button class="btn" onclick="closeModal()">ปิด</button>`);
+  let actionBtns = "";
+  if (tableId === "workorder"){
+    // A work-order row: offer to jump to the equipment it's about, and to fill in that
+    // equipment's inspection form if one exists.
+    if (row.assetTableId) actionBtns += `<button class="btn" onclick="goToEquipment('${row.assetTableId}','${row.assetCode}')">${ic('zap')} ดูอุปกรณ์</button>`;
+    const inspIdx = row.assetTableId != null ? ASSET_INSPECTION_LINK[row.assetTableId] : undefined;
+    if (inspIdx !== undefined) actionBtns += `<button class="btn" onclick="closeModal(); goTo('inspection'); requestAnimationFrame(()=>openInspectionForm(${inspIdx}))">${ic('checklist')} กรอกแบบตรวจสอบ</button>`;
+  } else {
+    // An asset row: offer related work orders, and the matching inspection form if one exists.
+    if (TableState["workorder"]) actionBtns += `<button class="btn" onclick="showRelatedWorkOrders('${tableId}','${row.code}')">${ic('clipboard')} ใบงานที่เกี่ยวข้อง</button>`;
+    const inspIdx = ASSET_INSPECTION_LINK[tableId];
+    if (inspIdx !== undefined) actionBtns += `<button class="btn" onclick="closeModal(); goTo('inspection'); requestAnimationFrame(()=>openInspectionForm(${inspIdx}))">${ic('checklist')} กรอกแบบตรวจสอบ</button>`;
+  }
+  openModal(`รายละเอียด — ${row.code || row.id}`, `<div class="mini-stat-list">${rowsHtml}</div>`, `${actionBtns}<button class="btn" onclick="closeModal()">ปิด</button>`);
+};
+// Jump from a dashboard KPI card straight to the matching filtered slice of Work Orders.
+window.goToWorkOrderStatus = function(status){
+  goTo("workorder");
+  setTableStatus("workorder", status);
 };
 // Cross-page navigation: jump to an asset's own table and pre-filter it to that one record.
 window.goToEquipment = function(tableId, code){
@@ -1412,8 +1431,11 @@ window.showFieldStopDetail = function(i){
     <div class="mini-stat-row"><span class="lbl">ระยะทางโดยประมาณ</span><span class="val">${s.distKm.toFixed(1)} กม.</span></div>
     <div class="mini-stat-row"><span class="lbl">สถานะ</span><span class="val">${statusBadge(s.wo.status)}</span></div>
   </div>`;
+  const inspIdx = s.wo.assetTableId != null ? ASSET_INSPECTION_LINK[s.wo.assetTableId] : undefined;
+  const inspBtn = inspIdx !== undefined ? `<button class="btn" onclick="closeModal(); goTo('inspection'); requestAnimationFrame(()=>openInspectionForm(${inspIdx}))">${ic('checklist')} กรอกแบบตรวจสอบ</button>` : "";
   openModal(`จุดตรวจ #${i+1} — ${s.wo.code}`, body,
     `<a class="btn" href="${gmapsUrl}" target="_blank" rel="noopener" style="text-decoration:none; display:inline-flex; align-items:center; gap:7px;">${ic('mapPin')} เปิดนำทางใน Google Maps</a>
+     ${inspBtn}
      <button class="btn primary" onclick="closeModal(); goToEquipment('${s.wo.assetTableId}','${s.wo.assetCode}')">ดูอุปกรณ์</button>`);
 };
 
@@ -1451,19 +1473,19 @@ const pageDashboard = `
 </div>
 
 <div class="grid kpis">
-  <div class="card kpi">
+  <div class="card kpi" style="cursor:pointer;" onclick="goToWorkOrderStatus('')" title="ดูใบงานทั้งหมด">
     <div class="kpi-icon blue">${ic('clipboard')}</div>
     <div class="kpi-body"><div class="kpi-label">PM ทั้งหมด</div><div class="kpi-value num">320</div><div class="kpi-sub up">▲ 12% จากเดือนก่อน</div></div>
   </div>
-  <div class="card kpi">
+  <div class="card kpi" style="cursor:pointer;" onclick="goToWorkOrderStatus('เสร็จสิ้น')" title="ดูใบงานที่เสร็จสิ้น">
     <div class="kpi-icon green">${ic('chart')}</div>
     <div class="kpi-body"><div class="kpi-label">ดำเนินการแล้ว</div><div class="kpi-value num">292</div><div class="kpi-sub pct">คิดเป็น 91%</div></div>
   </div>
-  <div class="card kpi">
+  <div class="card kpi" style="cursor:pointer;" onclick="goToWorkOrderStatus('รอดำเนินการ')" title="ดูใบงานที่รอดำเนินการ">
     <div class="kpi-icon amber">${ic('calendar')}</div>
     <div class="kpi-body"><div class="kpi-label">รอดำเนินการ</div><div class="kpi-value num">18</div><div class="kpi-sub pct">คิดเป็น 5.6%</div></div>
   </div>
-  <div class="card kpi">
+  <div class="card kpi" style="cursor:pointer;" onclick="goToWorkOrderStatus('เกินกำหนด')" title="ดูใบงานที่เกินกำหนด">
     <div class="kpi-icon red">${ic('zap')}</div>
     <div class="kpi-body"><div class="kpi-label">เกินกำหนด</div><div class="kpi-value num">10</div><div class="kpi-sub pct">คิดเป็น 3.1%</div></div>
   </div>
@@ -1600,19 +1622,50 @@ window.showPmListView = function(){
   const items = PM_EVENTS.map(e => `<div class="mini-stat-row" ${e.tableId?`style="cursor:pointer;" onclick="closeModal(); goTo('${e.tableId}')"`:""}><span class="dot" style="background:${e.c==="blue"?"var(--brand)":e.c==="amber"?"var(--amber)":e.c==="green"?"var(--green)":"#7c879c"}"></span><span class="lbl">${e.t}</span><span class="val" style="font-size:11.5px; color:var(--text-faint); font-weight:600;">${e.day} ก.ย. 69</span></div>`).join("");
   openModal("มุมมองรายการ — งาน PM เดือนกันยายน 2569", `<div class="mini-stat-list">${items}</div>`, `<button class="btn" onclick="closeModal()">ปิด</button>`);
 };
+const PM_TYPE_LABEL = { feeder:"Feeder", transformer:"Transformer", lbs:"LBS", substation:"Unit Substation" };
 window.openCreatePmModal = function(){
+  const typeOptions = [["feeder","สายป้อน (Feeder)"],["transformer","หม้อแปลงจำหน่าย"],["lbs","สวิตช์ตัดตอน (LBS)"],["substation","สถานีย่อย"]]
+    .map(([id,label]) => `<option value="${id}">${label}</option>`).join("");
   openModal("สร้างงาน PM ใหม่", `
     <div class="insp-header-grid">
-      <div class="insp-field"><label>อุปกรณ์</label><input type="text" id="pm-equip" placeholder="เช่น Feeder 115 kV"></div>
-      <div class="insp-field"><label>วันที่กำหนด</label><input type="text" id="pm-date" placeholder="วว/ดด/ปปปป"></div>
-      <div class="insp-field"><label>ผู้รับผิดชอบ</label><input type="text" id="pm-owner"></div>
+      <div class="insp-field"><label>ประเภทอุปกรณ์</label><select id="pm-type" class="select-sm" style="width:100%;" onchange="populatePmEquipOptions()">${typeOptions}</select></div>
+      <div class="insp-field"><label>อุปกรณ์</label><select id="pm-equip" class="select-sm" style="width:100%;"></select></div>
+      <div class="insp-field"><label>วันที่กำหนด</label><input type="text" id="pm-date" placeholder="เช่น 30 ก.ย. 69"></div>
+      <div class="insp-field"><label>ผู้รับผิดชอบ</label><input type="text" id="pm-owner" placeholder="ชื่อผู้รับผิดชอบ"></div>
     </div>`,
     `<button class="btn" onclick="closeModal()">ยกเลิก</button><button class="btn primary" onclick="submitCreatePm()">สร้างงาน</button>`);
+  populatePmEquipOptions();
+};
+window.populatePmEquipOptions = function(){
+  const typeEl = document.getElementById("pm-type");
+  const sel = document.getElementById("pm-equip");
+  if (!typeEl || !sel || !ASSET_DATA[typeEl.value]) return;
+  sel.innerHTML = ASSET_DATA[typeEl.value].slice(0, 200).map(a => {
+    const place = a.name || a.place || "";
+    return `<option value="${a.code}">${a.code}${place ? " — " + place : ""}</option>`;
+  }).join("");
 };
 window.submitCreatePm = function(){
-  const equip = (document.getElementById("pm-equip")||{}).value || "อุปกรณ์ใหม่";
+  const tableId = (document.getElementById("pm-type") || {}).value || "feeder";
+  const code = (document.getElementById("pm-equip") || {}).value || "";
+  const date = (document.getElementById("pm-date") || {}).value || "23 ก.ย. 69";
+  const owner = (document.getElementById("pm-owner") || {}).value || "ยังไม่ระบุ";
+  const asset = (ASSET_DATA[tableId] || []).find(a => a.code === code);
+  if (!asset){ showToast("กรุณาเลือกอุปกรณ์ที่จะสร้างงาน PM"); return; }
+  const st = TableState["workorder"];
+  const newCode = "PM-" + String(9000 + Math.floor(Math.random() * 999));
+  const entry = {
+    id: "wo-new-" + Date.now(),
+    code: newCode,
+    equip: `${PM_TYPE_LABEL[tableId] || tableId} ${code}`,
+    assetTableId: tableId, assetCode: code,
+    date, owner, status: "รอดำเนินการ",
+  };
+  if (st){ st.data.unshift(entry); st.page = 1; renderTable("workorder"); }
+  renderDashboardWidgets();
+  buildFieldStops(); renderFieldMap();
   closeModal();
-  showToast(`สร้างงาน PM สำหรับ "${equip}" เรียบร้อยแล้ว`);
+  showToast(`สร้างงาน PM ${newCode} สำหรับ ${entry.equip} เรียบร้อยแล้ว — ดูได้ที่หน้าใบงาน`);
 };
 
 /* ===================== PAGE: ASSET LISTS ===================== */
@@ -1783,6 +1836,7 @@ const pageCost = `
   <div class="head-actions">
     <select class="select-sm" onchange="showToast('กำลังโหลดข้อมูล '+this.value)"><option>ปี 2569</option><option>ปี 2568</option></select>
     <select class="select-sm" onchange="showToast('เปลี่ยนมุมมองเป็น '+this.value)"><option>ทั้งปี</option><option>รายเดือน</option></select>
+    <button class="btn" onclick="goTo('reports'); requestAnimationFrame(()=>openReportModal(4))">${ic('chart')} ดูรายงานงบประมาณฉบับเต็ม</button>
   </div>
 </div>
 <div class="grid cost-kpis" style="margin-bottom:16px;">
@@ -1824,7 +1878,7 @@ const REPORTS = [
       const overdue = data.filter(r=>r.status==="เกินกำหนด").length;
       const pct = n => (n/total*100).toFixed(1);
       return `<div class="mini-stat-list"><div class="mini-stat-row"><span class="lbl">ใบงานทั้งหมด</span><span class="val">${total}</span></div><div class="mini-stat-row"><span class="lbl">ดำเนินการแล้ว</span><span class="val">${done} (${pct(done)}%)</span></div><div class="mini-stat-row"><span class="lbl">รอดำเนินการ</span><span class="val">${pending} (${pct(pending)}%)</span></div><div class="mini-stat-row"><span class="lbl">เกินกำหนด</span><span class="val">${overdue} (${pct(overdue)}%)</span></div></div>`;
-    } },
+    }, linkPage:"workorder", linkLabel:"ดูรายการใบงานทั้งหมด" },
   { t:"รายงานความเชื่อถือได้ของอุปกรณ์ (Reliability)", d:"MTBF, MTTR, SAIDI, SAIFI",
     body:`<div class="mini-stat-list"><div class="mini-stat-row"><span class="lbl">MTBF</span><span class="val">128 ชั่วโมง</span></div><div class="mini-stat-row"><span class="lbl">MTTR</span><span class="val">2.4 ชั่วโมง</span></div><div class="mini-stat-row"><span class="lbl">SAIDI</span><span class="val">12.6 นาที/ปี</span></div><div class="mini-stat-row"><span class="lbl">SAIFI</span><span class="val">0.85 ครั้ง/ปี</span></div></div>` },
   { t:"รายงานประวัติการบำรุงรักษา", d:"ประวัติงานบำรุงรักษารายอุปกรณ์ — นับจากจำนวนอุปกรณ์จริงในระบบ",
@@ -1836,7 +1890,8 @@ const REPORTS = [
   { t:"รายงานเหตุขัดข้อง", d:"สรุปเหตุขัดข้องแยกตามพื้นที่",
     body:`<div class="mini-stat-list"><div class="mini-stat-row"><span class="lbl">เหตุขัดข้องทั้งหมด (เดือนนี้)</span><span class="val">7 ครั้ง</span></div><div class="mini-stat-row"><span class="lbl">พื้นที่ที่เกิดบ่อยที่สุด</span><span class="val">บางเสาธง</span></div></div>` },
   { t:"รายงานการเบิกจ่ายงบประมาณ", d:"ใช้จ่ายเทียบงบประมาณรายปี",
-    body:`<div class="mini-stat-list"><div class="mini-stat-row"><span class="lbl">งบประมาณ</span><span class="val">฿1,250,000</span></div><div class="mini-stat-row"><span class="lbl">ใช้ไปแล้ว</span><span class="val">฿2,680,000</span></div><div class="mini-stat-row"><span class="lbl">ส่วนต่าง</span><span class="val" style="color:var(--red-ink);">เกินงบ ฿1,430,000</span></div></div>` },
+    body:`<div class="mini-stat-list"><div class="mini-stat-row"><span class="lbl">งบประมาณ</span><span class="val">฿1,250,000</span></div><div class="mini-stat-row"><span class="lbl">ใช้ไปแล้ว</span><span class="val">฿2,680,000</span></div><div class="mini-stat-row"><span class="lbl">ส่วนต่าง</span><span class="val" style="color:var(--red-ink);">เกินงบ ฿1,430,000</span></div></div>`,
+    linkPage:"cost", linkLabel:"ดูหน้าต้นทุนบำรุงรักษา" },
 ];
 function reportCardHtml(r, i){
   return `<div class="card rep-card">
@@ -1847,7 +1902,8 @@ function reportCardHtml(r, i){
 }
 window.openReportModal = function(idx){
   const r = REPORTS[idx]; if (!r) return;
-  openModal(r.t, r.bodyFn ? r.bodyFn() : r.body, `<button class="btn" onclick="closeModal()">ปิด</button>`);
+  const linkBtn = r.linkPage ? `<button class="btn" onclick="closeModal(); goTo('${r.linkPage}')">${r.linkLabel || "ไปที่หน้าที่เกี่ยวข้อง"}</button>` : "";
+  openModal(r.t, r.bodyFn ? r.bodyFn() : r.body, `${linkBtn}<button class="btn" onclick="closeModal()">ปิด</button>`);
 };
 window.switchReportTab = function(tab){
   document.querySelectorAll(".rep-tab").forEach((el,i) => el.classList.toggle("active", (i===0 && tab==="std") || (i===1 && tab==="custom")));
@@ -2624,6 +2680,12 @@ const pageGuide = `
   <div class="guide-section" id="guide-link">
     <h3><span class="ic">${ic('branch')}</span>การเชื่อมโยงข้อมูลข้ามหน้า</h3>
     <p>ทุกหน้าอ้างอิงข้อมูลชุดเดียวกัน ลองไล่ตามนี้ได้: หน้าแรก → กดแจ้งเตือน → พาไปหน้าอุปกรณ์ → กด "ใบงานที่เกี่ยวข้อง" → ไปหน้าใบงาน → กดชื่ออุปกรณ์ในตารางใบงาน → ย้อนกลับมาหน้าอุปกรณ์เดิม ทุกจุดเชื่อมถึงกันด้วยรหัสอุปกรณ์จริงชุดเดียวกันทั้งระบบ</p>
+    <ul class="guide-list">
+      <li>การ์ด KPI บนหน้าแรก ("รอดำเนินการ", "เกินกำหนด" ฯลฯ) กดแล้วพาไปหน้าใบงานพร้อมกรองสถานะนั้นให้ทันที</li>
+      <li>ปุ่ม "+ สร้างงาน PM" (หน้าแรก/วางแผน PM) ให้เลือกอุปกรณ์จริงจากระบบ เมื่อสร้างแล้วใบงานใหม่จะไปปรากฏที่หน้าใบงาน, หน้าแรก, และแผนที่นำทางภาคสนามทันที ไม่ใช่แค่ข้อความแจ้งเตือนอีกต่อไป</li>
+      <li>หน้าอุปกรณ์ (หม้อแปลง/LBS/สถานีย่อย) และหน้าใบงาน กด "ดู" จะมีปุ่ม "กรอกแบบตรวจสอบ" พาไปเปิดแบบฟอร์มตรวจสอบของอุปกรณ์ประเภทนั้นโดยตรง เช่นเดียวกับหน้านำทางตรวจภาคสนาม</li>
+      <li>ต้นทุนบำรุงรักษา ↔ รายงาน เชื่อมถึงกันสองทาง กดดูรายงานงบประมาณฉบับเต็มจากหน้าต้นทุนได้ และย้อนกลับมาหน้าต้นทุนจากในรายงานได้เช่นกัน</li>
+    </ul>
   </div>
 
   <div class="guide-section" id="guide-settings">
