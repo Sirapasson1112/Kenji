@@ -655,6 +655,8 @@ const ICONS = {
   droplet: `<path d="M12 2s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z"/>`,
   help: `<circle cx="12" cy="12" r="9.5"/><path d="M9.3 9.2a2.7 2.7 0 0 1 5.2.9c0 1.8-2.5 2.2-2.5 3.7"/><path d="M12 17.3h.01"/>`,
   mapPin: `<path d="M12 22s7-7.58 7-13a7 7 0 0 0-14 0c0 5.42 7 13 7 13z"/><circle cx="12" cy="9" r="2.6"/>`,
+  trash: `<path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/>`,
+  history: `<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/><path d="M3.5 9a9 9 0 0 1 1.5-3"/>`,
 };
 function ic(name, extra=""){ return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" ${extra}>${ICONS[name]}</svg>`; }
 
@@ -2017,30 +2019,39 @@ function paperFooter(f){
 function paperInputs(){
   return Array.from(document.querySelectorAll(".paper-wrap input, .paper-wrap textarea"));
 }
+/* ---- Inspection history: an append-only log of every save, so the person can see
+   every inspection they've logged, not just the last one for each form. ---- */
+function loadInspHistory(){
+  try { return JSON.parse(localStorage.getItem("insp-history") || "[]"); } catch(e){ return []; }
+}
+function saveInspHistory(list){
+  try { localStorage.setItem("insp-history", JSON.stringify(list.slice(0, 300))); } catch(e){}
+}
 window.saveInspectionForm = function(code){
   const inputs = paperInputs();
   const data = inputs.map(el => el.type === "radio" ? (el.checked ? 1 : 0) : el.value);
+  const f = INSPECTION_FORMS.find(x => x.code === code);
+  const headerVals = {};
+  if (f && f.header) f.header.forEach((label, i) => { if (inputs[i] && inputs[i].value) headerVals[label] = inputs[i].value; });
+  const summary = Object.values(headerVals).slice(0, 2).join(" · ") || "(ไม่ได้ระบุข้อมูลอุปกรณ์)";
   try {
-    localStorage.setItem("insp-"+code, JSON.stringify({ data, savedAt: new Date().toISOString() }));
-    showToast(`บันทึกแบบตรวจสอบ ${code} ไว้ในเบราว์เซอร์นี้แล้ว — กด "ส่งออก Excel" ถ้าต้องการเก็บถาวรหรือส่งต่อ`);
+    const entry = { id: "h" + Date.now(), code, title: f ? f.title : code, data, headerVals, summary, savedAt: new Date().toISOString() };
+    const history = loadInspHistory();
+    history.unshift(entry);
+    saveInspHistory(history);
+    showToast(`บันทึกลงประวัติการตรวจสอบแล้ว (${summary})`);
     const banner = document.getElementById("insp-saved-banner");
     if (banner) banner.remove();
   } catch(e){
     showToast("ไม่สามารถบันทึกได้ในเบราว์เซอร์นี้");
   }
 };
-function getSavedInspection(code){
-  let raw;
-  try { raw = localStorage.getItem("insp-"+code); } catch(e){ return null; }
-  if (!raw) return null;
-  try {
-    const parsed = JSON.parse(raw);
-    // support the old format (plain array) saved before we started recording a timestamp
-    return Array.isArray(parsed) ? { data: parsed, savedAt: null } : parsed;
-  } catch(e){ return null; }
+function getLatestInspection(code){
+  const entry = loadInspHistory().find(h => h.code === code);
+  return entry || null;
 }
 function loadInspectionForm(code){
-  const saved = getSavedInspection(code);
+  const saved = getLatestInspection(code);
   if (!saved) return;
   const inputs = paperInputs();
   saved.data.forEach((v, i) => {
@@ -2049,16 +2060,91 @@ function loadInspectionForm(code){
     if (el.type === "radio") el.checked = !!v;
     else el.value = v;
   });
-  const wrap = document.querySelector(".paper-wrap");
-  if (wrap && saved.savedAt){
-    const when = new Date(saved.savedAt).toLocaleString("th-TH", { dateStyle:"medium", timeStyle:"short" });
-    const banner = document.createElement("div");
-    banner.id = "insp-saved-banner";
-    banner.style.cssText = "margin:0 0 14px; padding:10px 14px; border-radius:10px; background:var(--brand-soft); color:var(--brand-ink); font-size:12.5px; font-weight:600;";
-    banner.textContent = `พบข้อมูลที่บันทึกไว้ในเบราว์เซอร์นี้เมื่อ ${when} — โหลดคำตอบเดิมให้แล้ว`;
-    wrap.insertBefore(banner, wrap.firstChild);
-  }
+  showSavedBanner(saved.savedAt, "พบข้อมูลที่บันทึกไว้ล่าสุดเมื่อ");
 }
+function showSavedBanner(savedAt, prefix){
+  const wrap = document.querySelector(".paper-wrap");
+  if (!wrap || !savedAt) return;
+  const when = new Date(savedAt).toLocaleString("th-TH", { dateStyle:"medium", timeStyle:"short" });
+  const banner = document.createElement("div");
+  banner.id = "insp-saved-banner";
+  banner.style.cssText = "margin:0 0 14px; padding:10px 14px; border-radius:10px; background:var(--brand-soft); color:var(--brand-ink); font-size:12.5px; font-weight:600;";
+  banner.textContent = `${prefix} ${when} — โหลดคำตอบชุดนี้ให้แล้ว`;
+  wrap.insertBefore(banner, wrap.firstChild);
+}
+
+window.showInspectionHistory = function(){
+  const root = document.getElementById("inspectionRoot");
+  if (!root) return;
+  const history = loadInspHistory();
+  const rows = history.map((h, i) => `
+    <tr>
+      <td style="white-space:nowrap;">${new Date(h.savedAt).toLocaleString("th-TH", { dateStyle:"medium", timeStyle:"short" })}</td>
+      <td><span class="cell-link" onclick="viewInspectionHistoryEntry(${i})">${h.code}</span><div style="font-size:11px; color:var(--text-faint); margin-top:2px;">${h.title}</div></td>
+      <td>${h.summary || "-"}</td>
+      <td><button class="row-icon-btn" title="ลบรายการนี้" onclick="deleteInspectionHistoryEntry(${i})">${ic('trash')}</button></td>
+    </tr>`).join("");
+  root.innerHTML = `
+    <div class="back-link" onclick="renderInspectionList()">${ic('arrowLeft')} กลับไปยังรายการแบบฟอร์ม</div>
+    <div class="card">
+      <div class="panel-head" style="padding:18px 20px 0;">
+        <h3>ประวัติการตรวจสอบ (${history.length})</h3>
+        ${history.length ? `<span class="link-more" onclick="exportInspectionHistory()">ส่งออก Excel</span>` : ""}
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>วันที่บันทึก</th><th>แบบฟอร์ม</th><th>ข้อมูลอุปกรณ์</th><th>จัดการ</th></tr></thead>
+          <tbody>${rows || `<tr><td colspan="4" style="text-align:center; color:var(--text-faint); padding:26px;">ยังไม่มีประวัติการตรวจสอบ — กรอกแบบฟอร์มแล้วกด "บันทึกแบบตรวจสอบ" เพื่อเริ่มเก็บประวัติ</td></tr>`}</tbody>
+        </table>
+      </div>
+    </div>`;
+};
+window.viewInspectionHistoryEntry = function(i){
+  const history = loadInspHistory();
+  const h = history[i]; if (!h) return;
+  const idx = INSPECTION_FORMS.findIndex(f => f.code === h.code);
+  if (idx < 0){ showToast("ไม่พบแบบฟอร์มต้นฉบับของรายการนี้"); return; }
+  openInspectionForm(idx, "form");
+  requestAnimationFrame(() => {
+    const inputs = paperInputs();
+    h.data.forEach((v, j) => {
+      if (j >= inputs.length) return;
+      if (inputs[j].type === "radio") inputs[j].checked = !!v;
+      else inputs[j].value = v;
+    });
+    document.getElementById("insp-saved-banner")?.remove();
+    showSavedBanner(h.savedAt, "กำลังดูประวัติการตรวจสอบที่บันทึกไว้เมื่อ");
+  });
+};
+window.deleteInspectionHistoryEntry = function(i){
+  const history = loadInspHistory();
+  history.splice(i, 1);
+  saveInspHistory(history);
+  showInspectionHistory();
+  showToast("ลบรายการประวัติแล้ว");
+};
+window.exportInspectionHistory = async function(){
+  const history = loadInspHistory();
+  if (!history.length){ showToast("ยังไม่มีประวัติให้ส่งออก"); return; }
+  const aoa = [["วันที่บันทึก", "รหัสแบบฟอร์ม", "ชื่อแบบฟอร์ม", "ข้อมูลอุปกรณ์"]];
+  history.forEach(h => aoa.push([
+    new Date(h.savedAt).toLocaleString("th-TH", { dateStyle:"medium", timeStyle:"short" }),
+    h.code, h.title, h.summary || "",
+  ]));
+  const gotLib = await getXLSXLib();
+  if (gotLib && typeof XLSX !== "undefined"){
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws["!cols"] = aoa[0].map((_, i) => ({ wch: Math.max(14, ...aoa.map(r => String(r[i] ?? "").length)) + 2 }));
+    XLSX.utils.book_append_sheet(wb, ws, "History");
+    const bytes = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const ok = await saveFile("inspection-history.xlsx", bytes, XLSX_MIME);
+    if (ok) showToast(`ส่งออกประวัติ ${history.length} รายการเป็นไฟล์ Excel แล้ว`);
+    return;
+  }
+  const ok = await saveFile("inspection-history.csv", aoaToCSV(aoa), "text/csv;charset=utf-8");
+  if (ok) showToast("ไม่สามารถโหลดตัวสร้างไฟล์ Excel ได้ จึงส่งออกเป็น CSV แทน");
+};
 
 function renderChecklistForm(f){
   if (f.pages === 2) return renderTwoPageChecklistForm(f);
@@ -2333,11 +2419,18 @@ const INSPECTION_ASSET_LINK = { 0:"transformer", 1:"lbs", 4:"substation" };
 function renderInspectionList(){
   const root = document.getElementById("inspectionRoot");
   if (!root) return;
-  root.innerHTML = `<div class="insp-grid">` + INSPECTION_FORMS.map((f,i) => {
+  const history = loadInspHistory();
+  const countByCode = {};
+  history.forEach(h => { countByCode[h.code] = (countByCode[h.code] || 0) + 1; });
+  const historyBar = `<div class="card" style="margin-bottom:14px; padding:14px 18px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+    <div style="flex:1; min-width:200px; font-size:12.8px; color:var(--text-soft);">มีประวัติการตรวจสอบที่บันทึกไว้ทั้งหมด <b style="color:var(--text);">${history.length}</b> รายการ</div>
+    <button class="btn primary" onclick="showInspectionHistory()">${ic('history')} ดูประวัติการตรวจสอบ</button>
+  </div>`;
+  const cards = `<div class="insp-grid">` + INSPECTION_FORMS.map((f,i) => {
     const linkTableId = INSPECTION_ASSET_LINK[i];
     const assetLink = linkTableId ? `<div class="link-inline" style="font-size:11px; margin-top:6px;" onclick="event.stopPropagation(); goTo('${linkTableId}')">ดูอุปกรณ์ในระบบ →</div>` : "";
-    const saved = getSavedInspection(f.code);
-    const savedBadge = saved ? `<div style="font-size:10.5px; color:var(--green-ink); font-weight:700; margin-top:6px;">✓ มีข้อมูลที่บันทึกไว้แล้ว</div>` : "";
+    const n = countByCode[f.code] || 0;
+    const savedBadge = n ? `<div style="font-size:10.5px; color:var(--green-ink); font-weight:700; margin-top:6px;">✓ บันทึกไปแล้ว ${n} ครั้ง</div>` : "";
     return `
     <div class="card insp-card" onclick="openInspectionForm(${i})">
       <div class="ic">${ic(f.icon || "checklist")}</div>
@@ -2348,6 +2441,7 @@ function renderInspectionList(){
       ${savedBadge}
     </div>`;
   }).join("") + `</div>`;
+  root.innerHTML = historyBar + cards;
 }
 window.openInspectionForm = function(idx, tab){
   tab = tab || "form";
@@ -2506,7 +2600,8 @@ const pageGuide = `
     <p>รวมแบบตรวจสอบ (SF-07) และคู่มือการปฏิบัติงาน (SW-OH) ของอุปกรณ์ 11 ประเภท</p>
     <ul class="guide-list">
       <li>กดการ์ดแบบฟอร์มเพื่อเปิด แล้วสลับแท็บ <b>แบบตรวจสอบ (SF-07)</b> ↔ <b>คู่มือการปฏิบัติงาน (SW-OH)</b> ได้</li>
-      <li>กรอกข้อมูลแล้วกด <b>บันทึกแบบตรวจสอบ</b> ระบบจะจำค่าที่กรอกไว้ในเบราว์เซอร์นี้ เปิดใหม่ครั้งหน้าจะขึ้นค่าเดิมให้</li>
+      <li>กรอกข้อมูลแล้วกด <b>บันทึกแบบตรวจสอบ</b> ทุกครั้งจะถูกเก็บเป็นรายการใหม่ใน <b>ประวัติการตรวจสอบ</b> (ไม่ทับของเดิม) เปิดฟอร์มเดิมใหม่จะดึงค่าที่บันทึกล่าสุดมาให้อัตโนมัติ</li>
+      <li>กดปุ่ม <b>ดูประวัติการตรวจสอบ</b> ที่ด้านบนของหน้ารายการแบบฟอร์ม เพื่อดูว่าเคยตรวจอะไรไปแล้วบ้าง วันที่ไหน กดดูรายละเอียดแต่ละครั้งได้ หรือลบทิ้ง หรือส่งออกทั้งหมดเป็น Excel</li>
       <li>ปุ่ม <b>พิมพ์แบบฟอร์ม / พิมพ์คู่มือ</b> จัดหน้าให้พร้อมพิมพ์ทันที (ซ่อนเมนูและปุ่มต่างๆ อัตโนมัติ)</li>
       <li>การ์ดของหม้อแปลง / LBS / สถานีย่อย มีลิงก์ "ดูอุปกรณ์ในระบบ" เชื่อมไปหน้าตารางอุปกรณ์จริง</li>
       <li>ปุ่ม <b>ส่งออก Excel</b> บันทึกคำตอบที่กรอกไว้เป็นไฟล์ .xlsx จัดวางตามหน้าตากระดาษจริง เปิดดูหรือส่งต่อได้ทันที</li>
