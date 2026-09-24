@@ -1019,34 +1019,45 @@ window.importTableCSV = function(tableId){
   input.click();
 };
 
-window.exportInspectionForm = async function(code){
-  const data = paperInputs().map(el => el.type === "radio" ? (el.checked ? 1 : 0) : el.value);
-  const ok = await saveFile("inspection-" + code + ".json", JSON.stringify({ code, data }, null, 2), "application/json;charset=utf-8");
-  if (ok) showToast("ส่งออกแบบตรวจสอบเป็นไฟล์เรียบร้อยแล้ว");
-};
-window.importInspectionForm = function(code){
-  const input = document.createElement("input");
-  input.type = "file"; input.accept = ".json,application/json";
-  input.onchange = () => {
-    const file = input.files[0]; if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      let parsed;
-      try { parsed = JSON.parse(String(reader.result || "")); }
-      catch(e){ showToast("ไฟล์นี้ไม่ใช่ไฟล์แบบตรวจสอบที่ถูกต้อง"); return; }
-      const data = Array.isArray(parsed) ? parsed : parsed.data;
-      if (!Array.isArray(data)){ showToast("ไฟล์นี้ไม่ใช่ไฟล์แบบตรวจสอบที่ถูกต้อง"); return; }
-      const inputs = paperInputs();
-      inputs.forEach((el, i) => {
-        if (i >= data.length) return;
-        if (el.type === "radio") el.checked = !!data[i];
-        else el.value = data[i];
+// Walks the paper form's actual <table> rows and reads each cell as a person would read
+// it on paper: a filled-in input's value, a ✓ for a checked box/radio, or the printed
+// label text — so the export looks exactly like the form, not a raw data dump.
+function paperTableToAOA(container){
+  const aoa = [];
+  container.querySelectorAll("table.paper-table").forEach(table => {
+    table.querySelectorAll("tr").forEach(tr => {
+      const cells = Array.from(tr.children).map(cell => {
+        const input = cell.querySelector("input, textarea");
+        if (input){
+          if (input.type === "checkbox" || input.type === "radio") return input.checked ? "✓" : "";
+          return input.value || "";
+        }
+        return cell.textContent.trim();
       });
-      showToast("นำเข้าข้อมูลแบบตรวจสอบเรียบร้อยแล้ว");
-    };
-    reader.readAsText(file, "utf-8");
-  };
-  input.click();
+      if (cells.some(c => c !== "")) aoa.push(cells);
+    });
+    aoa.push([]); // blank row between the header table, the checklist table, and the footer
+  });
+  return aoa;
+}
+window.exportInspectionForm = async function(code){
+  const wrap = document.querySelector(".paper-wrap");
+  if (!wrap){ showToast("ไม่พบแบบฟอร์มที่เปิดอยู่"); return; }
+  const aoa = paperTableToAOA(wrap);
+  const gotLib = await getXLSXLib();
+  if (gotLib && typeof XLSX !== "undefined"){
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    const maxCols = Math.max(1, ...aoa.map(r => r.length));
+    ws["!cols"] = Array.from({ length: maxCols }, (_, i) => ({ wch: Math.max(12, ...aoa.map(r => String(r[i] ?? "").length)) + 2 }));
+    XLSX.utils.book_append_sheet(wb, ws, code.replace(/[^A-Za-z0-9-]/g, "").slice(0, 31) || "Sheet1");
+    const bytes = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const ok = await saveFile("inspection-" + code + ".xlsx", bytes, XLSX_MIME);
+    if (ok) showToast("ส่งออกแบบตรวจสอบเป็นไฟล์ Excel (.xlsx) เรียบร้อยแล้ว");
+    return;
+  }
+  const ok = await saveFile("inspection-" + code + ".csv", aoaToCSV(aoa), "text/csv;charset=utf-8");
+  if (ok) showToast("ไม่สามารถโหลดตัวสร้างไฟล์ Excel ได้ จึงส่งออกเป็น CSV แทน");
 };
 
 /* ===================== helpers ===================== */
@@ -1995,8 +2006,7 @@ function paperFooter(f){
     <div class="paper-doc-footer"><span>ปรับปรุงครั้งที่ 0 วันที่...</span><span>${f.code}</span></div>
     <div class="insp-actions" style="border:none; padding:14px 0 0;">
       <button class="btn" onclick="window.print()">${ic('download')} พิมพ์แบบฟอร์ม</button>
-      <button class="btn" onclick="importInspectionForm('${f.code}')">${ic('upload')} นำเข้าไฟล์</button>
-      <button class="btn" onclick="exportInspectionForm('${f.code}')">${ic('download')} ส่งออกไฟล์</button>
+      <button class="btn" onclick="exportInspectionForm('${f.code}')">${ic('download')} ส่งออก Excel</button>
       <button class="btn primary" onclick="saveInspectionForm('${f.code}')">${ic('plus')} บันทึกแบบตรวจสอบ</button>
     </div>
   `;
@@ -2012,7 +2022,7 @@ window.saveInspectionForm = function(code){
   const data = inputs.map(el => el.type === "radio" ? (el.checked ? 1 : 0) : el.value);
   try {
     localStorage.setItem("insp-"+code, JSON.stringify({ data, savedAt: new Date().toISOString() }));
-    showToast(`บันทึกแบบตรวจสอบ ${code} ไว้ในเบราว์เซอร์นี้แล้ว — กด "ส่งออกไฟล์" ถ้าต้องการเก็บถาวรหรือส่งต่อ`);
+    showToast(`บันทึกแบบตรวจสอบ ${code} ไว้ในเบราว์เซอร์นี้แล้ว — กด "ส่งออก Excel" ถ้าต้องการเก็บถาวรหรือส่งต่อ`);
     const banner = document.getElementById("insp-saved-banner");
     if (banner) banner.remove();
   } catch(e){
@@ -2499,7 +2509,7 @@ const pageGuide = `
       <li>กรอกข้อมูลแล้วกด <b>บันทึกแบบตรวจสอบ</b> ระบบจะจำค่าที่กรอกไว้ในเบราว์เซอร์นี้ เปิดใหม่ครั้งหน้าจะขึ้นค่าเดิมให้</li>
       <li>ปุ่ม <b>พิมพ์แบบฟอร์ม / พิมพ์คู่มือ</b> จัดหน้าให้พร้อมพิมพ์ทันที (ซ่อนเมนูและปุ่มต่างๆ อัตโนมัติ)</li>
       <li>การ์ดของหม้อแปลง / LBS / สถานีย่อย มีลิงก์ "ดูอุปกรณ์ในระบบ" เชื่อมไปหน้าตารางอุปกรณ์จริง</li>
-      <li>ปุ่ม <b>ส่งออกไฟล์</b> บันทึกคำตอบที่กรอกไว้เป็นไฟล์ (เผื่อสำรองหรือส่งต่อ) และ <b>นำเข้าไฟล์</b> โหลดไฟล์ที่เคยส่งออกไว้กลับเข้ามากรอกในฟอร์มอีกครั้ง</li>
+      <li>ปุ่ม <b>ส่งออก Excel</b> บันทึกคำตอบที่กรอกไว้เป็นไฟล์ .xlsx จัดวางตามหน้าตากระดาษจริง เปิดดูหรือส่งต่อได้ทันที</li>
     </ul>
   </div>
 
