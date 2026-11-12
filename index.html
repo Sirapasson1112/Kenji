@@ -965,7 +965,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-12-inprg-v139";
+const BUILD_TAG = "2026-11-12-overdue-v140";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -1778,6 +1778,7 @@ window.importTableCSV = function(tableId){
     DATE_MDY = false;
     st.page = 1; st.status = ""; st.search = "";
     { const sb = document.querySelector("#" + tableId + "-table-wrap")?.closest(".card")?.querySelector(".search-sm input"); if (sb) sb.value = ""; }
+    if (added && tableId === "workorder"){ try { autoFlagOverdue(); } catch(e){ console.error(e); } }
     renderTable(tableId);
     if (added && tableId === "workorder"){
       const ids = new Set(st.data.filter(r => !idsBefore.has(r.id)).map(r => r.id)), cnt = {};
@@ -3468,7 +3469,7 @@ window.moveWoToDay = function(id, y, m, d){
 })();
 window.activateWo = function(id){
   const st = TableState["workorder"]; const row = st && st.data.find(r => r.id === id); if (!row) return;
-  row.status = "กำลังดำเนินการ"; row.activatedAt = Date.now(); delete row.statusRaw; delete row.autoOverdue; delete row.origStatus;
+  row.status = "กำลังดำเนินการ"; row.activatedAt = Date.now(); row.manualStatus = true; delete row.statusRaw; delete row.autoOverdue; delete row.origStatus;
   closeModal(); renderTable("workorder"); persistTable("workorder"); refreshLinkedViews(); queueSync();
   showToast(`เริ่มงาน ${row.code} แล้ว — ขึ้นสีแดงในปฏิทิน`);
 };
@@ -7099,7 +7100,7 @@ function autoFlagOverdue(){
   const d = new Date(), today = ((d.getFullYear() + 543) * 12 + d.getMonth()) * 40 + d.getDate();
   let n = 0;
   TableState["workorder"].data.forEach(r => {
-    if (/-imp-/.test(String(r.id || ""))){ if (r.autoOverdue && r.origStatus){ r.status = r.origStatus; delete r.autoOverdue; delete r.origStatus; n++; } return; } // imported: trust the file's Status
+    // v140: imported rows are checked too — a file row still open (pending / in progress) whose due date has passed shows as overdue; closed / cancelled rows keep the file's Status.
     if ((r.status !== "รอดำเนินการ" && r.status !== "กำลังดำเนินการ") || r.manualStatus) return;
     const due = woDueDay(r);
     if (due != null && due < today){ r.origStatus = r.status; r.status = "เกินกำหนด"; r.autoOverdue = true; n++; }
