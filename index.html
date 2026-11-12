@@ -406,6 +406,7 @@
   .cal-ev.late { background: #e5483f; box-shadow: none; }
   .cal-ev.late.done { background: #16a34a; }
   .cal-ev.done { background: #16a34a; opacity: .9; }
+  .cal-ev.canc, .cal-ev.canc.gray, .cal-ev.canc.blue, .cal-ev.canc.amber, .cal-ev.canc.purple { background: #d9dce2; color: #5f6675; text-decoration: line-through; text-decoration-thickness: 1.5px; box-shadow: none; opacity: 1; }
   .cal-ev[draggable="true"] { cursor: grab; }
   .cal-cell.drop-hover { background: var(--brand-soft); outline: 2px dashed var(--brand); outline-offset: -2px; }
   .cal-ev[data-wid] { touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
@@ -1558,7 +1559,7 @@ window.runTopSearch = function(query){
   const typeName = { feeder:"สายป้อน", transformer:"หม้อแปลง", lbs:"LBS", substation:"สถานีย่อย" };
   const groups = [];
   const wos = TableState["workorder"] ? TableState["workorder"].data : [];
-  const woHits = wos.filter(r => has(r.code, r.equip, r.owner, r.status, r.place)).map(r => `<div class="mini-stat-row search-hit" onclick="goToEquipment('workorder','${r.code}')"><span class="lbl"><b>${r.code}</b> · ${r.equip} · ${r.date}</span><span class="val">${statusBadge(r.status)}</span></div>`);
+  const woHits = wos.filter(r => has(r.code, r.equip, r.owner, r.status, r.place)).map(r => `<div class="mini-stat-row search-hit" onclick="goToEquipment('workorder','${r.code}')"><span class="lbl"${r.status === "ยกเลิก" ? ' style="text-decoration:line-through; color:var(--text-faint);"' : ""}><b>${r.code}</b> · ${r.equip} · ${r.date}</span><span class="val">${statusBadge(r.status)}</span></div>`);
   if (woHits.length) groups.push(["ใบงาน", woHits]);
   const flHits = FAILURE_LOG.filter(f => has(f.equip, f.assetCode, f.cause, f.reporter, f.note)).map(f => `<div class="mini-stat-row search-hit" onclick="closeModal(); viewFailure('${f.id}')"><span class="lbl"><b>${f.equip}</b> · ${f.cause}</span><span class="val" style="font-size:11.5px; color:var(--text-faint);">${f.dateLabel} · ${f.hours.toFixed(1)} ชม.</span></div>`);
   if (flHits.length) groups.push(["ความขัดข้อง", flHits]);
@@ -3340,6 +3341,7 @@ const pagePmPlanning = `
       <div class="item"><span class="dot" style="background:#8b5cf6"></span>อุปกรณ์อื่น (SZ / RMU / Capacitor / Network)</div>
       <div class="item"><span class="dot" style="background:#e5483f;"></span>เกินกำหนด</div>
       <div class="item"><span class="dot" style="background:#16a34a;"></span>เสร็จสิ้นแล้ว</div>
+      <div class="item"><span class="dot" style="background:#d9dce2; box-shadow: inset 0 0 0 1px #aab0bb;"></span><s>ยกเลิก</s> (ไม่ต้องทำต่อ)</div>
     </div>
   </div>
   <div class="side-stack">
@@ -3380,7 +3382,7 @@ function woInMonth(year, month){
 function calChip(r){
   if (r.__plan) return pmPlanChip(r);
   const cls = calTypeClass(r);
-  const extra = r.status === "เกินกำหนด" ? " late" : r.status === "เสร็จสิ้น" ? " done" : r.status === "กำลังดำเนินการ" ? " active" : "";
+  const extra = r.status === "เกินกำหนด" ? " late" : r.status === "เสร็จสิ้น" ? " done" : r.status === "กำลังดำเนินการ" ? " active" : r.status === "ยกเลิก" ? " canc" : "";
   return `<div class="cal-ev ${cls}${extra}" data-wid="${r.id}" title="${r.code} · ${r.equip} · ${r.status}" onclick="viewAssetRow('workorder','${r.id}')">${r.inspectionId ? "✓ " : ""}${r.assetCode || r.code}</div>`;
 }
 // Move a work order to a day of the calendar (used by drag and drop).
@@ -3471,10 +3473,10 @@ function renderCalendarView(){
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const startWeekday = new Date(year, month, 1).getDay(); // 0 = Sunday
   const byDay = {};
-  woInMonth(year, month).filter(r => r.status !== "ยกเลิก").forEach(r => { const d = parseWoDate(r).day; (byDay[d] = byDay[d] || []).push(r); });
+  woInMonth(year, month).forEach(r => { const d = parseWoDate(r).day; (byDay[d] = byDay[d] || []).push(r); });
   const planByDay = {}; pmPlanOccurrences(year, month).forEach(o => { (planByDay[o.day] = planByDay[o.day] || []).push(o); });
   // Open work first so the chips that need attention are the ones shown.
-  const rank = r => r.status === "เกินกำหนด" ? 0 : r.status === "เสร็จสิ้น" ? 2 : 1;
+  const rank = r => r.status === "เกินกำหนด" ? 0 : r.status === "เสร็จสิ้น" ? 2 : r.status === "ยกเลิก" ? 3 : 1;
   const now = new Date();
   const SHOW = 3;
   let html = "";
@@ -3543,7 +3545,7 @@ window.shiftCalMonth = function(delta){
 };
 function pmListHtml(list){
   return list.length
-    ? `<div class="mini-stat-list">${list.map(r => `<div class="mini-stat-row search-hit" onclick="viewAssetRow('workorder','${r.id}')"><span class="dot" style="background:${{ blue:"var(--brand)", amber:"var(--amber)", green:"var(--green)", gray:"#7c879c", purple:"#8b5cf6" }[calTypeClass(r)]}"></span><span class="lbl"><b>${r.code}</b> · ${r.equip} · ${r.date}</span><span class="val">${statusBadge(r.status)}${r.status !== "ยกเลิก" && (r.inspectionId || r.status !== "เสร็จสิ้น") ? `<button class="row-icon-btn" title="${r.inspectionId ? "ดูใบตรวจที่บันทึก" : "ตรวจและปิดใบงาน"}" style="color:var(--green-ink); margin-left:6px;" onclick="event.stopPropagation(); woInspectAction('${r.id}')">${ic('checklist')}</button>` : ""}</span></div>`).join("")}</div>`
+    ? `<div class="mini-stat-list">${list.map(r => `<div class="mini-stat-row search-hit" onclick="viewAssetRow('workorder','${r.id}')"><span class="dot" style="background:${{ blue:"var(--brand)", amber:"var(--amber)", green:"var(--green)", gray:"#7c879c", purple:"#8b5cf6" }[calTypeClass(r)]}"></span><span class="lbl"${r.status === "ยกเลิก" ? ' style="text-decoration:line-through; color:var(--text-faint);"' : ""}><b>${r.code}</b> · ${r.equip} · ${r.date}</span><span class="val">${statusBadge(r.status)}${r.status !== "ยกเลิก" && (r.inspectionId || r.status !== "เสร็จสิ้น") ? `<button class="row-icon-btn" title="${r.inspectionId ? "ดูใบตรวจที่บันทึก" : "ตรวจและปิดใบงาน"}" style="color:var(--green-ink); margin-left:6px;" onclick="event.stopPropagation(); woInspectAction('${r.id}')">${ic('checklist')}</button>` : ""}</span></div>`).join("")}</div>`
     : `<div class="hist-empty">ไม่มีงาน</div>`;
 }
 window.woInspectAction = function(id){
