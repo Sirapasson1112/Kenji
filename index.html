@@ -402,7 +402,8 @@
   .cal-ev.purple { background: #8b5cf6; }
   .cal-ev.plan { background: transparent; color: var(--brand-ink); box-shadow: inset 0 0 0 1.5px var(--brand); border-style: dashed; }
   .cal-ev.plan.late { box-shadow: inset 0 0 0 1.5px var(--red); color: var(--red-ink); }
-  .cal-ev.active { background: #e5483f; }
+  .cal-ev.wait { background: #f59e0b; color: #3b2a00; }
+  .cal-ev.active { background: #2563eb; }
   .cal-ev.late { background: #e5483f; box-shadow: none; }
   .cal-ev.late.done { background: #16a34a; }
   .cal-ev.done { background: #16a34a; opacity: .9; }
@@ -964,7 +965,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-12-activebtn-v137";
+const BUILD_TAG = "2026-11-12-calstatus-v138";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -3357,13 +3358,10 @@ const pagePmPlanning = `
       <div id="calDaysGrid" style="display:contents;"></div>
     </div>
     <div class="cal-legend">
-      <div class="item"><span class="dot" style="background:var(--brand)"></span>Feeder</div>
-      <div class="item"><span class="dot" style="background:var(--amber)"></span>Transformer</div>
-      <div class="item"><span class="dot" style="background:var(--green)"></span>LBS</div>
-      <div class="item"><span class="dot" style="background:#7c879c"></span>Unit Substation</div>
-      <div class="item"><span class="dot" style="background:#8b5cf6"></span>อุปกรณ์อื่น (SZ / RMU / Capacitor / Network)</div>
+      <div class="item"><span class="dot" style="background:#f59e0b"></span>รอดำเนินการ</div>
+      <div class="item"><span class="dot" style="background:#2563eb"></span>กำลังดำเนินการ</div>
       <div class="item"><span class="dot" style="background:#e5483f;"></span>เกินกำหนด</div>
-      <div class="item"><span class="dot" style="background:#16a34a;"></span>เสร็จสิ้นแล้ว</div>
+      <div class="item"><span class="dot" style="background:#16a34a;"></span>เสร็จสิ้น</div>
       <div class="item"><span class="dot" style="background:#d9dce2; box-shadow: inset 0 0 0 1px #aab0bb;"></span><s>ยกเลิก</s> (ไม่ต้องทำต่อ)</div>
     </div>
   </div>
@@ -3404,7 +3402,7 @@ function woInMonth(year, month){
 }
 function calChip(r){
   if (r.__plan) return pmPlanChip(r);
-  const cls = calTypeClass(r);
+  const cls = (r.status === "รอดำเนินการ" || !r.status) ? "wait" : "";
   const extra = r.status === "เกินกำหนด" ? " late" : r.status === "เสร็จสิ้น" ? " done" : r.status === "กำลังดำเนินการ" ? " active" : r.status === "ยกเลิก" ? " canc" : "";
   return `<div class="cal-ev ${cls}${extra}" data-wid="${r.id}" title="${r.code} · ${r.equip} · ${r.status}" onclick="viewAssetRow('workorder','${r.id}')">${r.inspectionId ? "✓ " : ""}${r.assetCode || r.code}</div>`;
 }
@@ -3568,7 +3566,7 @@ window.shiftCalMonth = function(delta){
 };
 function pmListHtml(list){
   return list.length
-    ? `<div class="mini-stat-list">${list.map(r => `<div class="mini-stat-row search-hit" onclick="viewAssetRow('workorder','${r.id}')"><span class="dot" style="background:${{ blue:"var(--brand)", amber:"var(--amber)", green:"var(--green)", gray:"#7c879c", purple:"#8b5cf6" }[calTypeClass(r)]}"></span><span class="lbl"${r.status === "ยกเลิก" ? ' style="text-decoration:line-through; color:var(--text-faint);"' : ""}><b>${r.code}</b> · ${r.equip} · ${r.date}</span><span class="val">${statusBadge(r.status)}${r.status !== "ยกเลิก" && (r.inspectionId || r.status !== "เสร็จสิ้น") ? `<button class="row-icon-btn" title="${r.inspectionId ? "ดูใบตรวจที่บันทึก" : "ตรวจและปิดใบงาน"}" style="color:var(--green-ink); margin-left:6px;" onclick="event.stopPropagation(); woInspectAction('${r.id}')">${ic('checklist')}</button>` : ""}</span></div>`).join("")}</div>`
+    ? `<div class="mini-stat-list">${list.map(r => `<div class="mini-stat-row search-hit" onclick="viewAssetRow('workorder','${r.id}')"><span class="dot" style="background:${({ "รอดำเนินการ":"#f59e0b", "กำลังดำเนินการ":"#2563eb", "เกินกำหนด":"#e5483f", "เสร็จสิ้น":"#16a34a", "ยกเลิก":"#b6bcc8" }[r.status] || "#f59e0b")}"></span><span class="lbl"${r.status === "ยกเลิก" ? ' style="text-decoration:line-through; color:var(--text-faint);"' : ""}><b>${r.code}</b> · ${r.equip} · ${r.date}</span><span class="val">${statusBadge(r.status)}${r.status !== "ยกเลิก" && (r.inspectionId || r.status !== "เสร็จสิ้น") ? `<button class="row-icon-btn" title="${r.inspectionId ? "ดูใบตรวจที่บันทึก" : "ตรวจและปิดใบงาน"}" style="color:var(--green-ink); margin-left:6px;" onclick="event.stopPropagation(); woInspectAction('${r.id}')">${ic('checklist')}</button>` : ""}</span></div>`).join("")}</div>`
     : `<div class="hist-empty">ไม่มีงาน</div>`;
 }
 window.woInspectAction = function(id){
