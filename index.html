@@ -964,7 +964,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-12-inspdash-v136";
+const BUILD_TAG = "2026-11-12-activebtn-v137";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -2147,7 +2147,7 @@ window.viewAssetRow = function(tableId, rowId){
     }
     if (row.assetTableId && row.assetCode) actionBtns += `<button class="btn" onclick="showAssetHistory('${row.assetTableId}','${row.assetCode}')">${ic('history')} ประวัติอุปกรณ์</button>`;
     if (FIELD_STOPS.some(s => s.wo.id === row.id)) actionBtns += `<button class="btn" onclick="showWoOnMap('${row.id}')">${ic('mapPin')} นำทาง</button>`;
-    if (row.status === "รอดำเนินการ" || row.status === "เกินกำหนด") actionBtns += `<button class="btn primary" onclick="activateWo('${row.id}')">▶ เริ่มงาน (Active)</button>`;
+    if (row.status === "รอดำเนินการ" || row.status === "เกินกำหนด" || (row.status === "กำลังดำเนินการ" && !row.activatedAt)) actionBtns += `<button class="btn primary" onclick="activateWo('${row.id}')">▶ เริ่มงาน (Active)</button>`;
     actionBtns += `<button class="btn" onclick="showWoInCalendar('${row.id}')">${ic('calendar')} ดูในปฏิทิน</button>`;
   } else {
     // An asset row: offer related work orders, and the matching inspection form if one exists.
@@ -3470,7 +3470,7 @@ window.moveWoToDay = function(id, y, m, d){
 })();
 window.activateWo = function(id){
   const st = TableState["workorder"]; const row = st && st.data.find(r => r.id === id); if (!row) return;
-  row.status = "กำลังดำเนินการ"; delete row.statusRaw; delete row.autoOverdue; delete row.origStatus;
+  row.status = "กำลังดำเนินการ"; row.activatedAt = Date.now(); delete row.statusRaw; delete row.autoOverdue; delete row.origStatus;
   closeModal(); renderTable("workorder"); persistTable("workorder"); refreshLinkedViews(); queueSync();
   showToast(`เริ่มงาน ${row.code} แล้ว — ขึ้นสีแดงในปฏิทิน`);
 };
