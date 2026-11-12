@@ -2124,7 +2124,7 @@ window.viewAssetRow = function(tableId, rowId){
     }
     if (row.assetTableId && row.assetCode) actionBtns += `<button class="btn" onclick="showAssetHistory('${row.assetTableId}','${row.assetCode}')">${ic('history')} ประวัติอุปกรณ์</button>`;
     if (FIELD_STOPS.some(s => s.wo.id === row.id)) actionBtns += `<button class="btn" onclick="showWoOnMap('${row.id}')">${ic('mapPin')} นำทาง</button>`;
-    if (row.status === "รอดำเนินการ" || row.status === "เกินกำหนด") actionBtns += `<button class="btn primary" onclick="activateWo('${row.id}')">▶ เริ่มงาน (แอ็กทีฟ)</button>`;
+    if (row.status === "รอดำเนินการ" || row.status === "เกินกำหนด") actionBtns += `<button class="btn primary" onclick="activateWo('${row.id}')">▶ เริ่มงาน (Active)</button>`;
     actionBtns += `<button class="btn" onclick="showWoInCalendar('${row.id}')">${ic('calendar')} ดูในปฏิทิน</button>`;
   } else {
     // An asset row: offer related work orders, and the matching inspection form if one exists.
