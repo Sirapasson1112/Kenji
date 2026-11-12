@@ -964,7 +964,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-10-realtime-v135";
+const BUILD_TAG = "2026-11-12-inspdash-v136";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -4965,6 +4965,7 @@ function renderInspDash(){
   const history = loadInspHistory();
   root.innerHTML = inspDashHtml(history);
   drawInspDash(history);
+  try { drawInspRate(history); } catch(e){}
 }
 function inspDashHtml(history){
   if (!INSP_DB) INSP_DB = { year:String(KPI_PERIOD.yearBE), month:String(KPI_PERIOD.monthIdx) };
@@ -4994,7 +4995,17 @@ function inspDashHtml(history){
   const ring = `<svg width="116" height="116" viewBox="0 0 100 100" role="img" aria-label="สัดส่วนที่พบความผิดปกติ ${pct.toFixed(0)}%"><circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="11"/>
     ${list.length ? `<circle cx="50" cy="50" r="38" fill="none" stroke="#5eead4" stroke-width="11" stroke-dasharray="${arcOk.toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 50 50)"/><circle cx="50" cy="50" r="38" fill="none" stroke="#ff8a80" stroke-width="11" stroke-dasharray="${arcBad.toFixed(1)} ${C.toFixed(1)}" stroke-dashoffset="${(-arcOk).toFixed(1)}" transform="rotate(-90 50 50)"/>` : ""}
     <text x="50" y="49" text-anchor="middle" font-size="19" font-weight="800" fill="#fff" font-family="Inter, sans-serif">${pct.toFixed(0)}%</text><text x="50" y="64" text-anchor="middle" font-size="8.5" fill="rgba(255,255,255,0.8)">ผิดปกติ</text></svg>`;
-  const stat = (dotC, lbl, v, sub, ref, drill) => `<div class="idb-stat idb-link" title="กดเพื่อดูรายการในประวัติการตรวจสอบ" onclick="inspDrill(${drill || "{}"})"><div class="l"><i style="background:${dotC};"></i>${lbl}</div><div class="v num">${v}</div>${sub ? `<div class="s">${sub}</div>` : ""}${ref ? refNote(ref) : ""}</div>`;
+  const mon = fn => Array.from({ length:12 }, (_, m) => fn(inYear.filter(h => new Date(h.savedAt).getMonth() === m)));
+  const spark = (vals, col) => {
+    const W = 64, H = 26, mx = Math.max(1, ...vals), selM = D.month === "" ? -1 : +D.month;
+    const pts = vals.map((v, i) => [2 + i * (W - 4) / 11, H - 3 - v / mx * (H - 8)]);
+    const line = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join("");
+    const area = line + `L${pts[11][0].toFixed(1)} ${H}L${pts[0][0].toFixed(1)} ${H}Z`;
+    const gid = "sg" + col.replace("#", "");
+    return `<svg class="idb-spark" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".55"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#${gid})"/><path d="${line}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>${selM >= 0 ? `<circle cx="${pts[selM][0].toFixed(1)}" cy="${pts[selM][1].toFixed(1)}" r="2.8" fill="#fff" stroke="${col}" stroke-width="1.6"/>` : ""}</svg>`;
+  };
+  const S_TOT = mon(L => L.length), S_BAD = mon(L => L.filter(h => (h.findings || []).length).length), S_FND = mon(L => L.reduce((a, h) => a + (h.findings || []).length, 0)), S_WO = mon(L => L.filter(h => h.woCode).length);
+  const stat = (dotC, lbl, v, sub, ref, drill, sp) => `<div class="idb-stat idb-link" title="กดเพื่อดูรายการในประวัติการตรวจสอบ" onclick="inspDrill(${drill || "{}"})">${sp || ""}<div class="l"><i style="background:${dotC};"></i>${lbl}</div><div class="v num">${v}</div>${sub ? `<div class="s">${sub}</div>` : ""}${ref ? refNote(ref) : ""}</div>`;
   const src = "ประวัติการตรวจสอบที่บันทึกจากแบบตรวจสอบ SF-07 ในช่วงที่เลือก";
   const dot = c => `<span style="display:inline-block; width:9px; height:9px; border-radius:3px; background:${c}; margin-right:5px;"></span>`;
   const OKG = "linear-gradient(90deg,#2f6fa8,#4ea1e0)", BADG = "linear-gradient(90deg,#f59e0b,#ef4444)";
@@ -5040,6 +5051,37 @@ function inspDashHtml(history){
     .idb-row .track { height:9px; border-radius:6px; background:var(--gray-soft); margin-top:4px; overflow:hidden; display:flex; }
     .idb-row .track > div { border-radius:6px; }
     .idb-rank { display:inline-flex; width:22px; height:22px; border-radius:7px; align-items:center; justify-content:center; background:linear-gradient(135deg,#f59e0b,#ef4444); color:#fff; font-size:11px; font-weight:800; margin-right:8px; flex:none; }
+
+    .idb-hero { position:relative; overflow:hidden; box-shadow:0 18px 40px -20px rgba(30,54,82,.8); animation:idbUp .5s ease both; }
+    .idb-hero::before { content:""; position:absolute; right:-70px; top:-90px; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(125,211,252,.35),transparent 68%); pointer-events:none; }
+    .idb-hero::after { content:""; position:absolute; left:30%; bottom:-120px; width:340px; height:240px; border-radius:50%; background:radial-gradient(circle,rgba(94,234,212,.20),transparent 70%); pointer-events:none; }
+    .idb-hero > * { position:relative; z-index:1; }
+    .idb-head .t { font-size:21px; letter-spacing:-.2px; }
+    .idb-stat { position:relative; backdrop-filter:blur(4px); transition:transform .18s, background .18s, box-shadow .18s; animation:idbUp .55s ease both; }
+    .idb-stat:nth-child(2) { animation-delay:.06s; } .idb-stat:nth-child(3) { animation-delay:.12s; } .idb-stat:nth-child(4) { animation-delay:.18s; }
+    .idb-stat.idb-link:hover { transform:translateY(-3px); box-shadow:0 14px 24px -14px rgba(0,0,0,.55); }
+    .idb-stat .v { font-size:27px; }
+    .idb-spark { position:absolute; right:10px; top:10px; opacity:.95; }
+    .idb-hero svg[role="img"] { filter:drop-shadow(0 6px 12px rgba(0,0,0,.35)); }
+    .idb-card { border-radius:16px; box-shadow:0 12px 30px -22px rgba(20,40,70,.55); transition:transform .18s, box-shadow .18s; animation:idbUp .55s ease both; }
+    .idb-card:hover { transform:translateY(-2px); box-shadow:0 18px 36px -22px rgba(20,40,70,.6); }
+    .idb-grid .idb-col:nth-child(2) .idb-card { animation-delay:.1s; }
+    .idb-card h3 { font-size:15px; display:flex; align-items:center; gap:8px; }
+    .idb-card h3::before { content:""; width:8px; height:18px; border-radius:4px; background:var(--cc,#3c668e); display:inline-block; }
+    .idb-card .idb-row:nth-child(3) .idb-rank { background:linear-gradient(135deg,#fbbf24,#f59e0b); box-shadow:0 4px 10px -3px rgba(245,158,11,.7); }
+    .idb-card .idb-row:nth-child(4) .idb-rank { background:linear-gradient(135deg,#cbd5e1,#94a3b8); }
+    .idb-card .idb-row:nth-child(5) .idb-rank { background:linear-gradient(135deg,#f0a36b,#c2733a); }
+    #chartInspMonth svg path[fill^="url"] { transform-box:fill-box; transform-origin:50% 100%; animation:idbGrow .7s cubic-bezier(.2,.8,.2,1) both; }
+    .idb-frm .chip { align-self:center; height:auto; min-height:0; padding:2px 9px; }
+    .idb-empty { text-align:center; padding:34px 10px 30px; color:var(--text-soft); }
+    .idb-empty .ico { width:68px; height:68px; margin:0 auto 12px; border-radius:50%; background:linear-gradient(135deg,#e6f0fa,#d3e4f5); display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px -14px rgba(60,102,142,.7); }
+    .idb-empty b { display:block; font-size:15px; color:var(--text); margin-bottom:3px; }
+    .idb-rate-wrap { position:relative; }
+    @keyframes idbUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+    @keyframes idbGrow { from { transform:scaleY(.02); opacity:.2; } to { transform:scaleY(1); opacity:1; } }
+    @keyframes idbDash { from { stroke-dashoffset:var(--len); } to { stroke-dashoffset:0; } }
+    @media (prefers-reduced-motion: reduce) { .idb-hero, .idb-stat, .idb-card, #chartInspMonth svg path[fill^="url"] { animation:none !important; } }
+    @media (max-width:520px) { .idb-spark { display:none; } }
     @media (max-width:1100px) { .idb-grid { grid-template-columns:minmax(0,1fr); } .idb-stats { grid-template-columns:repeat(2, 1fr); } }
     @media (max-width:520px) { .idb-hero { padding:16px 14px 14px; } .idb-card { padding:14px 14px 16px; } .idb-body { justify-content:center; } }
   </style>
@@ -5055,18 +5097,19 @@ function inspDashHtml(history){
     <div class="idb-body">
       ${ring}
       <div class="idb-stats">
-        ${stat("#7dd3fc", "ตรวจทั้งหมด", list.length.toLocaleString() + " ครั้ง", "", src, "{}")}
-        ${stat("#ff8a80", "พบความผิดปกติ", bad.length.toLocaleString() + " ครั้ง", list.length ? `${pct.toFixed(1)}% ของการตรวจ` : "", "นับการตรวจที่มีข้อบกพร่องอย่างน้อย 1 จุด ÷ การตรวจทั้งหมด × 100", "{bad:'1'}")}
-        ${stat("#fcd34d", "จุดผิดปกติรวม", nFind.toLocaleString() + " จุด", bad.length ? `เฉลี่ย ${(nFind / bad.length).toFixed(1)} จุด/ครั้ง` : "", "ผลรวมข้อบกพร่องที่ติ๊กไว้ในแบบตรวจสอบ", "{bad:'1'}")}
-        ${stat("#5eead4", "ตรวจตามใบงาน", withWo.toLocaleString() + " ครั้ง", list.length ? `${(withWo / list.length * 100).toFixed(0)}% · ที่เหลือตรวจอิสระ` : "", "การตรวจที่บันทึกจากใบงาน PM ซึ่งปิดใบงานให้อัตโนมัติ", "{wo:'1'}")}
+        ${stat("#7dd3fc", "ตรวจทั้งหมด", list.length.toLocaleString() + " ครั้ง", "", src, "{}", spark(S_TOT, "#7dd3fc"))}
+        ${stat("#ff8a80", "พบความผิดปกติ", bad.length.toLocaleString() + " ครั้ง", list.length ? `${pct.toFixed(1)}% ของการตรวจ` : "", "นับการตรวจที่มีข้อบกพร่องอย่างน้อย 1 จุด ÷ การตรวจทั้งหมด × 100", "{bad:'1'}", spark(S_BAD, "#ff8a80"))}
+        ${stat("#fcd34d", "จุดผิดปกติรวม", nFind.toLocaleString() + " จุด", bad.length ? `เฉลี่ย ${(nFind / bad.length).toFixed(1)} จุด/ครั้ง` : "", "ผลรวมข้อบกพร่องที่ติ๊กไว้ในแบบตรวจสอบ", "{bad:'1'}", spark(S_FND, "#fcd34d"))}
+        ${stat("#5eead4", "ตรวจตามใบงาน", withWo.toLocaleString() + " ครั้ง", list.length ? `${(withWo / list.length * 100).toFixed(0)}% · ที่เหลือตรวจอิสระ` : "", "การตรวจที่บันทึกจากใบงาน PM ซึ่งปิดใบงานให้อัตโนมัติ", "{wo:'1'}", spark(S_WO, "#5eead4"))}
       </div>
     </div>
     ${worst ? `<div class="idb-insight"><b>ควรให้ความสนใจ:</b> ${esc(worst.f.equip)} พบความผิดปกติ ${worst.b} จาก ${worst.n} ครั้ง (${(worst.b / worst.n * 100).toFixed(0)}%) ใน${period}</div>` : ""}
   </div>
-  ${empty ? `<div class="card idb-card"><div class="hist-empty" style="padding:18px 6px;">ยังไม่มีการตรวจสอบใน${period}</div></div>` : `
+  ${empty ? `<div class="card idb-card" style="--cc:#4ea1e0;"><div class="idb-empty"><div class="ico"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3c668e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4.5h6M9 11l2 2 4-4M9 17h6"/></svg></div><b>ยังไม่มีการตรวจสอบใน${period}</b>เมื่อบันทึกใบตรวจ SF-07 ข้อมูลจะมาแสดงที่นี่ทันที<div style="margin-top:12px;"><button class="btn primary" onclick="goTo('inspection')">ไปบันทึกใบตรวจ</button></div></div></div>` : `
   <div class="idb-grid">
     <div class="idb-col">
       <div class="card idb-card" style="--cc:#4ea1e0;"><h3>จำนวนการตรวจรายเดือน · ปี ${D.year}</h3><div class="hint">ตัวเลขบนแท่ง = จำนวนครั้งที่ตรวจ · แตะที่เดือนเพื่อเลือกและดูรายละเอียด</div><div class="bar-wrap" id="chartInspMonth" style="height:auto; padding:4px 0 0;"></div></div>
+      <div class="card idb-card" style="--cc:#ef5350;"><h3>อัตราผิดปกติรายเดือน</h3><div class="hint">% ของการตรวจในเดือนนั้นที่พบข้อบกพร่อง · เส้นประ = ค่าเฉลี่ยทั้งปี</div><div class="idb-rate-wrap" id="chartInspRate"></div></div>
       <div class="card idb-card" style="--cc:#f59e0b;"><h3>ข้อบกพร่องที่พบบ่อย</h3><div class="hint">5 อันดับแรกใน${period}</div>
         ${top.length ? top.map(([t, n], i) => `<div class="idb-row idb-link" title="กดเพื่อดูรายการที่พบข้อบกพร่องนี้" onclick="inspDrill({bad:'1', find:decodeURIComponent('${encodeURIComponent(t)}')})"><div class="top"><span class="nm" title="${esc(t)}"><span class="idb-rank">${i + 1}</span>${esc(t)}</span><span class="num" style="white-space:nowrap; color:var(--red-ink); font-weight:700;">${n} ครั้ง</span></div>
           <div class="track"><div style="width:${(n / maxT * 100).toFixed(1)}%; background:${BADG};"></div></div></div>`).join("") : `<div class="hist-empty" style="padding:10px 0;">ไม่พบข้อบกพร่องในช่วงนี้</div>`}
@@ -5087,6 +5130,39 @@ function inspDashHtml(history){
       </div>
     </div>
   </div>`}`;
+}
+function drawInspRate(history){
+  const el = document.getElementById("chartInspRate"); if (!el) return;
+  const D = INSP_DB, tot = [], ab = [];
+  for (let m = 0; m < 12; m++){
+    const L = history.filter(h => { const d = new Date(h.savedAt); return String(d.getFullYear() + 543) === D.year && d.getMonth() === m; });
+    tot.push(L.length); ab.push(L.filter(h => (h.findings || []).length).length);
+  }
+  const pct = tot.map((t, i) => t ? ab[i] / t * 100 : null);
+  const T = tot.reduce((a, b) => a + b, 0), avg = T ? ab.reduce((a, b) => a + b, 0) / T * 100 : 0;
+  const w = el.clientWidth || 560, h = 190, padL = 34, padR = 16, padT = 18, padB = 26, cw = w - padL - padR, ch = h - padT - padB, gap = cw / 12;
+  const mx = Math.max(20, Math.ceil(Math.max(...pct.map(v => v || 0), avg) * 1.25 / 20) * 20);
+  const X = i => padL + (i + 0.5) * gap, Y = v => padT + ch - v / mx * ch, base = padT + ch;
+  const idx = pct.map((v, i) => v == null ? -1 : i).filter(i => i >= 0);
+  if (!idx.length){ el.innerHTML = ""; return; }
+  const P = idx.map(i => ({ i, x:X(i), y:Y(pct[i]) }));
+  let d = `M${P[0].x.toFixed(1)} ${P[0].y.toFixed(1)}`;
+  for (let k = 0; k < P.length - 1; k++){
+    const p0 = P[k - 1] || P[k], p1 = P[k], p2 = P[k + 1], p3 = P[k + 2] || p2;
+    const c1y = Math.min(base, Math.max(padT, p1.y + (p2.y - p0.y) / 6)), c2y = Math.min(base, Math.max(padT, p2.y - (p3.y - p1.y) / 6));
+    d += `C${(p1.x + (p2.x - p0.x) / 6).toFixed(1)} ${c1y.toFixed(1)} ${(p2.x - (p3.x - p1.x) / 6).toFixed(1)} ${c2y.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+  }
+  const area = `${d}L${P[P.length - 1].x.toFixed(1)} ${base}L${P[0].x.toFixed(1)} ${base}Z`;
+  let grid = "";
+  for (let i = 0; i <= 2; i++){ const y = padT + ch - ch * i / 2; grid += `<line x1="${padL}" x2="${w - padR}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" stroke-dasharray="${i ? "3 5" : "0"}" style="stroke:var(--card-line);"/><text x="${padL - 8}" y="${(y + 3.5).toFixed(1)}" text-anchor="end" font-size="10.5" style="fill:var(--text-faint);">${Math.round(mx * i / 2)}%</text>`; }
+  const sel = D.month === "" ? -1 : +D.month;
+  const dots = P.map(p => `<g><title>${RP_MONTHS[p.i]} · ${pct[p.i].toFixed(1)}% (${ab[p.i]} จาก ${tot[p.i]} ครั้ง)</title><circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${sel === p.i ? 6 : 4}" fill="#fff" stroke="#ef5350" stroke-width="2.4"/><text x="${p.x.toFixed(1)}" y="${(p.y - 10).toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="700" style="fill:var(--text-soft);">${pct[p.i].toFixed(0)}%</text></g>`).join("");
+  const xl = THAI_MONTHS_SHORT_KPI.map((m, i) => (gap < 30 && i % 2 && sel !== i) ? "" : `<text x="${X(i).toFixed(1)}" y="${h - 7}" text-anchor="middle" font-size="10.5" font-weight="${sel === i ? 800 : 500}" style="fill:${sel === i ? "var(--text)" : "var(--text-faint)"};">${m}</text>`).join("");
+  const ay = Y(avg).toFixed(1);
+  try { const hn = el.previousElementSibling; if (hn) hn.textContent = `% ของการตรวจในเดือนนั้นที่พบข้อบกพร่อง · เส้นประ = ค่าเฉลี่ยทั้งปี (${avg.toFixed(1)}%)`; } catch(e){}
+  el.innerHTML = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block;" role="img" aria-label="อัตราผิดปกติรายเดือน"><defs><linearGradient id="irA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ef5350" stop-opacity=".32"/><stop offset="1" stop-color="#ef5350" stop-opacity="0"/></linearGradient></defs>${grid}
+    <path d="${area}" fill="url(#irA)"/><path d="${d}" fill="none" stroke="#ef5350" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" pathLength="1" style="--len:1; stroke-dasharray:1; animation:idbDash 1s ease both;"/>
+    <line x1="${padL}" x2="${w - padR}" y1="${ay}" y2="${ay}" stroke="#7c879c" stroke-dasharray="5 4" stroke-width="1.3"/><text x="${w - padR}" y="${(+ay - 5).toFixed(1)}" text-anchor="end" font-size="1" style="fill:transparent;"></text>${dots}${xl}</svg>`;
 }
 function drawInspDash(history){
   const el = document.getElementById("chartInspMonth"); if (!el) return;
