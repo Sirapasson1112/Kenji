@@ -1015,7 +1015,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-13-fieldpts-v151";
+const BUILD_TAG = "2026-11-13-route-v152";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -2384,7 +2384,7 @@ function renderFlowStrip(){
   const steps = [
     { ic:"calendar", k:"1 · ปฏิทินงาน PM", n:planned, u:"งาน", l:`งานเดือน ${period}`, go:"goTo('pmplanning')" },
     { ic:"clipboard", k:"2 · ใบงานค้าง", n:open.length, u:"ใบ", l:late ? `เกินกำหนด ${late} ใบ` : "ไม่มีงานเกินกำหนด", go:"goTo('workorder')", cls: late ? "warn" : "" },
-    { ic:"mapPin", k:"3 · ออกตรวจภาคสนาม", n:FIELD_STOPS.length, u:"จุด", l:"เรียงตามระยะทาง", go:"goTo('fieldnav')" },
+    { ic:"mapPin", k:"3 · ออกตรวจภาคสนาม", n:FIELD_STOPS.length, u:"จุด", l:"เรียงเป็นเส้นทางต่อเนื่อง", go:"goTo('fieldnav')" },
     { ic:"checklist", k:"4 · ตรวจสอบ", n:insp.length, u:"ใบตรวจ", l:`ปิดใบงานแล้ว ${insp.filter(h => h.woCode).length} ใบ`, go:"goTo('inspection'); showInspectionHistory()" },
     { ic:"alert", k:"5 · ความขัดข้อง", n:k.failures, u:"ครั้ง", l:k.mttr == null ? "ไม่มีการซ่อมเดือนนี้" : `MTTR ${k.mttr.toFixed(1)} ชม.`, go:"openKpiModal('mttr')", cls: k.failures > KPI_TARGETS.failures || (k.mttr != null && k.mttr > KPI_TARGETS.mttr) ? "warn" : "" },
     { ic:"chart", k:"6 · สรุปผล KPI", n:k.completion == null ? "–" : k.completion.toFixed(1), u:k.completion == null ? "" : "%", l:"PM Completion", go:"scrollToKpi()", cls: k.completion == null ? "" : k.completion >= KPI_TARGETS.completion ? "good" : "warn" },
@@ -2555,10 +2555,36 @@ function buildFieldStops(){
   const fromFile = fieldPoints().filter(pt => !wost.data.some(w => w.code && w.code === pt.code)).map(pt => ({
     wo: { id: "fp-" + pt.id, code: pt.code || "จุด", equip: pt.name || pt.code || "จุดจากไฟล์", status: "รอดำเนินการ", place: pt.place || "", lat: pt.lat, lng: pt.lng, point: true, pid: pt.id },
     district: pt.place || "จุดจากไฟล์", lat: pt.lat, lng: pt.lng, exact: true }));
-  FIELD_STOPS = picked.concat(fromFile).map(item => ({
+  FIELD_STOPS = orderFieldRoute(picked.concat(fromFile).map(item => ({
     wo: item.wo, district: item.district, lat: item.lat, lng: item.lng, exact: !!item.exact,
     distKm: haversineKm(FIELD_ORIGIN.lat, FIELD_ORIGIN.lng, item.lat, item.lng),
-  })).sort((a,b) => a.distKm - b.distKm);
+  })));
+}
+// v152: a real route — from the start go to the nearest stop, then always the nearest stop from where you are,
+// then smooth it (2-opt) so the path never jumps back and forth. legKm = distance from the previous stop.
+function orderFieldRoute(stops){
+  const n = stops.length; if (!n) return stops;
+  const d = (a, b) => haversineKm(a.lat, a.lng, b.lat, b.lng);
+  const left = stops.slice(), path = [FIELD_ORIGIN];
+  while (left.length){
+    const cur = path[path.length - 1]; let bi = 0, bd = Infinity;
+    left.forEach((s, i) => { const x = d(cur, s); if (x < bd - 1e-9){ bd = x; bi = i; } });
+    path.push(left.splice(bi, 1)[0]);
+  }
+  if (n > 2 && n <= 400){
+    let improved = true, guard = 0;
+    while (improved && guard++ < 60){
+      improved = false;
+      for (let i = 1; i < n; i++) for (let j = i + 1; j <= n; j++){
+        const before = d(path[i - 1], path[i]) + (j < n ? d(path[j], path[j + 1]) : 0);
+        const after = d(path[i - 1], path[j]) + (j < n ? d(path[i], path[j + 1]) : 0);
+        if (after < before - 1e-9){ for (let a = i, b = j; a < b; a++, b--){ const t = path[a]; path[a] = path[b]; path[b] = t; } improved = true; }
+      }
+    }
+  }
+  const out = path.slice(1); let prev = FIELD_ORIGIN;
+  out.forEach(s => { s.legKm = d(prev, s); prev = s; });
+  return out;
 }
 const FIELD_PTS_KEY = "field-points-v1";
 function fieldPoints(){ try { const v = JSON.parse(localStorage.getItem(FIELD_PTS_KEY) || "[]"); return Array.isArray(v) ? v : []; } catch(e){ return []; } }
@@ -2703,7 +2729,7 @@ function renderFieldMap(){
     listEl.innerHTML = stops.map((s, i) => `
       <div class="field-stop-row ${FIELD_FOCUS === i ? "focused" : ""}" data-stop="${i}" onclick="showFieldStopDetail(${i})">
         <div class="num" style="background:${s.wo.status==='เกินกำหนด' ? 'var(--red-soft)' : s.wo.status==='กำลังดำเนินการ' ? 'var(--green-soft)' : 'var(--amber-soft)'}; color:${s.wo.status==='เกินกำหนด' ? 'var(--red-ink)' : s.wo.status==='กำลังดำเนินการ' ? 'var(--green-ink)' : 'var(--amber-ink)'};">${stopLabel(i)}</div>
-        <div class="body"><div class="t">${s.wo.equip}</div><div class="d">${s.district} · ${s.distKm.toFixed(1)} กม. จาก${FIELD_ORIGIN.mine ? "ตำแหน่งของฉัน" : "ศูนย์ปฏิบัติการ"}</div></div>
+        <div class="body"><div class="t">${s.wo.equip}</div><div class="d">${s.district} · ${(s.legKm != null ? s.legKm : s.distKm).toFixed(1)} กม. จาก${i === 0 ? (FIELD_ORIGIN.mine ? "ตำแหน่งของฉัน" : "ศูนย์ปฏิบัติการ") : "จุด " + i}</div></div>
         ${statusBadge(s.wo.status)}
         <button class="stop-pin-btn" title="แสดงจุดนี้บนแผนที่" onclick="event.stopPropagation(); focusFieldStop(${i})">${ic('mapPin')}</button>
       </div>`).join("") || `<div style="padding:26px; text-align:center; color:var(--text-faint);">ไม่มีงานที่ต้องออกตรวจภาคสนามในขณะนี้</div>`;
@@ -2719,7 +2745,7 @@ window.showFieldStopDetail = function(i){
     ${isPt ? `<div class="mini-stat-row"><span class="lbl">พิกัด</span><span class="val">${s.lat.toFixed(5)}, ${s.lng.toFixed(5)}</span></div>` : ""}
     <div class="mini-stat-row"><span class="lbl">อุปกรณ์</span><span class="val">${s.wo.equip}</span></div>
     <div class="mini-stat-row"><span class="lbl">พื้นที่</span><span class="val">${s.district}</span></div>
-    <div class="mini-stat-row"><span class="lbl">ระยะทางโดยประมาณ</span><span class="val">${s.distKm.toFixed(1)} กม.</span></div>
+    <div class="mini-stat-row"><span class="lbl">ระยะจากจุดก่อนหน้า (เส้นตรง)</span><span class="val">${(s.legKm != null ? s.legKm : s.distKm).toFixed(1)} กม. · จากจุดเริ่มต้น ${s.distKm.toFixed(1)} กม.</span></div>
     <div class="mini-stat-row"><span class="lbl">สถานะ</span><span class="val">${statusBadge(s.wo.status)}</span></div>
   </div>`;
   const inspIdx = s.wo.assetTableId != null ? ASSET_INSPECTION_LINK[s.wo.assetTableId] : undefined;
@@ -2944,7 +2970,7 @@ function syncFieldGoogleMap(){
     const order = FIELD_STOPS.slice(0, shown).map((x, i) => `<span style="display:inline-flex; align-items:center; gap:4px; margin:2px 8px 2px 0; white-space:nowrap;"><b style="display:inline-flex; width:20px; height:20px; border-radius:50%; background:var(--brand-ink); color:#fff; font-size:11px; align-items:center; justify-content:center;">${i + 1}</b>${x.wo.equip}</span>`).join("→ ");
     bar.innerHTML = s
       ? `กำลังแสดง <b>จุดตรวจ ${stopLabel(FIELD_FOCUS)}</b> · ${s.wo.code} · ${s.wo.equip} (${s.district}) <button class="btn" onclick="focusFieldStop(null)">${ic('arrowLeft')} กลับไปดูเส้นทางทั้งหมด</button>`
-      : n ? `เส้นทางตรวจ <b>${shown} จุด</b> เรียงจากใกล้ไปไกล · <b>เริ่มต้น</b> = ${FIELD_ORIGIN.label}${n > shown ? ` · แสดง ${shown} จุดแรก (เหลืออีก ${n - shown} จุดในรายการด้านล่าง)` : ""}<div style="margin-top:6px; line-height:1.9;">ลำดับ: ${order}</div>${nm && LF_ROUTE.pts ? `<div style="margin-top:2px; color:var(--text-soft); font-size:12px;">ระยะทางตามถนนรวมประมาณ ${LF_ROUTE.km.toFixed(1)} กม. · ใช้เวลาขับรถประมาณ ${Math.round(LF_ROUTE.min)} นาที (ไม่รวมเวลาตรวจ)</div>` : ""}${g ? `<div style="margin-top:2px; color:var(--text-soft); font-size:12px;">บนแผนที่ Google ชื่อแต่ละจุดขึ้นต้นด้วยเลขลำดับ (1. 2. 3. …) · A = เริ่มต้น</div>` : ""}`
+      : n ? `เส้นทางตรวจ <b>${shown} จุด</b> เรียงเป็นเส้นทางต่อเนื่อง (จุดที่อยู่ทางเดียวกันและใกล้กันไปก่อน) · รวมประมาณ <b>${FIELD_STOPS.reduce((t, x) => t + (x.legKm || 0), 0).toFixed(1)} กม.</b> (เส้นตรง) · <b>เริ่มต้น</b> = ${FIELD_ORIGIN.label}${n > shown ? ` · แสดง ${shown} จุดแรก (เหลืออีก ${n - shown} จุดในรายการด้านล่าง)` : ""}<div style="margin-top:6px; line-height:1.9;">ลำดับ: ${order}</div>${nm && LF_ROUTE.pts ? `<div style="margin-top:2px; color:var(--text-soft); font-size:12px;">ระยะทางตามถนนรวมประมาณ ${LF_ROUTE.km.toFixed(1)} กม. · ใช้เวลาขับรถประมาณ ${Math.round(LF_ROUTE.min)} นาที (ไม่รวมเวลาตรวจ)</div>` : ""}${g ? `<div style="margin-top:2px; color:var(--text-soft); font-size:12px;">บนแผนที่ Google ชื่อแต่ละจุดขึ้นต้นด้วยเลขลำดับ (1. 2. 3. …) · A = เริ่มต้น</div>` : ""}`
           : `ไม่มีจุดตรวจในขณะนี้ — แสดงตำแหน่ง${FIELD_ORIGIN.label}`;
   }
   if (hint) hint.textContent = "* จุดที่กรอกพิกัดไว้ในใบงานจะอยู่ตรงตำแหน่งจริง ส่วนจุดที่ไม่มีพิกัดเป็นตำแหน่งโดยประมาณตามเขต · ถ้าแผนที่ไม่ขึ้น (ออฟไลน์/เครือข่ายปิดกั้น) กด \"แผนที่จำลอง\"";
@@ -4221,7 +4247,7 @@ const pageWorkOrder = `
 /* ===================== PAGE: FIELD NAVIGATION ===================== */
 const pageFieldNav = `
 <div class="page-head">
-  <div><h1>นำทางตรวจภาคสนาม</h1><p>จุดตรวจของใบงานที่ยังค้าง (รอดำเนินการ/กำลังดำเนินการ/เกินกำหนด) เรียงตามระยะทางจากศูนย์ปฏิบัติการ — กดไอคอนหมุดในรายการเพื่อซูมแผนที่ไปที่จุดนั้น หรือกดรายการเพื่อดูรายละเอียด</p></div>
+  <div><h1>นำทางตรวจภาคสนาม</h1><p>จุดตรวจของใบงานที่ยังค้าง (รอดำเนินการ/กำลังดำเนินการ/เกินกำหนด) เรียงเป็นเส้นทางต่อเนื่องจากจุดเริ่มต้น (จุดที่อยู่ใกล้กันไปก่อน) — กดไอคอนหมุดในรายการเพื่อซูมแผนที่ไปที่จุดนั้น หรือกดรายการเพื่อดูรายละเอียด</p></div>
 </div>
 <div class="card" style="margin-bottom:16px;">
   <div class="field-map-toolbar">
