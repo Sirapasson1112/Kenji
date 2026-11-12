@@ -1015,7 +1015,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-13-route-v152";
+const BUILD_TAG = "2026-11-13-insphf-v153";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -4612,7 +4612,7 @@ window.showInspectionHistory = function(){
   const F = INSP_HF;
   const yrs = [...new Set(history.map(h => String(new Date(h.savedAt).getFullYear() + 543)))].sort().reverse();
   const list = history.map((h, i) => ({ h, i })).filter(({ h }) => { const d = new Date(h.savedAt);
-    return (!F.year || String(d.getFullYear() + 543) === F.year) && (F.month === "" || String(d.getMonth()) === F.month) && (!F.form || h.code === F.form) && (!F.bad || (h.findings || []).length) && (!F.wo || h.woCode) && (!F.find || (h.findings || []).some(t => String(t).split(" — ")[0].trim() === F.find)); });
+    return (!F.year || String(d.getFullYear() + 543) === F.year) && (F.month === "" || String(d.getMonth()) === F.month) && (!F.form || h.code === F.form) && (!F.bad || (h.findings || []).length) && (!F.wo || h.woCode) && (!F.q || [h.woCode, h.code, h.title, h.summary].join(" ").toLowerCase().includes(F.q.toLowerCase())) && (!F.find || (h.findings || []).some(t => String(t).split(" — ")[0].trim() === F.find)); });
   const PAGE = 15, pages = Math.max(1, Math.ceil(list.length / PAGE)); F.page = Math.min(Math.max(1, F.page), pages);
   const rows = list.slice((F.page - 1) * PAGE, F.page * PAGE).map(({ h, i }) => `
     <tr>
@@ -4629,13 +4629,14 @@ window.showInspectionHistory = function(){
         <h3>ประวัติการตรวจสอบ (${list.length === history.length ? history.length : list.length + " จาก " + history.length})</h3>
         ${history.length ? `<span class="link-more" onclick="exportInspectionHistory()">ส่งออก Excel</span>` : ""}
       </div>
-      ${history.length > PAGE ? `<div style="display:flex; gap:8px; flex-wrap:wrap; padding:10px 20px 2px;">
+      ${history.length ? `<div style="display:flex; gap:8px; flex-wrap:wrap; padding:10px 20px 2px;">
+        <input type="search" id="insp-hq" class="select-sm" placeholder="ค้นหา ใบงาน / แบบฟอร์ม / อุปกรณ์…" value="${(F.q || "").replace(/"/g, "&quot;")}" oninput="INSP_HF.q = this.value; INSP_HF.page = 1; INSP_HF._f = 1; showInspectionHistory()" style="min-width:210px;">
         <select class="select-sm" style="max-width:100%;" aria-label="ปี" onchange="setInspHF('year', this.value)"><option value="">ทุกปี</option>${yrs.map(y => `<option value="${y}" ${F.year === y ? "selected" : ""}>ปี ${y}</option>`).join("")}</select>
         <select class="select-sm" style="max-width:100%;" aria-label="เดือน" onchange="setInspHF('month', this.value)"><option value="">ทุกเดือน</option>${RP_MONTHS.map((m, i) => `<option value="${i}" ${F.month === String(i) ? "selected" : ""}>${m}</option>`).join("")}</select>
         <select class="select-sm" style="max-width:100%;" aria-label="แบบฟอร์ม" onchange="setInspHF('form', this.value)"><option value="">ทุกแบบฟอร์ม</option>${INSPECTION_FORMS.map(f => `<option value="${f.code}" ${F.form === f.code ? "selected" : ""}>${f.code.replace("SF-07-0-", "")} · ${f.title.replace("แบบตรวจสอบบำรุงรักษา", "").trim()}</option>`).join("")}</select>
         <select class="select-sm" style="max-width:100%;" aria-label="ผลตรวจ" onchange="setInspHF('bad', this.value)"><option value="">ทุกผลตรวจ</option><option value="1" ${F.bad ? "selected" : ""}>เฉพาะที่พบความผิดปกติ</option></select>
         ${F.wo ? `<span class="badge teal">เฉพาะที่ตรวจตามใบงาน</span>` : ""}${F.find ? `<span class="badge red" title="${F.find.replace(/"/g, "&quot;")}">ข้อบกพร่อง: ${F.find.replace(/</g, "&lt;")}</span>` : ""}
-        ${F.year || F.month !== "" || F.form || F.bad || F.wo || F.find ? `<button class="btn" onclick="setInspHF('reset', '')">ล้างตัวกรอง</button>` : ""}
+        ${F.year || F.month !== "" || F.form || F.bad || F.wo || F.find || F.q ? `<button class="btn" onclick="setInspHF('reset', '')">ล้างตัวกรอง</button>` : ""}
       </div>` : ""}
       <div class="table-wrap">
         <table>
@@ -4645,16 +4646,17 @@ window.showInspectionHistory = function(){
       </div>
       ${list.length > PAGE ? `<div class="table-foot"><div class="count">แสดง ${(F.page - 1) * PAGE + 1}-${Math.min(list.length, F.page * PAGE)} จาก ${list.length} รายการ</div><div class="pager"><button class="btn" ${F.page <= 1 ? "disabled" : ""} onclick="setInspHF('page', ${F.page - 1})">ก่อนหน้า</button><span style="font-size:12.5px; padding:0 8px;">หน้า ${F.page}/${pages}</span><button class="btn" ${F.page >= pages ? "disabled" : ""} onclick="setInspHF('page', ${F.page + 1})">ถัดไป</button></div></div>` : ""}
     </div>`;
+  if (F._f){ F._f = 0; const el = document.getElementById("insp-hq"); if (el){ el.focus(); try { el.setSelectionRange(el.value.length, el.value.length); } catch(e){} } }
 };
-let INSP_HF = { year:"", month:"", form:"", bad:"", wo:"", find:"", page:1 };
+let INSP_HF = { year:"", month:"", form:"", bad:"", wo:"", find:"", q:"", page:1 };
 // v64: open the history list from the dashboard with the matching filters applied.
 window.inspDrill = function(o){
   const D = INSP_DB || { year:String(KPI_PERIOD.yearBE), month:String(KPI_PERIOD.monthIdx) };
-  INSP_HF = Object.assign({ year:D.year, month:D.month, form:"", bad:"", wo:"", find:"", page:1 }, o || {});
+  INSP_HF = Object.assign({ year:D.year, month:D.month, form:"", bad:"", wo:"", find:"", q:"", page:1 }, o || {});
   goTo("inspection"); showInspectionHistory();
 };
 window.setInspHF = function(k, v){
-  if (k === "reset") INSP_HF = { year:"", month:"", form:"", bad:"", wo:"", find:"", page:1 };
+  if (k === "reset") INSP_HF = { year:"", month:"", form:"", bad:"", wo:"", find:"", q:"", page:1 };
   else { INSP_HF[k] = k === "page" ? parseInt(v, 10) : v; if (k !== "page") INSP_HF.page = 1; }
   showInspectionHistory();
 };
