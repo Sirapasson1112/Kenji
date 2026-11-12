@@ -965,7 +965,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-12-calstatus-v138";
+const BUILD_TAG = "2026-11-12-inprg-v139";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -1712,8 +1712,8 @@ function normWoStatus(t){
   if (/(ยกเลิก|cancel|\bcanc|\bcan\b|\bcnlc?\b|\bdlfl\b|\bdlt\b|\bvoid)/.test(x)) return "ยกเลิก";
   if (/(เกินกำหนด|เกินเวลา|ล่าช้า|overdue|\blate\b|delay)/.test(x)) return "เกินกำหนด";
   if (/(เสร็จ|แล้วเสร็จ|(?<!เ)ปิด|complete|\bcomp\b|\bclose|\bclosed\b|\bclos\b|\bdone\b|finish|\bcnf\b|\bteco\b|\btecq\b|\bhist\b)/.test(x)) return "เสร็จสิ้น";
-  if (/(กำลัง|ระหว่าง|อยู่ระหว่าง|in ?prog|\binprg\b|ongoing|\bwip\b|started|\brel\b|\bpcnf\b|released|working|progress)/.test(x)) return "กำลังดำเนินการ";
-  if (/(รอ|อนุมัติ|ใหม่|เปิด|pending|waiting|\bwappr\b|\bwsch\b|\bwmatl\b|\bwpcond\b|\bappr\b|\bnew\b|\bopen\b|\bcrtd\b|\bwait|sched|plan|draft|request)/.test(x)) return "รอดำเนินการ";
+  if (/(กำลัง|ระหว่าง|อยู่ระหว่าง|in ?prog|ongoing|\bwip\b|started|working|progress)/.test(x)) return "กำลังดำเนินการ";
+  if (/(รอ|อนุมัติ|ใหม่|เปิด|pending|waiting|\binprg\b|\brel\b|\bpcnf\b|released|\bwappr\b|\bwsch\b|\bwmatl\b|\bwpcond\b|\bappr\b|\bnew\b|\bopen\b|\bcrtd\b|\bwait|sched|plan|draft|request)/.test(x)) return "รอดำเนินการ";
   return "";
 }
 window.importTableCSV = function(tableId){
@@ -6552,7 +6552,7 @@ const pageGuide = `
       <li>ใบงานที่ถูก<b>ยกเลิก</b> คือใบงานที่ถูกสั่งให้ไม่ต้องดำเนินการต่อ (เช่น ซ้ำกับใบงานอื่น, เลื่อนแผน, อุปกรณ์ถูกปลดออกจากระบบ) — เมื่อเปลี่ยนสถานะใบงานเป็น "ยกเลิก" ผ่านปุ่มแก้ไข ระบบจะให้กรอก <b>เหตุผลการยกเลิก</b> ด้วย และแสดงเหตุผลนั้นเวลากด "ดู" รายละเอียดใบงาน</li>
       <li>ปุ่ม <b>ส่งออก Excel</b> / <b>นำเข้าไฟล์</b> ใช้บันทึกหรือเพิ่มใบงานเป็นชุดจากไฟล์ (.xlsx หรือ .csv แถวแรกเป็นหัวตาราง) ตารางแสดง 10 รายการต่อหน้า</li>
       <li><b>คอลัมน์ที่ระบบอ่านจากไฟล์:</b> Work Order, Description, WBS Code, เลขรับเรื่อง, SAP PM Order, สถานที่ติดตั้ง, MEA No., ศูนย์งานซ่อมบำรุง, Status, Switch No. (ป้ายแดง), Fixed ID, Work Type, Project, Target Start, Target Finish, Reported Date, Plant, System Status, User Status · วันที่อ่านได้ทั้งแบบไทย อังกฤษ และ เดือน/วัน/ปี ที่มี AM/PM</li>
-      <li><b>สถานะจากไฟล์:</b> CLOSED และ COMPLETE = เสร็จสิ้น · INPRG = กำลังดำเนินการ · CANC = ยกเลิก · WAPPR และสถานะรออนุมัติอื่น = รอดำเนินการ ใบงานที่นำเข้าใช้สถานะตามไฟล์ ไม่ถูกเปลี่ยนเป็นเกินกำหนดอัตโนมัติ · <b>Work Type</b> ลงท้าย P = งาน PM, ลงท้าย C = งานซ่อมแก้ไข ใช้แยกการนับ KPI</li>
+      <li><b>สถานะจากไฟล์:</b> CLOSED และ COMPLETE = เสร็จสิ้น · INPRG, REL, PCNF = รอดำเนินการ (ยังไม่เริ่ม จนกว่าจะกด Active) · CANC = ยกเลิก · WAPPR และสถานะรออนุมัติอื่น = รอดำเนินการ ใบงานที่นำเข้าใช้สถานะตามไฟล์ ไม่ถูกเปลี่ยนเป็นเกินกำหนดอัตโนมัติ · <b>Work Type</b> ลงท้าย P = งาน PM, ลงท้าย C = งานซ่อมแก้ไข ใช้แยกการนับ KPI</li>
       <li><b>ประวัตินำเข้าไฟล์:</b> ปุ่ม "ประวัติการนำเข้า" แสดงไฟล์ที่เคยนำเข้า กด "ลบไฟล์นี้" เพื่อลบเฉพาะใบงานที่มากับไฟล์นั้น (กรณีนำเข้าผิดไฟล์) ใบงานอื่นไม่ถูกแตะ · ลบใบงานทีละใบได้ด้วยไอคอนถังขยะท้ายแถว</li>
     </ul>
   </div>
