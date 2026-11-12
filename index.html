@@ -1910,9 +1910,31 @@ function initAssetTable(tableId, config){
   renderTable(tableId);
 }
 
+// Month / year filter of the work-order page (same date as the calendar: Reported Date).
+function woPeriodRows(rows){
+  const st = TableState["workorder"]; if (!st || (st.fYear == null || st.fYear === "") && (st.fMonth == null || st.fMonth === "")) return rows;
+  return rows.filter(r => { const p = parseWoDate(r); return (st.fYear === "" || st.fYear == null || p.yearBE === +st.fYear) && (st.fMonth === "" || st.fMonth == null || p.month === +st.fMonth); });
+}
+window.setWoPeriod = function(){
+  const st = TableState["workorder"]; if (!st) return;
+  const y = document.getElementById("wo-fy"), m = document.getElementById("wo-fm");
+  st.fYear = y ? y.value : ""; st.fMonth = m ? m.value : ""; st.page = 1; renderTable("workorder");
+};
+window.clearWoPeriod = function(){ const st = TableState["workorder"]; if (!st) return; st.fYear = ""; st.fMonth = ""; st.page = 1; renderTable("workorder"); };
+function renderWoPeriodPick(){
+  const st = TableState["workorder"]; const y = document.getElementById("wo-fy"), m = document.getElementById("wo-fm"); if (!st || !y || !m) return;
+  const ys = Array.from(new Set(st.data.map(r => parseWoDate(r).yearBE).filter(v => v > 2500))).sort((a, b) => b - a);
+  if (st.fYear && !ys.includes(+st.fYear)) ys.push(+st.fYear);
+  const wantY = `<option value="">ทุกปี</option>` + ys.map(v => `<option value="${v}">${v}</option>`).join("");
+  if (y.innerHTML !== wantY) y.innerHTML = wantY;
+  if (!m.innerHTML) m.innerHTML = `<option value="">ทุกเดือน</option>` + THAI_MONTHS.map((n, i) => `<option value="${i}">${n}</option>`).join("");
+  y.value = st.fYear == null ? "" : String(st.fYear); m.value = st.fMonth == null ? "" : String(st.fMonth);
+  const b = document.getElementById("wo-fclear"); if (b) b.style.display = (y.value || m.value) ? "" : "none";
+}
 function getFilteredRows(tableId){
   const st = TableState[tableId];
   let rows = st.data;
+  if (tableId === "workorder") rows = woPeriodRows(rows);
   if (st.status) rows = rows.filter(r => r.status === st.status);
   if (st.search){
     const q = st.search.toLowerCase();
@@ -1968,7 +1990,7 @@ function renderTable(tableId){
     const el = document.getElementById(`${tableId}-kpi-${k}`);
     if (el) el.textContent = st.data.filter(r => r.status === status).length;
   });
-  if (tableId === "workorder"){ renderWorkOrderChips(); renderKpiCards(); try { updateUndoImportBtn(); } catch(e){} }
+  if (tableId === "workorder"){ renderWoPeriodPick(); renderWorkOrderChips(); renderKpiCards(); try { updateUndoImportBtn(); } catch(e){} }
 }
 
 // v91: history of imported files (newest first). Each entry remembers which work orders it brought in.
@@ -2399,7 +2421,8 @@ function renderWorkOrderChips(){
     { label:"ยกเลิก", value:"ยกเลิก" },
   ];
   chipsEl.innerHTML = groups.map(g => {
-    const count = g.value ? st.data.filter(r => r.status === g.value).length : st.data.length;
+    const base = woPeriodRows(st.data);
+    const count = g.value ? base.filter(r => r.status === g.value).length : base.length;
     return `<div class="chip ${st.status===g.value?"active":""}" tabindex="0" onclick="setTableStatus('workorder','${g.value}')">${g.label}<span class="n">${count}</span></div>`;
   }).join("");
 }
@@ -3929,7 +3952,11 @@ const pageWorkOrder = `
   <div class="chip-row" id="workorder-chips"></div>
   <div class="table-toolbar">
     <div class="search-sm">${ic('search')}<input placeholder="ค้นหา Work Order / Description / MEA No. / สถานที่ติดตั้ง..." oninput="setTableSearch('workorder', this.value)"></div>
+    <select class="select-sm" id="wo-fm" aria-label="กรองเดือน" onchange="setWoPeriod()"></select>
+    <select class="select-sm" id="wo-fy" aria-label="กรองปี" onchange="setWoPeriod()"></select>
+    <button class="btn" id="wo-fclear" style="display:none" onclick="clearWoPeriod()">ล้างตัวกรอง</button>
   </div>
+  <div style="padding:0 20px 8px; font-size:11.5px; color:var(--text-faint);">ตัวกรองเดือน/ปีใช้ Reported Date ตัวเดียวกับปฏิทิน PM — ตัวเลขแท็บสถานะด้านบนนับเฉพาะช่วงที่เลือก</div>
   <div id="workorder-table-wrap" class="table-wrap"></div>
   <div class="table-foot"><div class="count" id="workorder-count"></div><div class="pager" id="workorder-pager"></div></div>
 </div>
