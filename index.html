@@ -8302,8 +8302,9 @@ figcaption{font-size:14px;color:var(--mut);margin-top:6px}
 .top-link{position:fixed;right:18px;bottom:18px;background:var(--bg);border:1px solid var(--line);padding:6px 12px;border-radius:4px;font-size:14px;text-decoration:none;color:var(--ink);display:none}
 @media(max-width:860px){aside{position:fixed;left:0;top:52px;z-index:30;background:var(--bg);width:80%;max-width:310px;transform:translateX(-102%);transition:transform .2s;box-shadow:2px 0 12px rgba(0,0,0,.15)}aside.open{transform:none}.top .tb{display:block}main{padding:22px 16px 70px}.cover h1{font-size:27px}h2.ch{font-size:22px}body{font-size:16.5px}.top .t{display:none}}
 @media print{.top,aside,.top-link{display:none!important}.wrap{display:block}main{max-width:none;padding:0}.book{display:none}.book.print{display:block!important}h2.ch{break-before:page}figure,table{break-inside:avoid}}
+.back{font:inherit;font-size:14px;font-weight:700;color:var(--ink,#1f3a5f);background:transparent;border:1px solid var(--line,#d5dbe5);border-radius:8px;padding:6px 12px;cursor:pointer;margin-right:6px;white-space:nowrap}.back:hover{background:rgba(0,0,0,.05)}
 </style></head><body>
-<div class="top"><a class="t" href="#home">คู่มือระบบ PM / CMMS</a><nav id="nav"><a href="#b1" data-b="b1">เล่ม 1 การสร้างและติดตั้ง</a><a href="#b2" data-b="b2">เล่ม 2 การใช้งาน</a><a href="#b3" data-b="b3">เล่ม 3 ดีบักและแก้ไขปัญหา</a></nav><button class="tb" id="tb">สารบัญ</button></div>
+<div class="top"><button class="back" id="backApp" type="button">‹ กลับเว็บแอป</button><a class="t" href="#home">คู่มือระบบ PM / CMMS</a><nav id="nav"><a href="#b1" data-b="b1">เล่ม 1 การสร้างและติดตั้ง</a><a href="#b2" data-b="b2">เล่ม 2 การใช้งาน</a><a href="#b3" data-b="b3">เล่ม 3 ดีบักและแก้ไขปัญหา</a></nav><button class="tb" id="tb">สารบัญ</button></div>
 <div class="wrap"><aside id="side"></aside><main>
 <section id="home" class="home"><div class="org">การไฟฟ้านครหลวง เขตสมุทรปราการ</div><h1>คู่มือระบบ PM / CMMS</h1><div>แยกเป็น 3 เล่ม เลือกเล่มที่ต้องการได้จากแถบด้านบน<br><span style="color:var(--mut);font-size:15px">ผู้จัดทำ ศิรภัสสร กลับสุข · Build 2026-11-13-insphf-v153</span></div><div class="cards"><a class="card" href="#b1"><span class="no">เล่ม 1</span><b>คู่มือการสร้างและติดตั้งระบบ</b><p>โครงสร้างระบบ วิธีนำขึ้นเว็บ รูปแบบไฟล์นำเข้า การตั้งค่าซิงก์ข้อมูล และการสำรองข้อมูล สำหรับผู้ดูแลระบบ</p><span class="go">เปิดอ่าน →</span></a><a class="card" href="#b2"><span class="no">เล่ม 2</span><b>คู่มือการใช้งาน</b><p>วิธีใช้งานทีละหน้าจอพร้อมภาพประกอบ ตั้งแต่ปฏิทินงาน ใบสั่งงาน นำทางภาคสนาม ใบตรวจสอบ ไปจนถึงการสำรองข้อมูล</p><span class="go">เปิดอ่าน →</span></a><a class="card" href="#b3"><span class="no">เล่ม 3</span><b>คู่มือการดีบักและแก้ไขปัญหา</b><p>ตรวจและแก้ปัญหาตามอาการ เช่น หน้าว่าง ข้อมูลหาย นำเข้าไฟล์ไม่ขึ้น สีสถานะผิด GPS และการซิงก์</p><span class="go">เปิดอ่าน →</span></a></div></section>
 <section class="book" id="b1" data-name="การสร้างและติดตั้ง" hidden>
@@ -8376,5 +8377,6 @@ var z=document.getElementById('zoom');
 document.addEventListener('click',function(e){if(e.target.closest('figure img')){z.firstChild.src=e.target.src;z.classList.add('on')}else if(z.classList.contains('on'))z.classList.remove('on')});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')z.classList.remove('on')});
 })();
-<\/script></body></html></script>
+<\/script><script>document.getElementById("backApp").addEventListener("click",function(){try{if(window.opener&&!window.opener.closed){window.close();setTimeout(function(){if(!window.closed)history.back()},150);return}}catch(e){}if(history.length>1)history.back();else window.close()})<\/script>
+</body></html></script>
 </body></html>
