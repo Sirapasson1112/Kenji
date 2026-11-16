@@ -877,6 +877,15 @@
   .gd-codes b { color: var(--brand-ink); margin-right: 6px; }
   .gd-more { margin-top: 12px; border: 1px solid var(--card-line); border-radius: 10px; padding: 8px 14px; }
   .gd-more summary { cursor: pointer; font-weight: 700; font-size: 13px; }
+  .gd-read { display: inline-block; margin-top: 8px; font-size: 12px; font-weight: 700; color: var(--brand-ink); text-decoration: none; }
+  .gd-read:hover { text-decoration: underline; }
+  .guide-section h3 + .gd-read { margin: 0 0 6px; }
+  .gd-book { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; padding: 14px 18px; border: 1px solid var(--card-line); border-radius: 12px; background: var(--brand-soft); }
+  .gd-book strong { display: block; font-size: 14px; color: var(--brand-ink); }
+  .gd-book span { font-size: 12.5px; color: var(--text-soft); }
+  .gd-book-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .gd-book-btns a { padding: 8px 14px; border-radius: 9px; background: var(--card); border: 1px solid var(--card-line); font-size: 12.5px; font-weight: 700; color: var(--brand-ink); text-decoration: none; }
+  .gd-book-btns a:hover { background: var(--brand-ink); color: #fff; }
   @media (max-width: 720px) { .gd-steps, .gd-steps4 { grid-template-columns: 1fr 1fr; } }
   /* Field navigation map */
   .field-map-toolbar { display: flex; gap: 14px; padding: 16px 20px 0; flex-wrap: wrap; align-items: center; }
@@ -976,6 +985,7 @@
   .cost-pct { font-size: 12px; font-weight: 700; margin-top: 4px; }
   .cal-more { white-space: nowrap; }
   @media (max-width: 860px) { .cal-more { font-size: 10px; } }
+  .cal-ev { font-size: 10px; font-weight: 600; letter-spacing: -.3px; padding: 2px 3px; text-overflow: clip; border-radius: 4px; font-variant-numeric: tabular-nums; }
 </style>
 </head>
 <body>
@@ -1037,7 +1047,7 @@ const REF_KPI_MTTR = "<i>MTTR (Mean Time To Repair)</i> = เวลาซ่อ�
 const REF_KPI_FAIL = "<i>จำนวนครั้งที่เกิดความขัดข้อง (Number of failures)</i> เป็นข้อมูลตั้งต้นของ MTBF = เวลาเดินเครื่องรวม ÷ จำนวนครั้งที่ขัดข้อง (ตัวชี้วัดความเชื่อถือได้ที่ใช้ทั่วไป) · ไม่พบตัวชี้วัดมาตรฐานที่นับ “จำนวนครั้งต่อเดือน” โดยตรง จึงเป็นตัวชี้วัดที่ระบบนี้กำหนดเอง และเป้า ≤ 5 ครั้งก็ตั้งในโครงงานนี้ · อ้างอิงเชิงแนวคิด: Wireman (2005) <i>Developing Performance Indicators for Managing Maintenance</i>";
 const REF_COST = "Wireman (2005); SMRP (2020) — ตัวชี้วัดต้นทุนบำรุงรักษา (Maintenance Cost)";
 const REF_RATIO = "SMRP (2020) — ตัวชี้วัดค่าบำรุงรักษาเทียบกับมูลค่าทรัพย์สิน (ดัดแปลง: ระบบนี้ใช้ค่าการได้มาสะสมแทนมูลค่าทดแทน)";
-const BUILD_TAG = "2026-11-16-cal-color-v157";
+const BUILD_TAG = "2026-11-16-guide-link-v158";
 /* v83: demo/sample data switched off. Set USE_SAMPLE_DATA = true to bring the generated work orders, history and KPI months back. */
 const USE_SAMPLE_DATA = false;
 /* v89: Google sign-in. Without signing in, people can look and fill things in, but nothing is saved.
@@ -6758,7 +6768,7 @@ window.renderRoleButtons = function(){
 
 /* ===================== PAGE: USER GUIDE ===================== */
 const pageGuide = `
-<div class="page-head"><div><h1>คู่มือการใช้งาน</h1><p>อ่านจบใน 3 นาที · ทำตามลำดับ 5 ขั้นตอน · อัปเดตล่าสุด 16 พ.ย. 2569 (v154)</p></div></div>
+<div class="page-head"><div><h1>คู่มือการใช้งาน</h1><p>อ่านจบใน 3 นาที · ทำตามลำดับ 5 ขั้นตอน · อัปเดตล่าสุด 16 พ.ย. 2569</p></div></div>
 <div class="guide-toc">
   <a href="#guide-start">5 ขั้นตอน</a>
   <a href="#guide-nav">รู้จักแต่ละหน้า</a>
@@ -6766,6 +6776,12 @@ const pageGuide = `
   <a href="#guide-calc">สูตร KPI</a>
   <a href="#guide-settings">ตั้งค่า & สำรองข้อมูล</a>
   <a href="#guide-help">แก้ปัญหาเบื้องต้น</a>
+</div>
+<div class="gd-book">
+  <div><strong>คู่มือฉบับเต็ม 3 เล่ม</strong><span>อยากอ่านละเอียด พร้อมภาพประกอบและวิธีแก้ปัญหา</span></div>
+  <div class="gd-book-btns">
+    <a href="manual.html" target="_blank" rel="noopener">เปิดคู่มือฉบับเต็ม</a>
+  </div>
 </div>
 
 <div class="card">
@@ -6793,24 +6809,24 @@ const pageGuide = `
     <div class="gd-grid">
       <div class="gd-card"><div class="gd-t"><span class="ic">${ic('dashboard')}</span>หน้าหลัก</div>
         <ul><li>การ์ด KPI 4 ตัว — กดดูวิธีคิด</li><li>เลือกปี / เดือนย้อนหลังได้</li><li>แถบขั้นตอน กดข้ามไปหน้านั้นได้</li></ul>
-        <div class="gd-tip">เป้า: PM ≥ 90% · เกินกำหนด ≤ 10% · MTTR ≤ 4 ชม. · ขัดข้อง ≤ 5/เดือน</div></div>
+        <div class="gd-tip">เป้า: PM ≥ 90% · เกินกำหนด ≤ 10% · MTTR ≤ 4 ชม. · ขัดข้อง ≤ 5/เดือน</div><a class="gd-read" href="manual.html#b2-c2" target="_blank" rel="noopener">อ่านเพิ่มในคู่มือเต็ม ›</a></div>
       <div class="gd-card"><div class="gd-t"><span class="ic">${ic('calendar')}</span>ปฏิทินงาน PM</div>
         <ul><li>นำเข้าแผน PM (.xlsx / .csv)</li><li>กดชิปงานเพื่อเปิดใบงาน</li><li>ปุ่ม + สร้างงานในวันนั้น</li></ul>
-        <div class="gd-tip">ชิปเส้นประ = แผนที่ยังไม่มีใบงาน</div></div>
+        <div class="gd-tip">ชิปเส้นประ = แผนที่ยังไม่มีใบงาน</div><a class="gd-read" href="manual.html#b2-c3" target="_blank" rel="noopener">อ่านเพิ่มในคู่มือเต็ม ›</a></div>
       <div class="gd-card"><div class="gd-t"><span class="ic">${ic('clipboard')}</span>ใบงาน</div>
         <ul><li>กรองตามสถานะด้วยชิปด้านบน</li><li>นำเข้า / ส่งออก Excel</li><li>นำเข้าผิด? ลบทั้งไฟล์ในประวัตินำเข้า</li></ul>
-        <div class="gd-tip">INPRG · REL · WAPPR = รอดำเนินการ · CLOSE · COMP = เสร็จสิ้น</div></div>
+        <div class="gd-tip">INPRG · REL · WAPPR = รอดำเนินการ · CLOSE · COMP = เสร็จสิ้น</div><a class="gd-read" href="manual.html#b2-c5" target="_blank" rel="noopener">อ่านเพิ่มในคู่มือเต็ม ›</a></div>
       <div class="gd-card"><div class="gd-t"><span class="ic">${ic('mapPin')}</span>นำทางภาคสนาม</div>
         <ul><li>จุดตรวจเรียงจากใกล้ไปไกล</li><li>เปิดทั้งเส้นทางใน Google Maps</li><li>กดจุด → ตรวจและปิดใบงาน</li></ul>
-        <div class="gd-tip">Google Maps รับ ~9 จุด/รอบ ระบบแบ่งช่วงให้เอง</div></div>
+        <div class="gd-tip">Google Maps รับ ~9 จุด/รอบ ระบบแบ่งช่วงให้เอง</div><a class="gd-read" href="manual.html#b2-c6" target="_blank" rel="noopener">อ่านเพิ่มในคู่มือเต็ม ›</a></div>
       <div class="gd-card"><div class="gd-t"><span class="ic">${ic('checklist')}</span>ใบตรวจสอบ</div>
         <ul><li>แบบฟอร์ม SF-07 ครบ 11 ใบ</li><li>แนบรูป · เซ็นชื่อ · ดึงพิกัด GPS</li><li>พิมพ์แบบเปล่าไปกรอกหน้างานได้</li></ul>
-        <div class="gd-tip">ค่าเกินเกณฑ์ = "ผิดปกติ" ระบบสรุปให้ทันที</div></div>
+        <div class="gd-tip">ค่าเกินเกณฑ์ = "ผิดปกติ" ระบบสรุปให้ทันที</div><a class="gd-read" href="manual.html#b2-c7" target="_blank" rel="noopener">อ่านเพิ่มในคู่มือเต็ม ›</a></div>
       <div class="gd-card"><div class="gd-t"><span class="ic">${ic('chart')}</span>Inspection Dashboard</div>
-        <ul><li>สรุปผลตรวจทั้งปี</li><li>กดการ์ดเพื่อดูรายการที่เกี่ยวข้อง</li></ul></div>
+        <ul><li>สรุปผลตรวจทั้งปี</li><li>กดการ์ดเพื่อดูรายการที่เกี่ยวข้อง</li></ul><a class="gd-read" href="manual.html#b2-c8" target="_blank" rel="noopener">อ่านเพิ่มในคู่มือเต็ม ›</a></div>
       <div class="gd-card" id="guide-cost"><div class="gd-t"><span class="ic">${ic('coin')}</span>ต้นทุนบำรุงรักษา</div>
         <ul><li>นำเข้าไฟล์ค่าใช้จ่าย (Admin)</li><li>ตั้งงบทั้งปี ดู % ที่ใช้ไป</li></ul>
-        <div class="gd-tip">เขียว ≤ 90% · เหลือง 90–100% · แดง = เกินงบ</div></div>
+        <div class="gd-tip">เขียว ≤ 90% · เหลือง 90–100% · แดง = เกินงบ</div><a class="gd-read" href="manual.html#b2-c8" target="_blank" rel="noopener">อ่านเพิ่มในคู่มือเต็ม ›</a></div>
     </div>
     <div id="guide-dashboard"></div><div id="guide-pm"></div><div id="guide-workorder"></div><div id="guide-fieldnav"></div><div id="guide-inspection"></div>
   </div>
@@ -6827,11 +6843,11 @@ const pageGuide = `
       <div class="gd-step"><b>3</b><span>กรอกแบบ → บันทึก</span></div>
       <div class="gd-step"><b>4</b><span>ใบงานเป็น "เสร็จสิ้น"</span></div>
     </div>
-    <p style="margin-top:10px">ผลตรวจผูกกับเลขใบงานนั้น และไปนับใน Inspection Dashboard ทันที</p>
+    <p style="margin-top:10px">ผลตรวจผูกกับเลขใบงานนั้น และไปนับใน Inspection Dashboard ทันที</p><a class="gd-read" href="manual.html#b2-c7" target="_blank" rel="noopener">อ่านเพิ่มในคู่มือเต็ม ›</a>
   </div>
 
   <div class="guide-section" id="guide-calc">
-    <h3><span class="ic">${ic('chart')}</span>สูตร KPI (ตัวเลขคำนวณจากข้อมูลจริง)</h3>
+    <h3><span class="ic">${ic('chart')}</span>สูตร KPI (ตัวเลขคำนวณจากข้อมูลจริง)</h3><a class="gd-read" href="manual.html#b1-c6" target="_blank" rel="noopener">อ่านเพิ่มในคู่มือเต็ม ›</a>
     <div class="table-wrap"><table class="calc-table" style="min-width:520px;">
       <tr><th style="width:24%">KPI</th><th>สูตร</th><th style="width:16%">เป้าหมาย</th></tr>
       <tr><td><b>PM Completion</b></td><td>PM "เสร็จสิ้น" ÷ PM ทั้งหมดของเดือน × 100</td><td>≥ 90%</td></tr>
@@ -6855,7 +6871,7 @@ const pageGuide = `
   </div>
 
   <div class="guide-section" id="guide-settings">
-    <h3><span class="ic">${ic('help')}</span>ตั้งค่า & สำรองข้อมูล</h3>
+    <h3><span class="ic">${ic('help')}</span>ตั้งค่า & สำรองข้อมูล</h3><a class="gd-read" href="manual.html#b2-c9" target="_blank" rel="noopener">อ่านเพิ่มในคู่มือเต็ม ›</a>
     <div class="gd-grid gd-grid3">
       <div class="gd-card"><div class="gd-t">ชื่อ · ตำแหน่ง</div><p>แก้ได้ที่หน้าตั้งค่า ใช้เป็นชื่อผู้ตรวจในใบตรวจ</p></div>
       <div class="gd-card"><div class="gd-t">สิทธิ์ผู้ใช้</div><p>Admin แก้ไข/เพิ่ม/ลบ/นำเข้าได้ · User ดูและกรอกใบตรวจ</p></div>
@@ -6867,7 +6883,7 @@ const pageGuide = `
   </div>
 
   <div class="guide-section" id="guide-help">
-    <h3><span class="ic">${ic('alert')}</span>แก้ปัญหาเบื้องต้น</h3>
+    <h3><span class="ic">${ic('alert')}</span>แก้ปัญหาเบื้องต้น</h3><a class="gd-read" href="manual.html#b3-c1" target="_blank" rel="noopener">อ่านเพิ่มในคู่มือเต็ม ›</a>
     <div class="table-wrap"><table class="calc-table" style="min-width:480px;">
       <tr><td style="width:34%"><b>นำเข้าไฟล์แล้วไม่ขึ้น</b></td><td>ตรวจหัวคอลัมน์ให้ตรงกับไฟล์ตัวอย่าง · ใช้ .xlsx หรือ .csv แถวแรกเป็นหัวตาราง</td></tr>
       <tr><td><b>เปิดฟอร์มไม่ตรงอุปกรณ์</b></td><td>ตรวจ MEA No. ให้ขึ้นต้นด้วย TR / LBS / SZ / RMU / SS / CB</td></tr>
